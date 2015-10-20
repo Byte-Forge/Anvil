@@ -3,7 +3,9 @@
 #include <string>
 #include <include/cef_client.h>
 #include <include/cef_browser.h>
-#include "./GUI/Client.hpp"
+#include "./GUI/BrowserClient.hpp"
+#include "./GUI/RenderHandler.hpp"
+
 namespace hpse
 {
 	class GUI
@@ -15,7 +17,9 @@ namespace hpse
 		void Update();
 		void LoadFile(const std::string& file);
 	private:
-		CefRefPtr<GuiClient> m_client;
+		CefRefPtr<BrowserClient>	m_client;
+		RenderHandler*				m_renderer;
+		CefRefPtr<CefBrowser>		m_browser;
 		CefSettings m_settings;
 	};
 }

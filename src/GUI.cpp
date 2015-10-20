@@ -6,9 +6,12 @@ using namespace hpse;
 
 GUI::GUI()
 {
-	m_client = new GuiClient();
-	
-	CefInitialize(CefMainArgs(), m_settings, NULL,NULL);
+	m_client = new BrowserClient();
+	CefMainArgs args;
+	CefSettings settings;
+	CefInitialize(args, settings, nullptr, NULL);
+	m_renderer = new RenderHandler();
+	m_client = new BrowserClient();
 }
 
 GUI::~GUI()
@@ -18,7 +21,7 @@ GUI::~GUI()
 
 void GUI::Update()
 {
-
+	CefDoMessageLoopWork();
 }
 
 void GUI::LoadFile(const std::string& file)

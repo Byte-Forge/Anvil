@@ -19,5 +19,5 @@ add_executable(${PROJ_NAME} ${SRC_FILES})
 
 target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR}
 							${CEF_INCLUDE_DIR} ${SFML_INCLUDE_DIR})
-target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_LIBRARY} 
+target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_WRAPPER_LIBRARY} ${CEF_LIBRARY} 
 						${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
