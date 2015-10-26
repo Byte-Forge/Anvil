@@ -12,7 +12,7 @@ GUI::GUI()
 	m_client = new BrowserClient();
 	#ifdef _WIN32
 	CefMainArgs args(GetModuleHandle(NULL));
-	#elif
+	#else
 	CefMainArgs args(Environment::Argc, Environment::Argv);
 	#endif
 

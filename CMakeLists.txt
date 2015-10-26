@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
 set(PROJ_NAME HPSE)
 project(${PROJ_NAME})
@@ -19,5 +19,6 @@ add_executable(${PROJ_NAME} ${SRC_FILES})
 
 target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR}
 							${CEF_INCLUDE_DIR} ${SFML_INCLUDE_DIR})
-target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_WRAPPER_LIBRARY} ${CEF_LIBRARY} 
+target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_LIBRARY} ${CEF_WRAPPER_LIBRARY}
 						${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)
