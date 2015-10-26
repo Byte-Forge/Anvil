@@ -17,6 +17,7 @@ namespace hpse
 
 		void Update();
 		void LoadFile(const std::string& file);
+		void Resize(int width, int height);
 	private:
 		CefRefPtr<BrowserClient>	m_client;
 		RenderHandler*				m_renderer;

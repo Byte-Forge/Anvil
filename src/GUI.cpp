@@ -35,3 +35,9 @@ void GUI::LoadFile(const std::string& file)
 
 }
 
+void hpse::GUI::Resize(int width, int height)
+{
+	m_renderer->Resize(width, height);
+	m_browser->GetHost()->WasResized();
+}
+
