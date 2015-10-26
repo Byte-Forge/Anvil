@@ -8,6 +8,7 @@ int main(int argc, char** argv)
 	Environment::Argc = argc;
 	Environment::Argv = argv;
 
+	//Chromium Embedded Framework init code
 	#ifdef _WIN32
 	CefMainArgs args(GetModuleHandle(NULL));
 	#else
@@ -19,6 +20,10 @@ int main(int argc, char** argv)
 	// The sub-process terminated, exit now.
 	return exit_code;
 	}
+
+	CefSettings settings;
+
+	CefInitialize(args, settings, nullptr, NULL);
 
 	hpse::Core engine;
 

@@ -9,20 +9,15 @@ using namespace hpse;
 
 GUI::GUI()
 {
-	m_client = new BrowserClient();
-	#ifdef _WIN32
-	CefMainArgs args(GetModuleHandle(NULL));
-	#else
-	CefMainArgs args(Environment::Argc, Environment::Argv);
-	#endif
-
+	CefBrowserSettings settings;
 	CefWindowInfo window_info;
 	window_info.windowless_rendering_enabled = true;
-	
-	CefSettings settings;
-	CefInitialize(args, settings, nullptr, NULL);
+	window_info.transparent_painting_enabled = true;
 	m_renderer = new RenderHandler();
-	m_client = new BrowserClient();
+	m_client = new BrowserClient(m_renderer);
+	m_browser = CefBrowserHost::CreateBrowserSync(window_info, m_client.get(), "./ui/loading.html", settings, nullptr);
+	m_renderer->Resize(1000, 1000);
+	m_browser->GetHost()->WasResized();
 }
 
 GUI::~GUI()
