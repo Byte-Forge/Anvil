@@ -18,3 +18,18 @@ Graphics::~Graphics()
 {
 
 }
+
+void Graphics::Clear()
+{
+	m_renderer->Clear();
+}
+
+void Graphics::UpdateGUI(int width, int height, const uint8_t *data)
+{
+	m_renderer->UpdateGUI(width,height,data);
+}
+
+void Graphics::Render()
+{
+	m_renderer->Render();
+}

@@ -1,4 +1,5 @@
 #include "RenderHandler.hpp"
+#include "../Core.hpp"
 #include <iostream>
 using namespace hpse;
 
@@ -10,6 +11,7 @@ void RenderHandler::OnPaint(CefRefPtr<CefBrowser> browser,
 	int height)
 {
 	std::cout << "On Paint" << std::endl;
+	Core::GetGraphics()->UpdateGUI(width,height, static_cast<const uint8_t*>(buffer));
 }
 
 bool RenderHandler::GetViewRect(CefRefPtr<CefBrowser> browser, CefRect &rect)

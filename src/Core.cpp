@@ -28,6 +28,7 @@ void Core::Run()
 
 	while (m_window.isOpen())
 	{
+		m_graphics->Clear();
 		m_gui->Update();
 		m_script->Update();
 

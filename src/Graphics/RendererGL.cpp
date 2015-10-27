@@ -1,5 +1,6 @@
 #include "RendererGL.hpp"
 #include "./GL/flextGL.h"
+#include "GL/Texture.hpp"
 #include <iostream>
 using namespace hpse;
 
@@ -52,8 +53,26 @@ RendererGL::RendererGL()
 {
     flextInit();
     glDebugMessageCallbackARB(debugCallback,nullptr);
+    m_overlay = std::make_unique<GL::Texture>(800,600);
 }
 
 RendererGL::~RendererGL()
 {
+}
+
+void RendererGL::Clear()
+{
+    glClear(GL_COLOR_BUFFER_BIT|
+            GL_STENCIL_BUFFER_BIT|
+            GL_DEPTH_BUFFER_BIT);
+}
+
+void RendererGL::Resize(int width, int height)
+{
+
+}
+
+void RendererGL::Render()
+{
+    m_overlay->Bind();
 }

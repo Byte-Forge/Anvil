@@ -8,5 +8,12 @@ namespace hpse
 	public:
 		RendererGL();
 		~RendererGL();
+
+		void Clear();
+		void Render();
+		void Resize(int width, int height);
+
+	private:
+
 	};
 }

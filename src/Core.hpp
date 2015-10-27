@@ -24,6 +24,11 @@ namespace hpse
 			return m_script;
 		}
 
+		static inline std::unique_ptr<Graphics>& GetGraphics()
+		{
+			return m_graphics;
+		}
+
 	private:
 		sf::Window m_window;
 		static std::unique_ptr<Graphics> m_graphics;

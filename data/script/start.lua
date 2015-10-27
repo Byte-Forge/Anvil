@@ -6,4 +6,5 @@
 -- To change this template use File | Settings | File Templates.
 --
 print(jit.os .. "-" .. jit.arch)
+print("Das ist ein Test!")
 
