@@ -15,10 +15,12 @@ Core::Core()
 	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Debug));
 	#endif	
+
 	m_graphics = std::make_unique<Graphics>();
 	m_script = std::make_unique<Script>();
-	m_gui = std::make_unique<GUI>();
+	m_gui = std::make_unique<GUI>(m_window);
 	m_script->LoadFile("./script/start.lua");
+	m_gui->LoadFile("./ui/loading.html");
 }
 
 Core::~Core()
