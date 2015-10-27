@@ -53,7 +53,7 @@ RendererGL::RendererGL()
 {
     flextInit();
     glDebugMessageCallbackARB(debugCallback,nullptr);
-    m_overlay = std::make_unique<GL::Texture>(800,600);
+    m_overlay = std::make_unique<GL::Texture>();
 }
 
 RendererGL::~RendererGL()

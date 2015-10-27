@@ -14,7 +14,6 @@ namespace hpse
         {
         public:
             Texture();
-            Texture(int width,int height);
             ~Texture();
 
             //data is expected to be 32 bit RGBA

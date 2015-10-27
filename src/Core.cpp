@@ -8,9 +8,13 @@ std::unique_ptr<GUI> Core::m_gui = nullptr;
 
 Core::Core()
 {
-	m_window.create(sf::VideoMode(800, 600),"hpse",sf::Style::Default, 
+	#ifdef NDEBUG
+	m_window.create(sf::VideoMode(800, 600),"hpse",sf::Style::Default, 	
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Core));
-
+	#else
+	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
+		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Debug));
+	#endif	
 	m_graphics = std::make_unique<Graphics>();
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>();

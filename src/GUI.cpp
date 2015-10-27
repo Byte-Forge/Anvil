@@ -13,10 +13,12 @@ GUI::GUI()
 	CefWindowInfo window_info;
 	window_info.windowless_rendering_enabled = true;
 	window_info.transparent_painting_enabled = true;
+	window_info.width = 800;
+	window_info.height = 600;
 	m_renderer = new RenderHandler();
 	m_client = new BrowserClient(m_renderer);
 	m_browser = CefBrowserHost::CreateBrowserSync(window_info, m_client.get(), "./ui/loading.html", settings, nullptr);
-	m_renderer->Resize(1000, 1000);
+	m_renderer->Resize(800, 600);
 	m_browser->GetHost()->WasResized();
 }
 

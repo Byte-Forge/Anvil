@@ -12,11 +12,6 @@ GL::Texture::Texture()
     glGenTextures(1,&m_handle);
 }
 
-GL::Texture::Texture(int width,int height)
-{
-    glGenTextures(1,&m_handle);
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGBA8,GL_UNSIGNED_BYTE,NULL);
-}
 
 GL::Texture::~Texture()
 {
@@ -25,7 +20,8 @@ GL::Texture::~Texture()
 
 void GL::Texture::Update(int width,int height,const uint8_t *data)
 {
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGBA8,GL_UNSIGNED_BYTE,data);
+	glBindTexture(GL_TEXTURE_2D, m_handle);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,width,height,0, GL_BGRA,GL_UNSIGNED_BYTE,data);
 }
 
 void GL::Texture::Bind()
