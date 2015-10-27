@@ -9,10 +9,6 @@ Script::Script()
 	m_state = luaL_newstate();
 	luaL_openlibs(m_state);
 
-	if (luaL_dofile(m_state, "./script/binding.lua"))
-	{
-		std::cout << lua_tostring(m_state, -1) << std::endl;
-	}
 }
 
 Script::~Script()
