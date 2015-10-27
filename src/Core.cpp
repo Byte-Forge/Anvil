@@ -45,5 +45,7 @@ void Core::Run()
 				break;
 			}
 		}
+
+		m_window.display();
 	}
 }
