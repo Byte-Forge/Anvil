@@ -5,6 +5,8 @@ namespace hpse
 {
 	class RendererGL : public IRenderer
 	{
-
+	public:
+		RendererGL();
+		~RendererGL();
 	};
 }

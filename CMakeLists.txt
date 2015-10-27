@@ -4,6 +4,7 @@ set(PROJ_NAME HPSE)
 project(${PROJ_NAME})
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
 
 set (SRC_DIR "src")
 
