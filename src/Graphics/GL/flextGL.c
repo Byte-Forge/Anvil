@@ -70,6 +70,11 @@ int flextInit(void)
         add_extension((const char*)glGetStringi(GL_EXTENSIONS, i));
     }
 
+    if (!FLEXT_ARB_debug_output) {
+        fprintf(stderr, "Error: OpenGL extension GL_ARB_debug_output not supported.\n");
+        fprintf(stderr, "       Try updating your graphics driver.\n");
+        return GL_FALSE;
+    }
 
     return GL_TRUE;
 }
@@ -79,6 +84,14 @@ int flextInit(void)
 void flextLoadOpenGLFunctions(void)
 {
     /* --- Function pointer loading --- */
+
+
+    /* GL_ARB_debug_output */
+
+    glpfDebugMessageCallbackARB = (PFNGLDEBUGMESSAGECALLBACKARB_PROC*)get_proc("glDebugMessageCallbackARB");
+    glpfDebugMessageControlARB = (PFNGLDEBUGMESSAGECONTROLARB_PROC*)get_proc("glDebugMessageControlARB");
+    glpfDebugMessageInsertARB = (PFNGLDEBUGMESSAGEINSERTARB_PROC*)get_proc("glDebugMessageInsertARB");
+    glpfGetDebugMessageLogARB = (PFNGLGETDEBUGMESSAGELOGARB_PROC*)get_proc("glGetDebugMessageLogARB");
 
 
     /* GL_VERSION_1_2 */
@@ -549,8 +562,16 @@ void flextLoadOpenGLFunctions(void)
 }
 
 /* ----------------------- Extension flag definitions ---------------------- */
+int FLEXT_ARB_debug_output = GL_FALSE;
 
 /* ---------------------- Function pointer definitions --------------------- */
+
+/* GL_ARB_debug_output */
+
+PFNGLDEBUGMESSAGECALLBACKARB_PROC* glpfDebugMessageCallbackARB = NULL;
+PFNGLDEBUGMESSAGECONTROLARB_PROC* glpfDebugMessageControlARB = NULL;
+PFNGLDEBUGMESSAGEINSERTARB_PROC* glpfDebugMessageInsertARB = NULL;
+PFNGLGETDEBUGMESSAGELOGARB_PROC* glpfGetDebugMessageLogARB = NULL;
 
 /* GL_VERSION_1_2 */
 
@@ -1009,6 +1030,9 @@ PFNGLVIEWPORTINDEXEDFV_PROC* glpfViewportIndexedfv = NULL;
 
 static void add_extension(const char* extension)
 {
+    if (strcmp("GL_ARB_debug_output", extension) == 0) {
+        FLEXT_ARB_debug_output = GL_TRUE;
+    }
 }
 
 

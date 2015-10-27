@@ -22,8 +22,9 @@ int main(int argc, char** argv)
 	}
 
 	CefSettings settings;
+	settings.log_severity = LOGSEVERITY_DISABLE;
 	settings.no_sandbox = true;
-	settings.pack_loading_disabled = true;
+	settings.windowless_rendering_enabled = true;
 	CefInitialize(args, settings, nullptr, NULL);
 
 	hpse::Core engine;

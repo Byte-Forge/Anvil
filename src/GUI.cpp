@@ -10,6 +10,7 @@ using namespace hpse;
 GUI::GUI()
 {
 	CefBrowserSettings settings;
+	settings.win
 	CefWindowInfo window_info;
 	window_info.windowless_rendering_enabled = true;
 	window_info.transparent_painting_enabled = true;
