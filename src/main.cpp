@@ -26,8 +26,12 @@ int main(int argc, char** argv)
 	settings.no_sandbox = true;
 	CefInitialize(args, settings, nullptr, NULL);
 
-	hpse::Core engine;
+	{
+		hpse::Core engine;
 
-	engine.Run();
+		engine.Run();
+	}
+
+	CefShutdown();
 	return 0;
 }

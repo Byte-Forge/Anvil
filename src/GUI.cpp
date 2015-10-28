@@ -15,6 +15,7 @@ GUI::GUI(sf::Window& window)
 	window_info.SetAsWindowless(window.getSystemHandle(),true);
 	window_info.width = 800;
 	window_info.height = 600;
+	window_info.transparent_painting_enabled = true;
 	settings.windowless_frame_rate = 60;
 	m_renderer = new RenderHandler();
 	m_client = new BrowserClient(m_renderer);
@@ -25,7 +26,7 @@ GUI::GUI(sf::Window& window)
 
 GUI::~GUI()
 {
-	CefShutdown();
+
 }
 
 void GUI::Update()
