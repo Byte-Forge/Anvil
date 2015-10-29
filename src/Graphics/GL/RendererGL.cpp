@@ -53,8 +53,12 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 RendererGL::RendererGL()
 {
     flextInit();
+	#ifndef NDEBUG
     glDebugMessageCallbackARB(debugCallback,nullptr);
+	#endif
     m_overlay = std::make_unique<GL::Texture>();
+	glEnable(GL_BLEND);
+	glEnable(GL_TEXTURE_2D);
     m_guiShader = std::make_unique<GL::Shader>();
     m_guiShader->Load("./shader/gui.vs","./shader/gui.fs");
     m_guiShader->Compile();

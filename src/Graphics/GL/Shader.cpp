@@ -45,7 +45,7 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
     }
 
     fin.seekg(0,std::ios::end);
-    auto size = fin.tellg();
+    int size = fin.tellg();
     fin.seekg(0,std::ios::beg);
 
     char* buffer = new char[size+1];
@@ -77,4 +77,9 @@ void GL::Shader::Compile()
     }
 
     glLinkProgram(m_program);
+
+	for (auto& p : m_shaders)
+	{
+		glDetachShader(m_program, p.second);
+	}
 }
