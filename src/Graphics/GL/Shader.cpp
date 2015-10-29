@@ -25,19 +25,15 @@ GL::Shader::~Shader()
 
 void GL::Shader::Load(const std::string &vertShader, const std::string &fragShader)
 {
-
-    for(const auto& p : m_shaders)
-    {
-        glDeleteShader(p.second);
-    }
+    LoadShader(vertShader, GL_VERTEX_SHADER);
+    LoadShader(fragShader, GL_FRAGMENT_SHADER);
 }
 
 void GL::Shader::Load(const std::string &vertShader, const std::string& geoShader, const std::string &fragShader)
 {
-    for(const auto& p : m_shaders)
-    {
-        glDeleteShader(p.second);
-    }
+    LoadShader(vertShader, GL_VERTEX_SHADER);
+    LoadShader(geoShader, GL_GEOMETRY_SHADER);
+    LoadShader(fragShader, GL_FRAGMENT_SHADER);
 }
 
 void GL::Shader::LoadShader(const std::string file, GLenum type)

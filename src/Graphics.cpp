@@ -1,5 +1,5 @@
 #include "Graphics.hpp"
-#include "Graphics/RendererGL.hpp"
+#include "Graphics/GL/RendererGL.hpp"
 using namespace hpse;
 
 Graphics::Graphics(Graphics::RenderBackend backend) : m_backend(backend)

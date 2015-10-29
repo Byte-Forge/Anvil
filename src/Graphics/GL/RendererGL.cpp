@@ -1,6 +1,7 @@
 #include "RendererGL.hpp"
-#include "./GL/flextGL.h"
-#include "GL/Texture.hpp"
+#include "flextGL.h"
+#include "Texture.hpp"
+#include "Shader.hpp"
 #include <iostream>
 using namespace hpse;
 
@@ -54,6 +55,9 @@ RendererGL::RendererGL()
     flextInit();
     glDebugMessageCallbackARB(debugCallback,nullptr);
     m_overlay = std::make_unique<GL::Texture>();
+    m_guiShader = std::make_unique<GL::Shader>();
+    m_guiShader->Load("./shader/gui.vs","./shader/gui.fs");
+    m_guiShader->Compile();
 }
 
 RendererGL::~RendererGL()

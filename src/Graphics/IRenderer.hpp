@@ -1,5 +1,6 @@
 #pragma once
 #include "ITexture.hpp"
+#include "IShader.hpp"
 
 namespace hpse
 {
@@ -14,5 +15,6 @@ namespace hpse
 		}
 	protected:
 		std::unique_ptr<ITexture> m_overlay;
+		std::unique_ptr<IShader> m_guiShader;
 	};
 }
