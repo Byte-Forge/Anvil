@@ -48,9 +48,10 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
     auto size = fin.tellg();
     fin.seekg(0,std::ios::beg);
 
-    char* buffer = new char[size];
+    char* buffer = new char[size+1];
     fin.read(buffer,size);
     delete[] buffer;
+    buffer[size] = '\0';
 
     if(m_shaders[type])
     {

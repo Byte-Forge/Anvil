@@ -20,13 +20,11 @@ GUI::GUI(sf::Window& window)
 	m_renderer = new RenderHandler();
 	m_client = new BrowserClient(m_renderer);
 	m_browser = CefBrowserHost::CreateBrowserSync(window_info, m_client.get(), "./ui/loading.html", settings, nullptr);
-	m_renderer->Resize(800, 600);
-	m_browser->GetHost()->WasResized();
 }
 
 GUI::~GUI()
 {
-
+	m_browser->GetHost()->CloseBrowser(false);
 }
 
 void GUI::Update()

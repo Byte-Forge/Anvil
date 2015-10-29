@@ -24,6 +24,7 @@ int main(int argc, char** argv)
 	CefSettings settings;
 	settings.windowless_rendering_enabled = true;
 	settings.no_sandbox = true;
+	settings.command_line_args_disabled = true;
 	CefInitialize(args, settings, nullptr, NULL);
 
 	{
