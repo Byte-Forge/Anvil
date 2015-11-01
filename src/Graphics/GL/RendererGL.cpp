@@ -2,9 +2,12 @@
 #include "flextGL.h"
 #include "Texture.hpp"
 #include "Shader.hpp"
+#include "../Types.hpp"
 #include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 using namespace hpse;
 
+#ifndef NDEBUG
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
                                GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
@@ -49,6 +52,7 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
     }
     std::cout << std::endl;
 }
+#endif
 
 RendererGL::RendererGL()
 {
@@ -75,12 +79,9 @@ void RendererGL::Clear()
             GL_DEPTH_BUFFER_BIT);
 }
 
-void RendererGL::Resize(int width, int height)
-{
-
-}
-
-void RendererGL::Render()
+void RendererGL::Render(glm::mat4& ortho)
 {
     m_overlay->Bind();
+	glUniformMatrix4fv(0,1,false,glm::value_ptr(ortho));
+	glUseProgram(0);
 }

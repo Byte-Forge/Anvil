@@ -2,6 +2,7 @@
 #include <memory>
 #include "Graphics/IRenderer.hpp"
 #include <stdint.h>
+#include <glm/glm.hpp>
 
 namespace hpse
 {
@@ -19,9 +20,11 @@ namespace hpse
 
 		void Clear();
 		void Render();
+		void Resize(int width, int height);
 		void UpdateGUI(int width,int height,const uint8_t* data);
 	private: 
 		RenderBackend m_backend;
+		glm::mat4 m_ortho;
 		std::shared_ptr<IRenderer> m_renderer;
 	};
 }

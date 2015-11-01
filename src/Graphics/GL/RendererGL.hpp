@@ -1,6 +1,6 @@
 #pragma once
 #include "../IRenderer.hpp"
-
+#include "./flextGL.h"
 namespace hpse
 {
 	class RendererGL : public IRenderer
@@ -10,10 +10,9 @@ namespace hpse
 		~RendererGL();
 
 		void Clear();
-		void Render();
-		void Resize(int width, int height);
+		void Render(glm::mat4& ortho);
 
 	private:
-
+		GLuint m_guiVbo;
 	};
 }

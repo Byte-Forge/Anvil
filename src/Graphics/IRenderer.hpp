@@ -1,6 +1,7 @@
 #pragma once
 #include "ITexture.hpp"
 #include "IShader.hpp"
+#include <glm/glm.hpp>
 
 namespace hpse
 {
@@ -8,7 +9,7 @@ namespace hpse
 	{
 	public:
 		virtual void Clear() = 0;
-		virtual void Render() = 0;
+		virtual void Render(glm::mat4& ortho) = 0;
 		inline void UpdateGUI(int width,int height,const uint8_t* data)
 		{
 			m_overlay->Update(width,height,data);

@@ -52,7 +52,7 @@ void Core::Run()
 				break;
 			}
 		}
-
+		m_graphics->Render();
 		m_window.display();
 	}
 }

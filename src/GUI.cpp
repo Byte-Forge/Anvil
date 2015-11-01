@@ -12,7 +12,7 @@ GUI::GUI(sf::Window& window)
 {
 	CefBrowserSettings settings;
 	CefWindowInfo window_info;
-	window_info.SetAsWindowless(window.getSystemHandle(),true);
+	window_info.SetAsWindowless(window.getSystemHandle(), true);
 	window_info.width = 800;
 	window_info.height = 600;
 	window_info.transparent_painting_enabled = true;

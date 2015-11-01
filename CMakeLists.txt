@@ -25,13 +25,16 @@ find_package(CEF REQUIRED)
 #Find SFML modules for window and system
 find_package(SFML 2.3 COMPONENTS window system REQUIRED)
 
+#Find GLM for mathematics
+find_package(GLM REQUIRED)
+
 #Compile all files
 file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/[a-z,A-Z]*.[c,h,def]*)
 add_executable(${PROJ_NAME} ${SRC_FILES})
 
 #Include our dependencies
 target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR}
-							${CEF_INCLUDE_DIR} ${SFML_INCLUDE_DIR})
+						${CEF_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${GLM_INCLUDE_DIRS})
 #Link our dependencies
 target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_LIBRARY} ${CEF_WRAPPER_LIBRARY}
 						${SFML_LIBRARIES} ${SFML_DEPENDENCIES} -ldl -lGL)
