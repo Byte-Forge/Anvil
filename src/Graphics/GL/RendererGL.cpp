@@ -62,7 +62,6 @@ RendererGL::RendererGL()
 	#endif
     m_overlay = std::make_unique<GL::Texture>();
 	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
     m_guiShader = std::make_unique<GL::Shader>();
     m_guiShader->Load("./shader/gui.vs","./shader/gui.fs");
     m_guiShader->Compile();
@@ -81,6 +80,7 @@ void RendererGL::Clear()
 
 void RendererGL::Render(glm::mat4& ortho)
 {
+	m_guiShader->Bind();
     m_overlay->Bind();
 	glUniformMatrix4fv(0,1,false,glm::value_ptr(ortho));
 	glUseProgram(0);

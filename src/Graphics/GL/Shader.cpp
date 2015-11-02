@@ -6,6 +6,7 @@
 #include "flextGL.h"
 #include <fstream>
 #include <iostream>
+#include <vector>
 using namespace hpse;
 
 GL::Shader::Shader()
@@ -42,6 +43,7 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
     if(fin.fail())
     {
         std::cout << "Failed to load Shader: " << file << std::endl;
+		return;
     }
 
     fin.seekg(0,std::ios::end);
@@ -49,9 +51,9 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
     fin.seekg(0,std::ios::beg);
 
     char* buffer = new char[size+1];
+	std::memset(buffer, 0, size);
     fin.read(buffer,size);
-    delete[] buffer;
-    buffer[size] = '\0';
+
 
     if(m_shaders[type])
     {
@@ -60,7 +62,8 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
 
     m_shaders[type] = glCreateShader(type);
     const auto& shader = m_shaders[type];
-    glShaderSource(shader,1,&buffer,NULL);
+    glShaderSource(shader,1,&buffer, &size);
+	delete[] buffer;
 }
 
 void GL::Shader::Bind()
@@ -70,13 +73,36 @@ void GL::Shader::Bind()
 
 void GL::Shader::Compile()
 {
+	GLint success = 0;
+	GLint logLength = 0;
+
     for(auto& p : m_shaders)
     {
         glCompileShader(p.second);
-        glAttachShader(m_program,p.second);
+		glGetShaderiv(p.second, GL_COMPILE_STATUS, &success);
+		if (success == GL_FALSE)
+		{
+			glGetShaderiv(p.second, GL_INFO_LOG_LENGTH, &logLength);
+			std::vector<GLchar> errorLog(logLength);
+			glGetShaderInfoLog(p.second, logLength, &logLength, &errorLog[0]);
+			std::cout << &errorLog[0] << std::endl;
+			glDeleteShader(p.second);
+
+		}
+		else
+			glAttachShader(m_program,p.second);
     }
 
     glLinkProgram(m_program);
+	glGetProgramiv(m_program, GL_LINK_STATUS, &success);
+	if (success == GL_FALSE)
+	{
+		glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &logLength);
+		std::vector<GLchar> errorLog(logLength);
+		glGetProgramInfoLog(m_program, logLength, &logLength, &errorLog[0]);
+		std::cout << &errorLog[0] << std::endl;
+		glDeleteProgram(m_program);
+	}
 
 	for (auto& p : m_shaders)
 	{
