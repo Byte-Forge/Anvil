@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <cstring>
 using namespace hpse;
 
 GL::Shader::Shader()
@@ -66,7 +67,7 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
 	delete[] buffer;
 }
 
-void GL::Shader::Bind()
+void GL::Shader::Use()
 {
     glUseProgram(m_program);
 }

@@ -62,9 +62,7 @@ RendererGL::RendererGL()
 	#endif
     m_overlay = std::make_unique<GL::Texture>();
 	glEnable(GL_BLEND);
-    m_guiShader = std::make_unique<GL::Shader>();
-    m_guiShader->Load("./shader/gui.vs","./shader/gui.fs");
-    m_guiShader->Compile();
+    SetupGUI();
 }
 
 RendererGL::~RendererGL()
@@ -80,8 +78,43 @@ void RendererGL::Clear()
 
 void RendererGL::Render(glm::mat4& ortho)
 {
-	m_guiShader->Bind();
+	m_guiShader->Use();
     m_overlay->Bind();
 	glUniformMatrix4fv(0,1,false,glm::value_ptr(ortho));
+    glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 	glUseProgram(0);
+}
+
+void RendererGL::SetupGUI()
+{
+    m_guiShader = std::make_unique<GL::Shader>();
+    m_guiShader->Load("./shader/gui.vs", "./shader/gui.fs");
+    m_guiShader->Compile();
+    m_guiShader->Use();
+    glGenVertexArrays(1, &m_guiVao);
+    glBindVertexArray(m_guiVao);
+
+
+    Vertex2D *vertices = new Vertex2D[4];
+    vertices[0] = {glm::vec2(0.0, 0.0), glm::vec2(0.0, 0.0)};
+    vertices[1] = {glm::vec2(1.0, 0.0), glm::vec2(1.0, 0.0)};
+    vertices[2] = {glm::vec2(0.0, 1.0), glm::vec2(0.0, 1.0)};
+    vertices[3] = {glm::vec2(1.0, 1.0), glm::vec2(1.0, 1.0)};
+
+    glGenBuffers(1, &m_guiVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, m_guiVbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    GLuint elements[] = {
+            0, 1, 2,
+            2, 3, 0
+    };
+    glGenBuffers(1, &m_guiIbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_guiIbo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,4*sizeof(float),0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,4*sizeof(float),(void*)(2*sizeof(float)));
 }

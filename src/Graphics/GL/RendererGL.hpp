@@ -14,5 +14,8 @@ namespace hpse
 
 	private:
 		GLuint m_guiVbo;
+		GLuint m_guiVao;
+		GLuint m_guiIbo;
+		void SetupGUI();
 	};
 }
