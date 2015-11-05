@@ -4,7 +4,7 @@
 #include "Shader.hpp"
 #include "../Types.hpp"
 #include <iostream>
-#include <glm/gtc/type_ptr.hpp>
+
 using namespace hpse;
 
 #ifndef NDEBUG
@@ -80,9 +80,10 @@ void RendererGL::Render(glm::mat4& ortho)
 {
 	m_guiShader->Use();
     m_overlay->Bind();
-	glUniformMatrix4fv(0,1,false,glm::value_ptr(ortho));
+    glBindVertexArray(m_guiVao);
     glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 	glUseProgram(0);
+    glBindVertexArray(0);
 }
 
 void RendererGL::SetupGUI()
@@ -94,12 +95,10 @@ void RendererGL::SetupGUI()
     glGenVertexArrays(1, &m_guiVao);
     glBindVertexArray(m_guiVao);
 
-
-    Vertex2D *vertices = new Vertex2D[4];
-    vertices[0] = {glm::vec2(0.0, 0.0), glm::vec2(0.0, 0.0)};
-    vertices[1] = {glm::vec2(1.0, 0.0), glm::vec2(1.0, 0.0)};
-    vertices[2] = {glm::vec2(0.0, 1.0), glm::vec2(0.0, 1.0)};
-    vertices[3] = {glm::vec2(1.0, 1.0), glm::vec2(1.0, 1.0)};
+    float vertices[16] = { -1.0,-1.0,0.0,0.0,
+                            1.0,-1.0,1.0,0.0,
+                           -1.0, 1.0,0.0,1.0,
+                            1.0, 1.0,1.0,1.0};
 
     glGenBuffers(1, &m_guiVbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_guiVbo);
@@ -107,7 +106,7 @@ void RendererGL::SetupGUI()
 
     GLuint elements[] = {
             0, 1, 2,
-            2, 3, 0
+            2, 3, 1
     };
     glGenBuffers(1, &m_guiIbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_guiIbo);

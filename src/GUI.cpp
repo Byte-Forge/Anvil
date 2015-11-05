@@ -17,9 +17,10 @@ GUI::GUI(sf::Window& window)
 	window_info.height = 600;
 	window_info.transparent_painting_enabled = true;
 	settings.windowless_frame_rate = 60;
+
 	m_renderer = new RenderHandler();
 	m_client = new BrowserClient(m_renderer);
-	m_browser = CefBrowserHost::CreateBrowserSync(window_info, m_client.get(), "./ui/loading.html", settings, nullptr);
+	m_browser = CefBrowserHost::CreateBrowserSync(window_info, m_client.get(), "", settings, nullptr);
 }
 
 GUI::~GUI()
