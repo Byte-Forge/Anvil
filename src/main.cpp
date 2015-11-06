@@ -4,10 +4,7 @@
 
 int main(int argc, char** argv) 
 {
-	Environment::Args = std::vector<std::string>(argv, argv + argc);
-	Environment::Argc = argc;
-	Environment::Argv = argv;
-
+	
 	//Chromium Embedded Framework init code
 	#ifdef _WIN32
 	CefMainArgs args(GetModuleHandle(NULL));
@@ -23,9 +20,11 @@ int main(int argc, char** argv)
 
 	CefSettings settings;
 	settings.windowless_rendering_enabled = true;
-	settings.no_sandbox = true;
-	settings.command_line_args_disabled = true;
 	CefInitialize(args, settings, nullptr, NULL);
+
+	Environment::Args = std::vector<std::string>(argv, argv + argc);
+	Environment::Argc = argc;
+	Environment::Argv = argv;
 
 	{
 		hpse::Core engine;

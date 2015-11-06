@@ -15,10 +15,9 @@ GUI::GUI(sf::Window& window)
 	window_info.SetAsWindowless(window.getSystemHandle(), true);
 	window_info.width = 800;
 	window_info.height = 600;
-	window_info.transparent_painting_enabled = true;
 	settings.windowless_frame_rate = 60;
-
 	m_renderer = new RenderHandler();
+	m_renderer->Resize(800, 600);
 	m_client = new BrowserClient(m_renderer);
 	m_browser = CefBrowserHost::CreateBrowserSync(window_info, m_client.get(), "", settings, nullptr);
 }
@@ -33,8 +32,15 @@ void GUI::Update()
 	CefDoMessageLoopWork();
 }
 
+void GUI::LoadURL(const std::string& file)
+{
+	m_browser->GetMainFrame()->LoadURL(file);
+}
+
 void GUI::LoadFile(const std::string& file)
 {
+	std::string url = "file://";
+	url += file;
 	m_browser->GetMainFrame()->LoadURL(file);
 }
 

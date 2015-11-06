@@ -5,10 +5,10 @@ out vec4 fragColor;
 
 void main(void)
 {
-    /*fragColor = texture2D(tex, coord);
+    fragColor = texture2D(tex, coord);
     if (fragColor.a < 0.1)
     {
         discard;
-    }*/
-    fragColor = vec4(1.0,0.0,0.0,1.0);
+    }
+    //fragColor = vec4(1.0,0.0,0.0,1.0);
 }

@@ -17,6 +17,7 @@ namespace hpse
 		~GUI();
 
 		void Update();
+		void LoadURL(const std::string& url);
 		void LoadFile(const std::string& file);
 		void Resize(int width, int height);
 	private:

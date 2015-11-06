@@ -95,10 +95,10 @@ void RendererGL::SetupGUI()
     glGenVertexArrays(1, &m_guiVao);
     glBindVertexArray(m_guiVao);
 
-    float vertices[16] = { -1.0,-1.0,0.0,0.0,
-                            1.0,-1.0,1.0,0.0,
-                           -1.0, 1.0,0.0,1.0,
-                            1.0, 1.0,1.0,1.0};
+    float vertices[16] = { -1.0,-1.0,0.0,1.0,
+                            1.0,-1.0,1.0,1.0,
+                           -1.0, 1.0,0.0,0.0,
+                            1.0, 1.0,1.0,0.0};
 
     glGenBuffers(1, &m_guiVbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_guiVbo);
