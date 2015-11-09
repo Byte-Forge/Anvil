@@ -50,3 +50,25 @@ void hpse::GUI::Resize(int width, int height)
 	m_browser->GetHost()->WasResized();
 }
 
+void hpse::GUI::MouseMove(int x, int y)
+{
+	m_mouseX = x;
+	m_mouseY = y;
+	CefMouseEvent event;
+	event.x = x;
+	event.y = y;
+
+	m_browser->GetHost()->SendMouseMoveEvent(event, false);
+}
+
+void hpse::GUI::MouseLeft(bool isDown)
+{
+	CefMouseEvent event;
+	event.x = m_mouseX;
+	event.y = m_mouseY;
+
+	bool mouseUp = !isDown;
+	CefBrowserHost::MouseButtonType btnType = MBT_LEFT;
+	m_browser->GetHost()->SendMouseClickEvent(event, btnType, mouseUp, 1);
+}
+

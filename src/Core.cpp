@@ -51,6 +51,21 @@ void Core::Run()
 				m_graphics->Resize(event.size.width, event.size.height);
 				m_gui->Resize(event.size.width, event.size.height);
 				break;
+			case sf::Event::MouseMoved:
+				m_gui->MouseMove(event.mouseMove.x, event.mouseMove.y);
+				break;
+			case sf::Event::MouseButtonPressed:
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					m_gui->MouseLeft(true);
+				}
+				break;
+			case sf::Event::MouseButtonReleased:
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					m_gui->MouseLeft(false);
+				}
+				break;
 			}
 		}
 		m_graphics->Render();

@@ -20,10 +20,15 @@ namespace hpse
 		void LoadURL(const std::string& url);
 		void LoadFile(const std::string& file);
 		void Resize(int width, int height);
+
+		//Events
+		void MouseMove(int x, int y);
+		void MouseLeft(bool isDown);
 	private:
 		CefRefPtr<BrowserClient>	m_client;
 		RenderHandler*				m_renderer;
 		CefRefPtr<CefBrowser>		m_browser;
 		CefSettings m_settings;
+		int m_mouseX, m_mouseY;
 	};
 }
