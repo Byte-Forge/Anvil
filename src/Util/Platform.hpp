@@ -14,12 +14,11 @@ namespace hpse
 {
 	namespace IO
 	{
-		inline const std::string& GetCwd()
+		inline const std::string GetCwd()
 		{
 			char buffer[1024];
 			getcwd(buffer, 1024);
-			std::string result = buffer;
-			return std::string(buffer);
+			return buffer;
 		}
 	}
 }

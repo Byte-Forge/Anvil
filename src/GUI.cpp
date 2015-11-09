@@ -37,9 +37,11 @@ void GUI::LoadURL(const std::string& file)
 void GUI::LoadFile(const std::string& file)
 {
 	std::string url = "file://";
-	auto cwd = IO::GetCwd();
 	url += IO::GetCwd();
-	m_browser->GetMainFrame()->LoadURL(file);
+	url += '/';
+	url += file;
+	std::replace(url.begin(), url.end(), '\\', '/');
+	m_browser->GetMainFrame()->LoadURL(url);
 }
 
 void hpse::GUI::Resize(int width, int height)
