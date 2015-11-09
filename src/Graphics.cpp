@@ -39,5 +39,6 @@ void Graphics::Render()
 
 void hpse::Graphics::Resize(int width, int height)
 {
+	m_renderer->Resize(width,height);
 	m_ortho = glm::ortho(0.0f, 0.0f, (float)width, (float)height, 0.1f, 100.0f);
 }

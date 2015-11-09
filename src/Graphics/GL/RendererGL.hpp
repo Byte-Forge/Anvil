@@ -11,7 +11,7 @@ namespace hpse
 
 		void Clear();
 		void Render(glm::mat4& ortho);
-
+		void Resize(int width, int height);
 	private:
 		GLuint m_guiVbo;
 		GLuint m_guiVao;

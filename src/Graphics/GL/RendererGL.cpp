@@ -132,3 +132,8 @@ void RendererGL::SetupGUI()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,4*sizeof(float),(void*)(2*sizeof(float)));
 }
+
+void RendererGL::Resize(int width, int height)
+{
+	glViewport(0, 0, width, height);
+}

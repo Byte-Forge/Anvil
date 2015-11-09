@@ -48,6 +48,7 @@ void Core::Run()
 				m_window.close();
 				break;
 			case sf::Event::Resized:
+				m_graphics->Resize(event.size.width, event.size.height);
 				m_gui->Resize(event.size.width, event.size.height);
 				break;
 			}
