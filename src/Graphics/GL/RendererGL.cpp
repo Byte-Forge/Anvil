@@ -66,7 +66,24 @@ RendererGL::RendererGL()
 }
 
 RendererGL::~RendererGL()
-{
+{	
+	if(m_guiVao)
+	{
+		glDeleteVertexArrays(1, &m_guiVao);
+		m_guiVao = 0;
+	}
+	
+	if (m_guiVbo)
+	{
+		glDeleteBuffers(1, &m_guiVbo);
+		m_guiVbo = 0;
+	}
+	
+	if (m_guiIbo)
+	{
+		glDeleteBuffers(1, &m_guiIbo);
+		m_guiIbo = 0;
+	}	
 }
 
 void RendererGL::Clear()
@@ -82,8 +99,6 @@ void RendererGL::Render(glm::mat4& ortho)
     m_overlay->Bind();
     glBindVertexArray(m_guiVao);
     glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
-	glUseProgram(0);
-    glBindVertexArray(0);
 }
 
 void RendererGL::SetupGUI()

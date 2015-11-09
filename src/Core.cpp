@@ -21,7 +21,7 @@ Core::Core()
 	m_gui = std::make_unique<GUI>(m_window);
 	m_script->LoadFile("./script/start.lua");
 	m_gui->LoadURL("http://www.leemunroe.com/demos/css3-loading-bar");
-	//m_gui->LoadFile("./ui/loading.html");
+	m_gui->LoadFile("ui/loading.html");
 }
 
 Core::~Core()

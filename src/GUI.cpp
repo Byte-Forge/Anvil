@@ -1,9 +1,6 @@
 #include "GUI.hpp"
 #include "Environment.hpp"
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#endif
+#include "./Util/Platform.hpp"
 
 using namespace hpse;
 
@@ -40,7 +37,8 @@ void GUI::LoadURL(const std::string& file)
 void GUI::LoadFile(const std::string& file)
 {
 	std::string url = "file://";
-	url += file;
+	auto cwd = IO::GetCwd();
+	url += IO::GetCwd();
 	m_browser->GetMainFrame()->LoadURL(file);
 }
 
