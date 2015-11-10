@@ -57,11 +57,12 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 RendererGL::RendererGL()
 {
     flextInit();
+
 	#ifndef NDEBUG
     glDebugMessageCallbackARB(debugCallback,nullptr);
 	#endif
     m_overlay = std::make_unique<GL::Texture>();
-	glEnable(GL_BLEND);
+
     SetupGUI();
 }
 
@@ -95,10 +96,12 @@ void RendererGL::Clear()
 
 void RendererGL::Render(glm::mat4& ortho)
 {
+    glDisable(GL_DEPTH_TEST);
 	m_guiShader->Use();
     m_overlay->Bind();
     glBindVertexArray(m_guiVao);
     glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void RendererGL::SetupGUI()
