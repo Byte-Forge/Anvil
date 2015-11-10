@@ -10,7 +10,6 @@ void RenderHandler::OnPaint(CefRefPtr<CefBrowser> browser,
 	int width,
 	int height)
 {
-	std::cout << "On Paint" << std::endl;
 	Core::GetGraphics()->UpdateGUI(width,height, static_cast<const uint8_t*>(buffer));
 }
 
