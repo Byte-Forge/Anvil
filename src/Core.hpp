@@ -3,6 +3,7 @@
 #include "Graphics.hpp"
 #include "Script.hpp"
 #include "GUI.hpp"
+#include "Audio.hpp"
 
 namespace hpse
 {
@@ -34,5 +35,6 @@ namespace hpse
 		static std::unique_ptr<Graphics> m_graphics;
 		static std::unique_ptr<GUI> m_gui;
 		static std::unique_ptr<Script> m_script;
+		static std::unique_ptr<Audio> m_audio;
 	};
 }

@@ -23,6 +23,7 @@ int main(int argc, char** argv)
 	settings.windowless_rendering_enabled = true;
 	settings.command_line_args_disabled = true;
 	settings.remote_debugging_port = 8080;
+	settings.log_severity = LOGSEVERITY_DISABLE;
 	CefInitialize(args, settings, nullptr, NULL);
 
 	Environment::Args = std::vector<std::string>(argv, argv + argc);
