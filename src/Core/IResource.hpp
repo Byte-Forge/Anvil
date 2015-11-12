@@ -5,7 +5,7 @@ namespace hpse
 {
     class IResource
     {
-        virtual bool Load(const std::string& file) = 0;
+        //virtual bool Load(const std::string& file) = 0;
 
         inline bool KeepLoaded()
         {

@@ -1,6 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <string>
+#include <vector>
+#include <map>
 
 using namespace std;
 using namespace glm;
@@ -21,12 +23,12 @@ namespace hpse
 	//#######################################################################################
 
 	// chunk 0
-	struct Model
+	struct W4DModel : IResource
 	{
 		string name;
 		string hieraName; // is the name of the model by default
+		std::map<std::string, Mesh> meshes;
 		BoundingVolume volume;
-		Mesh meshes[1];
 	};
 
 	//#######################################################################################
@@ -37,7 +39,7 @@ namespace hpse
 	struct HierarchyHeader
 	{
 		string name;
-		int32 pivotCount;
+		uint32 pivotCount;
 		f32vec3 centerPos;
 	};
 
@@ -52,10 +54,10 @@ namespace hpse
 	};
 
 	// chunk 256
-	struct Hierarchy
+	struct Hierarchy : IResource
 	{
 		HierarchyHeader header;
-		HierarchyPivot pivots[1];
+		vector<HierarchyPivot> pivots;
 	};
 
 	//#######################################################################################
@@ -92,14 +94,14 @@ namespace hpse
 		uint16 vectorLen;
 		int8 type;
 		uint16 pivot;
-		TimeCodedAnimationKey timeCodedKeys[1];
+		vector<TimeCodedAnimationKey> timeCodedKeys;
 	};
 
 	// chunk 512
-	struct Animation
+	struct Animation : IResource
 	{
 		AnimationHeader header;
-		TimeCodedAnimationChannel channels[1];
+		vector<TimeCodedAnimationChannel> channels;
 	};
 
 	//#######################################################################################
@@ -118,7 +120,7 @@ namespace hpse
 	};
 
 	// chunk 1025
-	struct Shpere : BoundingVolume
+	struct Sphere : BoundingVolume
 	{
 		float32 radius;
 	};
@@ -170,7 +172,7 @@ namespace hpse
 		float32 specular_intensity;
 		float32 emit;
 		float32 alpha;
-		Texture textures[1];
+		vector<Texture> textures;
 	};
 
 	//#######################################################################################
@@ -197,11 +199,11 @@ namespace hpse
 	struct Mesh
 	{
 		MeshHeader header;
-		f32vec3 verts[1];
-		f32vec3 normals[1];
-		i32vec3 faces[1];
-		f32vec2 uvCoords[1];
-		MeshVertexInfluences vertInfs[1];
-		MeshMaterial materials[1];
+		vector<f32vec3> vertices;
+		vector<f32vec3> normals;
+		vector<i32vec3> faces;
+		vector<f32vec2> uvCoords;
+		vector<MeshVertexInfluences> vertInfs;
+		vector<MeshMaterial> materials;
 	};
 }
