@@ -15,6 +15,7 @@ namespace hpse
 			m_overlay->Update(width,height,data);
 		}
 		virtual void Resize(int width,int height) = 0;
+		virtual void PrintInfo() = 0;
 	protected:
 		std::unique_ptr<ITexture> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
