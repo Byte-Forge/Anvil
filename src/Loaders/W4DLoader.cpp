@@ -99,7 +99,7 @@ namespace hpse
 				file.seekg(0, chunkEnd);
 			}
 		}
-		vector<Texture> textures;
+		return material;
 	}
 
 	MeshHeader loadMeshHeader(ifstream& file)
@@ -191,7 +191,7 @@ namespace hpse
 		return model;
 	}
 
-	IResource W4DLoader::Load(const char * name)
+	void W4DLoader::Load(const char * name)
 	{
 		ifstream file(name, ios::binary);
 		long size = getFStreamSize(file);

@@ -5,7 +5,7 @@ using namespace hpse;
 std::unique_ptr<Graphics> Core::m_graphics = nullptr;
 std::unique_ptr<Script> Core::m_script = nullptr;
 std::unique_ptr<GUI> Core::m_gui = nullptr;
-std::unique_ptr<Audio> Core::m_audio = nullptr;
+//std::unique_ptr<Audio> Core::m_audio = nullptr;
 
 Core::Core()
 {
@@ -17,7 +17,7 @@ Core::Core()
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Debug));
 	#endif	
 
-	m_audio = std::make_unique<Audio>();
+	//m_audio = std::make_unique<Audio>();
 	m_graphics = std::make_unique<Graphics>();
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);

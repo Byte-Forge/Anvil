@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "../Core/IResource.hpp"
 
 using namespace std;
 using namespace glm;
@@ -16,19 +17,6 @@ namespace hpse
 	struct RGBA
 	{
 		uint8 r, g, b, a;
-	};
-
-	//#######################################################################################
-	//# model
-	//#######################################################################################
-
-	// chunk 0
-	struct W4DModel : IResource
-	{
-		string name;
-		string hieraName; // is the name of the model by default
-		std::map<std::string, Mesh> meshes;
-		BoundingVolume volume;
 	};
 
 	//#######################################################################################
@@ -54,7 +42,7 @@ namespace hpse
 	};
 
 	// chunk 256
-	struct Hierarchy : IResource
+	struct Hierarchy 
 	{
 		HierarchyHeader header;
 		vector<HierarchyPivot> pivots;
@@ -98,7 +86,7 @@ namespace hpse
 	};
 
 	// chunk 512
-	struct Animation : IResource
+	struct Animation 
 	{
 		AnimationHeader header;
 		vector<TimeCodedAnimationChannel> channels;
@@ -156,7 +144,7 @@ namespace hpse
 		string name;
 		uint8 type; //0 standard, 1 normal, 2 displacement
 		float32 value; // factor for normal, displacement etc
-					   //TextureAnimation animations[1];
+		//TextureAnimation animations[1];
 	};
 
 	//#######################################################################################
@@ -205,5 +193,18 @@ namespace hpse
 		vector<f32vec2> uvCoords;
 		vector<MeshVertexInfluences> vertInfs;
 		vector<MeshMaterial> materials;
+	};
+
+	//#######################################################################################
+	//# model
+	//#######################################################################################
+
+	// chunk 0
+	struct W4DModel 
+	{
+		string name;
+		string hieraName; // is the name of the model by default
+		std::map<std::string, Mesh> meshes;
+		BoundingVolume volume;
 	};
 }

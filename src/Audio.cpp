@@ -2,6 +2,7 @@
 // Created by stephan on 12.11.15.
 //
 
+/*
 #include "Audio.hpp"
 #include <iostream>
 #include <cstring>
@@ -60,3 +61,5 @@ void Audio::EnumerateDevices(const ALCchar *devices)
     }
     fprintf(stdout, "----------\n");
 }
+
+*/

@@ -9,6 +9,6 @@ namespace hpse
 	class W4DLoader
 	{
 	public:
-		IResource Load(const char * name);
+		void Load(const char * name);
 	};
 }
