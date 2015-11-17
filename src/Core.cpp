@@ -6,6 +6,7 @@ std::unique_ptr<Graphics> Core::m_graphics = nullptr;
 std::unique_ptr<Script> Core::m_script = nullptr;
 std::unique_ptr<GUI> Core::m_gui = nullptr;
 std::unique_ptr<Audio> Core::m_audio = nullptr;
+bool Core::m_running = true;
 
 Core::Core()
 {
@@ -34,12 +35,11 @@ void Core::Run()
 {
 	sf::Event event;
 
-	while (m_window.isOpen())
+	while (m_window.isOpen() && m_running)
 	{
 		m_graphics->Clear();
 		m_gui->Update();
 		m_script->Update();
-
 
 		while (m_window.pollEvent(event))
 		{
@@ -67,6 +67,10 @@ void Core::Run()
 				{
 					m_gui->MouseLeft(false);
 				}
+				break;
+			case sf::Event::KeyPressed:
+				if(event.key.code==sf::Keyboard::Escape)
+					Quit();
 				break;
 			}
 		}

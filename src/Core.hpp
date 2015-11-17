@@ -30,11 +30,16 @@ namespace hpse
 			return m_graphics;
 		}
 
+		static inline void Quit()
+		{
+			m_running = false;
+		}
 	private:
 		sf::Window m_window;
 		static std::unique_ptr<Graphics> m_graphics;
 		static std::unique_ptr<GUI> m_gui;
 		static std::unique_ptr<Script> m_script;
 		static std::unique_ptr<Audio> m_audio;
+		static bool m_running;
 	};
 }
