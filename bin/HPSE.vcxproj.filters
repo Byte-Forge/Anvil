@@ -1,7 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="C:\Development\Projects\hpse\src\Audio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Development\Projects\hpse\src\Core\ResourceHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\Projects\hpse\src\Core\W4DResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Development\Projects\hpse\src\Core.cpp">
@@ -54,10 +60,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C:\Development\Projects\hpse\src\Audio.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="C:\Development\Projects\hpse\src\Core\IResource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\Development\Projects\hpse\src\Core\ResourceHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\Projects\hpse\src\Core\W4DResource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\Development\Projects\hpse\src\Core.hpp">

@@ -2,7 +2,7 @@
 // Created by stephan on 12.11.15.
 //
 
-/*
+
 #pragma once
 #include <AL/al.h>
 #include <AL/alc.h>
@@ -21,6 +21,6 @@ namespace hpse
         ALCcontext* m_context;
     };
 }
-*/
+
 
 

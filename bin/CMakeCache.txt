@@ -185,6 +185,12 @@ LUA_LIBRARIES:STRING=C:/Development/Libraries/LuaJIT-2.0.4/src/lua51.lib
 LUA_LIBRARY:FILEPATH=C:/Development/Libraries/LuaJIT-2.0.4/src/lua51.lib
 
 //Path to a file.
+OPENAL_INCLUDE_DIR:PATH=C:/Development/Libraries/openal/include
+
+//Path to a library.
+OPENAL_LIBRARY:FILEPATH=C:/Development/Libraries/openal/libs/Win64/OpenAL32.lib
+
+//Path to a file.
 SFML_INCLUDE_DIR:PATH=C:/Development/Libraries/SFML-2.3.2/include
 
 //Path to a library.
@@ -347,6 +353,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_CEF:INTERNAL=[C:/Development/Libraries/cef][v()]
 FIND_PACKAGE_MESSAGE_DETAILS_GLM:INTERNAL=[C:/Development/Libraries/glm][v()]
 //Details about finding LuaJIT
 FIND_PACKAGE_MESSAGE_DETAILS_LuaJIT:INTERNAL=[C:/Development/Libraries/LuaJIT-2.0.4/src/lua51.lib][C:/Development/Libraries/LuaJIT-2.0.4/src][v2.0.4()]
+//Details about finding OpenAL
+FIND_PACKAGE_MESSAGE_DETAILS_OpenAL:INTERNAL=[C:/Development/Libraries/openal/libs/Win64/OpenAL32.lib][C:/Development/Libraries/openal/include][v()]
 //Stored GUID
 HPSE_GUID_CMAKE:INTERNAL=26F80FF5-D1B8-45B9-A6D0-98E77A06FF10
 //ADVANCED property for variable: LUA_INCLUDE_DIR
@@ -355,6 +363,10 @@ LUA_INCLUDE_DIR-ADVANCED:INTERNAL=1
 LUA_LIBRARIES-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: LUA_LIBRARY
 LUA_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OPENAL_INCLUDE_DIR
+OPENAL_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OPENAL_LIBRARY
+OPENAL_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: SFML_SYSTEM_LIBRARY_DYNAMIC_DEBUG
 SFML_SYSTEM_LIBRARY_DYNAMIC_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: SFML_SYSTEM_LIBRARY_DYNAMIC_RELEASE

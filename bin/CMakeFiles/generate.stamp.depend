@@ -36,3 +36,7 @@ C:/Development/Projects/hpse/cmake/Modules/FindGLM.cmake
 C:/Program Files (x86)/CMake/share/cmake-3.3/Modules/FindPackageHandleStandardArgs.cmake
 C:/Program Files (x86)/CMake/share/cmake-3.3/Modules/FindPackageMessage.cmake
 C:/Program Files (x86)/CMake/share/cmake-3.3/Modules/CMakeParseArguments.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.3/Modules/FindOpenAL.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.3/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.3/Modules/FindPackageMessage.cmake
+C:/Program Files (x86)/CMake/share/cmake-3.3/Modules/CMakeParseArguments.cmake

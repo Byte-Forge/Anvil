@@ -15,11 +15,6 @@ namespace hpse
 		return size;
 	}
 
-	inline uint32 GetChunkSize(uint32 data)
-	{
-		return (data & 0x7FFFFFFF);
-	}
-
 	template<class T>
 	inline T read(std::ifstream& fin)
 	{

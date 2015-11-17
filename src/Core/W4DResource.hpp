@@ -1,23 +1,13 @@
 #pragma once
 #include <string>
+#include "IResource.hpp"
+#include "../Loaders/W4DLoader.hpp"
+
 
 namespace hpse
 {
-    class IResource
+    class W4DResource : public IResource
     {
-        virtual bool Load(const std::string& file) = 0;
-
-        inline bool KeepLoaded()
-        {
-            return m_instanceable;
-        }
-
-        inline bool IsInstanceable()
-        {
-           return m_instanceable;
-        }
-    protected:
-        bool m_keepLoaded;
-        bool m_instanceable;
+		void Load(const std::string& file); 
     };
 }

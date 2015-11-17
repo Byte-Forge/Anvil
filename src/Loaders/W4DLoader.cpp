@@ -2,219 +2,224 @@
 
 #include <fstream>
 #include <iostream>
-#include "Util.hpp"
-#include "../Graphics/GL/Model.hpp"
+#include <memory> 
+#include <glm/glm.hpp>
+#include "Util.hpp"        
 #include "../Types/W4D.hpp"
+#include "../Core/ResourceHandler.hpp"
 
 using namespace std;
 using namespace hpse;
 
-namespace hpse
+//#######################################################################################
+//# hierarchy
+//#######################################################################################
+
+HierarchyHeader loadHierarchyHeader(ifstream& file)
 {
-	//#######################################################################################
-	//# hierarchy
-	//#######################################################################################
+	HierarchyHeader header;
+	header.name = readString(file);
+	header.pivotCount = read<glm::uint32>(file);
+	header.centerPos = read<glm::f32vec3>(file);
+	return header;
+}
 
-	HierarchyHeader loadHierarchyHeader(ifstream& file)
-	{
-		HierarchyHeader header;
-		header.name = readString(file);
-		header.pivotCount = read<uint32>(file);
-		header.centerPos = read<f32vec3>(file);
-		return header;
-	}
+HierarchyPivot loadHierarchyPivot(ifstream& file)
+{
+	HierarchyPivot pivot;
+	pivot.name =  readString(file);
+	pivot.parentID = read<glm::uint16>(file);
+	pivot.isBone = read<glm::uint8>(file);
+	pivot.position = read<glm::f32vec3>(file);
+	pivot.rotation =  read<glm::f32vec4>(file);
+	return pivot;
+}
 
-	HierarchyPivot loadHierarchyPivot(ifstream& file)
+void loadHierarchy(ifstream& file, glm::uint32 chunkEnd)
+{
+	std::shared_ptr<Hierarchy> hierarchy;
+	while (file.tellg() < chunkEnd)
 	{
-		HierarchyPivot pivot;
-		pivot.name =  readString(file);
-		pivot.parentID = read<uint16>(file);
-		pivot.isBone = read<uint8>(file);
-		pivot.position = read<f32vec3>(file);
-		pivot.rotation =  read<f32vec4>(file);
-		return pivot;
-	}
+		glm::uint32 chunkType = read<glm::uint32>(file);
+		glm::uint32 chunkSize = read<glm::uint32>(file);
+		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
 
-	Hierarchy loadHierarchy(ifstream& file, uint32 chunkEnd)
-	{
-		Hierarchy hierarchy;
-		while (file.tellg() < chunkEnd)
+		switch (chunkType)
 		{
-			uint32 chunkType = read<uint32>(file);
-			uint32 chunkSize = GetChunkSize(read<uint32>(file));
-			uint32 chunkEnd = (long)file.tellg() + chunkSize;
-
-			switch (chunkType)
-			{
-			case 257:
-				hierarchy.header = loadHierarchyHeader(file);
-				break;
-			case 258:
-				hierarchy.pivots.push_back(loadHierarchyPivot(file));
-				break;
-			default:
-				cout << "unknown chunktype in hierarchy chunk: " << chunkType << endl;
-				file.seekg(0, chunkEnd);
-			}
+		case 257:
+			hierarchy->header = loadHierarchyHeader(file);
+			break;
+		case 258:
+			hierarchy->pivots.push_back(loadHierarchyPivot(file));
+			break;
+		default:
+			cout << "unknown chunktype in hierarchy chunk: " << chunkType << endl;
+			file.seekg(0, chunkEnd);
 		}
-		return hierarchy;
 	}
+	//ResourceHandler::instance()->AddResource(hierarchy->header->name, shared_ptr<IResource>(&hierarchy));
+}
 
-	//#######################################################################################
-	//# model
-	//#######################################################################################
+//#######################################################################################
+//# model
+//#######################################################################################
 
-	Texture loadTexture(ifstream& file)
+Texture loadTexture(ifstream& file)
+{
+	Texture texture;
+	texture.name = readString(file);
+	texture.type = read<glm::uint8>(file);
+	texture.value = read<glm::float32>(file);
+	return texture;
+}
+
+MeshMaterial loadMeshMaterial(ifstream& file, glm::uint32 chunkEnd)
+{
+	MeshMaterial material;
+	material.diffuse = read<RGBA>(file);
+	material.diffuse_intensity = read<glm::float32>(file);
+	material.specular = read<RGBA>(file);
+	material.specular_intensity = read<glm::float32>(file);
+	material.emit = read<glm::float32>(file);
+	material.alpha = read<glm::float32>(file);
+
+	while (file.tellg() < chunkEnd)
 	{
-		Texture texture;
-		texture.name = readString(file);
-		texture.type = read<uint8>(file);
-		texture.value = read<float32>(file);
-		return texture;
-	}
+		glm::uint32 chunkType = read<glm::uint32>(file);
+		glm::uint32 chunkSize = read<glm::uint32>(file);
+		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
 
-	MeshMaterial loadMeshMaterial(ifstream& file, uint32 chunkEnd)
-	{
-		MeshMaterial material;
-		material.diffuse = read<RGBA>(file);
-		material.diffuse_intensity = read<float32>(file);
-		material.specular = read<RGBA>(file);
-		material.specular_intensity = read<float32>(file);
-		material.emit = read<float32>(file);
-		material.alpha = read<float32>(file);
-
-		while (file.tellg() < chunkEnd)
+		switch (chunkType)
 		{
-			uint32 chunkType = read<uint32>(file);
-			uint32 chunkSize = GetChunkSize(read<uint32>(file));
-			uint32 chunkEnd = (long)file.tellg() + chunkSize;
-
-			switch (chunkType)
-			{
-			case 31:
-				material.textures.push_back(loadTexture(file));
-				break;
-			default:
-				cout << "unknown chunktype in mesh material chunk: " << chunkType << endl;
-				file.seekg(0, chunkEnd);
-			}
+		case 31:
+			material.textures.push_back(loadTexture(file));
+			break;
+		default:
+			cout << "unknown chunktype in mesh material chunk: " << chunkType << endl;
+			file.seekg(0, chunkEnd);
 		}
-		return material;
 	}
+	return material;
+}
 
-	MeshHeader loadMeshHeader(ifstream& file)
-	{
-		MeshHeader header;
-		header.type = read<uint8>(file);
-		header.meshName = readString(file);
-		header.parentPivot = read<uint16>(file);
-		header.faceCount = read<uint32>(file);
-		header.vertCount = read<uint32>(file);
-		return header;
-	}
+MeshHeader loadMeshHeader(ifstream& file)
+{
+	MeshHeader header;
+	header.type = read<glm::uint8>(file);
+	header.meshName = readString(file);
+	header.parentPivot = read<glm::uint16>(file);
+	header.faceCount = read<glm::uint32>(file);
+	header.vertCount = read<glm::uint32>(file);
+	return header;
+}
 
-	Mesh loadMesh(ifstream& file, uint32 chunkEnd)
+Mesh loadMesh(ifstream& file, glm::uint32 chunkEnd)
+{
+	Mesh mesh;
+	while (file.tellg() < chunkEnd)
 	{
-		Mesh mesh;
-		while (file.tellg() < chunkEnd)
+		glm::uint32 chunkType = read<glm::uint32>(file);
+		glm::uint32 chunkSize = read<glm::uint32>(file);
+		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
+
+		switch (chunkType)
 		{
-			uint32 chunkType = read<uint32>(file);
-			uint32 chunkSize = GetChunkSize(read<uint32>(file));
-			uint32 chunkEnd = (long)file.tellg() + chunkSize;
-
-			switch (chunkType)
-			{
-			case 2:
-				mesh.header = loadMeshHeader(file);
-				break;
-			case 3:
-				while (file.tellg() < chunkEnd)
-					mesh.vertices.push_back(read<f32vec3>(file));
-				break;
-			case 4:
-				while (file.tellg() < chunkEnd)
-					mesh.normals.push_back(read<f32vec3>(file));
-				break;
-			case 5:
-				while (file.tellg() < chunkEnd)
-					mesh.faces.push_back(read<i32vec3>(file));
-				break;
-			case 6:
-				while (file.tellg() < chunkEnd)
-					mesh.uvCoords.push_back(read<f32vec2>(file));
-				break;
-			case 7:
-				while (file.tellg() < chunkEnd)
-					mesh.vertInfs.push_back(read<MeshVertexInfluences>(file));
-				break;
-			case 30:
-				mesh.materials.push_back(loadMeshMaterial(file, chunkEnd));
-				break;
-			default:
-				cout << "unknown chunktype in mesh chunk: " << chunkType << endl;
-				file.seekg(0, chunkEnd);
-			}
+		case 2:
+			mesh.header = loadMeshHeader(file);
+			break;
+		case 3:
+			while (file.tellg() < chunkEnd)
+				mesh.vertices.push_back(read<glm::f32vec3>(file));
+			break;
+		case 4:
+			while (file.tellg() < chunkEnd)
+				mesh.normals.push_back(read<glm::f32vec3>(file));
+			break;
+		case 5:
+			while (file.tellg() < chunkEnd)
+				mesh.faces.push_back(read<glm::i32vec3>(file));
+			break;
+		case 6:
+			while (file.tellg() < chunkEnd)
+				mesh.uvCoords.push_back(read<glm::f32vec2>(file));
+			break;
+		case 7:
+			while (file.tellg() < chunkEnd)
+				mesh.vertInfs.push_back(read<MeshVertexInfluences>(file));
+			break;
+		case 30:
+			mesh.materials.push_back(loadMeshMaterial(file, chunkEnd));
+			break;
+		default:
+			cout << "unknown chunktype in mesh chunk: " << chunkType << endl;
+			file.seekg(0, chunkEnd);	
 		}
-		return mesh;
 	}
+	return mesh;
+}
 
-	W4DModel loadModel(ifstream& file, uint32 chunkEnd)
+void loadModel(ifstream& file, glm::uint32 chunkEnd)
+{
+	W4DModel model;
+	model.name = readString(file);
+	model.hieraName = readString(file);
+
+	while (file.tellg() < chunkEnd)
 	{
-		W4DModel model;
-		model.name = readString(file);
-		model.hieraName = readString(file);
+		glm::uint32 chunkType = read<glm::uint32>(file);
+		glm::uint32 chunkSize = read<glm::uint32>(file);
+		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
 
-		while (file.tellg() < chunkEnd)
+		Mesh m;
+		switch (chunkType)
 		{
-			uint32 chunkType = read<uint32>(file);
-			uint32 chunkSize = GetChunkSize(read<uint32>(file));
-			uint32 chunkEnd = (long)file.tellg() + chunkSize;
-
-			Mesh m;
-			switch (chunkType)
-			{
-			case 1:
-				m = loadMesh(file, chunkEnd);
-				model.meshes.insert({m.header.meshName, m});
-				break;
-			case 1024:
-				model.volume = read<Box>(file);
-				break;
-			case 1025:
-				model.volume = read<Sphere>(file);
-				break;
-			default:
-				cout << "unknown chunktype in model chunk: " << chunkType << endl;
-				file.seekg(0, chunkEnd);
-			}
+		case 1:
+			m = loadMesh(file, chunkEnd);
+			model.meshes.insert({m.header.meshName, m});
+			break;
+		case 1024:
+			model.volume = read<Box>(file);
+			break;
+		case 1025:
+			model.volume = read<Sphere>(file);
+			break;
+		default:
+			cout << "unknown chunktype in model chunk: " << chunkType << endl;
+			file.seekg(0, chunkEnd);
 		}
-		return model;
 	}
+	std::shared_ptr<IResource> p (&model);
+	ResourceHandler::instance()->AddResource(model.name, p);
+}
 
-	void W4DLoader::Load(const char * name)
+void W4DLoader::Load(const std::string& name)
+{
+	ifstream file(name, ios::binary);
+	long size = getFStreamSize(file);
+	
+	W4DModel m;
+	Hierarchy h;
+	Animation a;
+
+	while (file.tellg() < size)
 	{
-		ifstream file(name, ios::binary);
-		long size = getFStreamSize(file);
+		glm::uint32 chunkType = read<glm::uint32>(file);
+		glm::uint32 chunkSize = read<glm::uint32>(file);
+		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
 
-		while (file.tellg() < size)
+		switch (chunkType)
 		{
-			uint32 chunkType = read<uint32>(file);
-			uint32 chunkSize = GetChunkSize(read<uint32>(file));
-			uint32 chunkEnd = (long)file.tellg() + chunkSize;
+		case 0:
+			cout << "loading model" << endl;
+			loadModel(file, chunkEnd);
+			break;
+		case 256:
+			loadHierarchy(file, chunkEnd);
+			break;
 
-			switch (chunkType)
-			{
-			case 0:
-				loadModel(file, chunkEnd);
-				break;
-			case 256:
-				loadHierarchy(file, chunkEnd);
-				break;
-
-			default:
-				cout << "unknown chunktype in file: " << chunkType << endl;
-				file.seekg(0, chunkEnd);
-			}
+		default:
+			cout << "unknown chunktype in file: " << chunkType << endl;
+			file.seekg(0, chunkEnd);
 		}
 	}
 }

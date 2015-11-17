@@ -1,18 +1,28 @@
 //
 // Created by stephan on 11.11.15.
 //
+#pragma once
 #include <string>
 #include <memory>
 #include <map>
 #include "IResource.hpp"
-#pragma once
 
 namespace hpse
 {
+	enum ResourceType
+	{
+		texture,
+		model,
+	};
+
     class ResourceHandler
     {
     public:
-        std::shared_ptr<IResource> GetResource(const std::string& name);
+		static ResourceHandler* instance();
+
+        std::shared_ptr<IResource> GetResource(const std::string& name, ResourceType type);
+
+		void AddResource(std::string &name, std::shared_ptr<IResource> resource);
 
     private:
         std::map<const std::string, std::shared_ptr<IResource>> m_resources;
