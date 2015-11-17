@@ -23,12 +23,12 @@ Core::Core()
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
 	m_script->LoadFile("./script/start.lua");
-	m_gui->LoadFile("./ui/index.html");
 }
 
 Core::~Core()
 {
-
+	if(m_window.isOpen())
+		m_window.close();
 }
 
 void Core::Run()
@@ -47,7 +47,7 @@ void Core::Run()
 			{
 			//close the window
 			case sf::Event::Closed:
-				m_window.close();
+				Quit();
 				break;
 			case sf::Event::Resized:
 				m_graphics->Resize(event.size.width, event.size.height);
