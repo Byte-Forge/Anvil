@@ -36,10 +36,10 @@ file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/[a-z,A-Z]*.[c,h,def]*)
 add_executable(${PROJ_NAME} ${SRC_FILES})
 
 #Include our dependencies
-target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR} ${OpenAL_INCLUDE_DIR}
+target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR}
 						${CEF_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${GLM_INCLUDE_DIRS})
 #Link our dependencies
-target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_LIBRARY} ${CEF_WRAPPER_LIBRARY} ${OpenAL_LIBRARY}
+target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_LIBRARY} ${CEF_WRAPPER_LIBRARY} ${OPENAL_LIBRARY}
 						${SFML_LIBRARIES} ${SFML_DEPENDENCIES} -ldl -lGL)
 #Use C++ 14
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)
