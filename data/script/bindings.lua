@@ -11,7 +11,10 @@ local ffi = require("ffi")
 ffi.cdef[[
 void LoadGUI(const char * name);
 ]]
-
 game.LoadGUI = ffi.C.LoadGUI
 
+ffi.cdef[[
+void PrintRenderer();
+]]
+game.PrintRenderer = ffi.C.PrintRenderer
 return game

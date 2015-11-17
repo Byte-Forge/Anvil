@@ -140,3 +140,13 @@ void RendererGL::Resize(int width, int height)
 {
 	glViewport(0, 0, width, height);
 }
+
+void RendererGL::PrintInfo()
+{
+    char* vendor = (char*)glGetString(GL_VENDOR);
+    std::cout << "GPU Vendor: " << vendor << std::endl;
+    char* version = (char*)glGetString(GL_VERSION);
+    std::cout << "OpenGL Version: " << version << std::endl;
+    char* glslversion = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+    std::cout << "GLSL Version: " << glslversion << std::endl;
+}

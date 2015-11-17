@@ -5,13 +5,15 @@
 -- Time: 10:36
 -- To change this template use File | Settings | File Templates.
 --
+local game = require("script.bindings")
+
 print("Starting HPSE ")
 print("System Information:")
 print("Operating System: " .. jit.os)
 print("Architecture: " .. jit.arch)
+game.PrintRenderer();
 
 -- Load our gui
-local game = require("script.bindings")
 game.LoadGUI("ui/index.html")
 
 
