@@ -1,6 +1,5 @@
 #include "../Core.hpp"
 #include "../Graphics/IRenderer.hpp"
-
 using namespace hpse;
 
 #ifdef _MSC_VER 
