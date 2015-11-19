@@ -59,7 +59,7 @@ RendererGL::RendererGL()
 
 	#ifndef NDEBUG
     if(FLEXT_ARB_debug_output)
-        glDebugMessageCallbackARB(debugCallback,nullptr);
+        glDebugMessageCallbackARB(debugCallback, nullptr);
 	#endif
     m_overlay = std::make_unique<GL::Texture>();
 

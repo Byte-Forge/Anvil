@@ -1,11 +1,12 @@
 #pragma once
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
 namespace hpse
 {
-	class W4DLoader
+	class TextureLoader
 	{
 	public:
 		static void Load(const std::string& name);

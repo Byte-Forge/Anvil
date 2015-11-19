@@ -19,8 +19,7 @@ namespace hpse
             ~Shader();
 
             void Load(const std::string& vertShader, const std::string& fragShader);
-            void Load(const std::string& vertShader, const std::string& geoShader,
-                              const std::string& fragShader);
+            void Load(const std::string& vertShader, const std::string& geoShader, const std::string& fragShader);
             void Compile();
             void Use();
         private:
