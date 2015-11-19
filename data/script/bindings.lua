@@ -17,4 +17,19 @@ ffi.cdef[[
 void PrintRenderer();
 ]]
 game.PrintRenderer = ffi.C.PrintRenderer
+
+ffi.cdef[[
+void AddTextureDir(const char* name);
+]]
+game.AddTextureDir = ffi.C.AddTextureDir
+
+ffi.cdef[[
+void AddMapDir(const char* name);
+]]
+game.AddMapDir = ffi.C.AddMapDir
+
+ffi.cdef[[
+void AddModelDir(const char* name);
+]]
+game.AddModelDir = ffi.C.AddModelDir
 return game
