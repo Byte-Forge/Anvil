@@ -16,4 +16,6 @@ game.PrintRenderer();
 -- Load our gui
 game.LoadGUI("ui/index.html")
 
-
+game.AddTextureDir("textures")
+game.AddModelDir("models")
+game.AddMapDir("maps")
