@@ -11,7 +11,6 @@ using namespace hpse;
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
                                GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
-
     std::cout << "--GL DEBUG--" << std::endl;
     std::cout << "Message: "<< message << std::endl;
     std::cout << "Type: ";
@@ -59,7 +58,8 @@ RendererGL::RendererGL()
     flextInit();
 
 	#ifndef NDEBUG
-    glDebugMessageCallbackARB(debugCallback,nullptr);
+    if(FLEXT_ARB_debug_output)
+        glDebugMessageCallbackARB(debugCallback,nullptr);
 	#endif
     m_overlay = std::make_unique<GL::Texture>();
 
