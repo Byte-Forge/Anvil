@@ -11,8 +11,9 @@ namespace hpse
 {
 	enum ResourceType
 	{
+		audio,
 		texture,
-		model,
+		w4d,
 	};
 
     class ResourceHandler
@@ -22,7 +23,7 @@ namespace hpse
 
         std::shared_ptr<IResource> GetResource(const std::string& name, ResourceType type);
 
-		void AddResource(std::string &name, std::shared_ptr<IResource> resource);
+		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 
     private:
         std::map<const std::string, std::shared_ptr<IResource>> m_resources;

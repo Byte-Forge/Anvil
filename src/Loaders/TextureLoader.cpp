@@ -1,226 +1,143 @@
-#include "W4DLoader.hpp"
+#include "TextureLoader.hpp"
 
-#include <fstream>
 #include <iostream>
-#include <memory> 
-#include <glm/glm.hpp>
-#include "Util.hpp"        
-#include "../Types/W4D.hpp"
+#include <gli/gli.hpp>
+#include <gli/texture.hpp>
+#include <gli/load.hpp>
+#include "../Graphics/GL/flextGL.h"
+#include "../Graphics/GL/Texture.hpp"
 #include "../Core/ResourceHandler.hpp"
 
 using namespace std;
 using namespace hpse;
 
-//#######################################################################################
-//# hierarchy
-//#######################################################################################
-
-HierarchyHeader loadHierarchyHeader(ifstream& file)
+void TextureLoader::Load(const std::string& name)
 {
-	HierarchyHeader header;
-	header.name = readString(file);
-	header.pivotCount = read<glm::uint32>(file);
-	header.centerPos = read<glm::f32vec3>(file);
-	return header;
-}
+	cout << "loading texture: " << name << endl;
+	std::string path = "textures\\";
+	std::string ext = ".ktx";
 
-HierarchyPivot loadHierarchyPivot(ifstream& file)
-{
-	HierarchyPivot pivot;
-	pivot.name =  readString(file);
-	pivot.parentID = read<glm::uint16>(file);
-	pivot.isBone = read<glm::uint8>(file);
-	pivot.position = read<glm::f32vec3>(file);
-	pivot.rotation =  read<glm::f32vec4>(file);
-	return pivot;
-}
-
-void loadHierarchy(ifstream& file, glm::uint32 chunkEnd)
-{
-	std::shared_ptr<Hierarchy> hierarchy;
-	while (file.tellg() < chunkEnd)
+	GLuint m_handle;
+	gli::texture Texture = gli::load(path + name + ext);
+	if (Texture.empty())
 	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
+		m_handle = 0;
+		return;
+	}
 
-		switch (chunkType)
+	gli::gl GL;
+	gli::gl::format const Format = GL.translate(Texture.format());
+	GLenum Target = GL.translate(Texture.target());
+
+	m_handle = 0;
+	glGenTextures(1, &m_handle);
+	glBindTexture(Target, m_handle);
+	glTexParameteri(Target, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(Target, GL_TEXTURE_MAX_LEVEL, static_cast<GLint>(Texture.levels() - 1));
+	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_R, Format.Swizzle[0]);
+	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_G, Format.Swizzle[1]);
+	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_B, Format.Swizzle[2]);
+	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_A, Format.Swizzle[3]);
+
+	glm::tvec3<GLsizei> const Dimensions(Texture.dimensions());
+	GLsizei const FaceTotal = static_cast<GLsizei>(Texture.layers() * Texture.faces());
+
+	int width = Dimensions.x;
+	int height = Dimensions.y;
+
+	switch (Texture.target())
+	{
+	case gli::TARGET_1D:
+		#ifdef GL_ARB_texture_storage
+		glTexStorage1D(Target, static_cast<GLint>(Texture.levels()), Format.Internal, Dimensions.x);
+		#endif
+		break;
+	case gli::TARGET_1D_ARRAY:
+	case gli::TARGET_2D:
+	case gli::TARGET_CUBE:
+		#ifdef GL_ARB_texture_storage
+		glTexStorage2D(Target, static_cast<GLint>(Texture.levels()), Format.Internal, Dimensions.x, Texture.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
+		#endif
+		break;
+	case gli::TARGET_2D_ARRAY:
+	case gli::TARGET_3D:
+	case gli::TARGET_CUBE_ARRAY:
+		#ifdef GL_ARB_texture_storage
+		glTexStorage3D(Target, static_cast<GLint>(Texture.levels()), Format.Internal, Dimensions.x, Dimensions.y, Texture.target() == gli::TARGET_3D ? Dimensions.z : FaceTotal);
+		#endif
+		break;
+	default:
+		assert(0);
+		break;
+	}
+
+	for (std::size_t Layer = 0; Layer < Texture.layers(); ++Layer)
+	{
+		for (std::size_t Face = 0; Face < Texture.faces(); ++Face)
 		{
-		case 257:
-			hierarchy->header = loadHierarchyHeader(file);
-			break;
-		case 258:
-			hierarchy->pivots.push_back(loadHierarchyPivot(file));
-			break;
-		default:
-			cout << "unknown chunktype in hierarchy chunk: " << chunkType << endl;
-			file.seekg(0, chunkEnd);
+			for (std::size_t Level = 0; Level < Texture.levels(); ++Level)
+			{
+				GLsizei const LayerGL = static_cast<GLsizei>(Layer);
+				glm::tvec3<GLsizei> Dimensions(Texture.dimensions(Level));
+				Target = gli::is_target_cube(Texture.target()) ? static_cast<GLenum>(GL_TEXTURE_CUBE_MAP_POSITIVE_X + Face) : Target;
+
+				switch (Texture.target())
+				{
+				case gli::TARGET_1D:
+					if (gli::is_compressed(Texture.format()))
+						glCompressedTexSubImage1D(Target, static_cast<GLint>(Level), 0, Dimensions.x,
+							Format.Internal, static_cast<GLsizei>(Texture.size(Level)),
+							Texture.data(Layer, Face, Level));
+					else
+						glTexSubImage1D(Target, static_cast<GLint>(Level), 0, Dimensions.x,
+							Format.External, Format.Type,
+							Texture.data(Layer, Face, Level));
+					break;
+				case gli::TARGET_1D_ARRAY:
+				case gli::TARGET_2D:
+				case gli::TARGET_CUBE:
+					if (gli::is_compressed(Texture.format()))
+						glCompressedTexSubImage2D(Target, static_cast<GLint>(Level),
+							0, 0,
+							Dimensions.x,
+							Texture.target() == gli::TARGET_1D_ARRAY ? LayerGL : Dimensions.y,
+							Format.Internal, static_cast<GLsizei>(Texture.size(Level)),
+							Texture.data(Layer, Face, Level));
+					else
+						glTexSubImage2D(Target, static_cast<GLint>(Level),
+							0, 0,
+							Dimensions.x,
+							Texture.target() == gli::TARGET_1D_ARRAY ? LayerGL : Dimensions.y,
+							Format.External, Format.Type,
+							Texture.data(Layer, Face, Level));
+					break;
+				case gli::TARGET_2D_ARRAY:
+				case gli::TARGET_3D:
+				case gli::TARGET_CUBE_ARRAY:
+					if (gli::is_compressed(Texture.format()))
+						glCompressedTexSubImage3D(Target, static_cast<GLint>(Level),
+							0, 0, 0,
+							Dimensions.x, Dimensions.y,
+							Texture.target() == gli::TARGET_3D ? Dimensions.z : LayerGL,
+							Format.Internal, static_cast<GLsizei>(Texture.size(Level)),
+							Texture.data(Layer, Face, Level));
+					else
+						glTexSubImage3D(
+							Target, static_cast<GLint>(Level),
+							0, 0, 0,
+							Dimensions.x, Dimensions.y,
+							Texture.target() == gli::TARGET_3D ? Dimensions.z : LayerGL,
+							Format.External, Format.Type,
+							Texture.data(Layer, Face, Level));
+					break;
+				default: 
+					assert(0); 
+					break;
+				}
+			}
 		}
 	}
-	//ResourceHandler::instance()->AddResource(hierarchy->header->name, shared_ptr<IResource>(&hierarchy));
-}
-
-//#######################################################################################
-//# model
-//#######################################################################################
-
-Texture loadTexture(ifstream& file)
-{
-	Texture texture;
-	texture.name = readString(file);
-	texture.type = read<glm::uint8>(file);
-	texture.value = read<glm::float32>(file);
-	return texture;
-}
-
-MeshMaterial loadMeshMaterial(ifstream& file, glm::uint32 chunkEnd)
-{
-	MeshMaterial material;
-	material.diffuse = read<RGBA>(file);
-	material.diffuse_intensity = read<glm::float32>(file);
-	material.specular = read<RGBA>(file);
-	material.specular_intensity = read<glm::float32>(file);
-	material.emit = read<glm::float32>(file);
-	material.alpha = read<glm::float32>(file);
-
-	while (file.tellg() < chunkEnd)
-	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
-
-		switch (chunkType)
-		{
-		case 31:
-			material.textures.push_back(loadTexture(file));
-			break;
-		default:
-			cout << "unknown chunktype in mesh material chunk: " << chunkType << endl;
-			file.seekg(0, chunkEnd);
-		}
-	}
-	return material;
-}
-
-MeshHeader loadMeshHeader(ifstream& file)
-{
-	MeshHeader header;
-	header.type = read<glm::uint8>(file);
-	header.meshName = readString(file);
-	header.parentPivot = read<glm::uint16>(file);
-	header.faceCount = read<glm::uint32>(file);
-	header.vertCount = read<glm::uint32>(file);
-	return header;
-}
-
-Mesh loadMesh(ifstream& file, glm::uint32 chunkEnd)
-{
-	Mesh mesh;
-	while (file.tellg() < chunkEnd)
-	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
-
-		switch (chunkType)
-		{
-		case 2:
-			mesh.header = loadMeshHeader(file);
-			break;
-		case 3:
-			while (file.tellg() < chunkEnd)
-				mesh.vertices.push_back(read<glm::f32vec3>(file));
-			break;
-		case 4:
-			while (file.tellg() < chunkEnd)
-				mesh.normals.push_back(read<glm::f32vec3>(file));
-			break;
-		case 5:
-			while (file.tellg() < chunkEnd)
-				mesh.faces.push_back(read<glm::i32vec3>(file));
-			break;
-		case 6:
-			while (file.tellg() < chunkEnd)
-				mesh.uvCoords.push_back(read<glm::f32vec2>(file));
-			break;
-		case 7:
-			while (file.tellg() < chunkEnd)
-				mesh.vertInfs.push_back(read<MeshVertexInfluences>(file));
-			break;
-		case 30:
-			mesh.materials.push_back(loadMeshMaterial(file, chunkEnd));
-			break;
-		default:
-			cout << "unknown chunktype in mesh chunk: " << chunkType << endl;
-			file.seekg(0, chunkEnd);	
-		}
-	}
-	return mesh;
-}
-
-void loadModel(ifstream& file, glm::uint32 chunkEnd)
-{
-	W4DModel model;
-	model.name = readString(file);
-	model.hieraName = readString(file);
-
-	while (file.tellg() < chunkEnd)
-	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
-
-		Mesh m;
-		switch (chunkType)
-		{
-		case 1:
-			m = loadMesh(file, chunkEnd);
-			model.meshes.insert({m.header.meshName, m});
-			break;
-		case 1024:
-			model.volume = read<Box>(file);
-			break;
-		case 1025:
-			model.volume = read<Sphere>(file);
-			break;
-		default:
-			cout << "unknown chunktype in model chunk: " << chunkType << endl;
-			file.seekg(0, chunkEnd);
-		}
-	}
-	std::shared_ptr<IResource> p (&model);
-	ResourceHandler::instance()->AddResource(model.name, p);
-}
-
-void W4DLoader::Load(const std::string& name)
-{
-	string path = "w4d\\";
-
-	string ext = ".w4d";
-	cout << path + name + ext << endl;
-	ifstream file(path + name + ext, ios::binary);
-	long size = getFStreamSize(file);
-
-	while (file.tellg() < size)
-	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
-
-		switch (chunkType)
-		{
-		case 0:
-			cout << "loading model: " << name << endl;
-			loadModel(file, chunkEnd);
-			break;
-		case 256:
-			cout << "loading hierarchy: " << name << endl;
-			loadHierarchy(file, chunkEnd);
-			break;
-
-		default:
-			cout << "unknown chunktype in file: " << chunkType << endl;
-			file.seekg(0, chunkEnd);
-		}
-	}
+	GL::Texture tex(m_handle);
+	std::shared_ptr<IResource> p(&tex);
+	ResourceHandler::instance()->AddResource(name, p);
 }

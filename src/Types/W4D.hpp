@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "../Core/W4DResource.hpp"
+#include "../Core/IResource.hpp"
 
 namespace hpse
 {
@@ -39,7 +39,7 @@ namespace hpse
 	};
 
 	// chunk 256
-	class Hierarchy : public W4DResource
+	class Hierarchy : public IResource
 	{
 	public:
 		HierarchyHeader header;
@@ -199,7 +199,7 @@ namespace hpse
 	//#######################################################################################
 
 	// chunk 0
-	class W4DModel : public W4DResource
+	class W4DModel : public IResource
 	{
 	public:
 		string name;

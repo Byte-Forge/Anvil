@@ -1,4 +1,6 @@
 #include "Core.hpp"
+#include "Core\ResourceHandler.hpp"
+#include "Graphics\GL\Texture.hpp"
 
 using namespace hpse;
 
@@ -23,6 +25,9 @@ Core::Core()
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
 	m_script->LoadFile("./script/start.lua");
+
+	ResourceHandler::instance()->GetResource("gumaarms_skn", w4d);
+	ResourceHandler::instance()->GetResource("gumanatarms", texture);
 }
 
 Core::~Core()

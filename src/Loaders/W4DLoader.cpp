@@ -194,12 +194,11 @@ void loadModel(ifstream& file, glm::uint32 chunkEnd)
 
 void W4DLoader::Load(const std::string& name)
 {
-	ifstream file(name, ios::binary);
+	string path = "w4d\\";
+	string ext = ".w4d";
+
+	ifstream file(path + name + ext, ios::binary);
 	long size = getFStreamSize(file);
-	
-	W4DModel m;
-	Hierarchy h;
-	Animation a;
 
 	while (file.tellg() < size)
 	{
@@ -210,10 +209,11 @@ void W4DLoader::Load(const std::string& name)
 		switch (chunkType)
 		{
 		case 0:
-			cout << "loading model" << endl;
+			cout << "loading model: " << name << endl;
 			loadModel(file, chunkEnd);
 			break;
 		case 256:
+			cout << "loading hierarchy: " << name << endl;
 			loadHierarchy(file, chunkEnd);
 			break;
 

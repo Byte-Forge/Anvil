@@ -5,8 +5,6 @@ namespace hpse
 {
     class IResource
     {
-		virtual void Load(const std::string& file) {};
-
         inline bool KeepLoaded()
         {
             return m_instanceable;

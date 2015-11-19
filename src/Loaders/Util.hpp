@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include <algorithm>
 #include <glm/glm.hpp>
-#include "../Types/W4D.hpp"
+#include <fstream>
 
 using namespace std;
 
@@ -30,5 +31,12 @@ namespace hpse
 		while ((c = fin.get()))
 			result.push_back(c);
 		return result;
+	}
+
+	inline std::string toUpper(std::string str)
+	{
+		string upper = str;
+		transform(upper.begin(), upper.end(), upper.begin(), toupper);
+		return upper;
 	}
 }
