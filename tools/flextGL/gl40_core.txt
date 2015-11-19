@@ -1,0 +1,7 @@
+# This file is used as input for flextGLgen.py
+# It defines the targetted OpenGL version and lists the used extensions.
+
+version 4.0 core
+
+extension ARB_debug_output required
+extension ARB_texture_storage required

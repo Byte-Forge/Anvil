@@ -1050,9 +1050,9 @@ typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLen
 #define GL_DEBUG_SEVERITY_MEDIUM_ARB 0x9147
 #define GL_DEBUG_SEVERITY_LOW_ARB 0x9148
 
-/* GL_ARB_explicit_uniform_location */
+/* GL_ARB_texture_storage */
 
-#define GL_MAX_UNIFORM_LOCATIONS 0x826E
+#define GL_TEXTURE_IMMUTABLE_FORMAT 0x912F
 
 /* --------------------------- FUNCTION PROTOTYPES --------------------------- */
 
@@ -1075,10 +1075,19 @@ GLAPI PFNGLGETDEBUGMESSAGELOGARB_PROC *glpfGetDebugMessageLogARB;
 #define glGetDebugMessageLogARB glpfGetDebugMessageLogARB
 
 
-/* GL_ARB_explicit_uniform_location */
+/* GL_ARB_texture_storage */
 
+typedef void (APIENTRY PFNGLTEXSTORAGE1D_PROC (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width));
+typedef void (APIENTRY PFNGLTEXSTORAGE2D_PROC (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height));
+typedef void (APIENTRY PFNGLTEXSTORAGE3D_PROC (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth));
 
+GLAPI PFNGLTEXSTORAGE1D_PROC *glpfTexStorage1D;
+GLAPI PFNGLTEXSTORAGE2D_PROC *glpfTexStorage2D;
+GLAPI PFNGLTEXSTORAGE3D_PROC *glpfTexStorage3D;
 
+#define glTexStorage1D glpfTexStorage1D
+#define glTexStorage2D glpfTexStorage2D
+#define glTexStorage3D glpfTexStorage3D
 
 
 /* GL_VERSION_1_0 */
@@ -2206,7 +2215,7 @@ GLAPI PFNGLUNIFORMSUBROUTINESUIV_PROC *glpfUniformSubroutinesuiv;
 /* --------------------------- CATEGORY DEFINES ------------------------------ */
 
 #define GL_ARB_debug_output
-#define GL_ARB_explicit_uniform_location
+#define GL_ARB_texture_storage
 #define GL_VERSION_1_0
 #define GL_VERSION_1_1
 #define GL_VERSION_1_2
@@ -2224,7 +2233,7 @@ GLAPI PFNGLUNIFORMSUBROUTINESUIV_PROC *glpfUniformSubroutinesuiv;
 /* ---------------------- Flags for optional extensions ---------------------- */
 
 extern int FLEXT_ARB_debug_output;
-extern int FLEXT_ARB_explicit_uniform_location;
+extern int FLEXT_ARB_texture_storage;
 
 int flextInit(void);
 

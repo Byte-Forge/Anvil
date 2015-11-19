@@ -75,8 +75,8 @@ int flextInit(void)
         fprintf(stderr, "       Try updating your graphics driver.\n");
         return GL_FALSE;
     }
-    if (!FLEXT_ARB_explicit_uniform_location) {
-        fprintf(stderr, "Error: OpenGL extension GL_ARB_explicit_uniform_location not supported.\n");
+    if (!FLEXT_ARB_texture_storage) {
+        fprintf(stderr, "Error: OpenGL extension GL_ARB_texture_storage not supported.\n");
         fprintf(stderr, "       Try updating your graphics driver.\n");
         return GL_FALSE;
     }
@@ -99,8 +99,11 @@ void flextLoadOpenGLFunctions(void)
     glpfGetDebugMessageLogARB = (PFNGLGETDEBUGMESSAGELOGARB_PROC*)get_proc("glGetDebugMessageLogARB");
 
 
-    /* GL_ARB_explicit_uniform_location */
+    /* GL_ARB_texture_storage */
 
+    glpfTexStorage1D = (PFNGLTEXSTORAGE1D_PROC*)get_proc("glTexStorage1D");
+    glpfTexStorage2D = (PFNGLTEXSTORAGE2D_PROC*)get_proc("glTexStorage2D");
+    glpfTexStorage3D = (PFNGLTEXSTORAGE3D_PROC*)get_proc("glTexStorage3D");
 
 
     /* GL_VERSION_1_2 */
@@ -480,7 +483,7 @@ void flextLoadOpenGLFunctions(void)
 
 /* ----------------------- Extension flag definitions ---------------------- */
 int FLEXT_ARB_debug_output = GL_FALSE;
-int FLEXT_ARB_explicit_uniform_location = GL_FALSE;
+int FLEXT_ARB_texture_storage = GL_FALSE;
 
 /* ---------------------- Function pointer definitions --------------------- */
 
@@ -490,6 +493,12 @@ PFNGLDEBUGMESSAGECALLBACKARB_PROC* glpfDebugMessageCallbackARB = NULL;
 PFNGLDEBUGMESSAGECONTROLARB_PROC* glpfDebugMessageControlARB = NULL;
 PFNGLDEBUGMESSAGEINSERTARB_PROC* glpfDebugMessageInsertARB = NULL;
 PFNGLGETDEBUGMESSAGELOGARB_PROC* glpfGetDebugMessageLogARB = NULL;
+
+/* GL_ARB_texture_storage */
+
+PFNGLTEXSTORAGE1D_PROC* glpfTexStorage1D = NULL;
+PFNGLTEXSTORAGE2D_PROC* glpfTexStorage2D = NULL;
+PFNGLTEXSTORAGE3D_PROC* glpfTexStorage3D = NULL;
 
 /* GL_VERSION_1_2 */
 
@@ -860,8 +869,8 @@ static void add_extension(const char* extension)
     if (strcmp("GL_ARB_debug_output", extension) == 0) {
         FLEXT_ARB_debug_output = GL_TRUE;
     }
-    if (strcmp("GL_ARB_explicit_uniform_location", extension) == 0) {
-        FLEXT_ARB_explicit_uniform_location = GL_TRUE;
+    if (strcmp("GL_ARB_texture_storage", extension) == 0) {
+        FLEXT_ARB_texture_storage = GL_TRUE;
     }
 }
 
