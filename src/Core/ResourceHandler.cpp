@@ -7,8 +7,6 @@
 #include "../Loaders/TextureLoader.hpp"
 #include "../Loaders/W4DLoader.hpp"
 
-using namespace std;
-
 namespace hpse
 {
 	static ResourceHandler* unique;
@@ -45,7 +43,7 @@ namespace hpse
 	void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 	{
 		string upper = name;
-		transform(upper.begin(), upper.end(), upper.begin(), toupper);
+		std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
 		m_resources.insert({ upper, resource });
 	}
 }

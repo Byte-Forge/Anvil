@@ -4,15 +4,13 @@
 #include <glm/glm.hpp>
 #include <fstream>
 
-using namespace std;
-
 namespace hpse
 {
-	inline long getFStreamSize(ifstream& file)
+	inline long getFStreamSize(std::ifstream& file)
 	{
-		file.seekg(0, ios::end);
+		file.seekg(0, std::ios::end);
 		long size = file.tellg();
-		file.seekg(0, ios::beg);
+		file.seekg(0, std::ios::beg);
 		return size;
 	}
 
@@ -33,10 +31,10 @@ namespace hpse
 		return result;
 	}
 
-	inline std::string toUpper(std::string str)
+	inline std::string toUpper(const std::string& str)
 	{
-		string upper = str;
-		transform(upper.begin(), upper.end(), upper.begin(), toupper);
+		std::string upper = str;
+		std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
 		return upper;
 	}
 }
