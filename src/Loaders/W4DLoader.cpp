@@ -7,6 +7,7 @@
 #include "Util.hpp"        
 #include "../Types/W4D.hpp"
 #include "../Core/ResourceHandler.hpp"
+#include <stdint.h>
 
 using namespace std;
 using namespace hpse;
@@ -19,7 +20,7 @@ HierarchyHeader loadHierarchyHeader(ifstream& file)
 {
 	HierarchyHeader header;
 	header.name = readString(file);
-	header.pivotCount = read<glm::uint32>(file);
+	header.pivotCount = read<std::uint32_t>(file);
 	header.centerPos = read<glm::f32vec3>(file);
 	return header;
 }
@@ -28,21 +29,21 @@ HierarchyPivot loadHierarchyPivot(ifstream& file)
 {
 	HierarchyPivot pivot;
 	pivot.name =  readString(file);
-	pivot.parentID = read<glm::uint16>(file);
-	pivot.isBone = read<glm::uint8>(file);
+	pivot.parentID = read<std::uint16_t>(file);
+	pivot.isBone = read<std::uint8_t>(file);
 	pivot.position = read<glm::f32vec3>(file);
 	pivot.rotation =  read<glm::f32vec4>(file);
 	return pivot;
 }
 
-void loadHierarchy(ifstream& file, glm::uint32 chunkEnd)
+void loadHierarchy(ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<Hierarchy> hierarchy;
 	while (file.tellg() < chunkEnd)
 	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
+		std::uint32_t chunkType = read<std::uint32_t>(file);
+		std::uint32_t chunkSize = read<std::uint32_t>(file);
+		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
 
 		switch (chunkType)
 		{
@@ -68,12 +69,12 @@ Texture loadTexture(ifstream& file)
 {
 	Texture texture;
 	texture.name = readString(file);
-	texture.type = read<glm::uint8>(file);
+	texture.type = read<std::uint8_t>(file);
 	texture.value = read<glm::float32>(file);
 	return texture;
 }
 
-MeshMaterial loadMeshMaterial(ifstream& file, glm::uint32 chunkEnd)
+MeshMaterial loadMeshMaterial(ifstream& file, std::uint32_t chunkEnd)
 {
 	MeshMaterial material;
 	material.diffuse = read<RGBA>(file);
@@ -85,9 +86,9 @@ MeshMaterial loadMeshMaterial(ifstream& file, glm::uint32 chunkEnd)
 
 	while (file.tellg() < chunkEnd)
 	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
+		std::uint32_t chunkType = read<std::uint32_t>(file);
+		std::uint32_t chunkSize = read<std::uint32_t>(file);
+		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
 
 		switch (chunkType)
 		{
@@ -105,22 +106,22 @@ MeshMaterial loadMeshMaterial(ifstream& file, glm::uint32 chunkEnd)
 MeshHeader loadMeshHeader(ifstream& file)
 {
 	MeshHeader header;
-	header.type = read<glm::uint8>(file);
+	header.type = read<std::uint8_t>(file);
 	header.meshName = readString(file);
-	header.parentPivot = read<glm::uint16>(file);
-	header.faceCount = read<glm::uint32>(file);
-	header.vertCount = read<glm::uint32>(file);
+	header.parentPivot = read<std::uint16_t>(file);
+	header.faceCount = read<std::uint32_t>(file);
+	header.vertCount = read<std::uint32_t>(file);
 	return header;
 }
 
-Mesh loadMesh(ifstream& file, glm::uint32 chunkEnd)
+Mesh loadMesh(ifstream& file, std::uint32_t chunkEnd)
 {
 	Mesh mesh;
 	while (file.tellg() < chunkEnd)
 	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
+		std::uint32_t chunkType = read<std::uint32_t>(file);
+		std::uint32_t chunkSize = read<std::uint32_t>(file);
+		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
 
 		switch (chunkType)
 		{
@@ -158,7 +159,7 @@ Mesh loadMesh(ifstream& file, glm::uint32 chunkEnd)
 	return mesh;
 }
 
-void loadModel(ifstream& file, glm::uint32 chunkEnd)
+void loadModel(ifstream& file, std::uint32_t chunkEnd)
 {
 	W4DModel model;
 	model.name = readString(file);
@@ -166,9 +167,9 @@ void loadModel(ifstream& file, glm::uint32 chunkEnd)
 
 	while (file.tellg() < chunkEnd)
 	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
+		std::uint32_t chunkType = read<std::uint32_t>(file);
+		std::uint32_t chunkSize = read<std::uint32_t>(file);
+		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
 
 		Mesh m;
 		switch (chunkType)
@@ -202,9 +203,9 @@ void W4DLoader::Load(const std::string& name)
 
 	while (file.tellg() < size)
 	{
-		glm::uint32 chunkType = read<glm::uint32>(file);
-		glm::uint32 chunkSize = read<glm::uint32>(file);
-		glm::uint32 chunkEnd = (long)file.tellg() + chunkSize;
+		std::uint32_t chunkType = read<std::uint32_t>(file);
+		std::uint32_t chunkSize = read<std::uint32_t>(file);
+		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
 
 		switch (chunkType)
 		{

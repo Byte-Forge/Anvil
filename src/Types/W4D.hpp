@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include "../Core/IResource.hpp"
+#include <stdint.h>
 
 namespace hpse
 {
@@ -13,7 +14,7 @@ namespace hpse
 
 	struct RGBA
 	{
-		glm::uint8 r, g, b, a;
+		std::uint8_t r, g, b, a;
 	};
 
 	//#######################################################################################
@@ -24,7 +25,7 @@ namespace hpse
 	struct HierarchyHeader
 	{
 		string name;
-		glm::uint32 pivotCount;
+		std::uint32_t pivotCount;
 		glm::f32vec3 centerPos;
 	};
 
@@ -32,8 +33,8 @@ namespace hpse
 	struct HierarchyPivot
 	{
 		string name;
-		glm::uint16 parentID;
-		glm::uint8 isBone;
+		std::uint16_t parentID;
+		std::uint8_t isBone;
 		glm::f32vec3 position;
 		glm::f32vec4 rotation; //use quat here instead??
 	};
@@ -55,13 +56,13 @@ namespace hpse
 	{
 		string name;
 		string hieraName;
-		glm::int32 numFrames;
-		glm::int32 frameRate;
+		std::int32_t numFrames;
+		std::int32_t frameRate;
 	};
 
 	struct TimeCodedAnimationKey
 	{
-		glm::uint16 frame;
+		std::uint16_t frame;
 	};
 
 	struct TimeCodedAnimationFloatKey : TimeCodedAnimationKey
@@ -77,9 +78,9 @@ namespace hpse
 	// chunk 514
 	struct TimeCodedAnimationChannel
 	{
-		glm::uint16 vectorLen;
-		glm::int8 type;
-		glm::uint16 pivot;
+		std::uint16_t vectorLen;
+		std::int8_t type;
+		std::uint16_t pivot;
 		vector<TimeCodedAnimationKey> timeCodedKeys;
 	};
 
@@ -119,8 +120,8 @@ namespace hpse
 	// chunk 7
 	struct MeshVertexInfluences
 	{
-		glm::uint16 boneIdx;
-		glm::uint16 boneInf;
+		std::uint16_t boneIdx;
+		std::uint16_t boneInf;
 	};
 
 	//#######################################################################################
@@ -141,7 +142,7 @@ namespace hpse
 	struct Texture
 	{
 		string name;
-		glm::uint8 type; //0 standard, 1 normal, 2 displacement
+		std::uint8_t type; //0 standard, 1 normal, 2 displacement
 		glm::float32 value; // factor for normal, displacement etc
 		//TextureAnimation animations[1];
 	};
@@ -169,7 +170,7 @@ namespace hpse
 	// chunk 2
 	struct MeshHeader
 	{
-		glm::uint8 type;
+		std::uint8_t type;
 		// 0->normal mesh
 		// 1->normal mesh - two sided
 		// 2->normal mesh - camera oriented
@@ -177,7 +178,7 @@ namespace hpse
 		// 129->skin - two sided
 
 		string meshName;
-		glm::uint16 parentPivot;
+		std::uint16_t parentPivot;
 		glm::uint32 faceCount;
 		glm::uint32 vertCount;
 	};
