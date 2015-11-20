@@ -26,7 +26,7 @@ GL::Texture::Texture(GLuint handle)
 
 GL::Texture::~Texture()
 {
-    //glDeleteTextures(1, &m_handle);
+    glDeleteTextures(1, &m_handle);
 }
 
 void GL::Texture::Update(int width, int height, const uint8_t *data)
