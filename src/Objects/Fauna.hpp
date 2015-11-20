@@ -1,12 +1,12 @@
 //
-// Created by stephan on 17.11.15.
+// Created by michael on 19.11.15.
 //
-
 #pragma once
+#include "IEntity.hpp"
 
 namespace hpse
 {
-    class Sound
+    class Fauna : public IEntity
     {
 
     };

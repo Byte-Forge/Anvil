@@ -14,6 +14,8 @@ namespace hpse
 		audio,
 		texture,
 		w4d,
+		model,
+		entity,
 	};
 
     class ResourceHandler

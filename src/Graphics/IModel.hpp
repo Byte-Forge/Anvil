@@ -1,19 +1,28 @@
 //
-// Created by stephan on 27.10.15.
+// Created by michael on 19.11.15.
 //
 #pragma once
-#include <stdint.h>
-#include <memory>
-#include "../Core/IResource.hpp"
+#include <map>
+#include "../Types/W4D.hpp"
 
 namespace hpse
 {
-    class ITexture : public IResource
+    class IModel : public IResource
     {
     public:
-        virtual void Update(int width, int height, const uint8_t* data) = 0;
-        virtual void Bind() = 0;
+        virtual void Render() = 0;
+	private:
+		std::map<const std::string, Variant> m_variants;
     };
+
+	class Variant
+	{
+	private:
+		//put the instances here??
+		W4DModel m_model;
+		std::map<const std::string, const std::string> m_textures;
+		std::map<const std::string, const std::string> m_animations;
+	};
 }
 
 

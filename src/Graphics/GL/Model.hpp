@@ -1,28 +1,20 @@
 //
-// Created by stephan on 27.10.15.
+// Created by michael on 19.11.15.
 //
 #pragma once
-#include <stdint.h>
-#include <string>
-#include "../ITexture.hpp"
-#include <GL/gl.h>
+#include "../IModel.hpp"
 
 namespace hpse
 {
     namespace GL
     {
-        class Texture : public ITexture
+        class Model : public IModel 
         {
         public:
-			Texture();
-            Texture(GLuint handle);
-            ~Texture();
+			Model();
+            ~Model();
 
-            //data is expected to be 32 bit RGBA
-            void Update(int width, int height, const uint8_t* data);
-            void Bind();
-        private:
-            GLuint m_handle;
+            void Render();
         };
     }
 }
