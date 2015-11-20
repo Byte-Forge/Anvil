@@ -55,7 +55,7 @@ void loadHierarchy(ifstream& file, std::uint32_t chunkEnd)
 			break;
 		default:
 			cout << "unknown chunktype in hierarchy chunk: " << chunkType << endl;
-			file.seekg(0, chunkEnd);
+			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
 	//ResourceHandler::instance()->AddResource(hierarchy->header->name, shared_ptr<IResource>(&hierarchy));
@@ -97,7 +97,7 @@ MeshMaterial loadMeshMaterial(ifstream& file, std::uint32_t chunkEnd)
 			break;
 		default:
 			cout << "unknown chunktype in mesh material chunk: " << chunkType << endl;
-			file.seekg(0, chunkEnd);
+			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
 	return material;
@@ -153,7 +153,7 @@ Mesh loadMesh(ifstream& file, std::uint32_t chunkEnd)
 			break;
 		default:
 			cout << "unknown chunktype in mesh chunk: " << chunkType << endl;
-			file.seekg(0, chunkEnd);	
+			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
 	return mesh;
@@ -186,7 +186,7 @@ void loadModel(ifstream& file, std::uint32_t chunkEnd)
 			break;
 		default:
 			cout << "unknown chunktype in model chunk: " << chunkType << endl;
-			file.seekg(0, chunkEnd);
+			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
 	std::shared_ptr<IResource> p (&model);
@@ -220,7 +220,7 @@ void W4DLoader::Load(const std::string& name)
 
 		default:
 			cout << "unknown chunktype in file: " << chunkType << endl;
-			file.seekg(0, chunkEnd);
+			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
 }
