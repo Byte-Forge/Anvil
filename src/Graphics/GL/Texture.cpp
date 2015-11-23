@@ -5,7 +5,7 @@
 #include "flextGL.h"
 #include "Texture.hpp"
 #include <string>
-
+#include <iostream>
 using namespace hpse;
 
 //is used to create a simple texture for the gui
@@ -21,6 +21,12 @@ GL::Texture::Texture()
 
 void GL::Texture::Load(const gli::texture &tex)
 {
+	if(FLEXT_ARB_texture_storage)
+	{
+		std::cout << "Not supporting ARB_textrue_storage" << std::endl;
+		return;
+	}
+
 	gli::gl GL;
 	gli::gl::format const Format = GL.translate(tex.format());
 	GLenum Target = GL.translate(tex.target());
@@ -38,26 +44,21 @@ void GL::Texture::Load(const gli::texture &tex)
 	int width = Dimensions.x;
 	int height = Dimensions.y;
 
+
 	switch (tex.target())
 	{
 		case gli::TARGET_1D:
-			#ifdef GL_ARB_texture_storage
 			glTexStorage1D(Target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x);
-			#endif
 			break;
 		case gli::TARGET_1D_ARRAY:
 		case gli::TARGET_2D:
 		case gli::TARGET_CUBE:
-			#ifdef GL_ARB_texture_storage
 			glTexStorage2D(Target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, tex.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
-			#endif
 			break;
 		case gli::TARGET_2D_ARRAY:
 		case gli::TARGET_3D:
 		case gli::TARGET_CUBE_ARRAY:
-			#ifdef GL_ARB_texture_storage
 			glTexStorage3D(Target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, Dimensions.y, tex.target() == gli::TARGET_3D ? Dimensions.z : FaceTotal);
-			#endif
 			break;
 		default:
 			assert(0);
