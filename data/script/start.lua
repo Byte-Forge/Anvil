@@ -14,7 +14,7 @@ print("Architecture: " .. jit.arch)
 game.PrintRenderer();
 
 -- Load our gui
-game.gui.LoadURL("www.youtube.com")
+game.gui.LoadURL("http://www.w3schools.com/html/html5_video.asp")
 
 game.AddTextureDir("textures")
 game.AddModelDir("models")
