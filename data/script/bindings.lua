@@ -7,11 +7,18 @@
 --
 
 local game = {}
+game.gui = {}
+
 local ffi = require("ffi")
 ffi.cdef[[
-void LoadGUI(const char * name);
+void LoadGUIByFile(const char * name);
 ]]
-game.LoadGUI = ffi.C.LoadGUI
+game.gui.LoadFile = ffi.C.LoadGUIByFile
+
+ffi.cdef[[
+void LoadGUIByURL(const char * name);
+]]
+game.gui.LoadURL = ffi.C.LoadGUIByURL
 
 ffi.cdef[[
 void PrintRenderer();

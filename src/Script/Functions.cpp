@@ -12,10 +12,16 @@ using namespace hpse;
 
 extern "C"
 {
-	SCRIPT_FUNC void LoadGUI(const char* name)
+	SCRIPT_FUNC void LoadGUIByFile(const char* name)
 	{
 		auto& gui = Core::GetGUI();
 		gui->LoadFile(name);
+	}
+
+	SCRIPT_FUNC void LoadGUIByURL(const char* name)
+	{
+		auto& gui = Core::GetGUI();
+		gui->LoadURL(name);
 	}
 
 	SCRIPT_FUNC void PrintRenderer()
