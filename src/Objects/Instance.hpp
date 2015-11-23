@@ -1,14 +1,15 @@
 //
-// Created by michael on 19.11.15.
+// Created by michael on 22.11.15.
 //
 #pragma once
-#include "IEntity.hpp"
+#include "Instance.hpp"
 
 namespace hpse
 {
-	class Unit : public IEntity
+	class Instance
 	{
-
+	private:
+		
 	};
 }
 

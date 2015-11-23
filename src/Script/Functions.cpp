@@ -1,3 +1,5 @@
+#include <string>
+#include <iostream>
 #include "../Core.hpp"
 #include "../Graphics/IRenderer.hpp"
 using namespace hpse;

@@ -24,7 +24,7 @@ namespace hpse
 	// chunk 257
 	struct HierarchyHeader
 	{
-		string name;
+		std::string name;
 		std::uint32_t pivotCount;
 		glm::f32vec3 centerPos;
 	};
@@ -32,7 +32,7 @@ namespace hpse
 	// chunk 258
 	struct HierarchyPivot
 	{
-		string name;
+		std::string name;
 		std::uint16_t parentID;
 		std::uint8_t isBone;
 		glm::f32vec3 position;
@@ -44,7 +44,7 @@ namespace hpse
 	{
 	public:
 		HierarchyHeader header;
-		vector<HierarchyPivot> pivots;
+		std::vector<HierarchyPivot> pivots;
 	};
 
 	//#######################################################################################
@@ -54,8 +54,8 @@ namespace hpse
 	// chunk 513
 	struct AnimationHeader
 	{
-		string name;
-		string hieraName;
+		std::string name;
+		std::string hieraName;
 		std::int32_t numFrames;
 		std::int32_t frameRate;
 	};
@@ -81,7 +81,7 @@ namespace hpse
 		std::uint16_t vectorLen;
 		std::int8_t type;
 		std::uint16_t pivot;
-		vector<TimeCodedAnimationKey> timeCodedKeys;
+		std::vector<TimeCodedAnimationKey> timeCodedKeys;
 	};
 
 	// chunk 512
@@ -89,7 +89,7 @@ namespace hpse
 	{
 	public:
 		AnimationHeader header;
-		vector<TimeCodedAnimationChannel> channels;
+		std::vector<TimeCodedAnimationChannel> channels;
 	};
 
 	//#######################################################################################
@@ -141,7 +141,7 @@ namespace hpse
 	// chunk 31
 	struct Texture
 	{
-		string name;
+		std::string name;
 		std::uint8_t type; //0 standard, 1 normal, 2 displacement
 		glm::float32 value; // factor for normal, displacement etc
 		//TextureAnimation animations[1];
@@ -160,7 +160,7 @@ namespace hpse
 		glm::float32 specular_intensity;
 		glm::float32 emit;
 		glm::float32 alpha;
-		vector<Texture> textures;
+		std::vector<Texture> textures;
 	};
 
 	//#######################################################################################
@@ -177,7 +177,7 @@ namespace hpse
 		// 128->skin
 		// 129->skin - two sided
 
-		string meshName;
+		std::string meshName;
 		std::uint16_t parentPivot;
 		glm::uint32 faceCount;
 		glm::uint32 vertCount;
@@ -187,12 +187,12 @@ namespace hpse
 	struct Mesh
 	{
 		MeshHeader header;
-		vector<glm::f32vec3> vertices;
-		vector<glm::f32vec3> normals;
-		vector<glm::i32vec3> faces;
-		vector<glm::f32vec2> uvCoords;
-		vector<MeshVertexInfluences> vertInfs;
-		vector<MeshMaterial> materials;
+		std::vector<glm::f32vec3> vertices;
+		std::vector<glm::f32vec3> normals;
+		std::vector<glm::i32vec3> faces;
+		std::vector<glm::f32vec2> uvCoords;
+		std::vector<MeshVertexInfluences> vertInfs;
+		std::vector<MeshMaterial> materials;
 	};
 
 	//#######################################################################################
@@ -203,8 +203,8 @@ namespace hpse
 	class W4DModel : public IResource
 	{
 	public:
-		string name;
-		string hieraName; // is the name of the model by default
+		std::string name;
+		std::string hieraName; // is the name of the model by default
 		std::map<std::string, Mesh> meshes;
 		BoundingVolume volume;
 	};
