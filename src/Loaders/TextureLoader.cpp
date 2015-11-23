@@ -14,7 +14,7 @@ using namespace hpse;
 void TextureLoader::Load(const std::string& name)
 {
 	cout << "loading texture: " << name << endl;
-	std::string path = "textures\\";
+	std::string path = "textures/";
 	std::string ext = ".ktx";
 
 	GLuint m_handle;

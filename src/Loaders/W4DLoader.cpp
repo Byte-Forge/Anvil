@@ -195,7 +195,7 @@ void loadModel(ifstream& file, std::uint32_t chunkEnd)
 
 void W4DLoader::Load(const std::string& name)
 {
-	string path = "w4d\\";
+	string path = "w4d/";
 	string ext = ".w4d";
 
 	ifstream file(path + name + ext, ios::binary);

@@ -1,6 +1,6 @@
 #include "Core.hpp"
-#include "Core\ResourceHandler.hpp"
-#include "Graphics\GL\Texture.hpp"
+#include "Core/ResourceHandler.hpp"
+#include "Graphics/GL/Texture.hpp"
 
 using namespace hpse;
 
