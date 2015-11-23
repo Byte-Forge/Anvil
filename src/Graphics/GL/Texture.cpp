@@ -23,7 +23,7 @@ void GL::Texture::Load(const gli::texture &tex)
 {
 	if(FLEXT_ARB_texture_storage)
 	{
-		std::cout << "Not supporting ARB_textrue_storage" << std::endl;
+		std::cout << "Not supporting ARB_texture_storage" << std::endl;
 		return;
 	}
 
@@ -43,8 +43,7 @@ void GL::Texture::Load(const gli::texture &tex)
 
 	int width = Dimensions.x;
 	int height = Dimensions.y;
-
-
+	
 	switch (tex.target())
 	{
 		case gli::TARGET_1D:
