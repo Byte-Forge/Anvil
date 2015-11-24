@@ -19,12 +19,14 @@ void TextureLoader::Load(const std::string& name)
 	gli::texture Texture = gli::load(path + name + ext);
 	if (Texture.empty())
 	{
+		std::cout << "Empty texture" << std::endl;
 		return;
 	}
 
 	auto tex = Core::GetGraphics()->GetTexture();
 	if(!tex->Load(Texture))
 	{
+		std::cout << "Loading failed" << std::endl;
 		return;
 	}
 

@@ -1,5 +1,6 @@
 #include "Core.hpp"
 #include "Environment.hpp"
+#include "./GUI/ProcessHandler.hpp"
 #include <include/cef_app.h>
 #include <iostream>
 
@@ -12,7 +13,8 @@ int main(int argc, char** argv)
 	CefMainArgs args(argc, argv);
 	#endif
 
-	int exit_code = CefExecuteProcess(args, nullptr,NULL);
+	CefRefPtr<hpse::ProcessHandler> app(new hpse::ProcessHandler());
+	int exit_code = CefExecuteProcess(args, app.get(),NULL);
 	if (exit_code >= 0)
 	{
 		// The sub-process terminated, exit now.
@@ -25,7 +27,7 @@ int main(int argc, char** argv)
 	settings.command_line_args_disabled = true;
 	settings.remote_debugging_port = 8080;
 	settings.log_severity = LOGSEVERITY_DISABLE;
-	CefInitialize(args, settings, nullptr, NULL);
+	CefInitialize(args, settings, app.get(), NULL);
 
 	Environment::Args = std::vector<std::string>(argv, argv + argc);
 	Environment::Argc = argc;

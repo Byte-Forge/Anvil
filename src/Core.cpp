@@ -74,6 +74,7 @@ void Core::Run()
 			case sf::Event::KeyPressed:
 				if(event.key.code==sf::Keyboard::Escape)
 					Quit();
+				m_gui->KeyDown(event.key);
 				break;
 			}
 		}
