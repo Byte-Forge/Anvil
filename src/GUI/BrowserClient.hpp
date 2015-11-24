@@ -9,10 +9,12 @@ namespace hpse
 	public:
 		BrowserClient(RenderHandler*);
 
-		virtual CefRefPtr<CefRenderHandler> GetRenderHandler();
+
+		virtual CefRefPtr<CefRenderHandler> GetRenderHandler() OVERRIDE;
 		virtual bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
 			CefProcessId source_process,
-			CefRefPtr<CefProcessMessage> message);
+			CefRefPtr<CefProcessMessage> message) OVERRIDE;
+
 	private:
 		CefRefPtr<CefRenderHandler> m_handler;
 		IMPLEMENT_REFCOUNTING(BrowserClient);
