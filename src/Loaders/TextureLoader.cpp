@@ -13,8 +13,8 @@ using namespace hpse;
 void TextureLoader::Load(const std::string& name)
 {
 	std::cout << "loading texture: " << name << std::endl;
-	std::string path = "textures/";
-	std::string ext = ".ktx";
+	const std::string path = "textures/";
+	const std::string ext = ".ktx";
 
 	gli::texture Texture = gli::load(path + name + ext);
 	if (Texture.empty())
@@ -23,6 +23,11 @@ void TextureLoader::Load(const std::string& name)
 	}
 
 	auto tex = Core::GetGraphics()->GetTexture();
+	if(!tex->Load(Texture))
+	{
+		return;
+	}
+
 	std::shared_ptr<IResource> p(tex.get());
 	ResourceHandler::instance()->AddResource(name, p);
 }

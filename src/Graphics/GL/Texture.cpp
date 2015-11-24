@@ -19,12 +19,12 @@ GL::Texture::Texture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
-void GL::Texture::Load(const gli::texture &tex)
+bool GL::Texture::Load(const gli::texture &tex)
 {
 	if(FLEXT_ARB_texture_storage)
 	{
 		std::cout << "Not supporting ARB_texture_storage" << std::endl;
-		return;
+		return false;
 	}
 
 	gli::gl GL;
@@ -130,6 +130,8 @@ void GL::Texture::Load(const gli::texture &tex)
 			}
 		}
 	}
+
+	return true;
 }
 
 GL::Texture::~Texture()
