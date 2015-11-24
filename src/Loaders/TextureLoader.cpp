@@ -8,12 +8,11 @@
 #include "../Core/ResourceHandler.hpp"
 #include "../Core.hpp"
 
-using namespace std;
 using namespace hpse;
 
 void TextureLoader::Load(const std::string& name)
 {
-	cout << "loading texture: " << name << endl;
+	std::cout << "loading texture: " << name << std::endl;
 	std::string path = "textures/";
 	std::string ext = ".ktx";
 

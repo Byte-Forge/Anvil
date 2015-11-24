@@ -9,14 +9,13 @@
 #include "../Core/ResourceHandler.hpp"
 #include <stdint.h>
 
-using namespace std;
 using namespace hpse;
 
 //#######################################################################################
 //# hierarchy
 //#######################################################################################
 
-HierarchyHeader loadHierarchyHeader(ifstream& file)
+HierarchyHeader loadHierarchyHeader(std::ifstream& file)
 {
 	HierarchyHeader header;
 	header.name = readString(file);
@@ -25,7 +24,7 @@ HierarchyHeader loadHierarchyHeader(ifstream& file)
 	return header;
 }
 
-HierarchyPivot loadHierarchyPivot(ifstream& file)
+HierarchyPivot loadHierarchyPivot(std::ifstream& file)
 {
 	HierarchyPivot pivot;
 	pivot.name =  readString(file);
@@ -36,7 +35,7 @@ HierarchyPivot loadHierarchyPivot(ifstream& file)
 	return pivot;
 }
 
-void loadHierarchy(ifstream& file, std::uint32_t chunkEnd)
+void loadHierarchy(std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<Hierarchy> hierarchy;
 	while (file.tellg() < chunkEnd)
@@ -54,7 +53,7 @@ void loadHierarchy(ifstream& file, std::uint32_t chunkEnd)
 			hierarchy->pivots.push_back(loadHierarchyPivot(file));
 			break;
 		default:
-			cout << "unknown chunktype in hierarchy chunk: " << chunkType << endl;
+			std::cout << "unknown chunktype in hierarchy chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
@@ -65,7 +64,7 @@ void loadHierarchy(ifstream& file, std::uint32_t chunkEnd)
 //# model
 //#######################################################################################
 
-Texture loadTexture(ifstream& file)
+Texture loadTexture(std::ifstream& file)
 {
 	Texture texture;
 	texture.name = readString(file);
@@ -74,7 +73,7 @@ Texture loadTexture(ifstream& file)
 	return texture;
 }
 
-MeshMaterial loadMeshMaterial(ifstream& file, std::uint32_t chunkEnd)
+MeshMaterial loadMeshMaterial(std::ifstream& file, std::uint32_t chunkEnd)
 {
 	MeshMaterial material;
 	material.diffuse = read<RGBA>(file);
@@ -96,14 +95,14 @@ MeshMaterial loadMeshMaterial(ifstream& file, std::uint32_t chunkEnd)
 			material.textures.push_back(loadTexture(file));
 			break;
 		default:
-			cout << "unknown chunktype in mesh material chunk: " << chunkType << endl;
+			std::cout << "unknown chunktype in mesh material chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
 	return material;
 }
 
-MeshHeader loadMeshHeader(ifstream& file)
+MeshHeader loadMeshHeader(std::ifstream& file)
 {
 	MeshHeader header;
 	header.type = read<std::uint8_t>(file);
@@ -114,7 +113,7 @@ MeshHeader loadMeshHeader(ifstream& file)
 	return header;
 }
 
-Mesh loadMesh(ifstream& file, std::uint32_t chunkEnd)
+Mesh loadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 {
 	Mesh mesh;
 	while (file.tellg() < chunkEnd)
@@ -152,14 +151,14 @@ Mesh loadMesh(ifstream& file, std::uint32_t chunkEnd)
 			mesh.materials.push_back(loadMeshMaterial(file, chunkEnd));
 			break;
 		default:
-			cout << "unknown chunktype in mesh chunk: " << chunkType << endl;
+			std::cout << "unknown chunktype in mesh chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
 	return mesh;
 }
 
-void loadModel(ifstream& file, std::uint32_t chunkEnd)
+void loadModel(std::ifstream& file, std::uint32_t chunkEnd)
 {
 	W4DModel model;
 	model.name = readString(file);
@@ -185,7 +184,7 @@ void loadModel(ifstream& file, std::uint32_t chunkEnd)
 			model.volume = read<Sphere>(file);
 			break;
 		default:
-			cout << "unknown chunktype in model chunk: " << chunkType << endl;
+			std::cout << "unknown chunktype in model chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
@@ -195,10 +194,10 @@ void loadModel(ifstream& file, std::uint32_t chunkEnd)
 
 void W4DLoader::Load(const std::string& name)
 {
-	string path = "w4d/";
-	string ext = ".w4d";
+	std::string path = "w4d/";
+	std::string ext = ".w4d";
 
-	ifstream file(path + name + ext, ios::binary);
+	std::ifstream file(path + name + ext, std::ios::binary);
 	long size = getFStreamSize(file);
 
 	while (file.tellg() < size)
@@ -210,16 +209,16 @@ void W4DLoader::Load(const std::string& name)
 		switch (chunkType)
 		{
 		case 0:
-			cout << "loading model: " << name << endl;
+			std::cout << "loading model: " << name << std::endl;
 			loadModel(file, chunkEnd);
 			break;
 		case 256:
-			cout << "loading hierarchy: " << name << endl;
+			std::cout << "loading hierarchy: " << name << std::endl;
 			loadHierarchy(file, chunkEnd);
 			break;
 
 		default:
-			cout << "unknown chunktype in file: " << chunkType << endl;
+			std::cout << "unknown chunktype in file: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}

@@ -36,13 +36,13 @@ namespace hpse
 		{
 			return m_resources[toUpper(name)];
 		}
-		cout << "no such resource found: " << name << endl;
+		std::cout << "no such resource found: " << name << std::endl;
 		return nullptr;
 	}
 
 	void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 	{
-		string upper = name;
+		std::string upper = name;
 		std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
 		m_resources.insert({ upper, resource });
 	}
