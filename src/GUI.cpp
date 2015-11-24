@@ -44,13 +44,13 @@ void GUI::LoadFile(const std::string& file)
 	m_browser->GetMainFrame()->LoadURL(url);
 }
 
-void hpse::GUI::Resize(int width, int height)
+void GUI::Resize(int width, int height)
 {
 	m_renderer->Resize(width, height);
 	m_browser->GetHost()->WasResized();
 }
 
-void hpse::GUI::MouseMove(int x, int y)
+void GUI::MouseMove(int x, int y)
 {
 	m_mouseX = x;
 	m_mouseY = y;
@@ -61,7 +61,7 @@ void hpse::GUI::MouseMove(int x, int y)
 	m_browser->GetHost()->SendMouseMoveEvent(event, false);
 }
 
-void hpse::GUI::MouseLeft(bool isDown)
+void GUI::MouseLeft(bool isDown)
 {
 	CefMouseEvent event;
 	event.x = m_mouseX;
@@ -70,5 +70,10 @@ void hpse::GUI::MouseLeft(bool isDown)
 	bool mouseUp = !isDown;
 	CefBrowserHost::MouseButtonType btnType = MBT_LEFT;
 	m_browser->GetHost()->SendMouseClickEvent(event, btnType, mouseUp, 1);
+}
+
+void GUI::KeyDown(sf::Event::KeyEvent &key)
+{
+	//TODO: translate SFML keycodes to native keycodes and pass them to them to CEF
 }
 
