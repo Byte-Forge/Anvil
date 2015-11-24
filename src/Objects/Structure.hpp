@@ -8,6 +8,9 @@ namespace hpse
 {
 	class Structure : public IEntity
 	{
+	public:
+		Structure(std::string name);
+		~Structure();
 
 	};
 }

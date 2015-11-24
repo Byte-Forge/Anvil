@@ -5,14 +5,28 @@
 
 using namespace hpse;
 
-void ConditionState::SetModel(std::string model)
-{
-	m_model = model;
-}
-
 void ConditionState::ReplaceTexture(std::string tex, std::string replace)
 {
-	m_texReplaces.insert({ tex, replace });
+	if (m_textureReplaces.count(tex) > 0)
+		m_textureReplaces[tex] = replace;
+	else
+		m_textureReplaces.insert({ tex, replace });
+}
+
+void ConditionState::AddProp(std::string pivot, std::string prop)
+{
+	if (m_props.count(pivot) > 0)
+		m_props[pivot] = prop;
+	else
+		m_props.insert({ pivot, prop });
+}
+
+void ConditionState::AddFX(std::string pivot, std::string fx)
+{
+	if (m_boneFXs.count(pivot) > 0)
+		m_boneFXs[pivot] = fx;
+	else
+		m_boneFXs.insert({ pivot, fx });
 }
 
 void ConditionState::AddAnimation(std::string animation)
@@ -23,14 +37,4 @@ void ConditionState::AddAnimation(std::string animation)
 void ConditionState::AddSound(std::string sound)
 {
 	m_sounds.push_back(sound);
-}
-
-void ConditionState::AddProp(std::string pivot, std::string prop) 
-{
-	m_props.insert({ pivot, prop });
-}
-
-void ConditionState::HideProp(std::string prop)
-{
-	m_hide_props.push_back(prop);
 }

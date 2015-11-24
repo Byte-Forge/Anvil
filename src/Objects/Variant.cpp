@@ -5,22 +5,28 @@
 
 using namespace hpse;
 
-void Variant::SetModel(std::string model)
+Variant::Variant(std::map<std::string, std::string> props)
 {
-	m_model = model;
+	m_props = props;
+}
+
+Variant::~Variant()
+{
+
 }
 
 void Variant::ReplaceTexture(std::string tex, std::string replace)
 {
-	m_texReplaces.insert({ tex, replace });
+	if (m_textureReplaces.count(tex) > 0)
+		m_textureReplaces[tex] = replace;
+	else
+		m_textureReplaces.insert({ tex, replace });
 }
 
 void Variant::AddProp(std::string pivot, std::string prop)
 {
-	m_props.insert({ pivot, prop });
-}
-
-void Variant::AddConditionState(States state, ConditionState cState)
-{
-	m_condition_states.insert({ state, cState });
+	if (m_props.count(pivot) > 0)
+		m_props[pivot] = prop;
+	else
+		m_props.insert({ pivot, prop });
 }

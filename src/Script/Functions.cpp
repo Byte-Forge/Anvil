@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../Core.hpp"
 #include "../Graphics/IRenderer.hpp"
+#include "../Objects/Structure.hpp"
 using namespace hpse;
 
 #ifdef _MSC_VER 
@@ -42,6 +43,6 @@ extern "C"
 
 	SCRIPT_FUNC void AddModelDir(const char* dir)
 	{
-
+		std::cout << dir << std::endl;
 	}
 }

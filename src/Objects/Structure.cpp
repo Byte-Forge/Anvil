@@ -4,3 +4,14 @@
 
 #include "Structure.hpp"
 
+using namespace hpse;
+
+Structure::Structure(std::string name) : IEntity(name)
+{
+
+}
+
+Structure::~Structure()
+{
+
+}
