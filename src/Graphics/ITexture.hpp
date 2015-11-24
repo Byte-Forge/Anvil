@@ -12,7 +12,7 @@ namespace hpse
     class ITexture : public IResource
     {
     public:
-        virtual void Load(const gli::texture& tex) = 0;
+        virtual bool Load(const gli::texture& tex) = 0;
         virtual void Update(int width, int height, const uint8_t* data) = 0;
         virtual void Bind() = 0;
     };

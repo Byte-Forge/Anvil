@@ -1,8 +1,6 @@
 #pragma once
 #include <fstream>
 
-using namespace std;
-
 namespace hpse
 {
 	class W4DLoader

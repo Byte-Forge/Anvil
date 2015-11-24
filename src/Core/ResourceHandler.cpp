@@ -27,7 +27,7 @@ namespace hpse
 		{
 			return m_resources[toUpper(name)];
 		}
-		cout << "ERROR: no such resource found: " << name << endl;
+		std::cout << "ERROR: no such resource found: " << name << std::endl;
 		return nullptr;
 	}
 

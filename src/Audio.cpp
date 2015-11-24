@@ -18,7 +18,7 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
     ALboolean enumeration;
 
     enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
-    if (enumeration == AL_FALSE)
+    if (enumeration == AL_TRUE)
     {
         EnumerateDevices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
     }
