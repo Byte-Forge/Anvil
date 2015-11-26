@@ -9,13 +9,17 @@ namespace hpse
     class JsHandler : public CefV8Handler
     {
     public:
+        JsHandler(CefRefPtr<CefBrowser> browser);
+
         virtual bool Execute(const CefString& name,
                              CefRefPtr<CefV8Value> object,
                              const CefV8ValueList& arguments,
                              CefRefPtr<CefV8Value>& retval,
                              CefString& exception) OVERRIDE;
+
     private:
         IMPLEMENT_REFCOUNTING(JsHandler);
+        CefRefPtr<CefBrowser> m_browser;
     };
 }
 
