@@ -43,6 +43,6 @@ extern "C"
 
 	SCRIPT_FUNC void AddModelDir(const char* dir)
 	{
-		std::cout << dir << std::endl;
+
 	}
 }
