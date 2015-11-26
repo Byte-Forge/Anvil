@@ -35,7 +35,7 @@ void ProcessHandler::OnBrowserDestroyed(CefRefPtr<CefBrowser> browser)
 bool ProcessHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process,
                                               CefRefPtr<CefProcessMessage> message)
 {
-	return false;
+	return true;
 }
 
 CefRefPtr<CefRenderProcessHandler> ProcessHandler::GetRenderProcessHandler()
