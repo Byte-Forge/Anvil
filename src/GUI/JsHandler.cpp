@@ -8,6 +8,11 @@
 
 using namespace hpse;
 
+JsHandler::JsHandler(CefRefPtr<CefBrowser> browser) : m_browser(browser)
+{
+
+}
+
 //Add a handler for each native function that should be available in JS here
 bool JsHandler::Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments,
                         CefRefPtr<CefV8Value> &retval, CefString &exception)
@@ -15,8 +20,8 @@ bool JsHandler::Execute(const CefString &name, CefRefPtr<CefV8Value> object, con
 	std::cout << "works" << std::endl;
     if(name=="quit")
     {
-		std::cout << "test" << std::endl;
-        Core::Quit();
+        CefRefPtr<CefProcessMessage> msg= CefProcessMessage::Create("quit");
+        m_browser->SendProcessMessage(PID_BROWSER,msg);
     }
 
     return false;
