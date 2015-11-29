@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 	{
 		hpse::Core engine;
 
-		//engine.Run();
+		engine.Run();
 	}
 
 	CefShutdown();
