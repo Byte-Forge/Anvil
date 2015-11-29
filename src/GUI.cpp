@@ -1,12 +1,15 @@
 #include "GUI.hpp"
 #include "Environment.hpp"
 #include "./Util/Platform.hpp"
+#include <iostream>
 
 using namespace hpse;
 
 
 GUI::GUI(sf::Window& window)
 {
+	std::cout << "test" << std::endl;
+	/*
 	CefBrowserSettings settings;
 	CefWindowInfo window_info;
 	window_info.SetAsWindowless(window.getSystemHandle(), true);
@@ -17,6 +20,7 @@ GUI::GUI(sf::Window& window)
 	m_renderer->Resize(800, 600);
 	m_client = new BrowserClient(m_renderer);
 	m_browser = CefBrowserHost::CreateBrowserSync(window_info, m_client.get(), "", settings, nullptr);
+	*/
 }
 
 GUI::~GUI()

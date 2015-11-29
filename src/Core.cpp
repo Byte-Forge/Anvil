@@ -25,7 +25,7 @@ Core::Core()
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
 	m_resources = std::make_unique<ResourceHandler>();
-	m_script->LoadFile("./script/start.lua");
+	//m_script->LoadFile("./script/start.lua");
 }
 
 Core::~Core()
