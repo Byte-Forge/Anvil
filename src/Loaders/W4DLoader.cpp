@@ -5,6 +5,7 @@
 #include <memory> 
 #include <glm/glm.hpp>
 #include "Util.hpp"        
+#include "../Core.hpp"
 #include "../Types/W4D.hpp"
 #include "../Core/ResourceHandler.hpp"
 #include <stdint.h>
@@ -57,7 +58,7 @@ void loadHierarchy(std::ifstream& file, std::uint32_t chunkEnd)
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
-	//ResourceHandler::instance()->AddResource(hierarchy->header->name, shared_ptr<IResource>(&hierarchy));
+	//Core::GetResources()->AddResource(name, p);
 }
 
 //#######################################################################################
@@ -189,7 +190,7 @@ void loadModel(std::ifstream& file, std::uint32_t chunkEnd)
 		}
 	}
 	std::shared_ptr<IResource> p (&model);
-	ResourceHandler::instance()->AddResource(model.name, p);
+	Core::GetResources()->AddResource(model.name, p);
 }
 
 void W4DLoader::Load(const std::string& name)

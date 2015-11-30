@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 	#endif
 
 	CefRefPtr<hpse::ProcessHandler> app(new hpse::ProcessHandler());
-	int exit_code = CefExecuteProcess(args, app.get(),NULL);
+	int exit_code = CefExecuteProcess(args, app.get(), NULL);
 	if (exit_code >= 0)
 	{
 		// The sub-process terminated, exit now.

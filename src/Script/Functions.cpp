@@ -1,5 +1,8 @@
+#include <string>
+#include <iostream>
 #include "../Core.hpp"
 #include "../Graphics/IRenderer.hpp"
+#include "../Objects/Structure.hpp"
 using namespace hpse;
 
 #ifdef _MSC_VER 
@@ -42,5 +45,4 @@ extern "C"
 	{
 
 	}
-
 }

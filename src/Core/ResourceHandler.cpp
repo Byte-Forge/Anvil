@@ -9,15 +9,6 @@
 
 namespace hpse
 {
-	static ResourceHandler* unique;
-
-	ResourceHandler* ResourceHandler::instance()
-	{
-		if (unique == NULL)
-			unique = new ResourceHandler();
-		return unique;
-	}
-
 	std::shared_ptr<IResource> ResourceHandler::GetResource(const std::string &name, ResourceType type)
 	{
 		if (m_resources.count(toUpper(name)) == 0)
@@ -36,15 +27,13 @@ namespace hpse
 		{
 			return m_resources[toUpper(name)];
 		}
-		std::cout << "no such resource found: " << name << std::endl;
+		std::cout << "ERROR: no such resource found: " << name << std::endl;
 		return nullptr;
 	}
 
 	void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 	{
-		std::string upper = name;
-		std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
-		m_resources.insert({ upper, resource });
+		m_resources.insert({ toUpper(name), resource });
 	}
 }
 
