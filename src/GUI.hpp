@@ -24,6 +24,7 @@ namespace hpse
 		//Events
 		void MouseMove(int x, int y);
 		void MouseLeft(bool isDown);
+		void KeyDown(sf::Event::KeyEvent& key);
 	private:
 		CefRefPtr<BrowserClient>	m_client;
 		RenderHandler*				m_renderer;

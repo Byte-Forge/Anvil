@@ -4,6 +4,7 @@
 #pragma once
 #include <stdint.h>
 #include <memory>
+#include <gli/gli.hpp>
 #include "../Core/IResource.hpp"
 
 namespace hpse
@@ -11,6 +12,7 @@ namespace hpse
     class ITexture : public IResource
     {
     public:
+        virtual bool Load(const gli::texture& tex) = 0;
         virtual void Update(int width, int height, const uint8_t* data) = 0;
         virtual void Bind() = 0;
     };

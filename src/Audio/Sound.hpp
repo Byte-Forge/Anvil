@@ -3,12 +3,17 @@
 //
 
 #pragma once
+#include <AL/al.h>
 
 namespace hpse
 {
     class Sound
     {
-
+    public:
+        Sound();
+        ~Sound();
+    private:
+        ALuint  m_source;
     };
 }
 

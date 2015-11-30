@@ -26,6 +26,7 @@ namespace hpse
 		{
 			return m_renderer;
 		}
+		std::shared_ptr<ITexture> GetTexture();
 	private: 
 		RenderBackend m_backend;
 		glm::mat4 m_ortho;

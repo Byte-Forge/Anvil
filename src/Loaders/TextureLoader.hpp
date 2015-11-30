@@ -2,8 +2,6 @@
 #include <fstream>
 #include <iostream>
 
-using namespace std;
-
 namespace hpse
 {
 	class TextureLoader

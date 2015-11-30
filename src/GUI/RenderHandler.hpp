@@ -12,12 +12,12 @@ namespace hpse
 			m_height = h;
 		}
 
-		void OnPaint(CefRefPtr<CefBrowser> browser,
+		virtual void OnPaint(CefRefPtr<CefBrowser> browser,
 			PaintElementType type,
 			const RectList &dirtyRects,
 			const void* buffer,
 			int width,
-			int height);
+			int height) OVERRIDE;
 
 		bool GetViewRect(CefRefPtr<CefBrowser> browser, CefRect &rect);
 	private:

@@ -1,6 +1,6 @@
 #include "Core.hpp"
-#include "Core\ResourceHandler.hpp"
-#include "Graphics\GL\Texture.hpp"
+#include "Core/ResourceHandler.hpp"
+#include "Graphics/GL/Texture.hpp"
 
 using namespace hpse;
 
@@ -76,6 +76,7 @@ void Core::Run()
 			case sf::Event::KeyPressed:
 				if(event.key.code==sf::Keyboard::Escape)
 					Quit();
+				m_gui->KeyDown(event.key);
 				break;
 			}
 		}
