@@ -7,7 +7,7 @@ namespace hpse
     {
         inline bool KeepLoaded()
         {
-            return m_instanceable;
+            return m_keepLoaded;
         }
 
         inline bool IsInstanceable()

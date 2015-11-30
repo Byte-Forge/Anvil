@@ -14,7 +14,8 @@ print("Architecture: " .. jit.arch)
 game.PrintRenderer();
 
 -- Load our gui
-game.gui.LoadFile("./ui/index.html")
+--game.gui.LoadFile("./ui/index.html")
+game.gui.LoadFile("ui/mainMenu.html")
 
 game.AddTextureDir("textures")
 game.AddModelDir("models")

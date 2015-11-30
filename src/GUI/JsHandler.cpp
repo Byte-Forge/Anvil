@@ -5,6 +5,7 @@
 #include "JsHandler.hpp"
 #include "../Core.hpp"
 #include <iostream>
+
 using namespace hpse;
 
 JsHandler::JsHandler(CefRefPtr<CefBrowser> browser) : m_browser(browser)
@@ -16,6 +17,7 @@ JsHandler::JsHandler(CefRefPtr<CefBrowser> browser) : m_browser(browser)
 bool JsHandler::Execute(const CefString &name, CefRefPtr<CefV8Value> object, const CefV8ValueList &arguments,
                         CefRefPtr<CefV8Value> &retval, CefString &exception)
 {
+	std::cout << "works" << std::endl;
     if(name=="quit")
     {
         CefRefPtr<CefProcessMessage> msg= CefProcessMessage::Create("quit");

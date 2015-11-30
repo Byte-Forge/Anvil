@@ -14,15 +14,14 @@ namespace hpse
 		audio,
 		texture,
 		w4d,
+		model,
+		entity,
 	};
 
     class ResourceHandler
     {
     public:
-		static ResourceHandler* instance();
-
         std::shared_ptr<IResource> GetResource(const std::string& name, ResourceType type);
-
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 
     private:

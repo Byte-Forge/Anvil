@@ -1,6 +1,7 @@
 #include "GUI.hpp"
 #include "Environment.hpp"
 #include "./Util/Platform.hpp"
+#include <iostream>
 
 using namespace hpse;
 

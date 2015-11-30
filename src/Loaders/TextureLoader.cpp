@@ -31,5 +31,5 @@ void TextureLoader::Load(const std::string& name)
 	}
 
 	std::shared_ptr<IResource> p(tex.get());
-	ResourceHandler::instance()->AddResource(name, p);
+	Core::GetResources()->AddResource(name, p);
 }

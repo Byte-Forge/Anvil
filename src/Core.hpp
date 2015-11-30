@@ -4,6 +4,7 @@
 #include "Script.hpp"
 #include "GUI.hpp"
 #include "Audio.hpp"
+#include "Core/ResourceHandler.hpp"
 
 namespace hpse
 {
@@ -30,12 +31,18 @@ namespace hpse
 			return m_graphics;
 		}
 
+		static inline std::unique_ptr<ResourceHandler>& GetResources()
+		{
+			return m_resources;
+		}
+
 		static inline void Quit()
 		{
 			m_running = false;
 		}
 	private:
 		sf::Window m_window;
+		static std::unique_ptr<ResourceHandler> m_resources;
 		static std::unique_ptr<Graphics> m_graphics;
 		static std::unique_ptr<GUI> m_gui;
 		static std::unique_ptr<Script> m_script;
