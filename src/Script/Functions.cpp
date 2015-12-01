@@ -33,16 +33,16 @@ extern "C"
 
 	SCRIPT_FUNC void AddTextureDir(const char* dir)
 	{
-
+		Core::GetResources()->AddTexDir(dir);
 	}
 
 	SCRIPT_FUNC void AddMapDir(const char* dir)
 	{
-
+		Core::GetResources()->AddMapDir(dir);
 	}
 
 	SCRIPT_FUNC void AddModelDir(const char* dir)
 	{
-
+		Core::GetResources()->AddModelDir(dir);
 	}
 }

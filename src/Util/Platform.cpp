@@ -7,9 +7,9 @@
 using namespace hpse;
 
 
-std::vector<const std::string> IO::ListFiles(const std::string & dir, const std::string & ext)
+std::vector<std::string> IO::ListFiles(const std::string & dir, const std::string & ext)
 {
-	std::vector<const std::string> files;
+	std::vector<std::string> files;
 	#ifdef _WIN32
 	char search_path[200];
 	sprintf(search_path, "%s/*.*", dir.c_str());
