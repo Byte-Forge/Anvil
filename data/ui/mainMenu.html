@@ -3,44 +3,29 @@
 <html lang="en">
 
 <head>
-
 	<meta charset="utf-8">
-
 	<title>Main Menu</title>
-
 	<link rel="stylesheet" href="mainMenu.css" media="screen">
-	<style type="text/css">
-		html, body { margin: 0;	padding: 0; }
-		body { margin: 5px; background: #f2f2f2 url(bg.png) no-repeat top center; }
-		ul.menu { margin: 250px auto 0 auto; }
-	</style>
-<meta name="robots" content="noindex,follow" />
 </head>
 
 <body>
-
-<ul class="menu">
-
-	<li><a onclick="play()">Solo Play</a></li>
-	<li><a onclick="multiplay()">Multiplayer</a></li>
-	<li><a href="#">Options</a>
-		<ul>
-			<li><a onclick="graphics()" class="graphics">Graphics</a></li>
-			<li><a onclick="audio()" class="audio">Audio</a></li>
-		</ul>
-	</li>
-	<li><a onclick="quit()">Quit</a></li>
-
-</ul> <!-- end .menu -->
-
-<!--<script type="application/javascript" src="mainMenu.js"></script>-->
-
-<script language="Javascript">
-function quit() {
-    window.quit();
-}
-</script>
-
+	<div id="buttonBar">
+		<div class="box">
+			<span class="button" onclick=location.replace("gameSetup.html")>Solo Play</span>
+		</div>
+		<div class="box">
+			<span class="button" onclick="alert('Multiplayer')">Multiplayer</span>
+		</div>
+		<div class="expandable">
+			<span class="button hidden" onclick="alert('Graphics')">Graphics</span>
+			<span class="button hidden" onclick="alert('Audio')">Audio</span>
+			<span class="button hidden" onclick="alert('Test 3')">Test 3</span>
+			<span class="button hidden" onclick="alert('Test 4')">Test 4</span>
+			<span class="button">Options</span>
+		</div>
+		<div class="box">
+			<span class="button" onclick="window.close()">Quit</span>
+		</div>
+	</div>
 </body>
-
 </html>
