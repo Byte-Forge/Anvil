@@ -1,5 +1,6 @@
 #pragma once 
 #include <string>
+#include <vector>
 
 #ifdef _WIN32
 #include <direct.h>
@@ -19,5 +20,7 @@ namespace hpse
 			getcwd(buffer, 1024);
 			return buffer;
 		}
+
+		std::vector<std::string> ListFiles(const std::string& dir, const std::string& ext = "");
 	}
 }
