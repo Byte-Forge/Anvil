@@ -6,8 +6,15 @@
 
 html, body { margin: 0;	padding: 0; }
 body { margin: 5px; background: #f2f2f2 url(bg.png) no-repeat top center; }
-    
-#buttonBar {
+
+.screen {
+	display:none;
+}
+.screen.active {
+	display:block;
+}
+
+.buttonBar {
 	position:absolute;
 	bottom:0;
 	left:0;
@@ -17,24 +24,72 @@ body { margin: 5px; background: #f2f2f2 url(bg.png) no-repeat top center; }
 	align-items: flex-end;
 	padding: 0.5em;
 }
-#buttonBar .box,
-#buttonBar .expandable {
+.buttonBar .box,
+.buttonBar .expandable {
 	display:inline-block;
 	text-align:center;
 }
-#buttonBar .expandable .hidden {
+.buttonBar .expandable .hidden {
 	display:none;
 }
-#buttonBar .expandable:hover .hidden {
+.buttonBar .expandable:hover .hidden {
 	display:block;
 }
-#buttonBar .button {
+.buttonBar .button {
 	display:block;
 }
-#buttonBar .expandable .hidden {
+.buttonBar .expandable .hidden {
 	margin-bottom:.2em;
 }
 	
+.tabs {
+	position:relative;
+	min-height: 100px;
+	clear: both;
+	margin: 25px 10px;
+	height: 35%; 
+}
+
+.tab {
+	float: left;
+}
+
+.tab label {
+	cursor: pointer;
+	background: #1f2024;
+	padding: 1px;
+	color: #8fde62;
+	border: 1px solid #8fde62;
+	margin-left: -1px;
+	position: relative;
+	left: 1px;
+}
+
+.tab [type = radio] {
+	display: none;
+}
+
+[type = radio]:checked + label {
+	background: #1f2024;  
+	border-bottom: 1px solid #1f2024;
+	z-index: 2;
+}
+
+[type = radio]:checked + label + .content {
+	z-index: 1;
+}
+
+.content {
+	position: absolute;
+	top: calc(1em + 3px);
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 10px;
+	border: 1px solid #8fde62;
+	background: #1f2024;
+	overflow: auto;
+}
 
 .button {
 	cursor: pointer;
@@ -46,6 +101,22 @@ body { margin: 5px; background: #f2f2f2 url(bg.png) no-repeat top center; }
 	width: 5em;
 }
 
+.round_button {
+	font-size:15px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	cursor: pointer;
+	text-align: center;
+	color: #8fde62;
+	border: 1px solid #8fde62;
+	background: #1f2024;
+	padding: 0.1em;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+}
+
 table {
 	width:100%;
 }
@@ -55,6 +126,8 @@ table, th, td {
     border: 1px solid black;
 	text-align:center;
 	background: #1f2024;
+	cursor: pointer;
+	font-size:inherit;
  } 
  
 th {
@@ -62,8 +135,11 @@ th {
 }
 
  select {
+	cursor: pointer;
     border: 0;
     width: 100%;
-	-webkit-appearance: none;
-
+	text-align:center;
+}
+option {
+	text-align:center;
 }
