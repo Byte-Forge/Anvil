@@ -16,9 +16,9 @@ bool BrowserClient::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
 											 CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {
 	const std::string& message_name = message->GetName();
-	if(message_name=="quit")
+	if(message_name=="close")
 	{
-		std::cout << "Quit" << std::endl;
+		std::cout << "Closing" << std::endl;
 		Core::Quit();
 	}
 

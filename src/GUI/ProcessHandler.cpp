@@ -49,6 +49,6 @@ void ProcessHandler::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<C
     CefRefPtr<CefV8Value> object = context->GetGlobal();
     CefRefPtr<CefV8Handler> handler = new JsHandler(browser);
 
-    CefRefPtr<CefV8Value> func = CefV8Value::CreateFunction("quit", handler);
-    object->SetValue("quit", func, V8_PROPERTY_ATTRIBUTE_NONE);
+    CefRefPtr<CefV8Value> func_close = CefV8Value::CreateFunction("close", handler);
+    object->SetValue("close", func_close, V8_PROPERTY_ATTRIBUTE_NONE);
 }
