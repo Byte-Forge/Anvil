@@ -89,6 +89,7 @@ body { margin: 5px; background: #f2f2f2 url(bg.png) no-repeat top center; }
 	border: 1px solid #8fde62;
 	background: #1f2024;
 	overflow: auto;
+	color: #8fde62;
 }
 
 .button {
@@ -119,6 +120,7 @@ body { margin: 5px; background: #f2f2f2 url(bg.png) no-repeat top center; }
 
 table {
 	width:100%;
+	cursor:pointer;
 }
 
 table, th, td {
@@ -126,7 +128,6 @@ table, th, td {
     border: 1px solid black;
 	text-align:center;
 	background: #1f2024;
-	cursor: pointer;
 	font-size:inherit;
  } 
  
@@ -134,12 +135,8 @@ th {
 	background: #1f2020;
 }
 
- select {
+select {
 	cursor: pointer;
     border: 0;
     width: 100%;
-	text-align:center;
-}
-option {
-	text-align:center;
 }

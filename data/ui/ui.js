@@ -188,13 +188,12 @@
 				table.rows[i].cells[2].replaceChild(createTeamSelect(), table.rows[i].cells[2].childNodes[0]);
 			}
 			
-			var tbody = document.getElementById('players');
+			var tbody = document.getElementById('playerList');
 			for(var i = 0; i < delta; i++) 
 			{
 				var row = document.createElement('tr');
 				row.onchange = 'updatePlayerInfo(this);';
 				var cell = document.createElement('td');
-				//alert(table.rows.length);
 				if (table.rows.length == 0) {
 					cell.appendChild(document.createTextNode(getPlayerName()));
 				} else {
