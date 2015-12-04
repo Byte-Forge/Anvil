@@ -49,6 +49,14 @@ void ProcessHandler::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<C
     CefRefPtr<CefV8Value> object = context->GetGlobal();
     CefRefPtr<CefV8Handler> handler = new JsHandler(browser);
 
-    CefRefPtr<CefV8Value> func = CefV8Value::CreateFunction("quit", handler);
-    object->SetValue("quit", func, V8_PROPERTY_ATTRIBUTE_NONE);
+    CefRefPtr<CefV8Value> func_close = CefV8Value::CreateFunction("close", handler);
+    object->SetValue("close", func_close, V8_PROPERTY_ATTRIBUTE_NONE);
+
+	int mapCount = 10;
+	CefRefPtr<CefV8Value> map_list = CefV8Value::CreateArray(mapCount);
+	for (int i = 0;i < mapCount;++i)
+	{
+		map_list->SetValue(i, CefV8Value::CreateString("map - " + std::to_string(i)));
+	}
+	object->SetValue("VAR_MAP_LIST", map_list, V8_PROPERTY_ATTRIBUTE_READONLY);
 }
