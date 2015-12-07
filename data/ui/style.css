@@ -5,7 +5,8 @@
 @media(min-width:3200px) {body {font-size:48px;}}
 
 html, body { margin: 0;	padding: 0; }
-body { margin: 5px; background: #f2f2f2 url(bg.png) no-repeat top center; }
+body { margin: 5px;}
+
 
 .screen {
 	display:none;
