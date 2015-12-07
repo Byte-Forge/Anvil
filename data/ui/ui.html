@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>Game Setup</title>
+	<link rel="stylesheet" href="ui.css" media="screen">
+	<script src="ui.js"></script> 
+</head>
+
+<body onload="init()">
+	<div id="mainMenu" class="screen active">
+		<div class="buttonBar">
+			<div class="box">
+				<span class="button" onclick="changeScreen('gameSetup');initGameSetup()">Solo Play</span>
+			</div>
+			<div class="box">
+				<span class="button" onclick="alert('Multiplayer')">Multiplayer</span>
+			</div>
+			<div class="expandable">
+				<span class="button hidden" onclick="alert('Graphics')">Graphics</span>
+				<span class="button hidden" onclick="alert('Audio')">Audio</span>
+				<span class="button">Options</span>
+			</div>
+			<div class="box">
+				<span class="button" onclick="window.close()">Quit</span>
+			</div>
+		</div>
+	</div>
+	<div id="gameSetup" class="screen">
+		<div class="mapInfo">
+			<div class="mapList">
+				<table class="scrollable">
+					<thead>
+						<tr>
+							<th style="width:80%">Map Name</th>
+							<th style="width:20%">Players</th>
+						</tr>
+					</thead>
+					<tbody id="mapList">
+								
+					</tbody>
+				</table>
+			</div>
+			<div id="mapImageContainer">
+				<img id="mapImage" src = " "></img>
+			</div>
+			<div class="mapDescription">
+				<h2 id="mapName">_MapName_</h2>
+				<p id="description">---</p>
+			</div>
+		</div>
+		<div class= "tabs">
+			<div class="tab">
+				<input type="radio" id="tab-1" name="tab-group-1" checked>
+				<label for="tab-1">Map</label>
+				<div class="content">
+					<table class="scrollable">
+						<thead>
+							<tr>
+								<th style="width:55%">Player</th>
+								<th style="width:30%">Faction</th>
+								<th style="width:10%">Team</th>
+								<th style="width:5%">Color</th>
+							</tr>
+						</thead>
+						<tbody id="playerList" class="scrollable-body">
+							
+						</tbody> 
+					</table>
+				</div>
+			</div>
+			<div class="tab">
+				<input type="radio" id="tab-2" name="tab-group-1">
+				<label for="tab-2">Settings</label>
+				<div class="content">
+					<p> TO DO </p>
+				</div>
+			</div>
+		</div>
+		<div class="buttonBar">
+			<div class="box">
+				<span class="button" onclick="changeScreen('mainMenu')">Main Menu</span>
+			</div>
+			<div class="box">
+				<span class="button" onclick=alert("Play")>Play</span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

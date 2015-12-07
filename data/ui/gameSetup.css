@@ -1,0 +1,58 @@
+@import url("style.css");
+
+.mapInfo {
+	display:flex;
+	align-items:flex-start;
+	justify-content:space-between;
+	margin: .6em;
+	background: transparent; 
+	width:calc(100% - 1.2em);
+	height: calc(50% - 1.2em);
+	vertical-align:top;
+}
+
+.mapList {
+	width:calc(40% - 0.6em);
+	height: 100%;
+	background: transparent;
+	display:inline-block;
+}
+
+.mapInfo img {
+	width: 20%;
+}
+
+h2 {
+	font-size:1.2em;
+	margin:.125em 0;
+	padding:0;
+	text-align: center;
+}
+
+.mapDescription {
+	display:inline-block;
+	width:calc(40% - 0.6em);
+	height: calc(100%);
+}
+
+#mapName {
+	color: #8fde62;
+	background: #1f2024;
+}
+
+#description{
+	overflow: auto;
+	height: 80%;
+	width: 100%;
+	color: #8fde62;
+	background: #1f2024;
+}
+
+.teamInfo {
+	position: relative;
+	border: 1px solid #000;
+	margin: 6px;
+	background: #1f2024; /*transparent*/
+	height: 35%;
+	width: 100% - 12;
+}
