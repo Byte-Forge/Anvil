@@ -1,6 +1,6 @@
 #include "Core.hpp" 
 #include "Graphics/GL/Texture.hpp"
-#include "Types\Map.hpp"
+#include "Types/Map.hpp"
 
 using namespace hpse;
 
