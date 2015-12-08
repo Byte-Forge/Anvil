@@ -5,6 +5,7 @@
 -- Time: 10:36
 -- To change this template use File | Settings | File Templates.
 --
+
 local game = require("script.bindings")
 
 print("Starting HPSE ")
@@ -14,8 +15,7 @@ print("Architecture: " .. jit.arch)
 game.PrintRenderer();
 
 -- Load our gui
---game.gui.LoadFile("./ui/index.html")
-game.gui.LoadFile("ui/mainMenu.html")
+game.gui.LoadFile("ui/ui.html")
 
 game.AddTextureDir("textures")
 game.AddModelDir("models")
