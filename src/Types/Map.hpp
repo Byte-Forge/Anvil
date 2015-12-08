@@ -40,6 +40,6 @@ namespace hpse
 	private:
 		MapHeader header;
 		HeightMap heightMap;
-		Tile tiles[];
+		Tile tiles[1];
 	};
 }
