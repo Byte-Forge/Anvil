@@ -21,5 +21,6 @@ namespace hpse
 	protected:
 		std::unique_ptr<ITexture> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
+		std::unique_ptr<IShader> m_mapShader;
 	};
 }

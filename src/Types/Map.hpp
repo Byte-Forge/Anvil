@@ -32,7 +32,7 @@ namespace hpse
 		std::string textures[1];
 	};
 
-	// chunk 0x80000000
+
 	class Map
 	{
 	public:

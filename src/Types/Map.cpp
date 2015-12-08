@@ -16,8 +16,8 @@ Map::Map(std::uint32_t _width, std::uint32_t _height)
 		for (std::uint32_t j = 0; j < height; j++)
 		{
 			vertices.push_back((float)i * 1000);
-			vertices.push_back((float)j * 1000);
-			vertices.push_back(0.0);
+			vertices.push_back(-3.0);
+			vertices.push_back(-(float)j * 1000);
 		}
 	}
 

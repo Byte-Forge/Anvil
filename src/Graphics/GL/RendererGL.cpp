@@ -98,12 +98,13 @@ void RendererGL::Render(glm::mat4& ortho)
 {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     glDisable(GL_DEPTH_TEST);
-	m_guiShader->Use();
     m_overlay->Bind();
 
+	m_mapShader->Use();
 	glBindVertexArray(m_mapVao);
 	glDrawElements(GL_TRIANGLES, 40 * 40, GL_UNSIGNED_INT, &m_mapVao);
 
+	m_guiShader->Use();
     glBindVertexArray(m_guiVao);
     glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0);
 
@@ -144,6 +145,11 @@ void RendererGL::SetupGUI()
 
 void RendererGL::UpdateMap(Map map)
 {
+	m_mapShader = std::make_unique<GL::Shader>();
+	m_mapShader->Load("./shader/map.vs", "./shader/map.fs");
+	m_mapShader->Compile();
+	m_mapShader->Use();
+
 	glGenVertexArrays(1, &m_mapVao);
 	glBindVertexArray(m_mapVao);
 
@@ -156,9 +162,9 @@ void RendererGL::UpdateMap(Map map)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * map.indices.size() , &map.indices[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_INT, GL_FALSE, 0, 0);
 }
 
 void RendererGL::Resize(int width, int height)
