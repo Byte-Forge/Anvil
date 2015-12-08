@@ -36,11 +36,16 @@ namespace hpse
 	class Map
 	{
 	public:
-		MapHeader header;
-		HeightMap heightMap;
+		std::uint32_t width;
+		std::uint32_t height;
+		//std::vector<float[2]> playerPositions;
+		std::vector<std::string> textures;
+		std::vector<float> vertices;
+		std::vector<int> indices;
+
 		Map(std::uint32_t width, std::uint32_t height);
 		~Map();
 	private:
-		Tile tiles[1];
+
 	};
 }

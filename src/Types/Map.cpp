@@ -6,25 +6,36 @@
 
 using namespace hpse;
 
-Map::Map(std::uint32_t width, std::uint32_t height)
+Map::Map(std::uint32_t _width, std::uint32_t _height)
 {
-	header.width = width;
-	header.height = height;
-
-	heightMap.vertexHeights = (std::int32_t**) malloc(sizeof(std::int32_t*) * width);
-	for (std::uint32_t i = 0; i < height; i++)
-	{
-		heightMap.vertexHeights[i] = (std::int32_t*) malloc(sizeof(std::int32_t) * height);
-	}
+	width = _width;
+	height = _height;
 
 	for (std::uint32_t i = 0; i < width; i++)
 	{
 		for (std::uint32_t j = 0; j < height; j++)
 		{
-			heightMap.vertexHeights[i][j] = 0;
+			vertices.push_back((float)i * 1000);
+			vertices.push_back((float)j * 1000);
+			vertices.push_back(0.0);
 		}
 	}
-	//Core::GetGraphics()->GetRenderer()->UpdateMap(*this);
+
+	for (std::uint32_t i = 0; i < height; i++)
+	{
+		for (std::uint32_t j = 0; j < width - 1; j++)
+		{
+			indices.push_back(i + (j*width));
+			indices.push_back(i + (j*width) + width);
+			indices.push_back(i + (j*width) + width + 1);
+
+			indices.push_back(i + (j*width));
+			indices.push_back(i + (j*width) + width + 1);
+			indices.push_back(i + (j*width) + 1);
+		}
+	}
+
+	Core::GetGraphics()->GetRenderer()->UpdateMap(*this);
 }
 
 Map::~Map()

@@ -15,7 +15,7 @@ namespace hpse
 		{
 			m_overlay->Update(width,height,data);
 		}
-		virtual void UpdateMap(Map &map) = 0;
+		virtual void UpdateMap(Map map) = 0;
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
 	protected:

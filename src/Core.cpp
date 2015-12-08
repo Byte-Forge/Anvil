@@ -39,7 +39,7 @@ void Core::Run()
 {
 	sf::Event event;
 
-	Map map = Map(400, 400);
+	Map map = Map(4, 4);
 
 	while (m_window.isOpen() && m_running)
 	{
