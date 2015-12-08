@@ -136,6 +136,47 @@ void RendererGL::SetupGUI()
     glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,4*sizeof(float),(void*)(2*sizeof(float)));
 }
 
+void RendererGL::UpdateMap(Map &map)
+{
+	std::cout << "test" << std::endl;
+	glGenVertexArrays(1, &m_mapVao);
+	glBindVertexArray(m_mapVao);
+
+	float *vertices = (float*) malloc(sizeof(float) * 3 * map.header.width * map.header.height);
+	for (std::uint32_t i = 0; i < map.header.width; i++)
+	{
+		for (std::uint32_t j = 0; j < map.header.height; j++)
+		{
+			vertices[i + j + 0] = (float)i;
+			vertices[i + j + 0] = (float)j;
+			vertices[i + j + 0] = (float)map.heightMap.vertexHeights[i][j];
+		}
+	}
+
+	glGenBuffers(1, &m_mapVbo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_mapVbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	//create the index array for the triangles
+	GLuint *elements = (GLuint*)malloc(sizeof(GLuint) * map.header.width * map.header.height * 6);
+	for (std::uint32_t i = 0; i < map.header.width; i++)
+	{
+		for (std::uint32_t j = 0; j < map.header.height; j++)
+		{
+			//elements[(i + j * map.header.width)] = 
+		}
+	}
+
+	glGenBuffers(1, &m_mapIbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_mapIbo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+}
+
 void RendererGL::Resize(int width, int height)
 {
 	glViewport(0, 0, width, height);

@@ -19,8 +19,8 @@ namespace hpse
 	// chunk 0x80000002
 	struct HeightMap
 	{
-		//size is width * height
-		std::int32_t vertexHeights[1];
+		//size is (width + borderSize * 2) * (height + borderSize * 2);
+		std::int32_t **vertexHeights;
 	};
 
 	// chunk 0x80000001
@@ -28,7 +28,7 @@ namespace hpse
 	{
 		std::uint32_t width;
 		std::uint32_t height;
-		std::uint8_t playerCount;
+		float playerPositions[1][2];
 		std::string textures[1];
 	};
 
@@ -36,10 +36,11 @@ namespace hpse
 	class Map
 	{
 	public:
-
-	private:
 		MapHeader header;
 		HeightMap heightMap;
-		Tile tiles[];
+		Map(std::uint32_t width, std::uint32_t height);
+		~Map();
+	private:
+		Tile tiles[1];
 	};
 }

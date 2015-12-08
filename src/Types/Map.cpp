@@ -1,48 +1,33 @@
-#pragma once
-#include <stdint.h>
-#include <string>
-#include <vector>
+#include "Map.hpp"
+#include "../Core.hpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
 
-namespace hpse
+using namespace hpse;
+
+Map::Map(std::uint32_t width, std::uint32_t height)
 {
-	////////////////////////////////////////////
-	//MAP
-	////////////////////////////////////////////
+	header.width = width;
+	header.height = height;
 
-	// chunk 0x80000003
-	struct Tile
+	heightMap.vertexHeights = (std::int32_t**) malloc(sizeof(std::int32_t*) * width);
+	for (std::uint32_t i = 0; i < height; i++)
 	{
-		std::uint16_t tex1;
-		std::uint16_t tex2; // -1 for no texture
-	};
+		heightMap.vertexHeights[i] = (std::int32_t*) malloc(sizeof(std::int32_t) * height);
+	}
 
-	// chunk 0x80000002
-	struct HeightMap
+	for (std::uint32_t i = 0; i < width; i++)
 	{
-		//size is width * height
-		std::int32_t vertexHeights[1];
-	};
+		for (std::uint32_t j = 0; j < height; j++)
+		{
+			heightMap.vertexHeights[i][j] = 0;
+		}
+	}
+	//Core::GetGraphics()->GetRenderer()->UpdateMap(*this);
+}
 
-	// chunk 0x80000001
-	struct MapHeader 
-	{
-		std::uint32_t width;
-		std::uint32_t height;
-		float playerPositions[1][2];
-		std::string textures[1];
-	};
+Map::~Map()
+{
 
-	// chunk 0x80000000
-	class Map
-	{
-	public:
-		Map(std::uint32_t width, std::uint32_t height);
-		~Map();
-
-		void changeHeight(uint32_t x_pos, uint32_t y_pos);
-	private:
-		MapHeader header;
-		HeightMap heightMap;
-		Tile tiles[];
-	};
 }

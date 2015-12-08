@@ -2,6 +2,7 @@
 #include "ITexture.hpp"
 #include "IShader.hpp"
 #include <glm/glm.hpp>
+#include "../Types/Map.hpp"
 
 namespace hpse
 {
@@ -14,6 +15,7 @@ namespace hpse
 		{
 			m_overlay->Update(width,height,data);
 		}
+		virtual void UpdateMap(Map &map) = 0;
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
 	protected:

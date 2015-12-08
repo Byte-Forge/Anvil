@@ -1,5 +1,6 @@
 #include "Core.hpp" 
 #include "Graphics/GL/Texture.hpp"
+#include "Types\Map.hpp"
 
 using namespace hpse;
 
@@ -37,6 +38,8 @@ Core::~Core()
 void Core::Run()
 {
 	sf::Event event;
+
+	Map map = Map(400, 400);
 
 	while (m_window.isOpen() && m_running)
 	{
