@@ -8,6 +8,7 @@ std::unique_ptr<Graphics> Core::m_graphics = nullptr;
 std::unique_ptr<Script> Core::m_script = nullptr;
 std::unique_ptr<GUI> Core::m_gui = nullptr;
 std::unique_ptr<Audio> Core::m_audio = nullptr;
+std::unique_ptr<Map> Core::m_map = nullptr;
 bool Core::m_running = true;
 
 Core::Core()
@@ -25,7 +26,7 @@ Core::Core()
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
 	m_resources = std::make_unique<ResourceHandler>();
-	//m_map = std::make_unique<Map>(4, 4);
+	m_map = std::make_unique<Map>();
 	m_script->LoadFile("./script/start.lua");
 }
 
@@ -38,8 +39,6 @@ Core::~Core()
 void Core::Run()
 {
 	sf::Event event;
-
-	Map(4, 4);
 
 	while (m_window.isOpen() && m_running)
 	{
@@ -82,6 +81,7 @@ void Core::Run()
 			}
 		}
 		m_graphics->Render();
+		m_map->m_terrain->Render();
 		m_window.display();
 	}
 }

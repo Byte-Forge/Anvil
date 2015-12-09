@@ -181,6 +181,7 @@ void RendererGL::Setup(IRenderable &renderable)
 
 void RendererGL::Render(IRenderable &renderable)
 {
+	std::cout << "render the map" << std::endl;
 	renderable.shader->Use();
 	glBindVertexArray(renderable.vao);
 	glDrawElements(GL_TRIANGLES, (GLsizei)renderable.vertices.size(), GL_UNSIGNED_INT, &renderable.vao);
