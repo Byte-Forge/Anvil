@@ -1,4 +1,5 @@
 #pragma once
+#include "../Graphics/IRenderable.hpp"
 #include <stdint.h>
 #include <string>
 #include <vector>
@@ -33,15 +34,13 @@ namespace hpse
 	};
 
 
-	class Map
+	class Map : public IRenderable
 	{
 	public:
 		std::uint32_t width;
 		std::uint32_t height;
 		//std::vector<float[2]> playerPositions;
 		std::vector<std::string> textures;
-		std::vector<float> vertices;
-		std::vector<int> indices;
 
 		Map(std::uint32_t width, std::uint32_t height);
 		~Map();

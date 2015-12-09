@@ -9,7 +9,7 @@ namespace hpse
 	inline long getFStreamSize(std::ifstream& file)
 	{
 		file.seekg(0, std::ios::end);
-		long size = file.tellg();
+		long size = (long)file.tellg();
 		file.seekg(0, std::ios::beg);
 		return size;
 	}

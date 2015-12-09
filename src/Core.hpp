@@ -4,6 +4,7 @@
 #include "Script.hpp"
 #include "GUI.hpp"
 #include "Audio.hpp"
+#include "Types/Map.hpp"
 #include "Core/ResourceHandler.hpp"
 
 namespace hpse
@@ -36,6 +37,11 @@ namespace hpse
 			return m_resources;
 		}
 
+		static inline std::unique_ptr<Map>& GetMap()
+		{
+			return m_map;
+		}
+
 		static inline void Quit()
 		{
 			m_running = false;
@@ -47,6 +53,7 @@ namespace hpse
 		static std::unique_ptr<GUI> m_gui;
 		static std::unique_ptr<Script> m_script;
 		static std::unique_ptr<Audio> m_audio;
+		static std::unique_ptr<Map> m_map;
 		static bool m_running;
 	};
 }

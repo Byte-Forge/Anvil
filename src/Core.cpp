@@ -1,6 +1,5 @@
 #include "Core.hpp" 
 #include "Graphics/GL/Texture.hpp"
-#include "Types/Map.hpp"
 
 using namespace hpse;
 
@@ -26,6 +25,7 @@ Core::Core()
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
 	m_resources = std::make_unique<ResourceHandler>();
+	//m_map = std::make_unique<Map>(4, 4);
 	m_script->LoadFile("./script/start.lua");
 }
 
@@ -39,7 +39,7 @@ void Core::Run()
 {
 	sf::Event event;
 
-	Map map = Map(40, 40);
+	Map(4, 4);
 
 	while (m_window.isOpen() && m_running)
 	{

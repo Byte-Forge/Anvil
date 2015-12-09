@@ -34,11 +34,10 @@ Map::Map(std::uint32_t _width, std::uint32_t _height)
 			indices.push_back(i + (j*width) + 1);
 		}
 	}
-
-	Core::GetGraphics()->GetRenderer()->UpdateMap(*this);
+	Setup();
 }
 
 Map::~Map()
 {
-
+	Delete();
 }

@@ -15,14 +15,15 @@ namespace hpse
 		void Render(glm::mat4& ortho);
 		void Resize(int width, int height);
 		void PrintInfo();
-		void UpdateMap(Map map);
+
+		void Setup(IRenderable &renderable);
+		void Render(IRenderable &renderable);
+		void Update(IRenderable &renderable);
+		void Delete(IRenderable &renderable);
 	private:
 		GLuint m_guiVbo;
 		GLuint m_guiVao;
 		GLuint m_guiIbo;
 		void SetupGUI();
-		GLuint m_mapVao;
-		GLuint m_mapVbo;
-		GLuint m_mapIbo;
 	};
 }

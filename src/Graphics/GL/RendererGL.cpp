@@ -100,10 +100,6 @@ void RendererGL::Render(glm::mat4& ortho)
     glDisable(GL_DEPTH_TEST);
     m_overlay->Bind();
 
-	m_mapShader->Use();
-	glBindVertexArray(m_mapVao);
-	glDrawElements(GL_TRIANGLES, 40 * 40, GL_UNSIGNED_INT, &m_mapVao);
-
 	m_guiShader->Use();
     glBindVertexArray(m_guiVao);
     glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0);
@@ -143,30 +139,6 @@ void RendererGL::SetupGUI()
     glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,4*sizeof(float),(void*)(2*sizeof(float)));
 }
 
-void RendererGL::UpdateMap(Map map)
-{
-	m_mapShader = std::make_unique<GL::Shader>();
-	m_mapShader->Load("./shader/map.vs", "./shader/map.fs");
-	m_mapShader->Compile();
-	m_mapShader->Use();
-
-	glGenVertexArrays(1, &m_mapVao);
-	glBindVertexArray(m_mapVao);
-
-	glGenBuffers(1, &m_mapVbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_mapVbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * map.vertices.size(), &map.vertices[0], GL_STATIC_DRAW);
-
-	glGenBuffers(1, &m_mapIbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_mapIbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * map.indices.size() , &map.indices[0], GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_INT, GL_FALSE, 0, 0);
-}
-
 void RendererGL::Resize(int width, int height)
 {
 	glViewport(0, 0, width, height);
@@ -180,4 +152,53 @@ void RendererGL::PrintInfo()
     std::cout << "OpenGL Version: " << version << std::endl;
     char* glslversion = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
     std::cout << "GLSL Version: " << glslversion << std::endl;
+}
+
+void RendererGL::Setup(IRenderable &renderable)
+{
+	//TODO: test if this shader is already available?
+	renderable.shader = std::make_unique<GL::Shader>();
+	renderable.shader->Load(renderable.vs, renderable.fs);
+	renderable.shader->Compile();
+	renderable.shader->Use();
+
+	glGenVertexArrays(1, &renderable.vao);
+	glBindVertexArray(renderable.vao);
+
+	glGenBuffers(1, &renderable.vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, renderable.vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * renderable.vertices.size(), &renderable.vertices[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &renderable.ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderable.ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * renderable.indices.size(), &renderable.indices[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_INT, GL_FALSE, 0, 0);
+}
+
+void RendererGL::Render(IRenderable &renderable)
+{
+	renderable.shader->Use();
+	glBindVertexArray(renderable.vao);
+	glDrawElements(GL_TRIANGLES, (GLsizei)renderable.vertices.size(), GL_UNSIGNED_INT, &renderable.vao);
+}
+
+void RendererGL::Update(IRenderable &renderable)
+{
+
+}
+
+void RendererGL::Delete(IRenderable &renderable)
+{
+	glDeleteVertexArrays(1, &renderable.vao);
+	renderable.vao = 0;
+
+	glDeleteVertexArrays(1, &renderable.vbo);
+	renderable.vbo = 0;
+
+	glDeleteVertexArrays(1, &renderable.ibo);
+	renderable.ibo = 0;
 }
