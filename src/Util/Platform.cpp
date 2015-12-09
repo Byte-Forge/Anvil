@@ -2,6 +2,8 @@
 #ifdef _WIN32
 #include <Windows.h>
 #else
+#include <sys/types.h>
+#include <dirent.h>
 #endif
 #include "StringHelper.hpp"
 using namespace hpse;
@@ -31,6 +33,22 @@ std::vector<std::string> IO::ListFiles(const std::string & dir, const std::strin
 		::FindClose(hFind);
 	}
 	#else
+	DIR *dp;
+	struct dirent *dirp;
+	if ((dp = opendir(dir.c_str())) == NULL)
+	{
+		return files;
+	}
+
+	while ((dirp = readdir(dp)) != NULL)
+	{
+		std::string name = dirp->d_name;
+		std::string fileExt = StringHelper::split(name, '.').back();
+
+		if (fileExt == ext || ext.size() == 0)
+			files.push_back(name);
+	}
+	closedir(dp);
 	#endif
 	return files;
 }
