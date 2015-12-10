@@ -21,8 +21,24 @@ Camera::~Camera()
 
 void Camera::Move(glm::vec3 direction)
 {
-	std::cout << "move camera" << std::endl;
 	m_pos += direction * speed; //* delta_time
+	std::cout << m_pos.x << ", " << m_pos.y << ", " << m_pos.z << std::endl;
+}
+
+void Camera::Rotate()
+{
+	std::cout << "rotate" << std::endl;
+	//TODO: rotate the camera around the point its pointing to (go hight down and hight in direction of camera)
+}
+
+void Camera::Zoom(int direction)
+{
+	std::cout << direction << std::endl;
+	if (direction == 1)
+		m_pos += m_lookat;
+	else if ( direction == -1)
+		m_pos -= m_lookat;
+	std::cout << m_pos.x << ", " << m_pos.y << ", " << m_pos.z << std::endl;
 }
 
 void Camera::Update()

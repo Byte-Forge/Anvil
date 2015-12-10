@@ -71,12 +71,19 @@ void Core::Run()
 				{
 					m_gui->MouseLeft(true);
 				}
+				else if (event.mouseButton.button == sf::Mouse::Middle)
+				{
+					//TODO:test if the mouse is also moved and rotate left or right if true
+				}
 				break;
 			case sf::Event::MouseButtonReleased:
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					m_gui->MouseLeft(false);
 				}
+				break;
+			case sf::Event::MouseWheelMoved:
+				m_camera->Zoom(event.mouseWheel.delta);
 				break;
 			case sf::Event::KeyPressed:
 				int code = event.key.code;
@@ -95,6 +102,11 @@ void Core::Run()
 					m_camera->Move({ 0.0, 1.0, 0.0 });
 				else if (code == 62 || code == 38) // down
 					m_camera->Move({ 0.0, -1.0, 0.0 });
+				else if (code == 49 || code == 16) // rotate left
+					m_camera->Rotate();
+				else if (code == 50 || code == 4) // rotate right
+					m_camera->Rotate();
+
 				
 				m_gui->KeyDown(event.key);
 				

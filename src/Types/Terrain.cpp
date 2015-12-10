@@ -8,18 +8,19 @@ Terrain::Terrain(std::uint32_t _width, std::uint32_t _height)
 	height = _height;
 
 	// example CUBE for testing
-	vertices.push_back({ -1.0f,-1.0f,-1.0f });
-	vertices.push_back({ -1.0f,-1.0f, 1.0f });
-	vertices.push_back({ 1.0f, -1.0f, 1.0f });
-	vertices.push_back({ 1.0f, -1.0f, -1.0f });
-	vertices.push_back({ -1.0f, 1.0f,-1.0f });
-	vertices.push_back({ -1.0f, 1.0f, 1.0f });
-	vertices.push_back({ 1.0f, 1.0f, 1.0f });
-	vertices.push_back({ 1.0f, 1.0f, -1.0f });
+	float size = 2.0f;
+	vertices.push_back({ -size, -size, -size });
+	vertices.push_back({ -size, -size, size });
+	vertices.push_back({ size, -size, size });
+	vertices.push_back({ size, -size, -size });
+
+	vertices.push_back({ -size, size, -size });
+	vertices.push_back({ -size, size, size });
+	vertices.push_back({ size, size, size });
+	vertices.push_back({ size, size, -size });
 
 	//bottom
 	faces.push_back(0); faces.push_back(1); faces.push_back(2);
-	
 	faces.push_back(0); faces.push_back(2); faces.push_back(3);
 
 	//top
@@ -28,11 +29,11 @@ Terrain::Terrain(std::uint32_t _width, std::uint32_t _height)
 
 	//front
 	faces.push_back(1); faces.push_back(2); faces.push_back(6);
-	faces.push_back(1); faces.push_back(6); faces.push_back(5);
+	faces.push_back(1); faces.push_back(5); faces.push_back(6);
 
 	//back
 	faces.push_back(0); faces.push_back(3); faces.push_back(7);
-	faces.push_back(0); faces.push_back(7); faces.push_back(4);
+	faces.push_back(0); faces.push_back(4); faces.push_back(7);
 
 	//left
 	faces.push_back(0); faces.push_back(1); faces.push_back(5);

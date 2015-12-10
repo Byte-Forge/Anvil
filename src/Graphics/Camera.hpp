@@ -20,6 +20,8 @@ namespace hpse
 
         void Update();
 		void Move(glm::vec3 direction);
+		void Rotate();
+		void Zoom(int direction);
 
         inline const glm::mat4& GetViewProjectionMatrix()
         {
@@ -48,7 +50,7 @@ namespace hpse
         double m_fov;
         double m_ratio;
 
-		float speed = 3.0f; // 3 units / second
+		float speed = 1.0f; // 3 units / second
 
         glm::mat4 m_proj;
         glm::mat4 m_view;
