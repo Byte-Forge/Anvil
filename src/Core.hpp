@@ -6,6 +6,7 @@
 #include "Audio.hpp"
 #include "Types/Map.hpp"
 #include "Core/ResourceHandler.hpp"
+#include "Graphics/Camera.hpp"
 
 namespace hpse
 {
@@ -42,6 +43,11 @@ namespace hpse
 			return m_map;
 		}
 
+		static inline std::unique_ptr<Camera>& GetCamera()
+		{
+			return m_camera;
+		}
+
 		static inline void Quit()
 		{
 			m_running = false;
@@ -54,6 +60,7 @@ namespace hpse
 		static std::unique_ptr<Script> m_script;
 		static std::unique_ptr<Audio> m_audio;
 		static std::unique_ptr<Map> m_map;
+		static std::unique_ptr<Camera> m_camera;
 		static bool m_running;
 	};
 }

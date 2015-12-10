@@ -1,5 +1,6 @@
 #include "Core.hpp" 
 #include "Graphics/GL/Texture.hpp"
+#include <iostream>
 
 using namespace hpse;
 
@@ -9,6 +10,8 @@ std::unique_ptr<Script> Core::m_script = nullptr;
 std::unique_ptr<GUI> Core::m_gui = nullptr;
 std::unique_ptr<Audio> Core::m_audio = nullptr;
 std::unique_ptr<Map> Core::m_map = nullptr;
+std::unique_ptr<Camera> Core::m_camera = nullptr;
+
 bool Core::m_running = true;
 
 Core::Core()
@@ -27,6 +30,8 @@ Core::Core()
 	m_gui = std::make_unique<GUI>(m_window);
 	m_resources = std::make_unique<ResourceHandler>();
 	m_map = std::make_unique<Map>();
+	m_camera = std::make_unique<Camera>();
+
 	m_script->LoadFile("./script/start.lua");
 }
 
@@ -39,12 +44,12 @@ Core::~Core()
 void Core::Run()
 {
 	sf::Event event;
-
 	while (m_window.isOpen() && m_running)
 	{
 		m_graphics->Clear();
 		m_gui->Update();
 		m_script->Update();
+		m_camera->Update();
 
 		while (m_window.pollEvent(event))
 		{
@@ -74,14 +79,33 @@ void Core::Run()
 				}
 				break;
 			case sf::Event::KeyPressed:
+				int code = event.key.code;
 				if(event.key.code==sf::Keyboard::Escape)
 					Quit();
+
+				if (code == 73 || code == 22) //foreward
+					m_camera->Move({ 0.0, 0.0, 1.0 }); 
+				else if (code == 74 || code == 18) //back
+					m_camera->Move({ 0.0, 0.0, -1.0 });
+				else if (code == 71 || code == 0) // left
+					m_camera->Move({ -1.0, 0.0, 0.0 });
+				else if (code == 72 || code == 3) // right
+					m_camera->Move({ 1.0, 0.0, 0.0 });
+				else if (code == 61 || code == -1) // up
+					m_camera->Move({ 0.0, 1.0, 0.0 });
+				else if (code == 62 || code == 38) // down
+					m_camera->Move({ 0.0, -1.0, 0.0 });
+				
 				m_gui->KeyDown(event.key);
+				
+				//std::cout << event.key.code << std::endl;
 				break;
 			}
 		}
-		m_graphics->Render();
 		m_map->m_terrain->Render();
+		m_graphics->Render();
+		//create a vector of shared_ptr of all entities in core and iterate and render them here?
+
 		m_window.display();
 	}
 }

@@ -22,6 +22,10 @@ namespace hpse
             void Load(const std::string& vertShader, const std::string& geoShader, const std::string& fragShader);
             void Compile();
             void Use();
+			inline std::uint32_t GetID()
+			{
+				return (std::uint32_t)m_program;
+			}
         private:
             void LoadShader(const std::string file,GLenum type);
             GLuint m_program;

@@ -14,6 +14,7 @@ namespace hpse
                               const std::string& fragShader) = 0;
         virtual void Compile() = 0;
         virtual void Use() = 0;
+		virtual std::uint32_t GetID() = 0;
     };
 }
 

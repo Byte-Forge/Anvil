@@ -13,12 +13,17 @@ namespace hpse
 		std::string fs = "./shader/map.fs";
 		std::unique_ptr<IShader> shader;
 		std::vector<float> vertices;
-		std::vector<int> indices;
+		std::vector<float> uvs;
+		std::vector<float> normals;
+		std::vector<std::uint32_t> faces;
 
 		//GL specific stuff
+		std::uint32_t mvp;
 		std::uint32_t vao;
 		std::uint32_t vbo;
-		std::uint32_t ibo;
+		std::uint32_t uvbo;
+		std::uint32_t nbo;
+		std::uint32_t fbo;
 
 		void Setup();
 		void Render();

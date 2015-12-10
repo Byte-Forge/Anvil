@@ -5,24 +5,20 @@ using namespace hpse;
 
 void IRenderable::Setup()
 {
-	//call method in Graphics insted??
-	Core::GetGraphics()->GetRenderer()->Setup(*this);
+	Core::GetGraphics()->Setup(*this);
 }
 
 void IRenderable::Render()
 {
-	//call method in Graphics insted??
-	Core::GetGraphics()->GetRenderer()->Render(*this);
+	Core::GetGraphics()->Render(*this);
 }
 
 void IRenderable::Update()
 {
-	//call method in Graphics insted??
-	Core::GetGraphics()->GetRenderer()->Update(*this);
+	Core::GetGraphics()->Update(*this);
 }
 
 void IRenderable::Delete()
 {
-	//call method in Graphics insted??
-	Core::GetGraphics()->GetRenderer()->Delete(*this);
+	Core::GetGraphics()->Delete(*this);
 }

@@ -48,7 +48,7 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
     }
 
     fin.seekg(0,std::ios::end);
-    int size = fin.tellg();
+    int size = (int)fin.tellg();
     fin.seekg(0,std::ios::beg);
 
     char* buffer = new char[size+1];

@@ -40,6 +40,11 @@ namespace hpse
             m_pos = pos;
         }
 
+		inline void Move(glm::vec3 direction)
+		{
+			m_pos += direction * speed; //* delta_time
+		}
+
     private:
         glm::vec3 m_pos;
         glm::vec3 m_lookat;
@@ -47,6 +52,8 @@ namespace hpse
         glm::quat m_rotation;
         double m_fov;
         double m_ratio;
+
+		float speed = 3.0f; // 3 units / second
 
         glm::mat4 m_proj;
         glm::mat4 m_view;

@@ -13,9 +13,14 @@ Camera::Camera()
     m_ratio = 800.0/600.0;
 }
 
+Camera::~Camera()
+{
+
+}
+
 void Camera::Update()
 {
-    m_proj = glm::perspective(m_fov,m_ratio,0.1,100.0);
-    m_view = glm::lookAt(m_pos,m_lookat,m_up);
-    m_vp = m_view* m_proj;
+    m_proj = glm::perspective(m_fov, m_ratio, 0.1, 100.0);
+    m_view = glm::lookAt(m_pos, m_lookat, m_up);
+    m_vp = m_view * m_proj;
 }
