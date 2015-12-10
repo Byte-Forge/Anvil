@@ -1,5 +1,6 @@
 #pragma once
 #include "IShader.hpp"
+#include <glm/glm.hpp>
 #include <vector>
 #include <memory>
 
@@ -12,9 +13,9 @@ namespace hpse
 		std::string vs = "./shader/map.vs";
 		std::string fs = "./shader/map.fs";
 		std::unique_ptr<IShader> shader;
-		std::vector<float> vertices;
-		std::vector<float> uvs;
-		std::vector<float> normals;
+		std::vector<glm::vec3> vertices;
+		std::vector<glm::vec2> uvs;
+		std::vector<glm::vec3> normals;
 		std::vector<std::uint32_t> faces;
 
 		//GL specific stuff

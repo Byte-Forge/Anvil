@@ -7,40 +7,47 @@ Terrain::Terrain(std::uint32_t _width, std::uint32_t _height)
 	width = _width;
 	height = _height;
 
-	/*
-	vertices.push_back(-1.0f);
-	vertices.push_back(-1.0f);
-	vertices.push_back(0.0f);
+	// example CUBE for testing
+	vertices.push_back({ -1.0f,-1.0f,-1.0f });
+	vertices.push_back({ -1.0f,-1.0f, 1.0f });
+	vertices.push_back({ 1.0f, -1.0f, 1.0f });
+	vertices.push_back({ 1.0f, -1.0f, -1.0f });
+	vertices.push_back({ -1.0f, 1.0f,-1.0f });
+	vertices.push_back({ -1.0f, 1.0f, 1.0f });
+	vertices.push_back({ 1.0f, 1.0f, 1.0f });
+	vertices.push_back({ 1.0f, 1.0f, -1.0f });
 
-	vertices.push_back(1.0f);
-	vertices.push_back(-1.0f);
-	vertices.push_back(0.0f);
-
-	vertices.push_back(-1.0f);
-	vertices.push_back(1.0f);
-	vertices.push_back(0.0f);
-
-	vertices.push_back(1.0f);
-	vertices.push_back(1.0f);
-	vertices.push_back(0.0f);
-
+	//bottom
+	faces.push_back(0); faces.push_back(1); faces.push_back(2);
 	
-	faces.push_back(0);
-	faces.push_back(1);
-	faces.push_back(2);
+	faces.push_back(0); faces.push_back(2); faces.push_back(3);
 
-	faces.push_back(1);
-	faces.push_back(2);
-	faces.push_back(3);
-	*/
+	//top
+	faces.push_back(4); faces.push_back(5); faces.push_back(6);
+	faces.push_back(4); faces.push_back(6); faces.push_back(7);
 
+	//front
+	faces.push_back(1); faces.push_back(2); faces.push_back(6);
+	faces.push_back(1); faces.push_back(6); faces.push_back(5);
+
+	//back
+	faces.push_back(0); faces.push_back(3); faces.push_back(7);
+	faces.push_back(0); faces.push_back(7); faces.push_back(4);
+
+	//left
+	faces.push_back(0); faces.push_back(1); faces.push_back(5);
+	faces.push_back(0); faces.push_back(5); faces.push_back(4);
+
+	//right
+	faces.push_back(2); faces.push_back(3); faces.push_back(7);
+	faces.push_back(2); faces.push_back(7); faces.push_back(6);
+
+	/*
 	for (std::uint32_t i = 0; i < width; i++)
 	{
 		for (std::uint32_t j = 0; j < height; j++)
 		{
-			vertices.push_back((float)i * tileSize);
-			vertices.push_back(-1.0 * (i*j) / 10.0); //initialize the height with 0 -> flat terrain
-			vertices.push_back(-(float)j * tileSize);
+			vertices.push_back({ (float)i * tileSize, -1.0 * (i*j) / 10.0, -(float)j * tileSize });
 
 			//create width * height tiles and initialize with default texture
 			//Tile t = Tile();
@@ -66,6 +73,7 @@ Terrain::Terrain(std::uint32_t _width, std::uint32_t _height)
 			faces.push_back(i + (j*width) + 1);
 		}
 	}
+	*/
 
 	//create the data needed to render this object
 	Setup();

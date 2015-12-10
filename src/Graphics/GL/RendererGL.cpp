@@ -169,25 +169,25 @@ void RendererGL::Setup(IRenderable &renderable)
 
 	glGenBuffers(1, &renderable.vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, renderable.vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * renderable.vertices.size(), &renderable.vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, renderable.vertices.size() * sizeof(glm::vec3), &renderable.vertices[0], GL_STATIC_DRAW);
 
 	if (renderable.uvs.size() > 0)
 	{
 		glGenBuffers(1, &renderable.uvbo);
 		glBindBuffer(GL_ARRAY_BUFFER, renderable.uvbo);
-		glBufferData(GL_ARRAY_BUFFER, renderable.uvs.size() * sizeof(float), &renderable.uvs[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, renderable.uvs.size() * sizeof(glm::vec2), &renderable.uvs[0], GL_STATIC_DRAW);
 	}
 
 	if (renderable.normals.size() > 0)
 	{
 		glGenBuffers(1, &renderable.nbo);
 		glBindBuffer(GL_ARRAY_BUFFER, renderable.nbo);
-		glBufferData(GL_ARRAY_BUFFER, renderable.normals.size() * sizeof(float), &renderable.normals[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, renderable.normals.size() * sizeof(glm::vec3), &renderable.normals[0], GL_STATIC_DRAW);
 	}
 
 	glGenBuffers(1, &renderable.fbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderable.fbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * renderable.faces.size(), &renderable.faces[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, renderable.faces.size() * sizeof(glm::vec3), &renderable.faces[0], GL_STATIC_DRAW);
 }
 
 void RendererGL::Render(IRenderable &renderable)
@@ -196,9 +196,8 @@ void RendererGL::Render(IRenderable &renderable)
 	renderable.shader->Use();
 	glEnable(GL_DEPTH_TEST);
 
-	//glm::mat4 ModelMatrix = glm::mat4(1.0);
-	//glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-	glm::mat4 MVP = Core::GetCamera()->GetViewProjectionMatrix();
+	glm::mat4 ModelMatrix = glm::mat4(1.0);
+	glm::mat4 MVP = Core::GetCamera()->GetViewProjectionMatrix() * ModelMatrix;
 
 	glUniformMatrix4fv(renderable.mvp, 1, GL_FALSE, &MVP[0][0]);
 

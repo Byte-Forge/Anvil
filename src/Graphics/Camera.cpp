@@ -1,8 +1,9 @@
 //
 // Created by stephan on 08.12.15.
 //
-
 #include "Camera.hpp"
+#include <iostream>
+
 using namespace hpse;
 
 Camera::Camera()
@@ -16,6 +17,12 @@ Camera::Camera()
 Camera::~Camera()
 {
 
+}
+
+void Camera::Move(glm::vec3 direction)
+{
+	std::cout << "move camera" << std::endl;
+	m_pos += direction * speed; //* delta_time
 }
 
 void Camera::Update()

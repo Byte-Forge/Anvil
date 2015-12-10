@@ -19,6 +19,7 @@ namespace hpse
         ~Camera();
 
         void Update();
+		void Move(glm::vec3 direction);
 
         inline const glm::mat4& GetViewProjectionMatrix()
         {
@@ -39,12 +40,6 @@ namespace hpse
         {
             m_pos = pos;
         }
-
-		inline void Move(glm::vec3 direction)
-		{
-			m_pos += direction * speed; //* delta_time
-		}
-
     private:
         glm::vec3 m_pos;
         glm::vec3 m_lookat;
