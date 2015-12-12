@@ -5,13 +5,24 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
-#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace hpse
 {
+	enum Direction
+	{
+		FOREWARD,
+		BACK,
+		LEFT,
+		RIGHT,
+		ZOOM_IN,
+		ZOOM_OUT
+	};
+
     class Camera
     {
     public:
@@ -19,9 +30,9 @@ namespace hpse
         ~Camera();
 
         void Update();
-		void Move(glm::vec3 direction);
-		void Rotate();
-		void Zoom(int direction);
+		void Move(Direction dir);
+		void Rotate(Direction dir);
+		void Zoom(Direction dir);
 
         inline const glm::mat4& GetViewProjectionMatrix()
         {
@@ -43,14 +54,12 @@ namespace hpse
             m_pos = pos;
         }
     private:
+		float speed = 10.0f;
         glm::vec3 m_pos;
         glm::vec3 m_lookat;
         glm::vec3 m_up;
-        glm::quat m_rotation;
-        double m_fov;
-        double m_ratio;
-
-		float speed = 1.0f; // 3 units / second
+        double m_fov; 
+        double m_ratio; 
 
         glm::mat4 m_proj;
         glm::mat4 m_view;

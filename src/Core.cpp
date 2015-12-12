@@ -83,7 +83,10 @@ void Core::Run()
 				}
 				break;
 			case sf::Event::MouseWheelMoved:
-				m_camera->Zoom(event.mouseWheel.delta);
+				if (event.mouseWheel.delta > 0)
+					m_camera->Zoom(ZOOM_IN);
+				else
+					m_camera->Zoom(ZOOM_OUT);
 				break;
 			case sf::Event::KeyPressed:
 				int code = event.key.code;
@@ -91,21 +94,21 @@ void Core::Run()
 					Quit();
 
 				if (code == 73 || code == 22) //foreward
-					m_camera->Move({ 0.0, 0.0, 1.0 }); 
-				else if (code == 74 || code == 18) //back
-					m_camera->Move({ 0.0, 0.0, -1.0 });
-				else if (code == 71 || code == 0) // left
-					m_camera->Move({ -1.0, 0.0, 0.0 });
-				else if (code == 72 || code == 3) // right
-					m_camera->Move({ 1.0, 0.0, 0.0 });
-				else if (code == 61 || code == -1) // up
-					m_camera->Move({ 0.0, 1.0, 0.0 });
-				else if (code == 62 || code == 38) // down
-					m_camera->Move({ 0.0, -1.0, 0.0 });
-				else if (code == 49 || code == 16) // rotate left
-					m_camera->Rotate();
-				else if (code == 50 || code == 4) // rotate right
-					m_camera->Rotate();
+					m_camera->Move(FOREWARD); 
+				if (code == 74 || code == 18) //back
+					m_camera->Move(BACK);
+				if (code == 71 || code == 0) // left
+					m_camera->Move(LEFT);
+				if (code == 72 || code == 3) // right
+					m_camera->Move(RIGHT);
+				if (code == 61 || code == -1) // up
+					m_camera->Zoom(ZOOM_OUT);
+				if (code == 62 || code == 38) // down
+					m_camera->Zoom(ZOOM_IN);
+				if (code == 49 || code == 16) // rotate left
+					m_camera->Rotate(LEFT);
+				if (code == 50 || code == 4) // rotate right
+					m_camera->Rotate(RIGHT);
 
 				
 				m_gui->KeyDown(event.key);
@@ -115,7 +118,7 @@ void Core::Run()
 			}
 		}
 		m_map->m_terrain->Render();
-		m_graphics->Render();
+		//m_graphics->Render();
 		//create a vector of shared_ptr of all entities in core and iterate and render them here?
 
 		m_window.display();

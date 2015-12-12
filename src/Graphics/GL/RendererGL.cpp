@@ -164,6 +164,10 @@ void RendererGL::Setup(IRenderable &renderable)
 
 	renderable.mvp = glGetUniformLocation(renderable.shader->GetID(), "MVP");
 
+	//this doesnt work crashes at ->Bind() in render method
+	//renderable.tex = std::static_pointer_cast<ITexture> (Core::GetResources()->GetResource("dirt_01", texture));
+	//GLuint TextureID = glGetUniformLocation(renderable.shader->GetID(), "myTextureSampler");
+
 	glGenVertexArrays(1, &renderable.vao);	
 	glBindVertexArray(renderable.vao); 
 
@@ -187,7 +191,7 @@ void RendererGL::Setup(IRenderable &renderable)
 
 	glGenBuffers(1, &renderable.fbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderable.fbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, renderable.faces.size() * sizeof(glm::vec3), &renderable.faces[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, renderable.faces.size() * sizeof(std::uint32_t), &renderable.faces[0], GL_STATIC_DRAW);
 }
 
 void RendererGL::Render(IRenderable &renderable)
@@ -201,26 +205,31 @@ void RendererGL::Render(IRenderable &renderable)
 
 	glUniformMatrix4fv(renderable.mvp, 1, GL_FALSE, &MVP[0][0]);
 
-	glBindVertexArray(renderable.vao);
+	//glActiveTexture(GL_TEXTURE0);
+	//renderable.tex->Bind();
+	//glUniform1i(TextureID, 0);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, renderable.vbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	if (renderable.uvs.size() > 0)
 	{
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, renderable.uvbo);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
 	}
 
 	if (renderable.normals.size() > 0)
 	{
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, renderable.nbo);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0 );
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderable.fbo);
 
-	glDrawElements(GL_TRIANGLES, (GLsizei)renderable.faces.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, (GLsizei)renderable.faces.size(), GL_UNSIGNED_INT, (void*)0);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

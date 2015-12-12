@@ -1,5 +1,7 @@
 #pragma once
 #include "IShader.hpp"
+#include "ITexture.hpp"
+#include "../Core/IResource.hpp"
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>
@@ -19,6 +21,7 @@ namespace hpse
 		std::vector<std::uint32_t> faces;
 
 		//GL specific stuff
+		std::shared_ptr<ITexture> tex;
 		std::uint32_t mvp;
 		std::uint32_t vao;
 		std::uint32_t vbo;
