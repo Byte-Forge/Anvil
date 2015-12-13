@@ -30,6 +30,6 @@ void TextureLoader::Load(const std::string& name)
 		return;
 	}
 
-	std::shared_ptr<IResource> p(tex.get());
+	std::shared_ptr<ITexture> p(tex.get());
 	Core::GetResources()->AddResource(name, p);
 }

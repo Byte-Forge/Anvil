@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include "IResource.hpp"
+#include "../Graphics/ITexture.hpp"
 
 namespace hpse
 {

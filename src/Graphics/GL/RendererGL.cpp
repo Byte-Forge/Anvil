@@ -163,10 +163,9 @@ void RendererGL::Setup(IRenderable &renderable)
 	renderable.shader->Use();
 
 	renderable.mvp = glGetUniformLocation(renderable.shader->GetID(), "MVP");
+	renderable.tID = glGetUniformLocation(renderable.shader->GetID(), "myTextureSampler");
 
-	//this doesnt work crashes at ->Bind() in render method
-	//renderable.tex = std::static_pointer_cast<ITexture> (Core::GetResources()->GetResource("dirt_01", texture));
-	//GLuint TextureID = glGetUniformLocation(renderable.shader->GetID(), "myTextureSampler");
+	renderable.tex = std::static_pointer_cast<GL::Texture> (Core::GetResources()->GetResource("dirt_01", texture));
 
 	glGenVertexArrays(1, &renderable.vao);	
 	glBindVertexArray(renderable.vao); 
@@ -205,9 +204,10 @@ void RendererGL::Render(IRenderable &renderable)
 
 	glUniformMatrix4fv(renderable.mvp, 1, GL_FALSE, &MVP[0][0]);
 
-	//glActiveTexture(GL_TEXTURE0);
-	//renderable.tex->Bind();
-	//glUniform1i(TextureID, 0);
+	glActiveTexture(GL_TEXTURE0); //diffuse texture
+	//crashes here when ->Bind() is called
+	//std::static_pointer_cast<GL::Texture> (renderable.tex)->Bind();
+	glUniform1i(renderable.tID, 0);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, renderable.vbo);

@@ -1,11 +1,12 @@
+#version 400 core
 
-// Ouput data
+in vec2 UV;
+
 out vec3 color;
+
+uniform sampler2D myTextureSampler;
 
 void main()
 {
-
-	// Output color = red 
-	color = vec3(1,0,0);
-
+	color = texture2D( myTextureSampler, UV ).rgb;
 }
