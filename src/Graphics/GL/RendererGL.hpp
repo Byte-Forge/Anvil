@@ -16,10 +16,6 @@ namespace hpse
 		void Resize(int width, int height);
 		void PrintInfo();
 
-		void Setup(IRenderable &renderable);
-		void Render(IRenderable &renderable);
-		void Update(IRenderable &renderable);
-		void Delete(IRenderable &renderable);
 	private:
 		GLuint m_guiVbo;
 		GLuint m_guiVao;

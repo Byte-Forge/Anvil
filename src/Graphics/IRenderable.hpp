@@ -31,9 +31,7 @@ namespace hpse
 		std::uint32_t nbo;
 		std::uint32_t fbo;
 
-		void Setup();
-		void Render();
-		void Update();
-		void Delete();
+		virtual void Render() = 0;
+		virtual void Update() = 0;
 	};
 }

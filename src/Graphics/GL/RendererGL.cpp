@@ -4,6 +4,7 @@
 #include "Shader.hpp"
 #include "../Types.hpp"
 #include "../../Core.hpp"
+#include "../IRenderable.hpp"
 #include <iostream>
 
 using namespace hpse;
@@ -106,6 +107,9 @@ void RendererGL::Render(glm::mat4& ortho)
     glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0);
 
     glEnable(GL_DEPTH_TEST);
+
+    for(auto& renderable : m_renderables)
+        renderable->Render();
 }
 
 void RendererGL::SetupGUI()
@@ -155,115 +159,3 @@ void RendererGL::PrintInfo()
     std::cout << "GLSL Version: " << glslversion << std::endl;
 }
 
-void RendererGL::Setup(IRenderable &renderable)
-{
-	renderable.shader = std::make_unique<GL::Shader>();
-	renderable.shader->Load(renderable.vs, renderable.fs);
-	renderable.shader->Compile();
-	renderable.shader->Use();
-
-	renderable.mvp = glGetUniformLocation(renderable.shader->GetID(), "MVP");
-	renderable.tID = glGetUniformLocation(renderable.shader->GetID(), "myTextureSampler");
-
-	renderable.tex = std::static_pointer_cast<GL::Texture> (Core::GetResources()->GetResource("dirt_01", texture));
-
-	glGenVertexArrays(1, &renderable.vao);	
-	glBindVertexArray(renderable.vao); 
-
-	glGenBuffers(1, &renderable.vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, renderable.vbo);
-	glBufferData(GL_ARRAY_BUFFER, renderable.vertices.size() * sizeof(glm::vec3), &renderable.vertices[0], GL_STATIC_DRAW);
-
-	if (renderable.uvs.size() > 0)
-	{
-		glGenBuffers(1, &renderable.uvbo);
-		glBindBuffer(GL_ARRAY_BUFFER, renderable.uvbo);
-		glBufferData(GL_ARRAY_BUFFER, renderable.uvs.size() * sizeof(glm::vec2), &renderable.uvs[0], GL_STATIC_DRAW);
-	}
-
-	if (renderable.normals.size() > 0)
-	{
-		glGenBuffers(1, &renderable.nbo);
-		glBindBuffer(GL_ARRAY_BUFFER, renderable.nbo);
-		glBufferData(GL_ARRAY_BUFFER, renderable.normals.size() * sizeof(glm::vec3), &renderable.normals[0], GL_STATIC_DRAW);
-	}
-
-	glGenBuffers(1, &renderable.fbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderable.fbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, renderable.faces.size() * sizeof(std::uint32_t), &renderable.faces[0], GL_STATIC_DRAW);
-}
-
-void RendererGL::Render(IRenderable &renderable)
-{  
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
-	renderable.shader->Use();
-	glEnable(GL_DEPTH_TEST);
-
-	glm::mat4 ModelMatrix = glm::mat4(1.0);
-	glm::mat4 MVP = Core::GetCamera()->GetViewProjectionMatrix() * ModelMatrix;
-
-	glUniformMatrix4fv(renderable.mvp, 1, GL_FALSE, &MVP[0][0]);
-
-	glActiveTexture(GL_TEXTURE0); //diffuse texture
-	//crashes here when ->Bind() is called
-	//std::static_pointer_cast<GL::Texture> (renderable.tex)->Bind();
-	glUniform1i(renderable.tID, 0);
-
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, renderable.vbo);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	if (renderable.uvs.size() > 0)
-	{
-		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, renderable.uvbo);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
-	}
-
-	if (renderable.normals.size() > 0)
-	{
-		glEnableVertexAttribArray(2);
-		glBindBuffer(GL_ARRAY_BUFFER, renderable.nbo);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0 );
-	}
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderable.fbo);
-
-	glDrawElements(GL_TRIANGLES, (GLsizei)renderable.faces.size(), GL_UNSIGNED_INT, (void*)0);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-
-	glDisable(GL_DEPTH_TEST);
-}
-
-void RendererGL::Update(IRenderable &renderable)
-{
-	glBindBuffer(GL_ARRAY_BUFFER, renderable.vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * renderable.vertices.size(), &renderable.vertices[0], GL_STATIC_DRAW);
-
-	if (renderable.uvs.size() > 0)
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, renderable.uvbo);
-		glBufferData(GL_ARRAY_BUFFER, renderable.uvs.size() * sizeof(float), &renderable.uvs[0], GL_STATIC_DRAW);
-	}
-}
-
-void RendererGL::Delete(IRenderable &renderable)
-{
-	glDeleteVertexArrays(1, &renderable.vao);
-	renderable.vao = 0;
-
-	glDeleteBuffers(1, &renderable.vbo);
-	renderable.vbo = 0;
-
-	glDeleteBuffers(1, &renderable.uvbo);
-	renderable.uvbo = 0;
-
-	glDeleteBuffers(1, &renderable.nbo);
-	renderable.nbo = 0;
-
-	glDeleteBuffers(1, &renderable.fbo);
-	renderable.fbo = 0;
-}

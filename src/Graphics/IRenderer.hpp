@@ -3,6 +3,7 @@
 #include "IShader.hpp"
 #include "IRenderable.hpp"
 #include <glm/glm.hpp>
+#include <vector>
 #include "../Types/Map.hpp"
 
 namespace hpse
@@ -19,13 +20,9 @@ namespace hpse
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
 
-		virtual void Setup(IRenderable &renderable) = 0;
-		virtual void Render(IRenderable &renderable) = 0;
-		virtual void Update(IRenderable &renderable) = 0;
-		virtual void Delete(IRenderable &renderable) = 0;
-
 	protected:
 		std::unique_ptr<ITexture> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
+		std::vector<std::shared_ptr<IRenderable>> m_renderables;
 	};
 }

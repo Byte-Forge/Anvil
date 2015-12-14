@@ -44,26 +44,6 @@ void Graphics::UpdateGUI(int width, int height, const uint8_t *data)
 	m_renderer->UpdateGUI(width, height, data);
 }
 
-void Graphics::Setup(IRenderable &renderable)
-{
-	m_renderer->Setup(renderable);
-}
-
-void Graphics::Render(IRenderable &renderable)
-{
-	m_renderer->Render(renderable);
-}
-
-void Graphics::Update(IRenderable &renderable)
-{
-	m_renderer->Update(renderable);
-}
-
-void Graphics::Delete(IRenderable &renderable)
-{
-	m_renderer->Delete(renderable);
-}
-
 std::shared_ptr<ITexture> Graphics::GetTexture()
 {
 	std::shared_ptr<ITexture> tex = nullptr;

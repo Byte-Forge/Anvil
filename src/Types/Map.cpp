@@ -1,10 +1,13 @@
 #include "Map.hpp"
-
+#include "../Graphics/GL/Terrain.hpp"
+#include "../Graphics.hpp"
+#include "../Core.hpp"
 using namespace hpse;
 
 Map::Map()
 {
-	m_terrain = std::make_unique<Terrain>(400, 400); //default values for default map
+	if(Core::GetGraphics()->GetBackend()==Graphics::OpenGL)
+		m_terrain = std::make_shared<GL::Terrain>(400,400);
 }
 
 Map::~Map()

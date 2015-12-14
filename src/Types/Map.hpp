@@ -1,5 +1,5 @@
 #pragma once
-#include "Terrain.hpp"
+#include "../Graphics/IRenderable.hpp"
 #include <stdint.h>
 #include <string>
 #include <vector>
@@ -24,7 +24,7 @@ namespace hpse
 	class Map
 	{
 	public:
-		std::shared_ptr<Terrain> m_terrain;
+		std::shared_ptr<IRenderable> m_terrain;
 		//std::vector<float[2]> playerPositions;
 
 		Map();
