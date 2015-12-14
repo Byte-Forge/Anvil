@@ -24,12 +24,9 @@ namespace hpse
 	class Map
 	{
 	public:
-		std::shared_ptr<IRenderable> m_terrain;
-		//std::vector<float[2]> playerPositions;
-
 		Map();
 		~Map();
 	private:
-
+		std::shared_ptr<IRenderable> m_terrain;
 	};
 }

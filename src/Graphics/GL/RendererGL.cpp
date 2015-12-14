@@ -109,6 +109,9 @@ void RendererGL::Render(glm::mat4& ortho)
     glEnable(GL_DEPTH_TEST);
 
     for(auto& renderable : m_renderables)
+        renderable->Update();
+
+    for(auto& renderable : m_renderables)
         renderable->Render();
 }
 
