@@ -48,16 +48,3 @@ void IEntity::AddFX(std::string pivot, std::string fx)
 	else
 		m_boneFXs.insert({ pivot, fx });
 }
-
-void IEntity::AddVariant(Variant var)
-{
-	m_variants.push_back(var);
-}
-
-void IEntity::AddConditionState(State s, ConditionState state)
-{
-	if (m_conditionStates.count(s) > 0)
-		std::cout << s << " is already defined!!" << std::endl;
-	else
-		m_conditionStates.insert({ s, state });
-}
