@@ -20,10 +20,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 			m_uvs.push_back({ i % 10 / 10.0f, j % 10 / 10.0f });
 
 			m_normals.push_back({ 0.0, 1.0, 0.0 });
-
-			m_tangents.push_back({0.0, 0.0, 1.0});
-
-			m_bitangents.push_back({ 1.0, 0.0, 0.0 });
 		}
 	}
 
@@ -76,14 +72,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
 	glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(glm::vec3), &m_normals[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &m_tbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_tbo);
-	glBufferData(GL_ARRAY_BUFFER, m_tangents.size() * sizeof(glm::vec3), &m_tangents[0], GL_STATIC_DRAW);
-
-	glGenBuffers(1, &m_btbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_btbo);
-	glBufferData(GL_ARRAY_BUFFER, m_bitangents.size() * sizeof(glm::vec3), &m_bitangents[0], GL_STATIC_DRAW);
-
 	glGenBuffers(1, &m_fbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
@@ -102,12 +90,6 @@ GL::Terrain::~Terrain()
 
 	glDeleteBuffers(1, &m_nbo);
 	m_nbo = 0;
-
-	glDeleteBuffers(1, &m_tbo);
-	m_tbo = 0;
-
-	glDeleteBuffers(1, &m_btbo);
-	m_btbo = 0;
 
 	glDeleteBuffers(1, &m_fbo);
 	m_fbo = 0;
@@ -147,14 +129,6 @@ void GL::Terrain::Render()
 	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	glEnableVertexAttribArray(3);
-	glBindBuffer(GL_ARRAY_BUFFER, m_tbo);
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glEnableVertexAttribArray(4);
-	glBindBuffer(GL_ARRAY_BUFFER, m_btbo);
-	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
 
 
@@ -164,8 +138,6 @@ void GL::Terrain::Render()
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(3);
-	glDisableVertexAttribArray(4);
 }
 
 void GL::Terrain::Update()
