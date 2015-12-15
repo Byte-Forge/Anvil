@@ -17,7 +17,7 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 		{
 			m_vertices.push_back({ (float)i * 10.0, glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4), (float)j * 10.0});
 
-			m_uvs.push_back({ i % 10 / 10.0f, j % 10 / 10.0f });
+			m_uvs.push_back({ i%2, j%2 });
 
 			m_normals.push_back({ 0.0, 1.0, 0.0 });
 		}
@@ -42,9 +42,10 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 	m_diffuse = glm::vec3({0.8f, 0.8f, 0.8f});
 	m_lightDir = glm::vec3({ -0.1f, -1.0f, -0.1f });
 
-	m_diff = std::dynamic_pointer_cast<ITexture> (Core::GetResources()->GetResource("pepples_01", ResourceType::texture));
-	m_nrm = std::dynamic_pointer_cast<ITexture> (Core::GetResources()->GetResource("pepples_01_nrm", ResourceType::texture));
-	m_spec = std::dynamic_pointer_cast<ITexture> (Core::GetResources()->GetResource("pepples_01_spec", ResourceType::texture));
+	m_diff = Core::GetResources()->GetTexture("pepples_01");
+	m_nrm = Core::GetResources()->GetTexture("pepples_01_nrm");
+	m_spec = Core::GetResources()->GetTexture("pepples_01_spec");
+	m_disp = Core::GetResources()->GetTexture("pepples_01_disp");
 
 	m_matrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");	
 	m_viewMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
@@ -54,6 +55,7 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 	m_diffID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
 	m_nrmID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
 	m_specID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler");
+	m_dispID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler");
 
 	m_lightID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("LightPosition_worldspace");
 
@@ -117,6 +119,10 @@ void GL::Terrain::Render()
 	m_spec->Bind();
 	glUniform1i(m_specID, 2);
 
+	glActiveTexture(GL_TEXTURE3); //disp texture
+	m_disp->Bind();
+	glUniform1i(m_dispID, 3);
+
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -131,9 +137,9 @@ void GL::Terrain::Render()
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
 
-
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
-
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -142,7 +148,6 @@ void GL::Terrain::Render()
 
 void GL::Terrain::Update()
 {	
-
 	m_mod = glm::mat4(1.0);
 	if (updated)
 	{

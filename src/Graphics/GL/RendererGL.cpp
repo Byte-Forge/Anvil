@@ -71,6 +71,7 @@ RendererGL::RendererGL()
     SetupGUI();
 
 	m_terrainShader = std::make_unique<GL::Shader>();
+	//m_terrainShader->Load("./shader/terrain_dis.vs", "./shader/terrain_dis.tcs", "./shader/terrain_dis.tes", "./shader/terrain_dis.gs", "./shader/terrain_dis.fs");
 	m_terrainShader->Load("./shader/terrain.vs", "./shader/terrain.fs");
 	m_terrainShader->Compile();
 	m_terrainShader->Use();

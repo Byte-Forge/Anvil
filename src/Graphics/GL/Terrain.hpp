@@ -33,10 +33,12 @@ namespace hpse
 			std::shared_ptr<ITexture> m_diff;
 			std::shared_ptr<ITexture> m_nrm;
 			std::shared_ptr<ITexture> m_spec;
+			std::shared_ptr<ITexture> m_disp;
 
 			GLuint m_diffID;
 			GLuint m_nrmID;
 			GLuint m_specID;
+			GLuint m_dispID;
 
 			GLuint m_matrixID;
 			GLuint m_modelMatrixID;

@@ -25,7 +25,7 @@ void Entity::SetModel(std::string model)
 
 std::shared_ptr<IResource> Entity::GetModel()
 {
-	return Core::GetResources()->GetResource(m_w4dModel, ResourceType::entity);
+	return nullptr;
 }
 
 void Entity::SetWeaponLaunchBone(std::string bone)

@@ -37,6 +37,15 @@ void GL::Shader::Load(const std::string &vertShader, const std::string& geoShade
     LoadShader(geoShader, GL_GEOMETRY_SHADER);
     LoadShader(fragShader, GL_FRAGMENT_SHADER);
 }
+void GL::Shader::Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader)
+{
+	LoadShader(vertShader, GL_VERTEX_SHADER);
+	LoadShader(tessControlShader, GL_TESS_CONTROL_SHADER);
+	LoadShader(tessEvalShader, GL_TESS_EVALUATION_SHADER);
+	LoadShader(geoShader, GL_GEOMETRY_SHADER);
+	LoadShader(fragShader, GL_FRAGMENT_SHADER);
+}
+
 
 void GL::Shader::LoadShader(const std::string file, GLenum type)
 {
@@ -65,6 +74,8 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
     const auto& shader = m_shaders[type];
     glShaderSource(shader,1,&buffer, &size);
 	delete[] buffer;
+
+	std::cout << file << std::endl;
 }
 
 void GL::Shader::Use()
