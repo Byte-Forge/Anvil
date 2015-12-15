@@ -23,6 +23,7 @@ namespace hpse
     class ResourceHandler
     {
     public:
+
         std::shared_ptr<IResource> GetResource(const std::string& name, ResourceType type);
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 

@@ -20,6 +20,11 @@ namespace hpse
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
 
+		inline std::uint32_t GetTerrainUniformLocation(char* id)
+		{
+			return m_terrainShader->GetUniformLocation(id);
+		}
+
 		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable)
 		{
 			m_renderables.push_back(renderable);
@@ -27,6 +32,7 @@ namespace hpse
 	protected:
 		std::unique_ptr<ITexture> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
+		std::unique_ptr<IShader> m_terrainShader;
 		std::vector<std::shared_ptr<IRenderable>> m_renderables;
 	};
 }

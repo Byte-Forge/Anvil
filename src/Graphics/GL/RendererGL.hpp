@@ -1,6 +1,6 @@
 #pragma once
 #include "../IRenderer.hpp"
-#include "./flextGL.h"
+#include "flextGL.h"
 #include "../../Types/Map.hpp"
 
 namespace hpse
@@ -21,5 +21,6 @@ namespace hpse
 		GLuint m_guiVao;
 		GLuint m_guiIbo;
 		void SetupGUI();
+		void RenderGUI();
 	};
 }

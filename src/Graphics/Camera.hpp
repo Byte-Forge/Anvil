@@ -34,6 +34,26 @@ namespace hpse
 		void Rotate(Direction dir);
 		void Zoom(Direction dir);
 
+		inline const glm::vec3 GetLookAt()
+		{
+			return m_lookat;
+		}
+
+		inline const glm::vec3 GetPosition()
+		{
+			return m_pos;
+		}
+
+		inline const glm::mat4& GetProjectionMatrix()
+		{
+			return m_proj;
+		}
+
+		inline const glm::mat4& GetViewMatrix()
+		{
+			return m_view;
+		}
+
         inline const glm::mat4& GetViewProjectionMatrix()
         {
             return m_vp;
@@ -54,7 +74,7 @@ namespace hpse
             m_pos = pos;
         }
     private:
-		float speed = 10.0f;
+		float speed = 1.0f;
         glm::vec3 m_pos;
         glm::vec3 m_lookat;
         glm::vec3 m_up;

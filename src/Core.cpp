@@ -117,8 +117,7 @@ void Core::Run()
 				break;
 			}
 		}
-		//m_graphics->Render();
-		//create a vector of shared_ptr of all entities in core and iterate and render them here?
+		m_graphics->Render();
 
 		m_window.display();
 	}

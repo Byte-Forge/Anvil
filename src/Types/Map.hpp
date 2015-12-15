@@ -1,5 +1,6 @@
 #pragma once
 #include "../Graphics/IRenderable.hpp"
+#include "../Graphics/GL/Terrain.hpp"
 #include <stdint.h>
 #include <string>
 #include <vector>
@@ -27,6 +28,6 @@ namespace hpse
 		Map();
 		~Map();
 	private:
-		std::shared_ptr<IRenderable> m_terrain;
+		std::shared_ptr<GL::Terrain> m_terrain;
 	};
 }

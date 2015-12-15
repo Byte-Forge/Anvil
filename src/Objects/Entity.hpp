@@ -11,11 +11,11 @@
 
 namespace hpse
 {
-    class IEntity : public IResource
+    class Entity : public IResource
     {
 	public:
-		IEntity(std::string name);
-		~IEntity();
+		Entity(std::string name);
+		~Entity();
 		void SetModel(std::string model);
 		std::shared_ptr<IResource> GetModel(); 
 		void SetWeaponLaunchBone(std::string bone);

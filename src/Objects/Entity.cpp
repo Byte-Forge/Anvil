@@ -1,39 +1,39 @@
 //
 // Created by michael on 23.11.15.
 //
-#include "IEntity.hpp"
+#include "Entity.hpp"
 #include "../Core.hpp"
 #include "../Core/ResourceHandler.hpp"
 #include <iostream>
 
 using namespace hpse;
 
-IEntity::IEntity(std::string name)
+Entity::Entity(std::string name)
 {
 	m_name = name;
 }
 
-IEntity::~IEntity()
+Entity::~Entity()
 {
 
 }
 
-void IEntity::SetModel(std::string model)
+void Entity::SetModel(std::string model)
 {
 	m_w4dModel = model;
 }
 
-std::shared_ptr<IResource> IEntity::GetModel()
+std::shared_ptr<IResource> Entity::GetModel()
 {
 	return Core::GetResources()->GetResource(m_w4dModel, ResourceType::entity);
 }
 
-void IEntity::SetWeaponLaunchBone(std::string bone)
+void Entity::SetWeaponLaunchBone(std::string bone)
 {
 	m_weaponLaunchBone = bone;
 }
 
-void IEntity::AddProp(std::string pivot, std::string prop)
+void Entity::AddProp(std::string pivot, std::string prop)
 {
 	if (m_props.count(pivot) > 0)
 		m_props[pivot] = prop;
@@ -41,7 +41,7 @@ void IEntity::AddProp(std::string pivot, std::string prop)
 		m_props.insert({ pivot, prop });
 }
 
-void IEntity::AddFX(std::string pivot, std::string fx)
+void Entity::AddFX(std::string pivot, std::string fx)
 {
 	if (m_boneFXs.count(pivot) > 0)
 		m_boneFXs[pivot] = fx;

@@ -1,5 +1,4 @@
 #include "RendererGL.hpp"
-#include "flextGL.h"
 #include "Texture.hpp"
 #include "Shader.hpp"
 #include "../Types.hpp"
@@ -65,7 +64,16 @@ RendererGL::RendererGL()
 	#endif
     m_overlay = std::make_unique<GL::Texture>();
 
+	m_guiShader = std::make_unique<GL::Shader>();
+	m_guiShader->Load("./shader/gui.vs", "./shader/gui.fs");
+	m_guiShader->Compile();
+	m_guiShader->Use();
     SetupGUI();
+
+	m_terrainShader = std::make_unique<GL::Shader>();
+	m_terrainShader->Load("./shader/terrain.vs", "./shader/terrain.fs");
+	m_terrainShader->Compile();
+	m_terrainShader->Use();
 }
 
 RendererGL::~RendererGL()
@@ -98,29 +106,43 @@ void RendererGL::Clear()
 
 void RendererGL::Render(glm::mat4& ortho)
 {
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
-    glDisable(GL_DEPTH_TEST);
-    m_overlay->Bind();
-
-	m_guiShader->Use();
-    glBindVertexArray(m_guiVao);
-    glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT, 0);
-
     glEnable(GL_DEPTH_TEST);
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
+	
+	m_terrainShader->Use();
 
     for(auto& renderable : m_renderables)
         renderable->Update();
 
+	
     for(auto& renderable : m_renderables)
         renderable->Render();
+
+	//RenderGUI();
+}
+
+void RendererGL::RenderGUI()
+{
+	glDisable(GL_DEPTH_TEST);
+	m_overlay->Bind();
+
+	m_guiShader->Use();
+	glBindVertexArray(m_guiVao);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, m_guiVbo);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_guiIbo);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 }
 
 void RendererGL::SetupGUI()
 {
-    m_guiShader = std::make_unique<GL::Shader>();
-    m_guiShader->Load("./shader/gui.vs", "./shader/gui.fs");
-    m_guiShader->Compile();
-    m_guiShader->Use();
     glGenVertexArrays(1, &m_guiVao);
     glBindVertexArray(m_guiVao);
 
@@ -137,14 +159,10 @@ void RendererGL::SetupGUI()
             0, 1, 2,
             2, 3, 1
     };
+
     glGenBuffers(1, &m_guiIbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_guiIbo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,4*sizeof(float),0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,4*sizeof(float),(void*)(2*sizeof(float)));
 }
 
 void RendererGL::Resize(int width, int height)
