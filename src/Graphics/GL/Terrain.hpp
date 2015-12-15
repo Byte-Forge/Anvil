@@ -30,9 +30,9 @@ namespace hpse
 
 			GLuint m_lightID;
 
-			std::shared_ptr<IResource> m_diff;
-			std::shared_ptr<IResource> m_nrm;
-			std::shared_ptr<IResource> m_spec;
+			std::shared_ptr<ITexture> m_diff;
+			std::shared_ptr<ITexture> m_nrm;
+			std::shared_ptr<ITexture> m_spec;
 
 			GLuint m_diffID;
 			GLuint m_nrmID;

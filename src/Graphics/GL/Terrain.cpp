@@ -46,9 +46,9 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 	m_diffuse = glm::vec3({0.8f, 0.8f, 0.8f});
 	m_lightDir = glm::vec3({ -0.1f, -1.0f, -0.1f });
 
-	m_diff = Core::GetResources()->GetResource("pepples_01", ResourceType::texture);
-	m_nrm = Core::GetResources()->GetResource("pepples_01_nrm", ResourceType::texture);
-	m_spec = Core::GetResources()->GetResource("pepples_01_spec", ResourceType::texture);
+	m_diff = std::dynamic_pointer_cast<ITexture> (Core::GetResources()->GetResource("pepples_01", ResourceType::texture));
+	m_nrm = std::dynamic_pointer_cast<ITexture> (Core::GetResources()->GetResource("pepples_01_nrm", ResourceType::texture));
+	m_spec = std::dynamic_pointer_cast<ITexture> (Core::GetResources()->GetResource("pepples_01_spec", ResourceType::texture));
 
 	m_matrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");	
 	m_viewMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
@@ -124,15 +124,15 @@ void GL::Terrain::Render()
 	glUniform3f(m_lightID, lightPos.x, lightPos.y, lightPos.z);
 
 	glActiveTexture(GL_TEXTURE0); //diffuse texture
-	std::dynamic_pointer_cast<ITexture> (m_diff)->Bind();
+	m_diff->Bind();
 	glUniform1i(m_diffID, 0);
 
 	glActiveTexture(GL_TEXTURE1); //normal texture
-	std::dynamic_pointer_cast<ITexture> (m_nrm)->Bind();
+	m_nrm->Bind();
 	glUniform1i(m_nrmID, 1);
 
 	glActiveTexture(GL_TEXTURE2); //spec texture
-	std::dynamic_pointer_cast<ITexture> (m_spec)->Bind();
+	m_spec->Bind();
 	glUniform1i(m_specID, 2);
 
 	glEnableVertexAttribArray(0);
