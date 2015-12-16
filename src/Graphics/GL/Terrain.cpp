@@ -11,13 +11,13 @@ using namespace hpse;
 
 GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 {
-	m_quadtree = std::make_shared<Quadtree>(glm::vec2(width / 2.f, height / 2.f), glm::vec2(width / 2.f, height/ 2.f), 5);
+	m_quadtree = std::make_shared<Quadtree>(glm::vec2(width / 2.f, height / 2.f), glm::vec2(width / 2.f, height/ 2.f));
 
 	for (std::uint32_t i = 0; i < width; i++)
 	{
 		for (std::uint32_t j = 0; j < height; j++)
 		{
-			m_vertices.push_back({ (float)i * 10.0, glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4), (float)j * 10.0});
+			m_vertices.push_back({ (float)i, (glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 100.0, (float)j});
 
 			m_uvs.push_back({ i%2, j%2 });
 
@@ -160,7 +160,6 @@ void GL::Terrain::Update()
 	if (Core::GetCamera()->GetFrustum()->Updated())
 	{
 		m_faces = m_quadtree->GetTriangles(Core::GetCamera()->GetFrustum()->GetFrustumArray()); 
-		std::cout << m_faces.size() << std::endl;
 		if (m_faces.size() != 0)
 		{
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);

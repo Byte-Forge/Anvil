@@ -6,7 +6,7 @@ using namespace hpse;
 Quadtree::Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel, unsigned int level) :
 	m_pos(pos), m_size(size), m_maxLevel(maxLevel), m_level(level)
 {
-	m_radius = size.x;// glm::length(m_size);
+	m_radius = glm::length(m_size);
 	if (level == maxLevel)
 		return;
 
@@ -17,6 +17,11 @@ Quadtree::Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel, unsigne
 	m_SE = std::make_unique<Quadtree>(glm::vec2(pos.x + size.x / 2.f, pos.y + size.y / 2.f), size / 2.f, maxLevel, level + 1);
 }
 
+int ne = 0;
+int nw = 0;
+int se = 0;
+int sw = 0;
+
 void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& v1, glm::vec3& v2, glm::vec3& v3)
 {
 	if (m_level == m_maxLevel) // If max level is reached we dont bother checking for nodes.
@@ -25,23 +30,28 @@ void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& v1, glm::vec3& v2, gl
 		return;
 	}
 
+
 	if (m_NW->contains(v1) && m_NW->contains(v2) && m_NW->contains(v3))
 	{
+		nw++;
 		m_NW->AddTriangle(indices, v1, v2, v3);
 		return;
 	}
 	else if (m_NE->contains(v1) && m_NE->contains(v2) && m_NE->contains(v3))
 	{
+		ne++;
 		m_NE->AddTriangle(indices, v1, v2, v3);
 		return;
 	}
 	else if (m_SW->contains(v1) && m_SW->contains(v2) && m_SW->contains(v3))
 	{
+		sw++;
 		m_SW->AddTriangle(indices, v1, v2, v3);
 		return;
 	}
 	else if (m_SE->contains(v1) && m_SE->contains(v2) && m_SE->contains(v3))
 	{
+		se++;
 		m_SE->AddTriangle(indices, v1, v2, v3);
 		return;
 	}
@@ -141,7 +151,7 @@ int Quadtree::SphereInFrustum(std::array<std::array<float, 4>, 6>& frustum)
 bool Quadtree::CubeInFrustum(std::array<std::array<float, 4>, 6>& frustum)
 {
 	for (int p = 0; p < 6; p++)
-	{
+ 	{
 		if (frustum[p][0] * (m_pos.x - m_size.x) + frustum[p][2] * (m_pos.y - m_size.y) + frustum[p][3] > 0)
 			continue;
 		if (frustum[p][0] * (m_pos.x + m_size.x) + frustum[p][2] * (m_pos.y - m_size.y) + frustum[p][3] > 0)

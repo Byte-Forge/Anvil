@@ -9,7 +9,7 @@ using namespace hpse;
 Camera::Camera()
 {
     m_up = glm::vec3(0.0, 1.0, 0.0);
-	m_pos = glm::vec3(-80.0, 80.0, -80.0);
+	m_pos = glm::vec3(-8.0, 8.0, -8.0);
 	m_lookat = glm::vec3(0.0, 0.0, 0.0);
 
     m_fov = 45.0;

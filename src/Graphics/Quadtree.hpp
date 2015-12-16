@@ -9,8 +9,7 @@ namespace hpse
 	class Quadtree
 	{
 	public:
-		Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel, unsigned int level = 0);
-		//~Quadtree(); 
+		Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel = 5, unsigned int level = 0);
 
 		void AddTriangle(uint32_t indices[3], glm::vec3& _v1, glm::vec3& _v2, glm::vec3& _v3); // Add a single triangle to Quadtree
 		std::vector<uint32_t> GetTriangles(std::array<std::array<float, 4>, 6>& frustum); // Returns all objects to be drawn within specified area.

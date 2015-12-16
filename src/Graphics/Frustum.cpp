@@ -1,12 +1,14 @@
 #include "Frustum.hpp"
+#include <iostream>
 
 using namespace hpse;
 
 void Frustum::Recalculate(glm::mat4 view, glm::mat4 proj)
 {
 	if (m_lastView == view && m_lastProjection == proj)
+	{
 		return; // If both are equal - don't recalculate.
-
+	}
 	// Save matrices from last calculation (this is the last)
 	m_lastProjection = proj;
 	m_lastView = view;
