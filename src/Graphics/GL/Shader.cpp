@@ -74,8 +74,6 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
     const auto& shader = m_shaders[type];
     glShaderSource(shader,1,&buffer, &size);
 	delete[] buffer;
-
-	std::cout << file << std::endl;
 }
 
 void GL::Shader::Use()

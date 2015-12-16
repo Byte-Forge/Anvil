@@ -11,6 +11,8 @@ using namespace hpse;
 
 GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 {
+	m_quadtree = std::make_shared<Quadtree>(glm::vec2(width / 2.f, height / 2.f), glm::vec2(width / 2.f, height/ 2.f), 5);
+
 	for (std::uint32_t i = 0; i < width; i++)
 	{
 		for (std::uint32_t j = 0; j < height; j++)
@@ -36,6 +38,11 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 			m_faces.push_back(i + (j*width) + width + 1);
 			m_faces.push_back(i + (j*width) + 1);
 		}
+	}
+
+	for (int i = 0; i < m_faces.size(); i += 3)
+	{
+		m_quadtree->AddTriangle(&m_faces[i], m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]]);
 	}
 
 	m_ambient = glm::vec3({ 0.6f, 0.6f, 0.6f });
@@ -149,6 +156,18 @@ void GL::Terrain::Render()
 void GL::Terrain::Update()
 {	
 	m_mod = glm::mat4(1.0);
+
+	if (Core::GetCamera()->GetFrustum()->Updated())
+	{
+		m_faces = m_quadtree->GetTriangles(Core::GetCamera()->GetFrustum()->GetFrustumArray()); 
+		std::cout << m_faces.size() << std::endl;
+		if (m_faces.size() != 0)
+		{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
+		}
+	}
+
 	if (updated)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);

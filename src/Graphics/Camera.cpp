@@ -14,6 +14,8 @@ Camera::Camera()
 
     m_fov = 45.0;
     m_ratio = 800.0/600.0;
+
+	m_frustum = std::make_unique<Frustum>();
 }
 
 Camera::~Camera()
@@ -81,4 +83,6 @@ void Camera::Update()
     m_proj = glm::perspective(m_fov, m_ratio, 0.1, 10000.0);
     m_view = glm::lookAt(m_pos, m_lookat, m_up);
     m_vp = m_proj * m_view;
+
+	m_frustum->Recalculate(m_view, m_proj);
 }

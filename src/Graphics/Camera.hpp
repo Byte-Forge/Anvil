@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include "Frustum.hpp"
+#include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
@@ -73,6 +75,12 @@ namespace hpse
         {
             m_pos = pos;
         }
+
+		inline std::unique_ptr<Frustum>& GetFrustum()
+		{
+			return m_frustum;
+		}
+
     private:
 		float speed = 1.0f;
         glm::vec3 m_pos;
@@ -84,6 +92,8 @@ namespace hpse
         glm::mat4 m_proj;
         glm::mat4 m_view;
         glm::mat4 m_vp;
+
+		std::unique_ptr<Frustum> m_frustum;
     };
 }
 

@@ -5,7 +5,7 @@
 #pragma once
 #include "../IRenderable.hpp"
 #include "../ITexture.hpp"
-#include "../../Core/IResource.hpp"
+#include "../Quadtree.hpp"
 #include "flextGL.h"
 #include <vector>
 #include <glm/glm.hpp>
@@ -23,6 +23,8 @@ namespace hpse
             void Render();
             void Update();
         private:
+			std::shared_ptr<Quadtree> m_quadtree;
+
 			bool updated = true;
 			glm::vec3 m_ambient;
 			glm::vec3 m_diffuse;

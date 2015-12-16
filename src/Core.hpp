@@ -7,6 +7,7 @@
 #include "Types/Map.hpp"
 #include "Core/ResourceHandler.hpp"
 #include "Graphics/Camera.hpp"
+#include "Graphics/Frustum.hpp"
 
 namespace hpse
 {
@@ -46,7 +47,7 @@ namespace hpse
 		static inline std::unique_ptr<Camera>& GetCamera()
 		{
 			return m_camera;
-		}
+		} 
 
 		static inline void Quit()
 		{
@@ -61,6 +62,7 @@ namespace hpse
 		static std::unique_ptr<Audio> m_audio;
 		static std::unique_ptr<Map> m_map;
 		static std::unique_ptr<Camera> m_camera;
+		static std::unique_ptr<Frustum> m_frustum;
 		static bool m_running;
 	};
 }
