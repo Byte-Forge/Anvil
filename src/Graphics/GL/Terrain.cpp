@@ -11,15 +11,15 @@ using namespace hpse;
 
 GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 {
-	m_quadtree = std::make_shared<Quadtree>(glm::vec2(width / 2.f, height / 2.f), glm::vec2(width / 2.f, height/ 2.f));
+	m_quadtree = std::make_shared<Quadtree>(glm::vec2(width / 2.f, height / 2.f), glm::vec2(width / 2.f, height / 2.f));
 
 	for (std::uint32_t i = 0; i < width; i++)
 	{
 		for (std::uint32_t j = 0; j < height; j++)
 		{
-			m_vertices.push_back({ (float)i, (glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 100.0, (float)j});
+			m_vertices.push_back({ (float)i, (glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 100.0, (float)j });
 
-			m_uvs.push_back({ i%2, j%2 });
+			m_uvs.push_back({ i % 2, j % 2 });
 
 			m_normals.push_back({ 0.0, 1.0, 0.0 });
 		}
@@ -46,7 +46,7 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 	}
 
 	m_ambient = glm::vec3({ 0.6f, 0.6f, 0.6f });
-	m_diffuse = glm::vec3({0.8f, 0.8f, 0.8f});
+	m_diffuse = glm::vec3({ 0.8f, 0.8f, 0.8f });
 	m_lightDir = glm::vec3({ -0.1f, -1.0f, -0.1f });
 
 	m_diff = Core::GetResources()->GetTexture("pepples_01");
@@ -54,7 +54,7 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 	m_spec = Core::GetResources()->GetTexture("pepples_01_spec");
 	m_disp = Core::GetResources()->GetTexture("pepples_01_disp");
 
-	m_matrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");	
+	m_matrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");
 	m_viewMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
 	m_modelMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M");
 	m_modelView3x3MatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3");
@@ -105,13 +105,13 @@ GL::Terrain::~Terrain()
 }
 
 void GL::Terrain::Render()
-{ 
+{
 	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
 	glUniformMatrix4fv(m_modelMatrixID, 1, GL_FALSE, &m_mod[0][0]);
 	glUniformMatrix4fv(m_viewMatrixID, 1, GL_FALSE, &Core::GetCamera()->GetViewMatrix()[0][0]);
 	glUniformMatrix3fv(m_modelView3x3MatrixID, 1, GL_FALSE, &glm::mat3(Core::GetCamera()->GetViewMatrix() * m_mod)[0][0]);
 
-	glm::vec3 lightPos = Core::GetCamera()->GetLookAt() + glm::vec3({0.0, 100.0, 0.0});
+	glm::vec3 lightPos = Core::GetCamera()->GetLookAt() + glm::vec3({ 0.0, 100.0, 0.0 });
 	glUniform3f(m_lightID, lightPos.x, lightPos.y, lightPos.z);
 
 	glActiveTexture(GL_TEXTURE0); //diffuse texture
@@ -154,12 +154,12 @@ void GL::Terrain::Render()
 }
 
 void GL::Terrain::Update()
-{	
+{
 	m_mod = glm::mat4(1.0);
 
 	if (Core::GetCamera()->GetFrustum()->Updated())
 	{
-		m_faces = m_quadtree->GetTriangles(Core::GetCamera()->GetFrustum()->GetFrustumArray()); 
+		m_faces = m_quadtree->GetTriangles(Core::GetCamera()->GetFrustum()->GetFrustumArray());
 		if (m_faces.size() != 0)
 		{
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
