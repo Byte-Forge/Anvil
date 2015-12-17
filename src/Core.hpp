@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Window.hpp>
+#include <glm/glm.hpp>
 #include "Graphics.hpp"
 #include "Script.hpp"
 #include "GUI.hpp"
@@ -49,12 +50,20 @@ namespace hpse
 			return m_camera;
 		} 
 
+		static inline glm::vec2 GetResolution()
+		{
+			glm::vec2 res;
+			res.x = (float)m_window->getSize().x;
+			res.y = (float)m_window->getSize().y;
+			return res;
+		}
+
 		static inline void Quit()
 		{
 			m_running = false;
 		}
 	private:
-		sf::Window m_window;
+		static std::unique_ptr<sf::Window> m_window;
 		static std::unique_ptr<ResourceHandler> m_resources;
 		static std::unique_ptr<Graphics> m_graphics;
 		static std::unique_ptr<GUI> m_gui;

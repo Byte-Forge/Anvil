@@ -9,7 +9,7 @@
 
 using namespace hpse;
 
-GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
+GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width), m_height(height)
 {
 	m_quadtree = std::make_shared<Quadtree>(glm::vec2(width / 2.f, height / 2.f), glm::vec2(width / 2.f, height / 2.f));
 
@@ -17,7 +17,7 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height)
 	{
 		for (std::uint32_t j = 0; j < height; j++)
 		{
-			m_vertices.push_back({ (float)i, (glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 100.0, (float)j });
+			m_vertices.push_back({ (float)i, (glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 10.0, (float)j });
 
 			m_uvs.push_back({ i % 2, j % 2 });
 
@@ -114,6 +114,20 @@ void GL::Terrain::Render()
 	glm::vec3 lightPos = Core::GetCamera()->GetLookAt() + glm::vec3({ 0.0, 100.0, 0.0 });
 	glUniform3f(m_lightID, lightPos.x, lightPos.y, lightPos.z);
 
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glEnableVertexAttribArray(2);
+	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
+
 	glActiveTexture(GL_TEXTURE0); //diffuse texture
 	m_diff->Bind();
 	glUniform1i(m_diffID, 0);
@@ -130,22 +144,7 @@ void GL::Terrain::Render()
 	m_disp->Bind();
 	glUniform1i(m_dispID, 3);
 
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
 
 	glDisableVertexAttribArray(0);
@@ -181,3 +180,5 @@ void GL::Terrain::Update()
 		updated = false;
 	}
 }
+
+

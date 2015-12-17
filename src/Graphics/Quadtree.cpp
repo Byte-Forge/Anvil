@@ -1,5 +1,6 @@
 #include "Quadtree.hpp"
 #include <iostream>
+#include "../Math/Collision.hpp"
 
 using namespace hpse;
 
@@ -123,46 +124,17 @@ std::vector<uint32_t> Quadtree::GetTriangles(std::array<std::array<float, 4>, 6>
 
 bool Quadtree::contains(glm::vec3& vertex)
 {
-	return (vertex.x >= m_pos.x - m_size.x
-		&& vertex.x <= m_pos.x + m_size.x
-		&& vertex.z >= m_pos.y - m_size.y
-		&& vertex.z <= m_pos.y + m_size.y);
+	return Collision::Contains(vertex, m_pos, m_size);
 }
 
 int Quadtree::SphereInFrustum(std::array<std::array<float, 4>, 6>& frustum)
 {
-	// 0 if it doesnt collide, 1 if collides and 2 if AABB is fully within frustum
-	int p;
-	int c = 0;
-	float d;
-
-
-	for (p = 0; p < 6; p++)
-	{
-		d = frustum[p][0] * m_pos.x + frustum[p][2] * m_pos.y + frustum[p][3];
-		if (d <= -m_radius)
-			return 0;
-		if (d > m_radius)
-			c++;
-	}
-	return (c == 6) ? 2 : 1;
+	return Collision::SphereInFrustum(frustum, m_pos, m_radius);
 }
 
 bool Quadtree::CubeInFrustum(std::array<std::array<float, 4>, 6>& frustum)
 {
-	for (int p = 0; p < 6; p++)
- 	{
-		if (frustum[p][0] * (m_pos.x - m_size.x) + frustum[p][2] * (m_pos.y - m_size.y) + frustum[p][3] > 0)
-			continue;
-		if (frustum[p][0] * (m_pos.x + m_size.x) + frustum[p][2] * (m_pos.y - m_size.y) + frustum[p][3] > 0)
-			continue;
-		if (frustum[p][0] * (m_pos.x - m_size.x) + frustum[p][2] * (m_pos.y + m_size.y) + frustum[p][3] > 0)
-			continue;
-		if (frustum[p][0] * (m_pos.x + m_size.x) + frustum[p][2] * (m_pos.y + m_size.y) + frustum[p][3] > 0)
-			continue;
-		return false;
-	}
-	return true;
+	return Collision::CubeInFrustum(frustum, m_pos, m_size);
 }
 
 std::vector<uint32_t> Quadtree::getAllTriangles()

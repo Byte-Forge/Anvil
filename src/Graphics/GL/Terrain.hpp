@@ -23,6 +23,7 @@ namespace hpse
             void Render();
             void Update();
         private:
+			std::uint32_t m_width, m_height;
 			std::shared_ptr<Quadtree> m_quadtree;
 
 			bool updated = true;

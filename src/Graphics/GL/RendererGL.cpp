@@ -119,15 +119,17 @@ void RendererGL::Render(glm::mat4& ortho)
     for(auto& renderable : m_renderables)
         renderable->Render();
 
-	//RenderGUI();
+	RenderGUI();
 }
 
 void RendererGL::RenderGUI()
 {
 	glDisable(GL_DEPTH_TEST);
+	m_guiShader->Use();
+
+	glActiveTexture(GL_TEXTURE0);
 	m_overlay->Bind();
 
-	m_guiShader->Use();
 	glBindVertexArray(m_guiVao);
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, m_guiVbo);

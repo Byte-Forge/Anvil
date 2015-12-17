@@ -1,9 +1,12 @@
 #include "Core.hpp" 
 #include "Graphics/GL/Texture.hpp"
 #include <iostream>
+#include <conio.h>
+
 
 using namespace hpse;
 
+std::unique_ptr<sf::Window> Core::m_window = nullptr;
 std::unique_ptr<ResourceHandler> Core::m_resources = nullptr;
 std::unique_ptr<Graphics> Core::m_graphics = nullptr;
 std::unique_ptr<Script> Core::m_script = nullptr;
@@ -16,18 +19,19 @@ bool Core::m_running = true;
 
 Core::Core()
 {
+	m_window = std::make_unique<sf::Window>();
 	#ifdef NDEBUG
-	m_window.create(sf::VideoMode(800, 600),"hpse",sf::Style::Default, 	
+	m_window->create(sf::VideoMode(800, 600),"hpse",sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Core));
 	#else
-	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
+	m_window->create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 5, sf::ContextSettings::Debug));
 	#endif	
 
 	m_audio = std::make_unique<Audio>();
 	m_graphics = std::make_unique<Graphics>();
 	m_script = std::make_unique<Script>();
-	m_gui = std::make_unique<GUI>(m_window);
+	m_gui = std::make_unique<GUI>(*m_window);
 	m_resources = std::make_unique<ResourceHandler>();
 	m_map = std::make_unique<Map>();
 	m_camera = std::make_unique<Camera>();
@@ -37,21 +41,21 @@ Core::Core()
 
 Core::~Core()
 {
-	if(m_window.isOpen())
-		m_window.close();
+	if(m_window->isOpen())
+		m_window->close();
 }
 
 void Core::Run()
 {
 	sf::Event event;
-	while (m_window.isOpen() && m_running)
+	while (m_window->isOpen() && m_running)
 	{
 		m_graphics->Clear();
 		m_gui->Update();
 		m_script->Update();
 		m_camera->Update();
 
-		while (m_window.pollEvent(event))
+		while (m_window->pollEvent(event))
 		{
 			switch (event.type)
 			{
@@ -117,8 +121,9 @@ void Core::Run()
 				break;
 			}
 		}
+
 		m_graphics->Render();
 
-		m_window.display();
+		m_window->display();
 	}
 }
