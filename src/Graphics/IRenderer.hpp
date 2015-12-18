@@ -1,7 +1,10 @@
 #pragma once
 #include "ITexture.hpp"
 #include "IShader.hpp"
+#include "IRenderable.hpp"
 #include <glm/glm.hpp>
+#include <vector>
+#include "../Types/Map.hpp"
 
 namespace hpse
 {
@@ -12,12 +15,24 @@ namespace hpse
 		virtual void Render(glm::mat4& ortho) = 0;
 		inline void UpdateGUI(int width,int height,const uint8_t* data)
 		{
-			m_overlay->Update(width,height,data);
+			m_overlay->Update(width, height, data);
 		}
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
+
+		inline std::uint32_t GetTerrainUniformLocation(char* id)
+		{
+			return m_terrainShader->GetUniformLocation(id);
+		}
+
+		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable)
+		{
+			m_renderables.push_back(renderable);
+		}
 	protected:
 		std::unique_ptr<ITexture> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
+		std::unique_ptr<IShader> m_terrainShader;
+		std::vector<std::shared_ptr<IRenderable>> m_renderables;
 	};
 }

@@ -1,10 +1,14 @@
 #pragma once
 #include <SFML/Window.hpp>
+#include <glm/glm.hpp>
 #include "Graphics.hpp"
 #include "Script.hpp"
 #include "GUI.hpp"
 #include "Audio.hpp"
+#include "Types/Map.hpp"
 #include "Core/ResourceHandler.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/Frustum.hpp"
 
 namespace hpse
 {
@@ -36,17 +40,38 @@ namespace hpse
 			return m_resources;
 		}
 
+		static inline std::unique_ptr<Map>& GetMap()
+		{
+			return m_map;
+		}
+
+		static inline std::unique_ptr<Camera>& GetCamera()
+		{
+			return m_camera;
+		} 
+
+		static inline glm::vec2 GetResolution()
+		{
+			glm::vec2 res;
+			res.x = (float)m_window->getSize().x;
+			res.y = (float)m_window->getSize().y;
+			return res;
+		}
+
 		static inline void Quit()
 		{
 			m_running = false;
 		}
 	private:
-		sf::Window m_window;
+		static std::unique_ptr<sf::Window> m_window;
 		static std::unique_ptr<ResourceHandler> m_resources;
 		static std::unique_ptr<Graphics> m_graphics;
 		static std::unique_ptr<GUI> m_gui;
 		static std::unique_ptr<Script> m_script;
 		static std::unique_ptr<Audio> m_audio;
+		static std::unique_ptr<Map> m_map;
+		static std::unique_ptr<Camera> m_camera;
+		static std::unique_ptr<Frustum> m_frustum;
 		static bool m_running;
 	};
 }

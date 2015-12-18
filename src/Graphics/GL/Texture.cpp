@@ -21,7 +21,7 @@ GL::Texture::Texture()
 
 bool GL::Texture::Load(const gli::texture &tex)
 {
-	if(FLEXT_ARB_texture_storage)
+	if(!FLEXT_ARB_texture_storage)
 	{
 		std::cout << "Not supporting ARB_texture_storage" << std::endl;
 		return false;
@@ -31,6 +31,8 @@ bool GL::Texture::Load(const gli::texture &tex)
 	gli::gl::format const Format = GL.translate(tex.format());
 	GLenum Target = GL.translate(tex.target());
 
+	glGenTextures(1, &m_handle);
+	glBindTexture(Target, m_handle);
 	glTexParameteri(Target, GL_TEXTURE_BASE_LEVEL, 0);
 	glTexParameteri(Target, GL_TEXTURE_MAX_LEVEL, static_cast<GLint>(tex.levels() - 1));
 	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_R, Format.Swizzle[0]);
@@ -130,7 +132,6 @@ bool GL::Texture::Load(const gli::texture &tex)
 			}
 		}
 	}
-
 	return true;
 }
 
@@ -149,5 +150,6 @@ void GL::Texture::Bind()
 {
     glBindTexture(GL_TEXTURE_2D, m_handle);
 }
+
 
 
