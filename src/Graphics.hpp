@@ -22,6 +22,12 @@ namespace hpse
 		void Render();
 		void Resize(int width, int height);
 		void UpdateGUI(int width,int height,const uint8_t* data);
+
+		inline RenderBackend GetBackend()
+		{
+			return m_backend;
+		}
+
 		inline std::shared_ptr<IRenderer> GetRenderer()
 		{
 			return m_renderer;

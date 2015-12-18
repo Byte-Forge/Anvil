@@ -9,23 +9,15 @@
 
 namespace hpse
 {
-	std::shared_ptr<IResource> ResourceHandler::GetResource(const std::string &name, ResourceType type)
+	std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 	{
 		if (m_resources.count(toUpper(name)) == 0)
 		{
-			switch (type)
-			{
-			case w4d:
-				W4DLoader::Load(name);
-				break;
-			case texture:
-				TextureLoader::Load(name);
-				break;
-			}
+			TextureLoader::Load(name);
 		}
 		if (m_resources.count(toUpper(name)) > 0)
 		{
-			return m_resources[toUpper(name)];
+			return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(name)]);
 		}
 		std::cout << "ERROR: no such resource found: " << name << std::endl;
 		return nullptr;

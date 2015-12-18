@@ -7,22 +7,15 @@
 #include <map>
 #include <vector>
 #include "IResource.hpp"
+#include "../Graphics/ITexture.hpp"
 
 namespace hpse
 {
-	enum ResourceType
-	{
-		audio,
-		texture,
-		w4d,
-		model,
-		entity,
-	};
-
     class ResourceHandler
     {
     public:
-        std::shared_ptr<IResource> GetResource(const std::string& name, ResourceType type);
+
+        std::shared_ptr<ITexture> GetTexture(const std::string& name);
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 
 		inline void AddMapDir(const std::string& dir)

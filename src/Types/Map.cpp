@@ -1,48 +1,18 @@
-#pragma once
-#include <stdint.h>
-#include <string>
-#include <vector>
+#include "Map.hpp"
+#include "../Graphics/GL/Terrain.hpp"
+#include "../Graphics.hpp"
+#include "../Core.hpp"
+using namespace hpse;
 
-namespace hpse
+Map::Map()
 {
-	////////////////////////////////////////////
-	//MAP
-	////////////////////////////////////////////
+	if(Core::GetGraphics()->GetBackend() == Graphics::OpenGL)
+		m_terrain = std::make_shared<GL::Terrain>(40, 40);
 
-	// chunk 0x80000003
-	struct Tile
-	{
-		std::uint16_t tex1;
-		std::uint16_t tex2; // -1 for no texture
-	};
+	Core::GetGraphics()->GetRenderer()->RegisterRenderable(m_terrain);
+}
 
-	// chunk 0x80000002
-	struct HeightMap
-	{
-		//size is width * height
-		std::int32_t vertexHeights[1];
-	};
+Map::~Map()
+{
 
-	// chunk 0x80000001
-	struct MapHeader 
-	{
-		std::uint32_t width;
-		std::uint32_t height;
-		float playerPositions[1][2];
-		std::string textures[1];
-	};
-
-	// chunk 0x80000000
-	class Map
-	{
-	public:
-		Map(std::uint32_t width, std::uint32_t height);
-		~Map();
-
-		void changeHeight(uint32_t x_pos, uint32_t y_pos);
-	private:
-		MapHeader header;
-		HeightMap heightMap;
-		Tile tiles[];
-	};
 }

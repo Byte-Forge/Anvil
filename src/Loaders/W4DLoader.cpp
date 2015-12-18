@@ -190,7 +190,7 @@ void loadModel(std::ifstream& file, std::uint32_t chunkEnd)
 		}
 	}
 	std::shared_ptr<IResource> p (&model);
-	Core::GetResources()->AddResource(model.name, p);
+	//Core::GetResources()->AddResource(model.name, p);
 }
 
 void W4DLoader::Load(const std::string& name)

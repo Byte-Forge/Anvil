@@ -5,6 +5,8 @@ namespace hpse
 {
     class IResource
     {
+	public:
+		virtual ~IResource() {};
         inline bool KeepLoaded()
         {
             return m_keepLoaded;

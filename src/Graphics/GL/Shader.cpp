@@ -37,6 +37,15 @@ void GL::Shader::Load(const std::string &vertShader, const std::string& geoShade
     LoadShader(geoShader, GL_GEOMETRY_SHADER);
     LoadShader(fragShader, GL_FRAGMENT_SHADER);
 }
+void GL::Shader::Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader)
+{
+	LoadShader(vertShader, GL_VERTEX_SHADER);
+	LoadShader(tessControlShader, GL_TESS_CONTROL_SHADER);
+	LoadShader(tessEvalShader, GL_TESS_EVALUATION_SHADER);
+	LoadShader(geoShader, GL_GEOMETRY_SHADER);
+	LoadShader(fragShader, GL_FRAGMENT_SHADER);
+}
+
 
 void GL::Shader::LoadShader(const std::string file, GLenum type)
 {
@@ -48,7 +57,7 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
     }
 
     fin.seekg(0,std::ios::end);
-    int size = fin.tellg();
+    int size = (int)fin.tellg();
     fin.seekg(0,std::ios::beg);
 
     char* buffer = new char[size+1];
