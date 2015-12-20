@@ -2,75 +2,67 @@
 #include "Environment.hpp"
 #include "./Util/Platform.hpp"
 #include <iostream>
+#include <Awesomium/STLHelpers.h>
+#include "./GUI/Surface.hpp"
 
 using namespace hpse;
+using namespace Awesomium;
 
-
-GUI::GUI(sf::Window& window)
+GUI::GUI(sf::Window& window) : m_core(nullptr), m_view(nullptr), m_factory(nullptr)
 {
-	CefBrowserSettings settings;
-	CefWindowInfo window_info;
-	window_info.SetAsWindowless(window.getSystemHandle(), true);
-	window_info.width = 800;
-	window_info.height = 600;
-	settings.windowless_frame_rate = 60;
-	m_renderer = new RenderHandler();
-	m_renderer->Resize(800, 600);
-	m_client = new BrowserClient(m_renderer);
-	m_browser = CefBrowserHost::CreateBrowserSync(window_info, m_client.get(), "", settings, nullptr);
+	m_core = WebCore::Initialize(WebConfig());
+	m_factory = new SurfaceFactory();
+	m_core->set_surface_factory(m_factory);
+	m_view = m_core->CreateWebView(window.getSize().x, window.getSize().y);
 }
 
 GUI::~GUI()
 {
-	m_browser->GetHost()->CloseBrowser(false);
+	if (m_factory)
+		delete m_factory;
+
+	WebCore::Shutdown();
 }
 
 void GUI::Update()
 {
-	CefDoMessageLoopWork();
+	m_core->Update();
+	auto surface = static_cast<hpse::Surface*>(m_view->surface());
 }
 
 void GUI::LoadURL(const std::string& file)
 {
-	m_browser->GetMainFrame()->LoadURL(file);
+	WebURL url(WSLit(file.c_str()));
+	m_view->LoadURL(url);
 }
 
 void GUI::LoadFile(const std::string& file)
 {
-	std::string url = "file://";
-	url += IO::GetCwd();
-	url += '/';
-	url += file;
-	std::replace(url.begin(), url.end(), '\\', '/');
-	m_browser->GetMainFrame()->LoadURL(url);
+	std::string path = "file://";
+	path += IO::GetCwd();
+	path += '/';
+	path += file;
+	std::replace(path.begin(), path.end(), '\\', '/');
+	WebURL url = WebURL(WSLit(path.c_str()));
+	m_view->LoadURL(url);
 }
 
 void GUI::Resize(int width, int height)
 {
-	m_renderer->Resize(width, height);
-	m_browser->GetHost()->WasResized();
+	m_view->Resize(width, height);
 }
 
 void GUI::MouseMove(int x, int y)
 {
-	m_mouseX = x;
-	m_mouseY = y;
-	CefMouseEvent event;
-	event.x = x;
-	event.y = y;
-
-	m_browser->GetHost()->SendMouseMoveEvent(event, false);
+	m_view->InjectMouseMove(x, y);
 }
 
 void GUI::MouseLeft(bool isDown)
 {
-	CefMouseEvent event;
-	event.x = m_mouseX;
-	event.y = m_mouseY;
-
-	bool mouseUp = !isDown;
-	CefBrowserHost::MouseButtonType btnType = MBT_LEFT;
-	m_browser->GetHost()->SendMouseClickEvent(event, btnType, mouseUp, 1);
+	if(isDown)
+		m_view->InjectMouseDown(Awesomium::MouseButton::kMouseButton_Left);
+	else
+		m_view->InjectMouseUp(Awesomium::MouseButton::kMouseButton_Left);
 }
 
 void GUI::KeyDown(sf::Event::KeyEvent &key)

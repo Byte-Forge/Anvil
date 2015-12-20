@@ -21,7 +21,7 @@ set(SRC_DIR "src")
 find_package(LuaJIT REQUIRED)
 
 #Find Chromium Embedded Framework
-find_package(CEF REQUIRED)
+find_package(Awesomium REQUIRED)
 
 #Find SFML modules for window and system
 find_package(SFML 2.3 COMPONENTS window system REQUIRED)
@@ -44,15 +44,15 @@ add_executable(${PROJ_NAME} ${SRC_FILES})
 
 #Include our dependencies
 target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR}
-						${CEF_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
+						${AWESOMIUM_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	#Link our dependencies
-	target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_LIBRARY} ${CEF_WRAPPER_LIBRARY} ${OPENAL_LIBRARY}
+	target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${AWESOMIUM_LIBRARY} ${OPENAL_LIBRARY}
 							${SFML_LIBRARIES} ${SFML_DEPENDENCIES} ${OPENGL_LIBRARIES})
 else()
 	#Link our dependencies
-	target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${CEF_LIBRARY} ${CEF_WRAPPER_LIBRARY} ${OPENAL_LIBRARY}
+	target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${AWESOMIUM_LIBRARY} ${OPENAL_LIBRARY}
 							${SFML_LIBRARIES} ${SFML_DEPENDENCIES} ${OPENGL_LIBRARIES} -ldl)
 endif()
 

@@ -1,15 +1,13 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <include/cef_client.h>
-#include <include/cef_browser.h>
-#include <include/cef_app.h>
 #include <SFML/Window.hpp>
-#include "./GUI/BrowserClient.hpp"
-#include "./GUI/RenderHandler.hpp"
+#include <Awesomium/WebCore.h>
+#include "./GUI/SurfaceFactory.hpp"
 
 namespace hpse
 {
+
 	class GUI
 	{
 	public:
@@ -26,10 +24,9 @@ namespace hpse
 		void MouseLeft(bool isDown);
 		void KeyDown(sf::Event::KeyEvent& key);
 	private:
-		CefRefPtr<BrowserClient>	m_client;
-		RenderHandler*				m_renderer;
-		CefRefPtr<CefBrowser>		m_browser;
-		CefSettings m_settings;
+		Awesomium::WebCore* m_core;
+		Awesomium::WebView* m_view;
+		SurfaceFactory* m_factory;
 		int m_mouseX, m_mouseY;
 	};
 }
