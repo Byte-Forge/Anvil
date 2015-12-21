@@ -14,6 +14,7 @@ GUI::GUI(sf::Window& window) : m_core(nullptr), m_view(nullptr), m_factory(nullp
 	m_factory = new SurfaceFactory();
 	m_core->set_surface_factory(m_factory);
 	m_view = m_core->CreateWebView(window.getSize().x, window.getSize().y);
+	m_view->Focus();
 }
 
 GUI::~GUI()
@@ -33,6 +34,11 @@ void GUI::Update()
 void GUI::LoadURL(const std::string& file)
 {
 	WebURL url(WSLit(file.c_str()));
+	if (!url.IsValid())
+	{
+		std::cout << "Invalid URL" << std::endl;
+		return;
+	}
 	m_view->LoadURL(url);
 }
 
@@ -44,6 +50,11 @@ void GUI::LoadFile(const std::string& file)
 	path += file;
 	std::replace(path.begin(), path.end(), '\\', '/');
 	WebURL url = WebURL(WSLit(path.c_str()));
+	if(!url.IsValid())
+	{
+		std::cout << "Invalid URL" << std::endl;
+		return;
+	}
 	m_view->LoadURL(url);
 }
 

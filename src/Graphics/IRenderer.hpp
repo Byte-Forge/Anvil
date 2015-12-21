@@ -1,5 +1,5 @@
 #pragma once
-#include "ITexture.hpp"
+#include "IOverlay.hpp"
 #include "IShader.hpp"
 #include "IRenderable.hpp"
 #include <glm/glm.hpp>
@@ -13,10 +13,7 @@ namespace hpse
 	public:
 		virtual void Clear() = 0;
 		virtual void Render(glm::mat4& ortho) = 0;
-		inline void UpdateGUI(int width,int height,const uint8_t* data)
-		{
-			m_overlay->Update(width, height, data);
-		}
+
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
 
@@ -29,8 +26,13 @@ namespace hpse
 		{
 			m_renderables.push_back(renderable);
 		}
+
+		inline std::unique_ptr<IOverlay>& GetOverlay()
+		{
+			return m_overlay;
+		}
 	protected:
-		std::unique_ptr<ITexture> m_overlay;
+		std::unique_ptr<IOverlay> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
 		std::unique_ptr<IShader> m_terrainShader;
 		std::vector<std::shared_ptr<IRenderable>> m_renderables;

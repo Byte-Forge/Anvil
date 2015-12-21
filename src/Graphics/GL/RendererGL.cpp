@@ -1,5 +1,6 @@
 #include "RendererGL.hpp"
 #include "Texture.hpp"
+#include "Overlay.hpp"
 #include "Shader.hpp"
 #include "../Types.hpp"
 #include "../../Core.hpp"
@@ -62,7 +63,7 @@ RendererGL::RendererGL()
     if(FLEXT_ARB_debug_output)
         glDebugMessageCallbackARB(debugCallback, nullptr);
 	#endif
-    m_overlay = std::make_unique<GL::Texture>();
+    m_overlay = std::make_unique<GL::Overlay>();
 
 	m_guiShader = std::make_unique<GL::Shader>();
 	m_guiShader->Load("./shader/gui.vs", "./shader/gui.fs");

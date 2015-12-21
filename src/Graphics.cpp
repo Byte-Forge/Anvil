@@ -39,10 +39,6 @@ void Graphics::Resize(int width, int height)
 	m_ortho = glm::ortho(0.0f, 0.0f, (float)width, (float)height, 0.1f, 100.0f);
 }
 
-void Graphics::UpdateGUI(int width, int height, const uint8_t *data)
-{
-	m_renderer->UpdateGUI(width, height, data);
-}
 
 std::shared_ptr<ITexture> Graphics::GetTexture()
 {
