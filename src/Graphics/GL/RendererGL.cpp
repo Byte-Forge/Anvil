@@ -62,17 +62,17 @@ RendererGL::RendererGL()
     if(FLEXT_ARB_debug_output)
         glDebugMessageCallbackARB(debugCallback, nullptr);
 	#endif
+
     m_overlay = std::make_unique<GL::Texture>();
 
 	m_guiShader = std::make_unique<GL::Shader>();
-	m_guiShader->Load("./shader/gui.vs", "./shader/gui.fs");
+	m_guiShader->Load("shader/gui_vs.glsl", "shader/gui_fs.glsl");
 	m_guiShader->Compile();
 	m_guiShader->Use();
     SetupGUI();
 
 	m_terrainShader = std::make_unique<GL::Shader>();
-	//m_terrainShader->Load("./shader/terrain_dis.vs", "./shader/terrain_dis.tcs", "./shader/terrain_dis.tes", "./shader/terrain_dis.gs", "./shader/terrain_dis.fs");
-	m_terrainShader->Load("./shader/terrain.vs", "./shader/terrain.fs");
+	m_terrainShader->Load("shader/terrain_vs.glsl", "shader/terrain_tcs.glsl", "shader/terrain_tes.glsl", "shader/terrain_fs.glsl");
 	m_terrainShader->Compile();
 	m_terrainShader->Use();
 }
@@ -119,7 +119,7 @@ void RendererGL::Render(glm::mat4& ortho)
     for(auto& renderable : m_renderables)
         renderable->Render();
 
-	RenderGUI();
+	//RenderGUI();
 }
 
 void RendererGL::RenderGUI()

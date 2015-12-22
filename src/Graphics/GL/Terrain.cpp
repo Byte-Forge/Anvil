@@ -21,7 +21,8 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 
 			m_uvs.push_back({ i % 2, j % 2 });
 
-			m_normals.push_back({ 0.0, 1.0, 0.0 });
+			//TODO: calculate them for the vertices
+			m_normals.push_back({ 0.0, 1.0, 0.0 }); 
 		}
 	}
 
@@ -45,26 +46,22 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 		m_quadtree->AddTriangle(&m_faces[i], m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]]);
 	}
 
-	m_ambient = glm::vec3({ 0.6f, 0.6f, 0.6f });
-	m_diffuse = glm::vec3({ 0.8f, 0.8f, 0.8f });
-	m_lightDir = glm::vec3({ -0.1f, -1.0f, -0.1f });
-
 	m_diff = Core::GetResources()->GetTexture("pepples_01");
 	m_nrm = Core::GetResources()->GetTexture("pepples_01_nrm");
 	m_spec = Core::GetResources()->GetTexture("pepples_01_spec");
 	m_disp = Core::GetResources()->GetTexture("pepples_01_disp");
-
-	m_matrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");
-	m_viewMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
-	m_modelMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M");
-	m_modelView3x3MatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3");
 
 	m_diffID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
 	m_nrmID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
 	m_specID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler");
 	m_dispID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler");
 
-	m_lightID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("LightPosition_worldspace");
+	m_modelMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M");
+	m_viewMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
+	m_modelView3x3MatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3");
+	m_matrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");
+
+	m_lightID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos");
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -106,12 +103,12 @@ GL::Terrain::~Terrain()
 
 void GL::Terrain::Render()
 {
-	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
 	glUniformMatrix4fv(m_modelMatrixID, 1, GL_FALSE, &m_mod[0][0]);
 	glUniformMatrix4fv(m_viewMatrixID, 1, GL_FALSE, &Core::GetCamera()->GetViewMatrix()[0][0]);
 	glUniformMatrix3fv(m_modelView3x3MatrixID, 1, GL_FALSE, &glm::mat3(Core::GetCamera()->GetViewMatrix() * m_mod)[0][0]);
+	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
 
-	glm::vec3 lightPos = Core::GetCamera()->GetLookAt() + glm::vec3({ 0.0, 100.0, 0.0 });
+	glm::vec3 lightPos = glm::vec3({ 20.0, 20.0, 20.0 });
 	glUniform3f(m_lightID, lightPos.x, lightPos.y, lightPos.z);
 
 	glEnableVertexAttribArray(0);
@@ -144,8 +141,10 @@ void GL::Terrain::Render()
 	m_disp->Bind();
 	glUniform1i(m_dispID, 3);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
+	//used for tesselation
+	glPatchParameteri(GL_PATCH_VERTICES, 3);
+
+	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

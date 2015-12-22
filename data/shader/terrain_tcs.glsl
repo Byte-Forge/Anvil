@@ -20,7 +20,11 @@ void main()
 	
 	if(gl_InvocationID == 0)
 	{
-		float level = 800 / length(vec3(0, 0, 0) - (V * vec4(tc_position[gl_InvocationID], 1)).xyz);
+		float level = 40;
+		if (level > 1)
+		{
+			level = level / ((length(vec3(0, 0, 0) - (V * vec4(tc_position[gl_InvocationID], 1)).xyz)) / 2);
+		}
 	
 		gl_TessLevelInner[0] = level;
 		gl_TessLevelInner[1] = level;

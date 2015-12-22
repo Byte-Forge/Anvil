@@ -27,9 +27,6 @@ namespace hpse
 			std::shared_ptr<Quadtree> m_quadtree;
 
 			bool updated = true;
-			glm::vec3 m_ambient;
-			glm::vec3 m_diffuse;
-			glm::vec3 m_lightDir;
 
 			GLuint m_lightID;
 
@@ -61,8 +58,6 @@ namespace hpse
 			GLuint m_vbo;
 			GLuint m_uvbo;
 			GLuint m_nbo;
-			GLuint m_tbo;
-			GLuint m_btbo;
 			GLuint m_fbo;
         };
     }
