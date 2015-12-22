@@ -14,6 +14,7 @@ GUI::GUI(sf::Window& window) : m_core(nullptr), m_view(nullptr), m_factory(nullp
 	m_factory = new SurfaceFactory();
 	m_core->set_surface_factory(m_factory);
 	m_view = m_core->CreateWebView(window.getSize().x, window.getSize().y);
+	m_view->SetTransparent(true);
 	m_view->Focus();
 }
 
