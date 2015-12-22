@@ -17,9 +17,7 @@ namespace hpse
 			Texture();
             ~Texture();
 
-            //data is expected to be 32 bit RGBA
             bool Load(const gli::texture& tex);
-            void Update(int width, int height, const uint8_t* data);
             void Bind();
         private:
             GLuint m_handle;

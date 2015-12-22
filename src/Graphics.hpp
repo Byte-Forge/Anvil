@@ -21,7 +21,6 @@ namespace hpse
 		void Clear();
 		void Render();
 		void Resize(int width, int height);
-		void UpdateGUI(int width,int height,const uint8_t* data);
 
 		inline RenderBackend GetBackend()
 		{
