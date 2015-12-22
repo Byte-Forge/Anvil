@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <Awesomium/WebCore.h>
 #include "./GUI/SurfaceFactory.hpp"
+#include "./GUI/MethodHandler.hpp"
 
 namespace hpse
 {
@@ -26,7 +27,9 @@ namespace hpse
 	private:
 		Awesomium::WebCore* m_core;
 		Awesomium::WebView* m_view;
+		Awesomium::JSObject m_jsGlobal;
 		SurfaceFactory* m_factory;
+		MethodHandler* m_jsHandler;
 		int m_mouseX, m_mouseY;
 	};
 }

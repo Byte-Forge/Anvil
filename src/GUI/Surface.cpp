@@ -22,4 +22,5 @@ void Surface::Paint(unsigned char * src_buffer, int src_row_span,
 
 void Surface::Scroll(int dx, int dy, const Awesomium::Rect & clip_rect)
 {
+
 }

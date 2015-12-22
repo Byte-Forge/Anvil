@@ -11,10 +11,21 @@ using namespace Awesomium;
 GUI::GUI(sf::Window& window) : m_core(nullptr), m_view(nullptr), m_factory(nullptr)
 {
 	m_core = WebCore::Initialize(WebConfig());
+	
 	m_factory = new SurfaceFactory();
 	m_core->set_surface_factory(m_factory);
+
 	m_view = m_core->CreateWebView(window.getSize().x, window.getSize().y);
 	m_view->SetTransparent(true);
+
+	auto result = m_view->CreateGlobalJavascriptObject(WSLit("engine"));
+	m_jsGlobal = result.ToObject();
+	m_jsHandler = new MethodHandler(m_jsGlobal.remote_id());
+	m_view->set_js_method_handler(m_jsHandler);
+
+	m_jsGlobal.SetProperty(WSLit("version"), JSValue(0.01));
+	m_jsGlobal.SetCustomMethod(WSLit("quit"), false);
+
 	m_view->Focus();
 }
 
@@ -23,6 +34,8 @@ GUI::~GUI()
 	if (m_factory)
 		delete m_factory;
 
+	m_view->Stop();
+	m_core->Update();
 	WebCore::Shutdown();
 }
 
