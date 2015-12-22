@@ -8,7 +8,7 @@
 using namespace hpse;
 using namespace Awesomium;
 
-GUI::GUI(sf::Window& window) : m_core(nullptr), m_view(nullptr), m_factory(nullptr)
+GUI::GUI(sf::Window& window) : m_core(nullptr), m_view(nullptr), m_factory(nullptr), m_jsHandler(nullptr)
 {
 	m_core = WebCore::Initialize(WebConfig());
 	
@@ -33,6 +33,9 @@ GUI::~GUI()
 {
 	if (m_factory)
 		delete m_factory;
+
+	if (m_jsHandler)
+		delete m_jsHandler;
 
 	m_view->Stop();
 	m_core->Update();

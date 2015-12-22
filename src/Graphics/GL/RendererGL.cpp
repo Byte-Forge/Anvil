@@ -13,6 +13,9 @@ using namespace hpse;
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
                                GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
+	if (type == GL_DEBUG_TYPE_OTHER_ARB)
+		return;
+
     std::cout << "--GL DEBUG--" << std::endl;
     std::cout << "Message: "<< message << std::endl;
     std::cout << "Type: ";
@@ -31,9 +34,6 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
             break;
         case GL_DEBUG_TYPE_PERFORMANCE_ARB:
             std::cout << "PERFORMANCE";
-            break;
-        case GL_DEBUG_TYPE_OTHER_ARB:
-            std::cout << "OTHER";
             break;
     }
     std::cout << std::endl;
