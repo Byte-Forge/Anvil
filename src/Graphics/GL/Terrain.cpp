@@ -5,7 +5,13 @@
 #include "Terrain.hpp"
 #include "flextGL.h"
 #include "../../Core.hpp"
+#include "../../Math.hpp"
 #include <iostream>
+#include <vector>
+
+//just for testing
+#include <ctime>
+#include <chrono>
 
 using namespace hpse;
 
@@ -13,38 +19,70 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 {
 	m_quadtree = std::make_shared<Quadtree>(glm::vec2(width / 2.f, height / 2.f), glm::vec2(width / 2.f, height / 2.f));
 
+	long long begin = (std::chrono::system_clock::now().time_since_epoch()).count();
+
+	//generate a heightmap
+	std::vector<float> heightmap;
+	for (std::uint32_t i = 0; i <= width; i++)
+	{
+		for (std::uint32_t j = 0; j <= height; j++)
+		{
+			heightmap.push_back((glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 10.0);
+		}
+	}
+
+	int index = 0;
 	for (std::uint32_t i = 0; i < width; i++)
 	{
 		for (std::uint32_t j = 0; j < height; j++)
 		{
-			m_vertices.push_back({ (float)i, (glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 10.0, (float)j });
+			glm::vec3 a = { (float)i, heightmap[i + j*width], (float)j };
+			glm::vec3 b = { (float)(i+1), heightmap[i + 1 + j*width], (float)j };
+			glm::vec3 c = { (float)(i + 1), heightmap[i + 1 + (j+1)*width], (float)(j + 1) };
+			glm::vec3 d = { (float)i, heightmap[i + (j+1)*width], (float)(j+1) };
 
-			m_uvs.push_back({ i % 2, j % 2 });
+			m_vertices.push_back(a);
+			m_vertices.push_back(b);
+			m_vertices.push_back(c);
 
-			//TODO: calculate them for the vertices
-			m_normals.push_back({ 0.0, 1.0, 0.0 }); 
+			m_vertices.push_back(a);
+			m_vertices.push_back(c);
+			m_vertices.push_back(d);
+
+			m_uvs.push_back({ 0.0, 0.0 });
+			m_uvs.push_back({ 1.0, 0.0 });
+			m_uvs.push_back({ 1.0, 1.0 });
+
+			m_uvs.push_back({ 0.0, 0.0 });
+			m_uvs.push_back({ 1.0, 1.0 });
+			m_uvs.push_back({ 0.0, 1.0 });
+
+			glm::vec3 n = Math::computeNormal(a, b, c);
+			m_normals.push_back(n);
+			m_normals.push_back(n);
+			m_normals.push_back(n);
+
+			n = Math::computeNormal(a, c, d);
+			m_normals.push_back(n);
+			m_normals.push_back(n);
+			m_normals.push_back(n);
+
+			m_faces.push_back(index++);
+			m_faces.push_back(index++);
+			m_faces.push_back(index++);
+
+			m_quadtree->AddTriangle(&m_faces[index - 3], a, b, c);
+
+			m_faces.push_back(index++);
+			m_faces.push_back(index++);
+			m_faces.push_back(index++);
+
+			m_quadtree->AddTriangle(&m_faces[index - 3], a, c, d);
 		}
 	}
 
-	//create the indices needed to render the triangles
-	for (std::uint32_t i = 0; i < height - 1; i++)
-	{
-		for (std::uint32_t j = 0; j < width - 1; j++)
-		{
-			m_faces.push_back(i + (j*width));
-			m_faces.push_back(i + (j*width) + width);
-			m_faces.push_back(i + (j*width) + width + 1);
-
-			m_faces.push_back(i + (j*width));
-			m_faces.push_back(i + (j*width) + width + 1);
-			m_faces.push_back(i + (j*width) + 1);
-		}
-	}
-
-	for (int i = 0; i < m_faces.size(); i += 3)
-	{
-		m_quadtree->AddTriangle(&m_faces[i], m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]]);
-	}
+	long long end = (std::chrono::system_clock::now().time_since_epoch()).count();
+	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
 
 	m_diff = Core::GetResources()->GetTexture("pepples_01");
 	m_nrm = Core::GetResources()->GetTexture("pepples_01_nrm");
