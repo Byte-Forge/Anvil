@@ -3,8 +3,11 @@
 #include <array>
 #include <vector>
 
+#define EPSILON 0.000001
+
 namespace hpse
 {
+
 	class Collision
 	{
 	public:
@@ -28,5 +31,8 @@ namespace hpse
 		static int SphereInFrustum(std::array<std::array<float, 4>, 6>& frustum, glm::vec2& center, float radius);
 
 		static void ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction);
+
+		//
+		static int Collision::Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 o, glm::vec3 d, float* out);
 	};
 }

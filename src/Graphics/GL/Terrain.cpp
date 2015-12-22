@@ -217,5 +217,3 @@ void GL::Terrain::Update()
 		updated = false;
 	}
 }
-
-

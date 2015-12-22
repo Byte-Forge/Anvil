@@ -14,7 +14,6 @@ namespace hpse
         class Texture : public ITexture
         {
         public:
-			Texture();
             ~Texture();
 
             bool Load(const gli::texture& tex);

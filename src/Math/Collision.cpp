@@ -1,5 +1,6 @@
 #include "Collision.hpp"
 #include "../Core.hpp"
+#include <iostream>
 
 using namespace hpse;
 
@@ -200,5 +201,49 @@ bool TestRayOBBIntersection(
 
 	intersection_distance = tMin;
 	return true;
+}
 
+int Collision::Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 o,  glm::vec3 d, float* out)
+{
+	glm::vec3 e1, e2;  //Edge1, Edge2
+	glm::vec3 P, Q, T;
+	float det, inv_det, u, v;
+	float t;
+
+	//Find vectors for two edges sharing v1
+	e1 = v2 - v1;
+	e2 = v3 - v1;
+	//Begin calculating determinant - also used to calculate u parameter
+	P = glm::cross(d, e2);
+	//if determinant is near zero, ray lies in plane of triangle
+	det = glm::dot(e1, P);
+	//NOT CULLING
+	if (det > -EPSILON && det < EPSILON) return 0;
+	inv_det = 1.f / det;
+
+	//calculate distance from v1 to ray origin
+	T = o - v1;
+
+	//Calculate u parameter and test bound
+	u = glm::dot(T, P) * inv_det; 
+	//The intersection lies outside of the triangle
+	if (u < 0.f || u > 1.f) return 0;
+
+	//Prepare to test v parameter
+	Q = glm::cross(T, e1);
+
+	//Calculate v parameter and test bound
+	v = glm::dot(d, Q) * inv_det;
+	//The intersection lies outside of the triangle
+	if (v < 0.f || u + v  > 1.f) return 0;
+
+	t = glm::dot(e2, Q) * inv_det;
+
+	if (t > EPSILON) { //ray intersection
+		*out = t;
+		return 1;
+	}
+
+	// No hit, no win
+	return 0;
 }
