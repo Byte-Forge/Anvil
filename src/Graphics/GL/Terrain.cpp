@@ -84,10 +84,10 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	long long end = (std::chrono::system_clock::now().time_since_epoch()).count();
 	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
 
-	m_diff = Core::GetResources()->GetTexture("pepples_01");
-	m_nrm = Core::GetResources()->GetTexture("pepples_01_nrm");
-	m_spec = Core::GetResources()->GetTexture("pepples_01_spec");
-	m_disp = Core::GetResources()->GetTexture("pepples_01_disp");
+	m_diff = Core::GetResources()->GetTexture("gras_diff");
+	m_nrm = Core::GetResources()->GetTexture("gras_norm");
+	m_spec = Core::GetResources()->GetTexture("gras_spec");
+	m_disp = Core::GetResources()->GetTexture("gras_disp");
 
 	m_diffID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
 	m_nrmID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
