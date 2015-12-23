@@ -20,10 +20,19 @@ void main()
 	
 	if(gl_InvocationID == 0)
 	{
-		float level = 40;
-		if (level > 1)
+		float level = 32;
+		float distance = length((V * vec4(tc_position[gl_InvocationID], 1)).xyz);
+		if (distance > 15 )
 		{
-			level = level / ((length(vec3(0, 0, 0) - (V * vec4(tc_position[gl_InvocationID], 1)).xyz)) / 2);
+			level /= 1.8;
+		}
+		if (distance > 20)
+		{
+			level /= 2.4;
+		}
+		if (distance > 25)
+		{
+			level = 1.0;
 		}
 	
 		gl_TessLevelInner[0] = level;
