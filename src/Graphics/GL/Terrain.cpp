@@ -88,11 +88,13 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	m_nrm = Core::GetResources()->GetTexture("grass_norm");
 	m_spec = Core::GetResources()->GetTexture("grass_spec");
 	m_disp = Core::GetResources()->GetTexture("grass_disp");
+	m_ambi = Core::GetResources()->GetTexture("grass_ao");
 
 	m_diffID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
 	m_nrmID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
 	m_specID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler");
 	m_dispID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler");
+	m_ambiID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler");
 
 	m_modelMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M");
 	m_viewMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
@@ -178,6 +180,10 @@ void GL::Terrain::Render()
 	glActiveTexture(GL_TEXTURE3); //disp texture
 	m_disp->Bind();
 	glUniform1i(m_dispID, 3);
+
+	glActiveTexture(GL_TEXTURE4); //ambi texture
+	m_ambi->Bind();
+	glUniform1i(m_ambiID, 4);
 
 	//used for tesselation
 	glPatchParameteri(GL_PATCH_VERTICES, 3);
