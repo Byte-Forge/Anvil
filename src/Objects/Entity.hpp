@@ -14,13 +14,13 @@ namespace hpse
     class Entity : public IResource
     {
 	public:
-		Entity(std::string name);
+		Entity(const std::string& name);
 		~Entity();
-		void SetModel(std::string model);
+		void SetModel(const std::string& model);
 		std::shared_ptr<IResource> GetModel(); 
-		void SetWeaponLaunchBone(std::string bone);
-		void AddProp(std::string pivot, std::string prop);
-		void AddFX(std::string pivot, std::string fx);
+		void SetWeaponLaunchBone(const std::string& bone);
+		void AddProp(const std::string& pivot, const std::string& prop);
+		void AddFX(const std::string& pivot, const std::string& fx);
 
 	private:
 		std::string m_name = NULL;
