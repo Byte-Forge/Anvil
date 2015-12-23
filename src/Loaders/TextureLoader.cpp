@@ -14,7 +14,7 @@ void TextureLoader::Load(const std::string& name)
 {
 	std::cout << "loading texture: " << name << std::endl;
 	const std::string path = "textures/";
-	const std::string ext = ".ktx";
+	const std::string ext = ".dds";
 
 	gli::texture Texture = gli::load(path + name + ext);
 	if (Texture.empty())
