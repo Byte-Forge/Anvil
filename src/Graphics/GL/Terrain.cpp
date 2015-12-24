@@ -22,19 +22,50 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	long long begin = (std::chrono::system_clock::now().time_since_epoch()).count();
 
 	//generate a heightmap
+	
 	std::vector<float> heightmap;
-	for (std::uint32_t i = 0; i <= width; i++)
+	for (std::uint32_t i = 0; i < width; i++)
 	{
-		for (std::uint32_t j = 0; j <= height; j++)
+		for (std::uint32_t j = 0; j < height; j++)
 		{
 			heightmap.push_back((glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 10.0);
 		}
 	}
 
-	int index = 0;
+	//compute the normals
+	std::vector<glm::vec3> normals;
 	for (std::uint32_t i = 0; i < width; i++)
 	{
 		for (std::uint32_t j = 0; j < height; j++)
+		{
+			int index = i + (j*width);
+			glm::vec3 normal = {0.0, 0.0, 0.0};
+			if (i < width - 1 && j < height - 1)
+			{
+				normal += Math::ComputeNormal(heightmap[index], heightmap[index + j + 1], heightmap[index + 1]);
+				normal += Math::ComputeNormal(heightmap[index], heightmap[index + j], heightmap[index + j + 1]);
+			}
+			if (j < height - 1 && i > 0)
+			{
+				normal += Math::ComputeNormal(heightmap[index], heightmap[index - 1], heightmap[index + j]);
+			}
+			if (i < width - 1 && j > 0)
+			{
+				normal += Math::ComputeNormal(heightmap[index], heightmap[index + 1], heightmap[index - j]);
+			}
+			if (i > 0 && j > 0)
+			{
+				normal += Math::ComputeNormal(heightmap[index], heightmap[index - j], heightmap[index - j - 1]);
+				normal += Math::ComputeNormal(heightmap[index], heightmap[index - j - 1], heightmap[index - 1]);
+			}
+			normals.push_back(glm::normalize(normal));
+		}
+	}
+
+	int index = 0;
+	for (std::uint32_t i = 0; i < width - 1; i++)
+	{
+		for (std::uint32_t j = 0; j < height - 1; j++)
 		{
 			glm::vec3 a = { (float)i, heightmap[i + j*width], (float)j };
 			glm::vec3 b = { (float)(i+1), heightmap[i + 1 + j*width], (float)j };
@@ -57,15 +88,13 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 			m_uvs.push_back({ 1.0, 1.0 });
 			m_uvs.push_back({ 0.0, 1.0 });
 
-			glm::vec3 n = Math::computeNormal(a, b, c);
-			m_normals.push_back(n);
-			m_normals.push_back(n);
-			m_normals.push_back(n);
+			m_normals.push_back(normals[i + j*width]);
+			m_normals.push_back(normals[i + 1 + j*width]);
+			m_normals.push_back(normals[i + 1 + (j + 1)*width]);
 
-			n = Math::computeNormal(a, c, d);
-			m_normals.push_back(n);
-			m_normals.push_back(n);
-			m_normals.push_back(n);
+			m_normals.push_back(normals[i + j*width]);
+			m_normals.push_back(normals[i + 1 + (j + 1)*width]);
+			m_normals.push_back(normals[i + (j + 1)*width]);
 
 			m_faces.push_back(index++);
 			m_faces.push_back(index++);
