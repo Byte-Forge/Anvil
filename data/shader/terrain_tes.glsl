@@ -28,7 +28,7 @@ void main()
     vec3 position = gl_TessCoord.x * tc_position[0] + gl_TessCoord.y * tc_position[1] + gl_TessCoord.z * tc_position[2];
 	
 	float height = texture(DisplacementTextureSampler, uv).x;
-    position += normal * (height * 0.3f);
+    position += normal * (height * 0.05f);
 	
 	gl_Position = MVP * vec4(position, 1);
 	position = (M * vec4(position, 1)).xyz;
