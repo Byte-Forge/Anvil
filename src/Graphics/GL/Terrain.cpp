@@ -113,11 +113,11 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	long long end = (std::chrono::system_clock::now().time_since_epoch()).count();
 	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
 
-	m_diff = Core::GetResources()->GetTexture("cobble_fan");
-	m_nrm = Core::GetResources()->GetTexture("cobble_fan_norm");
-	m_spec = Core::GetResources()->GetTexture("cobble_fan_spec");
-	m_disp = Core::GetResources()->GetTexture("cobble_fan_disp");
-	m_ambi = Core::GetResources()->GetTexture("cobble_fan_ao");
+	m_diff = Core::GetResources()->GetTexture("terrain/cobble_fan");
+	m_nrm = Core::GetResources()->GetTexture("terrain/cobble_fan_norm");
+	m_spec = Core::GetResources()->GetTexture("terrain/cobble_fan_spec");
+	m_disp = Core::GetResources()->GetTexture("terrain/cobble_fan_disp");
+	m_ambi = Core::GetResources()->GetTexture("terrain/cobble_fan_ao");
 
 	m_diffID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
 	m_nrmID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
