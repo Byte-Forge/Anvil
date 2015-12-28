@@ -80,6 +80,11 @@ int flextInit(void)
         fprintf(stderr, "       Try updating your graphics driver.\n");
         return GL_FALSE;
     }
+    if (!FLEXT_ARB_texture_compression_bptc) {
+        fprintf(stderr, "Error: OpenGL extension GL_ARB_texture_compression_bptc not supported.\n");
+        fprintf(stderr, "       Try updating your graphics driver.\n");
+        return GL_FALSE;
+    }
 
     return GL_TRUE;
 }
@@ -97,6 +102,10 @@ void flextLoadOpenGLFunctions(void)
     glpfDebugMessageControlARB = (PFNGLDEBUGMESSAGECONTROLARB_PROC*)get_proc("glDebugMessageControlARB");
     glpfDebugMessageInsertARB = (PFNGLDEBUGMESSAGEINSERTARB_PROC*)get_proc("glDebugMessageInsertARB");
     glpfGetDebugMessageLogARB = (PFNGLGETDEBUGMESSAGELOGARB_PROC*)get_proc("glGetDebugMessageLogARB");
+
+
+    /* GL_ARB_texture_compression_bptc */
+
 
 
     /* GL_ARB_texture_storage */
@@ -484,6 +493,7 @@ void flextLoadOpenGLFunctions(void)
 /* ----------------------- Extension flag definitions ---------------------- */
 int FLEXT_ARB_debug_output = GL_FALSE;
 int FLEXT_ARB_texture_storage = GL_FALSE;
+int FLEXT_ARB_texture_compression_bptc = GL_FALSE;
 
 /* ---------------------- Function pointer definitions --------------------- */
 
@@ -871,6 +881,9 @@ static void add_extension(const char* extension)
     }
     if (strcmp("GL_ARB_texture_storage", extension) == 0) {
         FLEXT_ARB_texture_storage = GL_TRUE;
+    }
+    if (strcmp("GL_ARB_texture_compression_bptc", extension) == 0) {
+        FLEXT_ARB_texture_compression_bptc = GL_TRUE;
     }
 }
 

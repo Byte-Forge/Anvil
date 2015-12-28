@@ -1054,6 +1054,13 @@ typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLen
 
 #define GL_TEXTURE_IMMUTABLE_FORMAT 0x912F
 
+/* GL_ARB_texture_compression_bptc */
+
+#define GL_COMPRESSED_RGBA_BPTC_UNORM_ARB 0x8E8C
+#define GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM_ARB 0x8E8D
+#define GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_ARB 0x8E8E
+#define GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_ARB 0x8E8F
+
 /* --------------------------- FUNCTION PROTOTYPES --------------------------- */
 
 
@@ -1073,6 +1080,12 @@ GLAPI PFNGLGETDEBUGMESSAGELOGARB_PROC *glpfGetDebugMessageLogARB;
 #define glDebugMessageControlARB glpfDebugMessageControlARB
 #define glDebugMessageInsertARB glpfDebugMessageInsertARB
 #define glGetDebugMessageLogARB glpfGetDebugMessageLogARB
+
+
+/* GL_ARB_texture_compression_bptc */
+
+
+
 
 
 /* GL_ARB_texture_storage */
@@ -2215,6 +2228,7 @@ GLAPI PFNGLUNIFORMSUBROUTINESUIV_PROC *glpfUniformSubroutinesuiv;
 /* --------------------------- CATEGORY DEFINES ------------------------------ */
 
 #define GL_ARB_debug_output
+#define GL_ARB_texture_compression_bptc
 #define GL_ARB_texture_storage
 #define GL_VERSION_1_0
 #define GL_VERSION_1_1
@@ -2234,6 +2248,7 @@ GLAPI PFNGLUNIFORMSUBROUTINESUIV_PROC *glpfUniformSubroutinesuiv;
 
 extern int FLEXT_ARB_debug_output;
 extern int FLEXT_ARB_texture_storage;
+extern int FLEXT_ARB_texture_compression_bptc;
 
 int flextInit(void);
 

@@ -5,6 +5,7 @@
 #include "../Types.hpp"
 #include "../../Core.hpp"
 #include "../IRenderable.hpp"
+#include "../../Exception.hpp"
 #include <iostream>
 
 using namespace hpse;
@@ -58,11 +59,17 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 RendererGL::RendererGL()
 {
     flextInit();
-
+	
 	#ifndef NDEBUG
     if(FLEXT_ARB_debug_output)
         glDebugMessageCallbackARB(debugCallback, nullptr);
 	#endif
+
+	throw HpseException("test", __FILE__, __LINE__);
+
+	if(!FLEXT_ARB_texture_compression_bptc)
+		throw HpseException("BPTC texture compression not supported!", __FILE__, __LINE__);
+
     m_overlay = std::make_unique<GL::Overlay>();
 
 	m_guiShader = std::make_unique<GL::Shader>();

@@ -8,7 +8,6 @@ Script::Script()
 {
 	m_state = luaL_newstate();
 	luaL_openlibs(m_state);
-
 }
 
 Script::~Script()

@@ -52,3 +52,10 @@ std::vector<std::string> IO::ListFiles(const std::string & dir, const std::strin
 	#endif
 	return files;
 }
+
+void hpse::ShowError(const std::string & msg)
+{
+	#ifdef _WIN32
+	MessageBox(NULL, msg.c_str(), "Error", MB_OK | MB_ICONERROR);
+	#endif
+}

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include "../../Exception.hpp"
 using namespace hpse;
 
 GL::Shader::Shader()
@@ -50,10 +51,7 @@ void GL::Shader::LoadShader(const std::string file, GLenum type)
 {
     std::ifstream fin(file);
     if(fin.fail())
-    {
-        std::cout << "Failed to load Shader: " << file << std::endl;
-		return;
-    }
+		throw HpseException("Failed to load shader " + file, __FILE__, __LINE__);
 
     fin.seekg(0,std::ios::end);
     int size = (int)fin.tellg();

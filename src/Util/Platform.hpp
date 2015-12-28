@@ -21,6 +21,8 @@ namespace hpse
 			return buffer;
 		}
 
-		std::vector<std::string> ListFiles(const std::string& dir, const std::string& ext = "");
+		std::vector<std::string> ListFiles(const std::string& dir, const std::string& ext = "");		
 	}
+
+	void ShowError(const std::string& msg);
 }

@@ -1,5 +1,7 @@
 #include "Core.hpp"
 #include "Environment.hpp"
+#include "Util/Platform.hpp"
+#include "Exception.hpp"
 #include <iostream>
 
 int main(int argc, char** argv) 
@@ -9,11 +11,18 @@ int main(int argc, char** argv)
 	Environment::Argc = argc;
 	Environment::Argv = argv;
 
-	{
-		hpse::Core engine;
 
-		engine.Run();
+	try
+	{
+	hpse::Core engine;
+	engine.Run();
 	}
+	catch(const HpseException& e)
+	{
+		hpse::ShowError(e.what());
+		return -1;
+	}
+	
 
 	return 0;
 }
