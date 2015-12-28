@@ -8,6 +8,69 @@
 #include <iostream>
 using namespace hpse;
 
+bool GL::Texture::Load(std::vector<gli::texture> textures)
+{
+	if (!FLEXT_ARB_texture_storage)
+	{
+		std::cout << "Not supporting ARB_texture_storage" << std::endl;
+		return false;
+	}
+
+	m_target = GL_TEXTURE_2D_ARRAY;
+	int max_size = 0;
+	gli::gl GL;
+	gli::gl::format const Format = GL.translate(textures[0].format());
+
+	for (int i = 0; i < textures.size(); i++)
+	{
+		glm::tvec3<GLsizei> const Dimensions(textures[i].dimensions());
+		if (Dimensions.x > max_size)
+			max_size = Dimensions.x;
+	}
+
+	glGenTextures(1, &m_handle);
+	glBindTexture(m_target, m_handle);
+	glTexParameteri(m_target, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(m_target, GL_TEXTURE_MAX_LEVEL, static_cast<GLint>(textures[0].levels() - 1));
+	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_R, Format.Swizzle[0]);
+	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_G, Format.Swizzle[1]);
+	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_B, Format.Swizzle[2]);
+	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_A, Format.Swizzle[3]);
+
+	glTexStorage3D(m_target, textures[0].levels(), Format.Internal, max_size, max_size, textures.size());
+
+	for (int i = 0; i < textures.size(); i++)
+	{
+		for (std::size_t Layer = 0; Layer < textures[i].layers(); ++Layer)
+		{
+			for (std::size_t Face = 0; Face < textures[i].faces(); ++Face)
+			{
+				for (std::size_t Level = 0; Level < textures[i].levels(); ++Level)
+				{
+					GLsizei const LayerGL = static_cast<GLsizei>(Layer);
+					glm::tvec3<GLsizei> Dimensions(textures[i].dimensions(Level));
+
+					if (gli::is_compressed(textures[i].format()))
+						glCompressedTexSubImage3D(m_target, static_cast<GLint>(Level),
+							0, 0, i,
+							Dimensions.x, Dimensions.y,
+							LayerGL,
+							Format.Internal, static_cast<GLsizei>(textures[i].size(Level)),
+							textures[i].data(Layer, Face, Level));
+					else
+						glTexSubImage3D(m_target, static_cast<GLint>(Level),
+							0, 0, i,
+							Dimensions.x, Dimensions.y,
+							LayerGL,
+							Format.External, Format.Type,
+							textures[i].data(Layer, Face, Level));
+				}
+			}
+		}
+	}
+	return true;
+}
+
 bool GL::Texture::Load(const gli::texture &tex)
 {
 	if(!FLEXT_ARB_texture_storage)
@@ -18,16 +81,16 @@ bool GL::Texture::Load(const gli::texture &tex)
 
 	gli::gl GL;
 	gli::gl::format const Format = GL.translate(tex.format());
-	GLenum Target = GL.translate(tex.target());
+	m_target = GL.translate(tex.target());
 
 	glGenTextures(1, &m_handle);
-	glBindTexture(Target, m_handle);
-	glTexParameteri(Target, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(Target, GL_TEXTURE_MAX_LEVEL, static_cast<GLint>(tex.levels() - 1));
-	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_R, Format.Swizzle[0]);
-	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_G, Format.Swizzle[1]);
-	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_B, Format.Swizzle[2]);
-	glTexParameteri(Target, GL_TEXTURE_SWIZZLE_A, Format.Swizzle[3]);
+	glBindTexture(m_target, m_handle);
+	glTexParameteri(m_target, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(m_target, GL_TEXTURE_MAX_LEVEL, static_cast<GLint>(tex.levels() - 1));
+	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_R, Format.Swizzle[0]);
+	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_G, Format.Swizzle[1]);
+	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_B, Format.Swizzle[2]);
+	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_A, Format.Swizzle[3]);
 
 	glm::tvec3<GLsizei> const Dimensions(tex.dimensions());
 	GLsizei const FaceTotal = static_cast<GLsizei>(tex.layers() * tex.faces());
@@ -38,17 +101,17 @@ bool GL::Texture::Load(const gli::texture &tex)
 	switch (tex.target())
 	{
 		case gli::TARGET_1D:
-			glTexStorage1D(Target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x);
+			glTexStorage1D(m_target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x);
 			break;
 		case gli::TARGET_1D_ARRAY:
 		case gli::TARGET_2D:
 		case gli::TARGET_CUBE:
-			glTexStorage2D(Target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, tex.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
+			glTexStorage2D(m_target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, tex.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
 			break;
 		case gli::TARGET_2D_ARRAY:
 		case gli::TARGET_3D:
 		case gli::TARGET_CUBE_ARRAY:
-			glTexStorage3D(Target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, Dimensions.y, tex.target() == gli::TARGET_3D ? Dimensions.z : FaceTotal);
+			glTexStorage3D(m_target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, Dimensions.y, tex.target() == gli::TARGET_3D ? Dimensions.z : FaceTotal);
 			break;
 		default:
 			assert(0);
@@ -63,6 +126,7 @@ bool GL::Texture::Load(const gli::texture &tex)
 			{
 				GLsizei const LayerGL = static_cast<GLsizei>(Layer);
 				glm::tvec3<GLsizei> Dimensions(tex.dimensions(Level));
+				GLenum Target = m_target;
 				Target = gli::is_target_cube(tex.target()) ? static_cast<GLenum>(GL_TEXTURE_CUBE_MAP_POSITIVE_X + Face) : Target;
 
 				switch (tex.target())
@@ -131,8 +195,9 @@ GL::Texture::~Texture()
 
 void GL::Texture::Bind()
 {
-    glBindTexture(GL_TEXTURE_2D, m_handle);
+    glBindTexture(m_target, m_handle);
 }
+
 
 
 

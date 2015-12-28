@@ -9,7 +9,7 @@ in vec3 lightDir;
 
 uniform vec3 lightPos;
 
-uniform sampler2D DiffuseTextureSampler;
+uniform sampler2DArray DiffuseTextureSampler;
 uniform sampler2D NormalTextureSampler;
 uniform sampler2D SpecularTextureSampler;
 uniform sampler2D AmbientTextureSampler;
@@ -21,11 +21,11 @@ void main()
 	vec3 LightColor = vec3(1,1,1);
 	float LightPower = 2000.0;
 
-	vec3 MaterialDiffuseColor = texture2D(DiffuseTextureSampler, uv).rgb;
-	vec3 MaterialAmbientColor = texture2D(AmbientTextureSampler, uv).rgb;
-	vec3 MaterialSpecularColor = texture2D(SpecularTextureSampler, uv).rgb * 0.3;
+	vec3 MaterialDiffuseColor = texture(DiffuseTextureSampler, vec3(uv, 0)).rgb;
+	vec3 MaterialAmbientColor = texture(AmbientTextureSampler, uv).rgb;
+	vec3 MaterialSpecularColor = texture(SpecularTextureSampler, uv).rgb * 0.3;
 
-	vec3 texNormal = normalize(texture2D(NormalTextureSampler, uv).rgb*2.0 - 1.0);
+	vec3 texNormal = normalize(texture(NormalTextureSampler, uv).rgb*2.0 - 1.0);
 	
 	float distance = length(lightPos - position);
 	

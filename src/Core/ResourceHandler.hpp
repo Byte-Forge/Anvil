@@ -14,7 +14,7 @@ namespace hpse
     class ResourceHandler
     {
     public:
-
+		std::shared_ptr<ITexture> GetTextureArray(std::vector<std::string> names);
         std::shared_ptr<ITexture> GetTexture(const std::string& name);
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 

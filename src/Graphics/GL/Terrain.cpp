@@ -113,7 +113,11 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	long long end = (std::chrono::system_clock::now().time_since_epoch()).count();
 	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
 
-	m_diff = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan");
+	std::vector<std::string> diffuseTextures;
+	diffuseTextures.push_back("terrain/cobble_fan");
+	diffuseTextures.push_back("terrain/grass");
+
+	m_diff = Core::GetCore()->GetResources()->GetTextureArray(diffuseTextures);
 	m_nrm = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_norm");
 	m_spec = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_spec");
 	m_disp = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_disp");

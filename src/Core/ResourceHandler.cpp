@@ -13,7 +13,7 @@ namespace hpse
 	{
 		if (m_resources.count(toUpper(name)) == 0)
 		{
-			TextureLoader::Load(name);
+			TextureLoader::LoadTexture(name);
 		}
 		if (m_resources.count(toUpper(name)) > 0)
 		{
@@ -21,6 +21,11 @@ namespace hpse
 		}
 		std::cout << "ERROR: no such resource found: " << name << std::endl;
 		return nullptr;
+	}
+
+	std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::string> names)
+	{
+		return TextureLoader::LoadTextureArray(names);
 	}
 
 	void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
