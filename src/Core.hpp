@@ -20,58 +20,64 @@ namespace hpse
 
 		void Run();
 
-		static inline std::unique_ptr<GUI>& GetGUI()
+		inline std::unique_ptr<GUI>& GetGUI()
 		{
 			return m_gui;
 		}
 
-		static inline std::unique_ptr<Script>& GetScript()
+		inline std::unique_ptr<Script>& GetScript()
 		{
 			return m_script;
 		}
 
-		static inline std::unique_ptr<Graphics>& GetGraphics()
+		inline std::unique_ptr<Graphics>& GetGraphics()
 		{
 			return m_graphics;
 		}
 
-		static inline std::unique_ptr<ResourceHandler>& GetResources()
+		inline std::unique_ptr<ResourceHandler>& GetResources()
 		{
 			return m_resources;
 		}
 
-		static inline std::unique_ptr<Map>& GetMap()
+		inline std::unique_ptr<Map>& GetMap()
 		{
 			return m_map;
 		}
 
-		static inline std::unique_ptr<Camera>& GetCamera()
+		inline std::unique_ptr<Camera>& GetCamera()
 		{
 			return m_camera;
 		} 
 
-		static inline glm::vec2 GetResolution()
+		inline glm::vec2 GetResolution()
 		{
 			glm::vec2 res;
-			res.x = (float)m_window->getSize().x;
-			res.y = (float)m_window->getSize().y;
+			res.x = (float)m_window.getSize().x;
+			res.y = (float)m_window.getSize().y;
 			return res;
 		}
 
-		static inline void Quit()
+		inline void Quit()
 		{
 			m_running = false;
 		}
+
+		static inline Core* GetCore()
+		{
+			return m_instance;
+		}
 	private:
-		static std::unique_ptr<sf::Window> m_window;
-		static std::unique_ptr<ResourceHandler> m_resources;
-		static std::unique_ptr<Graphics> m_graphics;
-		static std::unique_ptr<GUI> m_gui;
-		static std::unique_ptr<Script> m_script;
-		static std::unique_ptr<Audio> m_audio;
-		static std::unique_ptr<Map> m_map;
-		static std::unique_ptr<Camera> m_camera;
-		static std::unique_ptr<Frustum> m_frustum;
-		static bool m_running;
+		sf::Window m_window;
+		std::unique_ptr<ResourceHandler> m_resources;
+		std::unique_ptr<Graphics> m_graphics;
+		std::unique_ptr<GUI> m_gui;
+		std::unique_ptr<Script> m_script;
+		std::unique_ptr<Audio> m_audio;
+		std::unique_ptr<Map> m_map;
+		std::unique_ptr<Camera> m_camera;
+		std::unique_ptr<Frustum> m_frustum;
+		bool m_running;
+		static Core* m_instance;
 	};
 }

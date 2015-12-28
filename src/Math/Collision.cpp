@@ -59,7 +59,7 @@ int Collision::SphereInFrustum(std::array<std::array<float, 4>, 6>& frustum, glm
 //out_origin starts at the near plane NOT the camera position
 void Collision::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction)
 {
-	glm::vec2 resolution = Core::GetResolution();
+	glm::vec2 resolution = Core::GetCore()->GetResolution();
 
 	glm::vec4 ray_start(
 		((float)mouse_pos.x / (float)resolution.x - 0.5f) * 2.0f,
@@ -71,7 +71,7 @@ void Collision::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, 
 		((float)mouse_pos.y / (float)resolution.y - 0.5f) * 2.0f,
 		0.0, 1.0f);
 
-	glm::mat4 M = glm::inverse(Core::GetCamera()->GetProjectionMatrix() * Core::GetCamera()->GetViewMatrix());
+	glm::mat4 M = glm::inverse(Core::GetCore()->GetCamera()->GetProjectionMatrix() * Core::GetCore()->GetCamera()->GetViewMatrix());
 	glm::vec4 ray_start_world = M * ray_start; 
 	ray_start_world /= ray_start_world.w;
 	glm::vec4 ray_end_world = M * ray_end ; 

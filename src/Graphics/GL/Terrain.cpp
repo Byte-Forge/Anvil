@@ -113,24 +113,24 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	long long end = (std::chrono::system_clock::now().time_since_epoch()).count();
 	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
 
-	m_diff = Core::GetResources()->GetTexture("terrain/cobble_fan");
-	m_nrm = Core::GetResources()->GetTexture("terrain/cobble_fan_norm");
-	m_spec = Core::GetResources()->GetTexture("terrain/cobble_fan_spec");
-	m_disp = Core::GetResources()->GetTexture("terrain/cobble_fan_disp");
-	m_ambi = Core::GetResources()->GetTexture("terrain/cobble_fan_ao");
+	m_diff = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan");
+	m_nrm = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_norm");
+	m_spec = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_spec");
+	m_disp = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_disp");
+	m_ambi = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_ao");
 
-	m_diffID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
-	m_nrmID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
-	m_specID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler");
-	m_dispID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler");
-	m_ambiID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler");
+	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
+	m_nrmID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
+	m_specID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler");
+	m_dispID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler");
+	m_ambiID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler");
 
-	m_modelMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M");
-	m_viewMatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
-	m_modelView3x3MatrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3");
-	m_matrixID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");
+	m_modelMatrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M");
+	m_viewMatrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
+	m_modelView3x3MatrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3");
+	m_matrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");
 
-	m_lightID = Core::GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos");
+	m_lightID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos");
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -173,9 +173,9 @@ GL::Terrain::~Terrain()
 void GL::Terrain::Render()
 {
 	glUniformMatrix4fv(m_modelMatrixID, 1, GL_FALSE, &m_mod[0][0]);
-	glUniformMatrix4fv(m_viewMatrixID, 1, GL_FALSE, &Core::GetCamera()->GetViewMatrix()[0][0]);
-	glUniformMatrix3fv(m_modelView3x3MatrixID, 1, GL_FALSE, &glm::mat3(Core::GetCamera()->GetViewMatrix() * m_mod)[0][0]);
-	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
+	glUniformMatrix4fv(m_viewMatrixID, 1, GL_FALSE, &Core::GetCore()->GetCamera()->GetViewMatrix()[0][0]);
+	glUniformMatrix3fv(m_modelView3x3MatrixID, 1, GL_FALSE, &glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)[0][0]);
+	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
 
 	glm::vec3 lightPos = glm::vec3({ 20.0, 20.0, 20.0 });
 	glUniform3f(m_lightID, lightPos.x, lightPos.y, lightPos.z);
@@ -228,9 +228,9 @@ void GL::Terrain::Update()
 {
 	m_mod = glm::mat4(1.0);
 
-	if (Core::GetCamera()->GetFrustum()->Updated())
+	if (Core::GetCore()->GetCamera()->GetFrustum()->Updated())
 	{
-		m_faces = m_quadtree->GetTriangles(Core::GetCamera()->GetFrustum()->GetFrustumArray());
+		m_faces = m_quadtree->GetTriangles(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray());
 		if (m_faces.size() != 0)
 		{
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);

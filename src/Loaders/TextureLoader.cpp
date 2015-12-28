@@ -20,9 +20,9 @@ void TextureLoader::Load(const std::string& name)
 	if (Texture.empty())
 		throw HpseException("Failed to load empty texture" + path + name + ext, __FILE__, __LINE__);
 
-	auto tex = Core::GetGraphics()->GetTexture();
+	auto tex = Core::GetCore()->GetGraphics()->GetTexture();
 	if(!tex->Load(Texture))
 		throw HpseException("Failed to load texture" + path + name + ext, __FILE__, __LINE__);
 
-	Core::GetResources()->AddResource(name, tex);
+	Core::GetCore()->GetResources()->AddResource(name, tex);
 }
