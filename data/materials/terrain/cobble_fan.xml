@@ -1,0 +1,13 @@
+<materials>
+	<material name = "cobble_fan">
+		<max_tessellation>64</max_tessellation>
+		<displacement_factor>0.01</displacement_factor>
+		<textures>
+			<diffuse>terrain/cobble_fan.dds</diffuse>
+			<normal>terrain/cobble_fan_norm.dds</normal>
+			<specular>terrain/cobble_fan_spec.dds</specular>
+			<displacement>terrain/cobble_fan_disp.dds</displacement>
+			<ambient_occ>terrain/cobble_fan_ao.dds</ambient_occ>
+		</textures>
+	</material>
+</materials>
