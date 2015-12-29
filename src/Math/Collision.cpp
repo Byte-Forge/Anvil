@@ -22,7 +22,7 @@ bool Collision::Contains(glm::vec3& vertex, glm::vec3& center, glm::vec3& size)
 		&& vertex.z <= center.y + size.y);
 }
 
-bool Collision::CubeInFrustum(std::array<std::array<float, 4>, 6>& frustum, glm::vec2& center, glm::vec2& size)
+bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec2& center, glm::vec2& size)
 {
 	for (int p = 0; p < 6; p++)
 	{
@@ -39,7 +39,7 @@ bool Collision::CubeInFrustum(std::array<std::array<float, 4>, 6>& frustum, glm:
 	return true;
 }
 
-int Collision::SphereInFrustum(std::array<std::array<float, 4>, 6>& frustum, glm::vec2& center, float radius)
+int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec2& center, float radius)
 {
 	int p;
 	int c = 0;
