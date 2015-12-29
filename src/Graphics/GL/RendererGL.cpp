@@ -65,6 +65,9 @@ RendererGL::RendererGL()
         glDebugMessageCallbackARB(debugCallback, nullptr);
 	#endif
 
+	if(!FLEXT_ARB_texture_storage)
+		throw HpseException("ARB_texture_storage not supported!", __FILE__, __LINE__);
+
 	if(!FLEXT_ARB_texture_compression_bptc)
 		throw HpseException("BPTC texture compression not supported!", __FILE__, __LINE__);
 
