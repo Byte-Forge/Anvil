@@ -14,7 +14,7 @@ namespace hpse
 		virtual void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& fragShader) = 0;
         virtual void Compile() = 0;
         virtual void Use() = 0;
-		virtual std::uint32_t GetUniformLocation(char* id) = 0;
+		virtual std::uint32_t GetUniformLocation(const std::string& id) = 0;
     };
 }
 

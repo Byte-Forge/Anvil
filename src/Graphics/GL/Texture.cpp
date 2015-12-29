@@ -8,6 +8,8 @@
 #include <iostream>
 using namespace hpse;
 
+gli::gl GL::Texture::GL;
+
 bool GL::Texture::Load(std::vector<gli::texture> textures)
 {
 	if (!FLEXT_ARB_texture_storage)
@@ -18,7 +20,6 @@ bool GL::Texture::Load(std::vector<gli::texture> textures)
 
 	m_target = GL_TEXTURE_2D_ARRAY;
 	int max_size = 0;
-	gli::gl GL;
 	gli::gl::format const Format = GL.translate(textures[0].format());
 
 	for (int i = 0; i < textures.size(); i++)
@@ -54,14 +55,14 @@ bool GL::Texture::Load(std::vector<gli::texture> textures)
 						glCompressedTexSubImage3D(m_target, static_cast<GLint>(Level),
 							0, 0, i,
 							Dimensions.x, Dimensions.y,
-							LayerGL,
+							1,
 							Format.Internal, static_cast<GLsizei>(textures[i].size(Level)),
 							textures[i].data(Layer, Face, Level));
 					else
 						glTexSubImage3D(m_target, static_cast<GLint>(Level),
 							0, 0, i,
 							Dimensions.x, Dimensions.y,
-							LayerGL,
+							1,
 							Format.External, Format.Type,
 							textures[i].data(Layer, Face, Level));
 				}
@@ -79,7 +80,6 @@ bool GL::Texture::Load(const gli::texture &tex)
 		return false;
 	}
 
-	gli::gl GL;
 	gli::gl::format const Format = GL.translate(tex.format());
 	m_target = GL.translate(tex.target());
 

@@ -21,8 +21,11 @@ namespace hpse
 			bool Load(std::vector<gli::texture> textures);
             void Bind();
         private:
+			GLuint CreateHandle(const gli::texture& tex);
             GLuint m_handle;
 			GLenum m_target;
+
+			static gli::gl GL;
         };
     }
 }

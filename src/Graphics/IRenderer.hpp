@@ -4,6 +4,7 @@
 #include "IRenderable.hpp"
 #include <glm/glm.hpp>
 #include <vector>
+#include <string>
 #include "../Types/Map.hpp"
 
 namespace hpse
@@ -17,7 +18,7 @@ namespace hpse
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
 
-		inline std::uint32_t GetTerrainUniformLocation(char* id)
+		inline std::uint32_t GetTerrainUniformLocation(const std::string& id)
 		{
 			return m_terrainShader->GetUniformLocation(id);
 		}
