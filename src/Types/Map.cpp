@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Map.hpp"
 #include "../Graphics/GL/Terrain.hpp"
 #include "../Graphics.hpp"

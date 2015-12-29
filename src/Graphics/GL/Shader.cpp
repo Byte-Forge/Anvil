@@ -47,7 +47,7 @@ void GL::Shader::Load(const std::string& vertShader, const std::string& tessCont
 }
 
 
-void GL::Shader::LoadShader(const std::string file, GLenum type)
+void GL::Shader::LoadShader(const std::string& file, GLenum type)
 {
     std::ifstream fin(file);
     if(fin.fail())
