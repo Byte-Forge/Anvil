@@ -33,6 +33,6 @@ namespace hpse
 		static void ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction);
 
 		//
-		static int Collision::Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 o, glm::vec3 d, float* out);
+		static int Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 o, glm::vec3 d, float* out);
 	};
 }

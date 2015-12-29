@@ -8,12 +8,18 @@
 #include <iostream>
 using namespace hpse;
 
+gli::gl GL::Texture::GL;
+
 bool GL::Texture::Load(std::vector<gli::texture> textures)
 {
+	if (!FLEXT_ARB_texture_storage)
+	{
+		std::cout << "Not supporting ARB_texture_storage" << std::endl;
+		return false;
+	}
 
 	m_target = GL_TEXTURE_2D_ARRAY;
 	int max_size = 0;
-	gli::gl GL;
 	gli::gl::format const Format = GL.translate(textures[0].format());
 
 	for (int i = 0; i < textures.size(); i++)
@@ -68,7 +74,12 @@ bool GL::Texture::Load(std::vector<gli::texture> textures)
 
 bool GL::Texture::Load(const gli::texture &tex)
 {
-	gli::gl GL;
+	if(!FLEXT_ARB_texture_storage)
+	{
+		std::cout << "Not supporting ARB_texture_storage" << std::endl;
+		return false;
+	}
+
 	gli::gl::format const Format = GL.translate(tex.format());
 	m_target = GL.translate(tex.target());
 
