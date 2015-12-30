@@ -118,13 +118,13 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 			m_vertices.push_back(c);
 			m_vertices.push_back(d);
 
-			m_uvs.push_back({ 0.0, 0.0 });
-			m_uvs.push_back({ 1.0, 0.0 });
-			m_uvs.push_back({ 1.0, 1.0 });
+			m_uvs.push_back({ 0.0 + i%2 * 0.5, 0.0 + j % 2 * 0.5 });
+			m_uvs.push_back({ 0.5 + i % 2 * 0.5, 0.0 + j % 2 * 0.5 });
+			m_uvs.push_back({ 0.5 + i % 2 * 0.5, 0.5 + j % 2 * 0.5 });
 
-			m_uvs.push_back({ 0.0, 0.0 });
-			m_uvs.push_back({ 1.0, 1.0 });
-			m_uvs.push_back({ 0.0, 1.0 });
+			m_uvs.push_back({ 0.0 + i % 2 * 0.5, 0.0 + j % 2 * 0.5 });
+			m_uvs.push_back({ 0.5 + i % 2 * 0.5, 0.5 + j % 2 * 0.5 });
+			m_uvs.push_back({ 0.0 + i % 2 * 0.5, 0.5 + j % 2 * 0.5 });
 
 			m_normals.push_back(normals[i + j*width]);
 			m_normals.push_back(normals[i + 1 + j*width]);
