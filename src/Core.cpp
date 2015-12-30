@@ -38,6 +38,7 @@ Core::~Core()
 void Core::Run()
 {
 	sf::Event event;
+	m_window.setFramerateLimit(60);
 	while (m_window.isOpen() && m_running)
 	{
 		m_graphics->Clear();
