@@ -12,7 +12,7 @@ namespace hpse
 		Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel = 5, unsigned int level = 0);
 
 		void AddTriangle(uint32_t indices[3], glm::vec3& _v1, glm::vec3& _v2, glm::vec3& _v3); // Add a single triangle to Quadtree
-		std::vector<uint32_t> GetTriangles(std::array<std::array<float, 4>, 6>& frustum); // Returns all objects to be drawn within specified area.
+		std::vector<uint32_t> GetTriangles(const std::array<std::array<float, 4>, 6>& frustum); // Returns all objects to be drawn within specified area.
 	private:
 		glm::vec2 m_pos; // Note that y in here is z in 3D world.
 		glm::vec2 m_size;
@@ -27,8 +27,8 @@ namespace hpse
 		std::unique_ptr<Quadtree> m_SE;
 
 		bool contains(glm::vec3& vertex);
-		int SphereInFrustum(std::array<std::array<float, 4>, 6>& frustum);
-		bool CubeInFrustum(std::array<std::array<float, 4>, 6>& frustum);
+		int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
+		bool CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
 		std::vector<uint32_t> getAllTriangles(); // Returns all triangles without AABBvsFrustum check.
 	};
 }

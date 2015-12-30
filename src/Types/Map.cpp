@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Map.hpp"
 #include "../Graphics/GL/Terrain.hpp"
 #include "../Graphics.hpp"
@@ -9,7 +7,7 @@ using namespace hpse;
 Map::Map()
 {
 	if(Core::GetCore()->GetGraphics()->GetBackend() == Graphics::OpenGL)
-		m_terrain = std::make_shared<GL::Terrain>(400, 400);
+		m_terrain = std::make_shared<GL::Terrain>(40, 40);
 
 	Core::GetCore()->GetGraphics()->GetRenderer()->RegisterRenderable(m_terrain);
 }

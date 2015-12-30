@@ -1,8 +1,6 @@
 #include "Core.hpp" 
 #include "Graphics/GL/Texture.hpp"
 #include <iostream>
-#include <conio.h>
-
 
 using namespace hpse;
 
@@ -25,10 +23,11 @@ Core::Core()
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
 	m_resources = std::make_unique<ResourceHandler>();
-	m_map = std::make_unique<Map>();
-	m_camera = std::make_unique<Camera>();
 
 	m_script->LoadFile("./script/start.lua");
+
+	m_map = std::make_unique<Map>();
+	m_camera = std::make_unique<Camera>();
 }
 
 Core::~Core()
@@ -40,6 +39,7 @@ Core::~Core()
 void Core::Run()
 {
 	sf::Event event;
+	m_window.setFramerateLimit(60);
 	while (m_window.isOpen() && m_running)
 	{
 		m_graphics->Clear();

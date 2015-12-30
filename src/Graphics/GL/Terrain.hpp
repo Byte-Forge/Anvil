@@ -55,12 +55,14 @@ namespace hpse
 			std::vector<glm::vec2> m_uvs;
 			std::vector<glm::vec3> m_normals;
 			std::vector<std::uint32_t> m_faces;
+			std::vector<glm::vec3> m_materials;
 
 			GLuint m_vao;
 			GLuint m_vbo;
 			GLuint m_uvbo;
 			GLuint m_nbo;
 			GLuint m_fbo;
+			GLuint m_mbo;
         };
     }
 }

@@ -62,6 +62,44 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 		}
 	}
 
+	//generate material indices
+	std::vector<glm::vec3> materials;
+	for (std::uint32_t i = 0; i < width; i++)
+	{
+		for (std::uint32_t j = 0; j < height; j++)
+		{
+			int r = i % 4;
+			int mat1, mat2;
+			float val;
+			if (r == 0)
+			{
+				mat1 = 0;
+				mat2 = -1;
+				val = 0;
+			}
+			else if (r == 1)
+			{
+				mat1 = 0;
+				mat2 = 1;
+				val = 0.5;
+			}
+			else if (r == 2)
+			{
+				mat1 = 1;
+				mat2 = -1;
+				val = 0;
+			}
+			else if (r == 3)
+			{
+				mat1 = 1;
+				mat2 = 0;
+				val = 0.5;
+			}
+			materials.push_back({mat1, mat2, val});
+		}
+	}
+
+	//fill the vectors for buffer objects
 	int index = 0;
 	for (std::uint32_t i = 0; i < width - 1; i++)
 	{
@@ -96,6 +134,14 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 			m_normals.push_back(normals[i + 1 + (j + 1)*width]);
 			m_normals.push_back(normals[i + (j + 1)*width]);
 
+			m_materials.push_back(materials[i + j*width]);
+			m_materials.push_back(materials[i + 1 + j*width]);
+			m_materials.push_back(materials[i + 1 + (j + 1)*width]);
+
+			m_materials.push_back(materials[i + j*width]);
+			m_materials.push_back(materials[i + 1 + (j + 1)*width]);
+			m_materials.push_back(materials[i + (j + 1)*width]);
+
 			m_faces.push_back(index++);
 			m_faces.push_back(index++);
 			m_faces.push_back(index++);
@@ -113,11 +159,31 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	long long end = (std::chrono::system_clock::now().time_since_epoch()).count();
 	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
 
-	m_diff = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan");
-	m_nrm = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_norm");
-	m_spec = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_spec");
-	m_disp = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_disp");
-	m_ambi = Core::GetCore()->GetResources()->GetTexture("terrain/cobble_fan_ao");
+	std::vector<std::string> diffuseTextures;
+	diffuseTextures.push_back("terrain/cobble_fan.dds");
+	diffuseTextures.push_back("terrain/grass.dds");
+
+	std::vector<std::string> normTextures;
+	normTextures.push_back("terrain/cobble_fan_norm.dds");
+	normTextures.push_back("terrain/grass_norm.dds");
+
+	std::vector<std::string> specTextures;
+	specTextures.push_back("terrain/cobble_fan_spec.dds");
+	specTextures.push_back("terrain/grass_spec.dds");
+
+	std::vector<std::string> dispTextures;
+	dispTextures.push_back("terrain/cobble_fan_disp.dds");
+	dispTextures.push_back("terrain/grass_disp.dds");
+
+	std::vector<std::string> aoTextures;
+	aoTextures.push_back("terrain/cobble_fan_ao.dds");
+	aoTextures.push_back("terrain/grass_ao.dds");
+
+	m_diff = Core::GetCore()->GetResources()->GetTextureArray(diffuseTextures);
+	m_nrm = Core::GetCore()->GetResources()->GetTextureArray(normTextures);
+	m_spec = Core::GetCore()->GetResources()->GetTextureArray(specTextures);
+	m_disp = Core::GetCore()->GetResources()->GetTextureArray(dispTextures);
+	m_ambi = Core::GetCore()->GetResources()->GetTextureArray(aoTextures);
 
 	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
 	m_nrmID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
@@ -150,6 +216,10 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	glGenBuffers(1, &m_fbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &m_mbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_mbo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_materials.size() * sizeof(std::uint32_t), &m_materials[0], GL_STATIC_DRAW);
 }
 
 GL::Terrain::~Terrain()
@@ -168,6 +238,9 @@ GL::Terrain::~Terrain()
 
 	glDeleteBuffers(1, &m_fbo);
 	m_fbo = 0;
+
+	glDeleteBuffers(1, &m_mbo);
+	m_mbo = 0;
 }
 
 void GL::Terrain::Render()
@@ -194,23 +267,27 @@ void GL::Terrain::Render()
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
 
-	glActiveTexture(GL_TEXTURE0); //diffuse texture
+	glEnableVertexAttribArray(3);
+	glBindBuffer(GL_ARRAY_BUFFER, m_mbo);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();
 	glUniform1i(m_diffID, 0);
 
-	glActiveTexture(GL_TEXTURE1); //normal texture
+	glActiveTexture(GL_TEXTURE1); //normal textures
 	m_nrm->Bind();
 	glUniform1i(m_nrmID, 1);
 
-	glActiveTexture(GL_TEXTURE2); //spec texture
+	glActiveTexture(GL_TEXTURE2); //spec textures
 	m_spec->Bind();
 	glUniform1i(m_specID, 2);
 
-	glActiveTexture(GL_TEXTURE3); //disp texture
+	glActiveTexture(GL_TEXTURE3); //disp textures
 	m_disp->Bind();
 	glUniform1i(m_dispID, 3);
 
-	glActiveTexture(GL_TEXTURE4); //ambi texture
+	glActiveTexture(GL_TEXTURE4); //ambi textures
 	m_ambi->Bind();
 	glUniform1i(m_ambiID, 4);
 
@@ -222,6 +299,7 @@ void GL::Terrain::Render()
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(3);
 }
 
 void GL::Terrain::Update()
@@ -248,6 +326,9 @@ void GL::Terrain::Update()
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_normals.size(), &m_normals[0], GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_mbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_materials.size(), &m_materials[0], GL_STATIC_DRAW);
 
 		updated = false;
 	}
