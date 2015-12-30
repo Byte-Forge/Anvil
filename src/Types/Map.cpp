@@ -7,7 +7,7 @@ using namespace hpse;
 Map::Map()
 {
 	if(Core::GetCore()->GetGraphics()->GetBackend() == Graphics::OpenGL)
-		m_terrain = std::make_shared<GL::Terrain>(4, 4);
+		m_terrain = std::make_shared<GL::Terrain>(40, 40);
 
 	Core::GetCore()->GetGraphics()->GetRenderer()->RegisterRenderable(m_terrain);
 }

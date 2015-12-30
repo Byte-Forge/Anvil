@@ -239,6 +239,7 @@ int Collision::Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::
 
 	t = glm::dot(e2, Q) * inv_det;
 
+	//the point of the collision is t * d
 	if (t > EPSILON) { //ray intersection
 		*out = t;
 		return 1;
