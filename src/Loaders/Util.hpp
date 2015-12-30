@@ -37,4 +37,10 @@ namespace hpse
 		std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
 		return upper;
 	}
+
+	inline bool fileExists(const std::string& str)
+	{
+		std::fstream fin(str);
+		return !fin.fail();
+	}
 }

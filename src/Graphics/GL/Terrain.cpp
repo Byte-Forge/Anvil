@@ -160,24 +160,24 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
 
 	std::vector<std::string> diffuseTextures;
-	diffuseTextures.push_back("terrain/cobble_fan");
-	diffuseTextures.push_back("terrain/grass");
+	diffuseTextures.push_back("terrain/cobble_fan.dds");
+	diffuseTextures.push_back("terrain/grass.dds");
 
 	std::vector<std::string> normTextures;
-	normTextures.push_back("terrain/cobble_fan_norm");
-	normTextures.push_back("terrain/grass_norm");
+	normTextures.push_back("terrain/cobble_fan_norm.dds");
+	normTextures.push_back("terrain/grass_norm.dds");
 
 	std::vector<std::string> specTextures;
-	specTextures.push_back("terrain/cobble_fan_spec");
-	specTextures.push_back("terrain/grass_spec");
+	specTextures.push_back("terrain/cobble_fan_spec.dds");
+	specTextures.push_back("terrain/grass_spec.dds");
 
 	std::vector<std::string> dispTextures;
-	dispTextures.push_back("terrain/cobble_fan_disp");
-	dispTextures.push_back("terrain/grass_disp");
+	dispTextures.push_back("terrain/cobble_fan_disp.dds");
+	dispTextures.push_back("terrain/grass_disp.dds");
 
 	std::vector<std::string> aoTextures;
-	aoTextures.push_back("terrain/cobble_fan_ao");
-	aoTextures.push_back("terrain/grass_ao");
+	aoTextures.push_back("terrain/cobble_fan_ao.dds");
+	aoTextures.push_back("terrain/grass_ao.dds");
 
 	m_diff = Core::GetCore()->GetResources()->GetTextureArray(diffuseTextures);
 	m_nrm = Core::GetCore()->GetResources()->GetTextureArray(normTextures);

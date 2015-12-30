@@ -12,8 +12,5 @@ namespace hpse
 	public:
 		static void LoadTexture(const std::string& name);
 		static std::shared_ptr<ITexture> LoadTextureArray(std::vector<std::string> names);
-	private:
-		static std::string m_path;
-		static std::string m_ext;
 	};
 }

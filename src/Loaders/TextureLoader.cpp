@@ -10,22 +10,20 @@
 #include "../Exception.hpp"
 using namespace hpse;
 
-std::string TextureLoader::m_path = "textures/";
-std::string TextureLoader::m_ext = ".dds";
 
-void TextureLoader::LoadTexture(const std::string& name)
+void TextureLoader::LoadTexture(const std::string& path)
 {
-	std::cout << "loading texture: " << name << std::endl;
+	std::cout << "loading texture: " << path << std::endl;
 
-	gli::texture Texture = gli::load(m_path + name + m_ext);
+	gli::texture Texture = gli::load(path);
 	if (Texture.empty())
-		throw HpseException("Failed to load empty texture" + m_path + name + m_ext, __FILE__, __LINE__);
+		throw HpseException("Failed to load empty texture" + path, __FILE__, __LINE__);
 
 	auto tex = Core::GetCore()->GetGraphics()->GetTexture();
 	if (!tex->Load(Texture))
-		throw HpseException("Failed to load texture" + m_path + name + m_ext, __FILE__, __LINE__);
+		throw HpseException("Failed to load texture" + path, __FILE__, __LINE__);
 
-	Core::GetCore()->GetResources()->AddResource(name, tex);
+	Core::GetCore()->GetResources()->AddResource(path, tex);
 }
 
 std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::string> names)
@@ -34,9 +32,9 @@ std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::strin
 	for (int i = 0; i < names.size(); i++)
 	{
 		std::cout << "loading texture: " << names[i] << std::endl;
-		gli::texture Texture = gli::load(m_path + names[i] + m_ext);
+		gli::texture Texture = gli::load(names[i]);
 		if (Texture.empty())
-			throw HpseException("Failed to load empty texture" + m_path + names[i] + m_ext, __FILE__, __LINE__);
+			throw HpseException("Failed to load empty texture" + names[i], __FILE__, __LINE__);
 		textures.push_back(Texture);
 	}
 	auto tex = Core::GetCore()->GetGraphics()->GetTexture();
