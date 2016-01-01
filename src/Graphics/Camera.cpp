@@ -23,35 +23,57 @@ Camera::~Camera()
 
 }
 
+void Camera::Move(glm::vec3 dir)
+{
+	//add also the up direction
+	glm::vec3 direction = glm::normalize(m_lookat - m_pos);
+	glm::vec3 foreward = glm::vec3({ direction.x, 0.0, direction.z });
+	glm::vec3 right = glm::vec3({ direction.z, 0.0, -direction.x });
+	//glm::vec3 up = glm::vec3({  });
+	glm::vec3 offset = (dir.x * right + dir.z * foreward) * speed * m_pos.y / 10.0f;
+	m_pos += offset;
+	m_lookat += offset;
+}
+
 void Camera::Move(Direction dir)
 {
 	glm::vec3 direction = glm::normalize(m_lookat - m_pos);
+	glm::vec3 offset;
 	switch (dir)
 	{
 	case FOREWARD:
-		m_pos += glm::vec3({ direction.x, 0.0, direction.z }) * speed * m_pos.y/10.0f;
-		m_lookat += glm::vec3({direction.x, 0.0, direction.z}) * speed * m_pos.y / 10.0f;
+		offset = glm::vec3({ direction.x, 0.0, direction.z }) * speed * m_pos.y / 10.0f;
+		m_pos += offset;
+		m_lookat += offset;
 		break;
 	case BACK:
-		m_pos -= glm::vec3({ direction.x, 0.0, direction.z }) * speed * m_pos.y / 10.0f;
-		m_lookat -= glm::vec3({ direction.x, 0.0, direction.z }) * speed * m_pos.y / 10.0f;
+		offset = glm::vec3({ direction.x, 0.0, direction.z }) * speed * m_pos.y / 10.0f;
+		m_pos -= offset;
+		m_lookat -= offset;
 		break;
 	case LEFT:
-		m_pos -= glm::vec3({ -direction.z, 0.0, direction.x }) * speed * m_pos.y / 10.0f;
-		m_lookat -= glm::vec3({ -direction.z, 0.0, direction.x }) * speed * m_pos.y / 10.0f;
+		offset = glm::vec3({ -direction.z, 0.0, direction.x }) * speed * m_pos.y / 10.0f;
+		m_pos -= offset;
+		m_lookat -= offset;
 		break;
 	case RIGHT:
-		m_pos -= glm::vec3({ direction.z, 0.0, -direction.x }) * speed * m_pos.y / 10.0f;
-		m_lookat -= glm::vec3({ direction.z, 0.0, -direction.x }) * speed * m_pos.y / 10.0f;
+		offset = glm::vec3({ direction.z, 0.0, -direction.x }) * speed * m_pos.y / 10.0f;
+		m_pos -= offset;
+		m_lookat -= offset;
 		break;
 	}
+}
+
+void Camera::Rotate(float angle)
+{
+	glm::vec3 delta = m_pos - m_lookat;
+	m_pos = m_lookat + glm::rotateY(delta, angle);
 }
 
 void Camera::Rotate(Direction dir)
 {
 	float angle = 0.05f;
 	glm::vec3 delta = m_pos - m_lookat;
-	m_pos = m_lookat + glm::rotateY(delta, angle);
 	switch (dir)
 	{
 	case (LEFT) :
