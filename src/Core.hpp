@@ -77,6 +77,7 @@ namespace hpse
 		std::unique_ptr<Map> m_map;
 		std::unique_ptr<Camera> m_camera;
 		std::unique_ptr<Frustum> m_frustum;
+		std::map<std::string, bool> m_inputs;
 		bool m_running;
 		static Core* m_instance;
 	};

@@ -28,6 +28,24 @@ Core::Core()
 
 	m_map = std::make_unique<Map>();
 	m_camera = std::make_unique<Camera>();
+
+	//init user inputs
+	m_inputs.insert({ "FOREWARD", false });
+	m_inputs.insert({ "BACK", false });
+	m_inputs.insert({ "LEFT", false });
+	m_inputs.insert({ "RIGHT", false });
+
+	m_inputs.insert({ "ZOOM_IN", false });
+	m_inputs.insert({ "ZOOM_OUT", false });
+	m_inputs.insert({ "ROTATE_LEFT", false });
+	m_inputs.insert({ "ROTATE_RIGHT", false });
+
+	m_inputs.insert({ "MOUSE_BUTTON_LEFT", false });
+	m_inputs.insert({ "MOUSE_BUTTON_MIDDLE", false });
+	m_inputs.insert({ "MOUSE_BUTTON_RIGHT", false });
+
+	m_inputs.insert({ "MOUSE_MOVED", false });
+	m_inputs.insert({ "MOUSE_WHEEL_MOVED", false });
 }
 
 Core::~Core()
@@ -40,6 +58,14 @@ void Core::Run()
 {
 	sf::Event event;
 	m_window.setFramerateLimit(60);
+
+	//mouse variables
+	int x_old = 0; 
+	int y_old = 0; 
+	int delta_x = 0;
+	int delta_y = 0;
+	int delta_wheel = 0;
+
 	while (m_window.isOpen() && m_running)
 	{
 		m_graphics->Clear();
@@ -47,10 +73,15 @@ void Core::Run()
 		m_script->Update();
 		m_camera->Update();
 
+		/*
+		*user input is handled this way because of better performance 
+		*and the benefit of processing multiple events at the same time
+		*/
 		while (m_window.pollEvent(event))
 		{
 			switch (event.type)
 			{
+				int code;
 			//close the window
 			case sf::Event::Closed:
 				Quit();
@@ -59,60 +90,130 @@ void Core::Run()
 				m_graphics->Resize(event.size.width, event.size.height);
 				m_gui->Resize(event.size.width, event.size.height);
 				break;
+
 			case sf::Event::MouseMoved:
 				m_gui->MouseMove(event.mouseMove.x, event.mouseMove.y);
+				delta_x = event.mouseMove.x - x_old;
+				delta_y = event.mouseMove.y - y_old;
+				x_old = event.mouseMove.x;
+				y_old = event.mouseMove.y;
+				m_inputs["MOUSE_MOVED"] = true;
 				break;
+
 			case sf::Event::MouseButtonPressed:
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					m_gui->MouseLeft(true);
+					m_inputs["MOUSE_BUTTON_LEFT"] = true;
 				}
 				else if (event.mouseButton.button == sf::Mouse::Middle)
-				{
-					//TODO:test if the mouse is also moved and rotate left or right if true
-				}
+					m_inputs["MOUSE_BUTTON_MIDDLE"] = true;
+				else if (event.mouseButton.button == sf::Mouse::Right)
+					m_inputs["MOUSE_BUTTON_RIGHT"] = true;
 				break;
+
 			case sf::Event::MouseButtonReleased:
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					m_gui->MouseLeft(false);
+					m_inputs["MOUSE_BUTTON_LEFT"] = false;
 				}
+				else if (event.mouseButton.button == sf::Mouse::Middle)
+					m_inputs["MOUSE_BUTTON_MIDDLE"] = false;
+				else if (event.mouseButton.button == sf::Mouse::Right)
+					m_inputs["MOUSE_BUTTON_RIGHT"] = false;
 				break;
+
+			//this should be handled like the other inputs
 			case sf::Event::MouseWheelMoved:
-				if (event.mouseWheel.delta > 0)
-					m_camera->Zoom(ZOOM_IN);
-				else
-					m_camera->Zoom(ZOOM_OUT);
+				delta_wheel = event.mouseWheel.delta;
+				m_inputs["MOUSE_WHEEL_MOVED"] = true;
 				break;
+
 			case sf::Event::KeyPressed:
-				int code = event.key.code;
+				code = event.key.code;
 				if(event.key.code==sf::Keyboard::Escape)
 					Quit();
+				if (code == sf::Keyboard::W || code == sf::Keyboard::Up) 
+					m_inputs["FOREWARD"] = true;
+				else if (code == sf::Keyboard::S || code == sf::Keyboard::Down)
+					m_inputs["BACK"] = true;
+				else if (code == sf::Keyboard::A || code == sf::Keyboard::Left)
+					m_inputs["LEFT"] = true;
+				else if (code == sf::Keyboard::D || code == sf::Keyboard::Right)
+					m_inputs["RIGHT"] = true;
+				else if (code == sf::Keyboard::PageUp)
+					m_inputs["ZOOM_OUT"] = true;
+				else if (code == sf::Keyboard::PageDown)
+					m_inputs["ZOOM_IN"] = true;
+				else if (code == sf::Keyboard::Q || code == sf::Keyboard::Comma)
+					m_inputs["ROTATE_LEFT"] = true;
+				else if (code == sf::Keyboard::E || code == sf::Keyboard::Period)
+					m_inputs["ROTATE_RIGHT"] = true;
+				break;
 
-				if (code == 73 || code == 22) //foreward
-					m_camera->Move(FOREWARD); 
-				if (code == 74 || code == 18) //back
-					m_camera->Move(BACK);
-				if (code == 71 || code == 0) // left
-					m_camera->Move(LEFT);
-				if (code == 72 || code == 3) // right
-					m_camera->Move(RIGHT);
-				if (code == 61 || code == -1) // up
-					m_camera->Zoom(ZOOM_OUT);
-				if (code == 62 || code == 38) // down
-					m_camera->Zoom(ZOOM_IN);
-				if (code == 49 || code == 16) // rotate left
-					m_camera->Rotate(LEFT);
-				if (code == 50 || code == 4) // rotate right
-					m_camera->Rotate(RIGHT);
-
-				
-				m_gui->KeyDown(event.key);
-				
-				//std::cout << event.key.code << std::endl;
+			case sf::Event::KeyReleased:
+				code = event.key.code;
+				if (code == sf::Keyboard::W || code == sf::Keyboard::Up)
+					m_inputs["FOREWARD"] = false;
+				else if (code == sf::Keyboard::S || code == sf::Keyboard::Down)
+					m_inputs["BACK"] = false;
+				else if (code == sf::Keyboard::A || code == sf::Keyboard::Left)
+					m_inputs["LEFT"] = false;
+				else if (code == sf::Keyboard::D || code == sf::Keyboard::Right)
+					m_inputs["RIGHT"] = false;
+				else if (code == sf::Keyboard::PageUp)
+					m_inputs["ZOOM_OUT"] = false;
+				else if (code == sf::Keyboard::PageDown)
+					m_inputs["ZOOM_IN"] = false;
+				else if (code == sf::Keyboard::Q || code == sf::Keyboard::Comma)
+					m_inputs["ROTATE_LEFT"] = false;
+				else if (code == sf::Keyboard::E || code == sf::Keyboard::Period)
+					m_inputs["ROTATE_RIGHT"] = false;
 				break;
 			}
 		}
+
+		if (m_inputs["FOREWARD"])
+			m_camera->Move(FOREWARD);
+		if (m_inputs["BACK"])
+			m_camera->Move(BACK);
+		if (m_inputs["LEFT"])
+			m_camera->Move(LEFT);
+		if (m_inputs["RIGHT"])
+			m_camera->Move(RIGHT);
+		if (m_inputs["ZOOM_OUT"])
+			m_camera->Zoom(ZOOM_OUT);
+		if (m_inputs["ZOOM_IN"])
+			m_camera->Zoom(ZOOM_IN);
+		if (m_inputs["ROTATE_LEFT"])
+			m_camera->Rotate(LEFT);
+		if (m_inputs["ROTATE_RIGHT"])
+			m_camera->Rotate(RIGHT);
+
+		if (m_inputs["MOUSE_WHEEL_MOVED"])
+		{
+			if (delta_wheel > 0)
+				m_camera->Zoom(ZOOM_IN);
+			else 
+				m_camera->Zoom(ZOOM_OUT);
+			m_inputs["MOUSE_WHEEL_MOVED"] = false;
+		}
+
+		if (m_inputs["MOUSE_MOVED"])
+		{
+			if (m_inputs["MOUSE_BUTTON_RIGHT"])
+			{
+				glm::vec3 dir = { delta_x / 4.0, 0.0, delta_y / 4.0 };
+				m_camera->Move(dir);
+			}
+			else if (m_inputs["MOUSE_BUTTON_MIDDLE"])
+			{
+				m_camera->Rotate(delta_x / 100.0);
+			}
+			m_inputs["MOUSE_MOVED"] = false;
+		}
+
 
 		m_graphics->Render();
 

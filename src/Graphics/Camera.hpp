@@ -32,7 +32,9 @@ namespace hpse
         ~Camera();
 
         void Update();
+		void Move(glm::vec3 dir);
 		void Move(Direction dir);
+		void Rotate(float angle);
 		void Rotate(Direction dir);
 		void Zoom(Direction dir);
 
