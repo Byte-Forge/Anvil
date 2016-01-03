@@ -27,6 +27,11 @@ namespace hpse
 	public:
 		Map();
 		~Map();
+
+		inline std::shared_ptr<GL::Terrain>& GetTerrain()
+		{
+			return m_terrain;
+		}
 	private:
 		std::shared_ptr<GL::Terrain> m_terrain;
 

@@ -22,24 +22,24 @@ bool Collision::Contains(glm::vec3& vertex, glm::vec3& center, glm::vec3& size)
 		&& vertex.z <= center.y + size.y);
 }
 
-bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec2& center, glm::vec2& size)
+bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec3& center, glm::vec3& size)
 {
 	for (int p = 0; p < 6; p++)
 	{
-		if (frustum[p][0] * (center.x - size.x) + frustum[p][2] * (center.y - size.y) + frustum[p][3] > 0)
+		if (frustum[p][0] * (center.x - size.x) + frustum[p][2] * (center.y - size.y) + frustum[p][3] * (center.z - size.z) > 0)
 			continue;
-		if (frustum[p][0] * (center.x + size.x) + frustum[p][2] * (center.y - size.y) + frustum[p][3] > 0)
+		if (frustum[p][0] * (center.x + size.x) + frustum[p][2] * (center.y - size.y) + frustum[p][3] * (center.z - size.z) > 0)
 			continue;
-		if (frustum[p][0] * (center.x - size.x) + frustum[p][2] * (center.y + size.y) + frustum[p][3] > 0)
+		if (frustum[p][0] * (center.x - size.x) + frustum[p][2] * (center.y + size.y) + frustum[p][3] * (center.z - size.z)> 0)
 			continue;
-		if (frustum[p][0] * (center.x + size.x) + frustum[p][2] * (center.y + size.y) + frustum[p][3] > 0)
+		if (frustum[p][0] * (center.x + size.x) + frustum[p][2] * (center.y + size.y) + frustum[p][3] * (center.z - size.z)> 0)
 			continue;
 		return false;
 	}
 	return true;
 }
 
-int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec2& center, float radius)
+int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec3& center, float radius)
 {
 	int p;
 	int c = 0;
@@ -47,7 +47,7 @@ int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustu
 
 	for (p = 0; p < 6; p++)
 	{
-		d = frustum[p][0] * center.x + frustum[p][2] * center.y + frustum[p][3];
+		d = frustum[p][0] * center.x + frustum[p][2] * center.y + frustum[p][3] * center.z;
 		if (d <= -radius)
 			return 0;
 		if (d > radius)
@@ -56,35 +56,7 @@ int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustu
 	return (c == 6) ? 2 : 1;
 }
 
-//out_origin starts at the near plane NOT the camera position
-void Collision::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction)
-{
-	glm::vec2 resolution = Core::GetCore()->GetResolution();
-
-	glm::vec4 ray_start(
-		((float)mouse_pos.x / (float)resolution.x - 0.5f) * 2.0f,
-		((float)mouse_pos.y / (float)resolution.y - 0.5f) * 2.0f,
-		-1.0, 1.0f);
-
-	glm::vec4 ray_end(
-		((float)mouse_pos.x / (float)resolution.x - 0.5f) * 2.0f,
-		((float)mouse_pos.y / (float)resolution.y - 0.5f) * 2.0f,
-		0.0, 1.0f);
-
-	glm::mat4 M = glm::inverse(Core::GetCore()->GetCamera()->GetProjectionMatrix() * Core::GetCore()->GetCamera()->GetViewMatrix());
-	glm::vec4 ray_start_world = M * ray_start; 
-	ray_start_world /= ray_start_world.w;
-	glm::vec4 ray_end_world = M * ray_end ; 
-	ray_end_world  /= ray_end_world.w;
-
-
-	glm::vec3 ray_dir_world(ray_end_world - ray_end_world);
-	ray_dir_world = glm::normalize(ray_dir_world);
-
-	out_origin = glm::vec3(ray_start_world);
-	out_direction = glm::normalize(ray_dir_world);
-}
-
+//
 bool TestRayOBBIntersection(
 	glm::vec3 ray_origin,        // Ray origin, in world space
 	glm::vec3 ray_direction,     // Ray direction (NOT target position!), in world space. Must be normalize()'d.
@@ -203,7 +175,9 @@ bool TestRayOBBIntersection(
 	return true;
 }
 
-int Collision::Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 o,  glm::vec3 d, float* out)
+
+//Möller Trumbor algorithm
+int Collision::Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 o,  glm::vec3 d, glm::vec3 *point)
 {
 	glm::vec3 e1, e2;  //Edge1, Edge2
 	glm::vec3 P, Q, T;
@@ -241,7 +215,7 @@ int Collision::Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::
 
 	//the point of the collision is t * d
 	if (t > EPSILON) { //ray intersection
-		*out = t;
+		*point = t * d;
 		return 1;
 	}
 

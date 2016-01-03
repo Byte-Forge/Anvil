@@ -29,7 +29,7 @@ void TextureLoader::LoadTexture(const std::string& path)
 std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::string> names)
 {
 	std::vector<gli::texture> textures;
-	for (int i = 0; i < names.size(); i++)
+	for (unsigned int i = 0; i < names.size(); i++)
 	{
 		std::cout << "loading texture: " << names[i] << std::endl;
 		gli::texture Texture = gli::load(names[i]);

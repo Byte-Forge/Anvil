@@ -19,15 +19,23 @@ namespace hpse
         public:
             Terrain(std::uint32_t width, std::uint32_t height);
 			~Terrain();
+			int GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos);
+			void SetTerrainHeight(glm::vec3 &pos, float height, float radius);
 
             void Render();
             void Update();
         private:
 			std::uint32_t m_width, m_height;
+			std::vector<float> m_heightmap;
+			std::vector<glm::vec3> m_materialmap;
 			std::shared_ptr<Quadtree> m_quadtree;
 
-			bool updated = true;
+			bool heightmap_changed = true;
+			bool uvs_changed = true;
+			bool faces_changed = true;
+			bool materials_changed = true;
 
+			//rendering stuff
 			GLuint m_lightID;
 
 			std::shared_ptr<ITexture> m_diff;
@@ -42,14 +50,14 @@ namespace hpse
 			GLuint m_dispID;
 			GLuint m_ambiID;
 
+			glm::mat4 m_mvp;
+			glm::mat4 m_mod;
+			glm::mat3 m_mv3x3;
+
 			GLuint m_matrixID;
 			GLuint m_modelMatrixID;
 			GLuint m_viewMatrixID;
 			GLuint m_modelView3x3MatrixID;
-
-			glm::mat4 m_mvp;
-			glm::mat4 m_mod;
-			glm::mat3 m_mv3x3;
 
 			std::vector<glm::vec3> m_vertices;
 			std::vector<glm::vec2> m_uvs;
@@ -63,6 +71,10 @@ namespace hpse
 			GLuint m_nbo;
 			GLuint m_fbo;
 			GLuint m_mbo;
+
+			void Generate();
+			void ComputeNormals(std::vector<glm::vec3> &normals);
+			void UpdateBufferData();
         };
     }
 }

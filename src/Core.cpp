@@ -1,5 +1,5 @@
 #include "Core.hpp" 
-#include "Graphics/GL/Texture.hpp"
+#include "Math\Collision.hpp"
 #include <iostream>
 
 using namespace hpse;
@@ -41,6 +41,7 @@ Core::Core()
 	m_inputs.insert({ "ROTATE_RIGHT", false });
 
 	m_inputs.insert({ "MOUSE_BUTTON_LEFT", false });
+	m_inputs.insert({ "MOUSE_BUTTON_LEFT_RELEASED", false });
 	m_inputs.insert({ "MOUSE_BUTTON_MIDDLE", false });
 	m_inputs.insert({ "MOUSE_BUTTON_RIGHT", false });
 
@@ -117,6 +118,7 @@ void Core::Run()
 				{
 					m_gui->MouseLeft(false);
 					m_inputs["MOUSE_BUTTON_LEFT"] = false;
+					m_inputs["MOUSE_BUTTON_LEFT_RELEASED"] = true;
 				}
 				else if (event.mouseButton.button == sf::Mouse::Middle)
 					m_inputs["MOUSE_BUTTON_MIDDLE"] = false;
@@ -209,11 +211,24 @@ void Core::Run()
 			}
 			else if (m_inputs["MOUSE_BUTTON_MIDDLE"])
 			{
-				m_camera->Rotate(delta_x / 100.0);
+				m_camera->Rotate(delta_x / 100.0f);
 			}
 			m_inputs["MOUSE_MOVED"] = false;
 		}
 
+		if (m_inputs["MOUSE_BUTTON_LEFT_RELEASED"])
+		{
+			/*
+			glm::vec2 mousePos = { x_old, y_old };
+			glm::vec3 mouseWorld;
+			if (m_map->GetTerrain()->GetMousePositionInWorldSpace(mousePos, mouseWorld))
+			{
+				//std::cout << mouseWorld.x << ", " << mouseWorld.y << ", " << mouseWorld.z << std::endl;
+				m_map->GetTerrain()->SetTerrainHeight(mouseWorld, 1.0f, 2.0f);
+			}
+			*/
+			m_inputs["MOUSE_BUTTON_LEFT_RELEASED"] = false;
+		}
 
 		m_graphics->Render();
 

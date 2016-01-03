@@ -1,11 +1,12 @@
 //
 // Created by stephan on 14.12.15.
 //
-
 #include "Terrain.hpp"
 #include "flextGL.h"
 #include "../../Core.hpp"
 #include "../../Math.hpp"
+#include "../../Math/Collision.hpp"
+#include "../../Math/SimplexNoise.hpp"
 #include <iostream>
 #include <vector>
 
@@ -17,167 +18,47 @@ using namespace hpse;
 
 GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width), m_height(height)
 {
-	m_quadtree = std::make_shared<Quadtree>(glm::vec2(width / 2.f, height / 2.f), glm::vec2(width / 2.f, height / 2.f));
+	m_quadtree = std::make_shared<Quadtree>(glm::vec2(m_width / 2.f, m_height / 2.f), glm::vec2(m_width / 2.f, m_height / 2.f));
 
 	long long begin = (std::chrono::system_clock::now().time_since_epoch()).count();
 
-	//generate a heightmap
-	
-	std::vector<float> heightmap;
-	for (std::uint32_t i = 0; i < width; i++)
-	{
-		for (std::uint32_t j = 0; j < height; j++)
-		{
-			heightmap.push_back((glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 10.0);
-		}
-	}
+	Generate();
 
-	//compute the normals
-	std::vector<glm::vec3> normals;
-	for (std::uint32_t i = 0; i < width; i++)
-	{
-		for (std::uint32_t j = 0; j < height; j++)
-		{
-			int index = i + (j*width);
-			glm::vec3 normal = {0.0, 0.0, 0.0};
-			if (i < width - 1 && j < height - 1)
-			{
-				normal += Math::ComputeNormal(heightmap[index], heightmap[index + j + 1], heightmap[index + 1]);
-				normal += Math::ComputeNormal(heightmap[index], heightmap[index + j], heightmap[index + j + 1]);
-			}
-			if (j < height - 1 && i > 0)
-			{
-				normal += Math::ComputeNormal(heightmap[index], heightmap[index - 1], heightmap[index + j]);
-			}
-			if (i < width - 1 && j > 0)
-			{
-				normal += Math::ComputeNormal(heightmap[index], heightmap[index + 1], heightmap[index - j]);
-			}
-			if (i > 0 && j > 0)
-			{
-				normal += Math::ComputeNormal(heightmap[index], heightmap[index - j], heightmap[index - j - 1]);
-				normal += Math::ComputeNormal(heightmap[index], heightmap[index - j - 1], heightmap[index - 1]);
-			}
-			normals.push_back(glm::normalize(normal));
-		}
-	}
-
-	//generate material indices
-	std::vector<glm::vec3> materials;
-	for (std::uint32_t i = 0; i < width; i++)
-	{
-		for (std::uint32_t j = 0; j < height; j++)
-		{
-			int r = i % 4;
-			int mat1, mat2;
-			float val;
-			if (r == 0)
-			{
-				mat1 = 0;
-				mat2 = -1;
-				val = 0;
-			}
-			else if (r == 1)
-			{
-				mat1 = 0;
-				mat2 = 1;
-				val = 0.5;
-			}
-			else if (r == 2)
-			{
-				mat1 = 1;
-				mat2 = -1;
-				val = 0;
-			}
-			else if (r == 3)
-			{
-				mat1 = 1;
-				mat2 = 0;
-				val = 0.5;
-			}
-			materials.push_back({mat1, mat2, val});
-		}
-	}
-
-	//fill the vectors for buffer objects
-	int index = 0;
-	for (std::uint32_t i = 0; i < width - 1; i++)
-	{
-		for (std::uint32_t j = 0; j < height - 1; j++)
-		{
-			glm::vec3 a = { (float)i, heightmap[i + j*width], (float)j };
-			glm::vec3 b = { (float)(i+1), heightmap[i + 1 + j*width], (float)j };
-			glm::vec3 c = { (float)(i + 1), heightmap[i + 1 + (j+1)*width], (float)(j + 1) };
-			glm::vec3 d = { (float)i, heightmap[i + (j+1)*width], (float)(j+1) };
-
-			m_vertices.push_back(a);
-			m_vertices.push_back(b);
-			m_vertices.push_back(c);
-
-			m_vertices.push_back(a);
-			m_vertices.push_back(c);
-			m_vertices.push_back(d);
-
-			m_uvs.push_back({ 0.0 + i%2 * 0.5, 0.0 + j % 2 * 0.5 });
-			m_uvs.push_back({ 0.5 + i % 2 * 0.5, 0.0 + j % 2 * 0.5 });
-			m_uvs.push_back({ 0.5 + i % 2 * 0.5, 0.5 + j % 2 * 0.5 });
-
-			m_uvs.push_back({ 0.0 + i % 2 * 0.5, 0.0 + j % 2 * 0.5 });
-			m_uvs.push_back({ 0.5 + i % 2 * 0.5, 0.5 + j % 2 * 0.5 });
-			m_uvs.push_back({ 0.0 + i % 2 * 0.5, 0.5 + j % 2 * 0.5 });
-
-			m_normals.push_back(normals[i + j*width]);
-			m_normals.push_back(normals[i + 1 + j*width]);
-			m_normals.push_back(normals[i + 1 + (j + 1)*width]);
-
-			m_normals.push_back(normals[i + j*width]);
-			m_normals.push_back(normals[i + 1 + (j + 1)*width]);
-			m_normals.push_back(normals[i + (j + 1)*width]);
-
-			m_materials.push_back(materials[i + j*width]);
-			m_materials.push_back(materials[i + 1 + j*width]);
-			m_materials.push_back(materials[i + 1 + (j + 1)*width]);
-
-			m_materials.push_back(materials[i + j*width]);
-			m_materials.push_back(materials[i + 1 + (j + 1)*width]);
-			m_materials.push_back(materials[i + (j + 1)*width]);
-
-			m_faces.push_back(index++);
-			m_faces.push_back(index++);
-			m_faces.push_back(index++);
-
-			m_quadtree->AddTriangle(&m_faces[index - 3], a, b, c);
-
-			m_faces.push_back(index++);
-			m_faces.push_back(index++);
-			m_faces.push_back(index++);
-
-			m_quadtree->AddTriangle(&m_faces[index - 3], a, c, d);
-		}
-	}
+	UpdateBufferData();
 
 	long long end = (std::chrono::system_clock::now().time_since_epoch()).count();
 	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
 
+	//this should be in a WorldBuilder class or sth
 	std::vector<std::string> diffuseTextures;
-	diffuseTextures.push_back("terrain/cobble_fan.dds");
+	diffuseTextures.push_back("terrain/gravel_small.dds");
 	diffuseTextures.push_back("terrain/grass.dds");
+	diffuseTextures.push_back("terrain/rocky_mud.dds");
+	diffuseTextures.push_back("terrain/snowy_cliff.dds");
 
 	std::vector<std::string> normTextures;
-	normTextures.push_back("terrain/cobble_fan_norm.dds");
+	normTextures.push_back("terrain/gravel_small_norm.dds");
 	normTextures.push_back("terrain/grass_norm.dds");
+	normTextures.push_back("terrain/rocky_mud_norm.dds");
+	normTextures.push_back("terrain/snowy_cliff_norm.dds");
 
 	std::vector<std::string> specTextures;
-	specTextures.push_back("terrain/cobble_fan_spec.dds");
+	specTextures.push_back("terrain/gravel_small_spec.dds");
 	specTextures.push_back("terrain/grass_spec.dds");
+	specTextures.push_back("terrain/rocky_mud_spec.dds");
+	specTextures.push_back("terrain/snowy_cliff_spec.dds");
 
 	std::vector<std::string> dispTextures;
-	dispTextures.push_back("terrain/cobble_fan_disp.dds");
+	dispTextures.push_back("terrain/gravel_small_disp.dds");
 	dispTextures.push_back("terrain/grass_disp.dds");
+	dispTextures.push_back("terrain/rocky_mud_disp.dds");
+	dispTextures.push_back("terrain/snowy_cliff_disp.dds");
 
 	std::vector<std::string> aoTextures;
-	aoTextures.push_back("terrain/cobble_fan_ao.dds");
+	aoTextures.push_back("terrain/gravel_small_ao.dds");
 	aoTextures.push_back("terrain/grass_ao.dds");
+	aoTextures.push_back("terrain/rocky_mud_ao.dds");
+	aoTextures.push_back("terrain/snowy_cliff_ao.dds");
 
 	m_diff = Core::GetCore()->GetResources()->GetTextureArray(diffuseTextures);
 	m_nrm = Core::GetCore()->GetResources()->GetTextureArray(normTextures);
@@ -243,6 +124,43 @@ GL::Terrain::~Terrain()
 	m_mbo = 0;
 }
 
+int GL::Terrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
+{
+	/*
+	glm::vec3 origin;
+	glm::vec3 direction;
+	Collision::ScreenPosToWorldRay(mousePos, origin, direction);
+	glm::vec3 point;
+	for (unsigned int i = 0; i < m_faces.size(); i += 3)
+	{
+		if (Collision::Ray_Tri_Intersect(m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]], origin, direction, &point))
+		{
+			pos = point;
+			return 1;
+		}
+	}
+	*/
+	return 0;
+}
+
+void GL::Terrain::SetTerrainHeight(glm::vec3 &pos, float height, float radius)
+{
+	glm::vec2 pos_2 = { pos.x, pos.z };
+	for (unsigned int i = pos_2.x - radius + 1; i < pos_2.x + radius + 1; i++)
+	{
+		for (unsigned int j = pos_2.y - radius + 1; j < pos_2.y + radius + 1; j++)
+		{
+			glm::vec2 vertex = { i, j };
+			if (glm::distance(vertex, pos_2) <= radius)
+			{
+				m_heightmap[i + j*m_width] = height;
+				heightmap_changed = true;
+			}
+		}
+	}
+	UpdateBufferData();
+}
+
 void GL::Terrain::Render()
 {
 	glUniformMatrix4fv(m_modelMatrixID, 1, GL_FALSE, &m_mod[0][0]);
@@ -250,7 +168,7 @@ void GL::Terrain::Render()
 	glUniformMatrix3fv(m_modelView3x3MatrixID, 1, GL_FALSE, &glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)[0][0]);
 	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
 
-	glm::vec3 lightPos = glm::vec3({ 20.0, 20.0, 20.0 });
+	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height/2.0 });
 	glUniform3f(m_lightID, lightPos.x, lightPos.y, lightPos.z);
 
 	glEnableVertexAttribArray(0);
@@ -304,32 +222,215 @@ void GL::Terrain::Render()
 
 void GL::Terrain::Update()
 {
-	m_mod = glm::mat4(1.0);
-
-	if (Core::GetCore()->GetCamera()->GetFrustum()->Updated())
+	if (Core::GetCore()->GetCamera()->GetFrustum()->Updated() || faces_changed)
 	{
 		m_faces = m_quadtree->GetTriangles(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray());
-		if (m_faces.size() != 0)
-		{
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
-		}
+		std::cout << m_faces.size() << std::endl;
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
+		faces_changed = false;
 	}
 
-	if (updated)
+	if (heightmap_changed)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_vertices.size(), &m_vertices[0], GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_uvs.size(), &m_uvs[0], GL_STATIC_DRAW);
-
 		glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_normals.size(), &m_normals[0], GL_STATIC_DRAW);
-
+		heightmap_changed = false;
+	}
+	if (uvs_changed)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_uvs.size(), &m_uvs[0], GL_STATIC_DRAW);
+		uvs_changed = false;
+	}
+	if (materials_changed)
+	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_mbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_materials.size(), &m_materials[0], GL_STATIC_DRAW);
+		materials_changed = false;
+	}
+}
 
-		updated = false;
+void GL::Terrain::Generate()
+{
+
+	for (unsigned int i = 0; i < m_width; i++)
+	{
+		for (unsigned int j = 0; j < m_height; j++)
+		{
+			float value = SimplexNoise::scaled_octave_noise_2d(0.01, 0.01, 0.1, 0.0, 2.0, i, j); //for flat terrain
+			value += SimplexNoise::scaled_octave_noise_2d(0.001, 0.7, 0.1, -10.0, 20.0, i/10.0, j/10.0); //for mountain terrain
+			m_heightmap.push_back(value);
+			//m_heightmap.push_back((glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 10.0f);
+
+			int mat1 = 0;
+			int mat2 = -1;
+			float val = 0.5;
+			
+			if (value > -5)
+			{
+				mat1 = 0;
+				mat2 = 1;
+				val = 0.5;
+			}
+			if (value > 0)
+			{
+				mat1 = 1;
+				mat2 = -1;
+				val = 0.0;
+			}
+			if (value > 3)
+			{
+				mat1 = 1;
+				mat2 = 2;
+				val = 0.5;
+			}
+			if (value > 5)
+			{
+				mat1 = 2;
+				mat2 = -1;
+				val = 0.0;
+			}
+			if (value > 10)
+			{
+				mat1 = 2;
+				mat2 = 3;
+				val = 0.2;
+			}
+			if (value > 15)
+			{
+				mat1 = 2;
+				mat2 = 3;
+				val = 0.5;
+			}
+			if (value > 19)
+			{
+				mat1 = 3;
+				mat2 = -1;
+				val = 0.0;
+			}
+
+			m_materialmap.push_back({ mat1, mat2, val });
+		}
+	}
+}
+
+void GL::Terrain::ComputeNormals(std::vector<glm::vec3> &normals)
+{
+	for (std::uint32_t i = 0; i < m_width; i++)
+	{
+		for (std::uint32_t j = 0; j < m_height; j++)
+		{
+			int index = i + (j * m_width);
+			glm::vec3 normal = { 0.0, 0.0, 0.0 };
+			if (i < m_width - 1 && j < m_height - 1)
+			{
+				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + m_width + 1], m_heightmap[index + 1]);
+				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + m_width], m_heightmap[index + m_width + 1]);
+			}
+			if (j < m_height - 1 && i > 0)
+			{
+				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - 1], m_heightmap[index + m_width]);
+			}
+			if (i < m_width - 1 && j > 0)
+			{
+				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + 1], m_heightmap[index - m_width]);
+			}
+			if (i > 0 && j > 0)
+			{
+				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - m_width], m_heightmap[index - m_width - 1]);
+				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - m_width - 1], m_heightmap[index - 1]);
+			}
+			normals.push_back(glm::normalize(normal));
+		}
+	}
+}
+
+void GL::Terrain::UpdateBufferData()
+{
+	std::vector<glm::vec3> normals;
+	if (heightmap_changed)
+	{
+		ComputeNormals(normals);
+
+		m_vertices.clear();
+		m_normals.clear();
+	}
+	if (uvs_changed)
+		m_uvs.clear();
+	if (materials_changed)
+		m_materials.clear();
+
+	//fill the vectors for buffer objects
+	int index = 0;
+	for (std::uint32_t i = 0; i < m_width - 1; i++)
+	{
+		for (std::uint32_t j = 0; j < m_height - 1; j++)
+		{
+			glm::vec3 a = { (float)i, m_heightmap[i + j * m_width], (float)j };
+			glm::vec3 b = { (float)(i + 1), m_heightmap[i + 1 + j * m_width], (float)j };
+			glm::vec3 c = { (float)(i + 1), m_heightmap[i + 1 + (j + 1) * m_width], (float)(j + 1) };
+			glm::vec3 d = { (float)i, m_heightmap[i + (j + 1) * m_width], (float)(j + 1) };
+
+			if (heightmap_changed)
+			{
+				m_vertices.push_back(a);
+				m_vertices.push_back(b);
+				m_vertices.push_back(c);
+
+				m_vertices.push_back(a);
+				m_vertices.push_back(c);
+				m_vertices.push_back(d);
+
+				m_normals.push_back(normals[i + j * m_width]);
+				m_normals.push_back(normals[i + 1 + j * m_width]);
+				m_normals.push_back(normals[i + 1 + (j + 1) * m_width]);
+
+				m_normals.push_back(normals[i + j*m_width]);
+				m_normals.push_back(normals[i + 1 + (j + 1)*m_width]);
+				m_normals.push_back(normals[i + (j + 1)*m_width]);
+			}
+		
+			if (uvs_changed)
+			{
+				int val = 4;
+				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });
+				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });
+				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
+
+				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });
+				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
+				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
+			}
+
+			if (materials_changed)
+			{
+				m_materials.push_back(m_materialmap[i + j*m_width]);
+				m_materials.push_back(m_materialmap[i + 1 + j*m_width]);
+				m_materials.push_back(m_materialmap[i + 1 + (j + 1)*m_width]);
+
+				m_materials.push_back(m_materialmap[i + j*m_width]);
+				m_materials.push_back(m_materialmap[i + 1 + (j + 1)*m_width]);
+				m_materials.push_back(m_materialmap[i + (j + 1)*m_width]);
+			}
+
+			if (faces_changed)
+			{
+				m_faces.push_back(index++);
+				m_faces.push_back(index++);
+				m_faces.push_back(index++);
+
+				m_quadtree->AddTriangle(&m_faces[index - 3], a, b, c);
+
+				m_faces.push_back(index++);
+				m_faces.push_back(index++);
+				m_faces.push_back(index++);
+
+				m_quadtree->AddTriangle(&m_faces[index - 3], a, c, d);
+			}
+		}
 	}
 }

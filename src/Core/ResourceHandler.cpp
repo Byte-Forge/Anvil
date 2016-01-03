@@ -53,7 +53,7 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 		}
 		if (path.size() == 0)
 		{
-			throw HpseException("Could not find texture resource array", __FILE__, __LINE__);
+			throw HpseException("Could not find texture resource array: " + name, __FILE__, __LINE__);
 		}
 		paths.push_back(path);
 	}

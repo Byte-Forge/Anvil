@@ -5,8 +5,10 @@
 using namespace hpse;
 
 Quadtree::Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel, unsigned int level) :
-	m_pos(pos), m_size(size), m_maxLevel(maxLevel), m_level(level)
+	m_maxLevel(maxLevel), m_level(level)
 {
+	m_pos = { pos.x, 0.0, pos.y };
+	m_size = { size.x, 0.0, size.y };
 	m_radius = glm::length(m_size);
 	if (level == maxLevel)
 		return;
@@ -27,6 +29,7 @@ void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& v1, glm::vec3& v2, gl
 {
 	if (m_level == m_maxLevel) // If max level is reached we dont bother checking for nodes.
 	{
+		update(v1, v2, v3);
 		m_triangles.insert(m_triangles.end(), indices, indices + 3);
 		return;
 	}
@@ -57,6 +60,7 @@ void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& v1, glm::vec3& v2, gl
 		return;
 	}
 
+	update(v1, v2, v3);
 	m_triangles.insert(m_triangles.end(), indices, indices + 3);
 }
 
@@ -160,4 +164,23 @@ std::vector<uint32_t> Quadtree::getAllTriangles()
 	retObjects.insert(retObjects.end(), m_triangles.begin(), m_triangles.end());
 
 	return retObjects;
+}
+
+void Quadtree::update(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3)
+{
+	if (v1.y < m_bottom)
+		m_bottom = v1.y;
+	if (v1.y > m_top)
+		m_top = v1.y;
+	if (v2.y < m_bottom)
+		m_bottom = v2.y;
+	if (v2.y > m_top)
+		m_top = v2.y;
+	if (v3.y < m_bottom)
+		m_bottom = v3.y;
+	if (v3.y > m_top)
+		m_top = v3.y;
+	m_pos.y = (m_top + m_bottom) / 2.0;
+	m_size.y = m_top - m_bottom;
+	m_radius = glm::length(m_size);
 }

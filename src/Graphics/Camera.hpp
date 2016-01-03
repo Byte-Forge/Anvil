@@ -37,6 +37,7 @@ namespace hpse
 		void Rotate(float angle);
 		void Rotate(Direction dir);
 		void Zoom(Direction dir);
+		void ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction);
 
 		inline const glm::vec3 GetLookAt()
 		{
@@ -83,9 +84,15 @@ namespace hpse
 			return m_frustum;
 		}
 
+		inline glm::vec3 &GetDirection()
+		{
+			return m_direction;
+		}
+
     private:
 		float speed = 1.0f;
         glm::vec3 m_pos;
+		glm::vec3 m_direction;
         glm::vec3 m_lookat;
         glm::vec3 m_up;
         double m_fov; 
