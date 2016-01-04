@@ -71,7 +71,6 @@ std::vector<uint32_t> Quadtree::GetTriangles(const std::array<std::array<float, 
 
 	std::vector<uint32_t> retObjects;
 
-	//Is sphere based on node's square within frustum? Consider changing.
 	int frustumCheck = m_NW->SphereInFrustum(frustum);
 	if (frustumCheck == 2)
 	{
@@ -128,7 +127,7 @@ std::vector<uint32_t> Quadtree::GetTriangles(const std::array<std::array<float, 
 
 bool Quadtree::contains(glm::vec3& vertex)
 {
-	return Collision::Contains(vertex, m_pos, m_size);
+	return Collision::Contains2D(vertex, m_pos, m_size);
 }
 
 int Quadtree::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum)
@@ -180,6 +179,7 @@ void Quadtree::update(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3)
 		m_bottom = v3.y;
 	if (v3.y > m_top)
 		m_top = v3.y;
+
 	m_pos.y = (m_top + m_bottom) / 2.0;
 	m_size.y = m_top - m_bottom;
 	m_radius = glm::length(m_size);

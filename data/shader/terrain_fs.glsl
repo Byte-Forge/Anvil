@@ -20,7 +20,7 @@ out vec3 color;
 void main()
 {
 	vec3 LightColor = vec3(1,1,1);
-	float LightPower = 2000.0;
+	float LightPower = 400000.0;
 
 	vec3 MaterialDiffuseColor = texture(DiffuseTextureSampler, vec3(uv, material[0])).rgb;
 	vec3 MaterialAmbientColor = texture(AmbientTextureSampler,  vec3(uv, material[0])).rgb;

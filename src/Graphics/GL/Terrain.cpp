@@ -226,9 +226,12 @@ void GL::Terrain::Update()
 	{
 		m_faces = m_quadtree->GetTriangles(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray());
 		std::cout << m_faces.size() << std::endl;
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
-		faces_changed = false;
+		if (!m_faces.size() == 0)
+		{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
+			faces_changed = false;
+		}
 	}
 
 	if (heightmap_changed)

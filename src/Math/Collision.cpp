@@ -4,35 +4,35 @@
 
 using namespace hpse;
 
-bool Collision::Contains(glm::vec3& vertex, glm::vec2& center, glm::vec2& size)
+bool Collision::Contains2D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size)
 {
 	return (vertex.x >= center.x - size.x
 		&& vertex.x <= center.x + size.x
-		&& vertex.z >= center.y - size.y
-		&& vertex.z <= center.y + size.y);
+		&& vertex.z >= center.z - size.z
+		&& vertex.z <= center.z + size.z);
 }
 
-bool Collision::Contains(glm::vec3& vertex, glm::vec3& center, glm::vec3& size)
+bool Collision::Contains3D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size)
 {
 	return (vertex.x >= center.x - size.x
 		&& vertex.x <= center.x + size.x
 		&& vertex.y >= center.y - size.y
 		&& vertex.y <= center.y + size.y
-		&& vertex.z >= center.y - size.y
-		&& vertex.z <= center.y + size.y);
+		&& vertex.z >= center.z - size.z
+		&& vertex.z <= center.z + size.z);
 }
 
 bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec3& center, glm::vec3& size)
 {
 	for (int p = 0; p < 6; p++)
 	{
-		if (frustum[p][0] * (center.x - size.x) + frustum[p][2] * (center.y - size.y) + frustum[p][3] * (center.z - size.z) > 0)
+		if (frustum[p][0] * (center.x - size.x) + frustum[p][3] * (center.y - size.y) + frustum[p][2] * (center.z - size.z) > 0)
 			continue;
-		if (frustum[p][0] * (center.x + size.x) + frustum[p][2] * (center.y - size.y) + frustum[p][3] * (center.z - size.z) > 0)
+		if (frustum[p][0] * (center.x + size.x) + frustum[p][3] * (center.y - size.y) + frustum[p][2] * (center.z - size.z) > 0)
 			continue;
-		if (frustum[p][0] * (center.x - size.x) + frustum[p][2] * (center.y + size.y) + frustum[p][3] * (center.z - size.z)> 0)
+		if (frustum[p][0] * (center.x - size.x) + frustum[p][3] * (center.y + size.y) + frustum[p][2] * (center.z - size.z) > 0)
 			continue;
-		if (frustum[p][0] * (center.x + size.x) + frustum[p][2] * (center.y + size.y) + frustum[p][3] * (center.z - size.z)> 0)
+		if (frustum[p][0] * (center.x + size.x) + frustum[p][3] * (center.y + size.y) + frustum[p][2] * (center.z - size.z) > 0)
 			continue;
 		return false;
 	}
@@ -45,9 +45,11 @@ int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustu
 	int c = 0;
 	float d;
 
+	std::cout << center.x << std::endl;
+
 	for (p = 0; p < 6; p++)
 	{
-		d = frustum[p][0] * center.x + frustum[p][2] * center.y + frustum[p][3] * center.z;
+		d = frustum[p][0] * center.x + frustum[p][3] * center.y + frustum[p][2] * center.z;
 		if (d <= -radius)
 			return 0;
 		if (d > radius)

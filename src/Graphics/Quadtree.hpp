@@ -16,8 +16,8 @@ namespace hpse
 	private:
 		glm::vec3 m_pos; // Note that y in here is z in 3D world.
 		glm::vec3 m_size;
-		float m_top; // y value of highest vertex
-		float m_bottom; // y value of lowest vertex
+		float m_top = 0.0f; // y value of highest vertex
+		float m_bottom = 0.0f; // y value of lowest vertex
 		unsigned int m_maxLevel, m_level; // We get total of 4^maxLevel nodes.
 		float m_radius;
 

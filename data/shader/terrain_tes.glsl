@@ -32,7 +32,7 @@ void main()
 
 	float height = mix(texture(DisplacementTextureSampler, vec3(uv, material[0])).x, texture(DisplacementTextureSampler, vec3(uv, material[1])).x, material[2]);
 
-    position += normal * (height * 0.05f);
+    position += normal * (height * 0.2f);
 	
 	gl_Position = MVP * vec4(position, 1);
 	position = (M * vec4(position, 1)).xyz;
