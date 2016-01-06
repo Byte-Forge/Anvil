@@ -71,14 +71,13 @@ void Camera::Rotate(float angle)
 void Camera::Rotate(Direction dir)
 {
 	float angle = 0.05f;
-	glm::vec3 delta = m_pos - m_lookat;
 	switch (dir)
 	{
 	case (LEFT) :
-		m_pos = m_lookat + glm::rotateY(delta, angle);
+		Rotate(angle);
 		break;
 	case (RIGHT) :
-		m_pos = m_lookat + glm::rotateY(delta, -angle);
+		Rotate(-angle);
 		break;
 	}
 }
@@ -100,7 +99,7 @@ void Camera::Zoom(Direction dir)
 void Camera::Update()
 {
 	m_direction = glm::normalize(m_lookat - m_pos);
-    m_proj = glm::perspective(m_fov, m_ratio, 0.1, 10000.0);
+    m_proj = glm::perspective(m_fov, m_ratio, 0.1, 1000.0);
     m_view = glm::lookAt(m_pos, m_lookat, m_up);
     m_vp = m_proj * m_view;
 

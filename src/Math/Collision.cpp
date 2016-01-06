@@ -26,13 +26,21 @@ bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum
 {
 	for (int p = 0; p < 6; p++)
 	{
-		if (frustum[p][0] * (center.x - size.x) + frustum[p][3] * (center.y - size.y) + frustum[p][2] * (center.z - size.z) > 0)
+		if (frustum[p][0] * (center.x - size.x) + frustum[p][1] * (center.y - size.y) + frustum[p][2] * (center.z - size.z) + frustum[p][3] > 0)
 			continue;
-		if (frustum[p][0] * (center.x + size.x) + frustum[p][3] * (center.y - size.y) + frustum[p][2] * (center.z - size.z) > 0)
+		if (frustum[p][0] * (center.x - size.x) + frustum[p][1] * (center.y - size.y) + frustum[p][2] * (center.z + size.z) + frustum[p][3] > 0)
 			continue;
-		if (frustum[p][0] * (center.x - size.x) + frustum[p][3] * (center.y + size.y) + frustum[p][2] * (center.z - size.z) > 0)
+		if (frustum[p][0] * (center.x - size.x) + frustum[p][1] * (center.y + size.y) + frustum[p][2] * (center.z - size.z) + frustum[p][3] > 0)
 			continue;
-		if (frustum[p][0] * (center.x + size.x) + frustum[p][3] * (center.y + size.y) + frustum[p][2] * (center.z - size.z) > 0)
+		if (frustum[p][0] * (center.x - size.x) + frustum[p][1] * (center.y + size.y) + frustum[p][2] * (center.z + size.z) + frustum[p][3] > 0)
+			continue;
+		if (frustum[p][0] * (center.x + size.x) + frustum[p][1] * (center.y - size.y) + frustum[p][2] * (center.z - size.z) + frustum[p][3] > 0)
+			continue;
+		if (frustum[p][0] * (center.x + size.x) + frustum[p][1] * (center.y - size.y) + frustum[p][2] * (center.z + size.z) + frustum[p][3] > 0)
+			continue;
+		if (frustum[p][0] * (center.x + size.x) + frustum[p][1] * (center.y + size.y) + frustum[p][2] * (center.z - size.z) + frustum[p][3] > 0)
+			continue;
+		if (frustum[p][0] * (center.x + size.x) + frustum[p][1] * (center.y + size.y) + frustum[p][2] * (center.z + size.z) + frustum[p][3] > 0)
 			continue;
 		return false;
 	}
@@ -45,11 +53,9 @@ int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustu
 	int c = 0;
 	float d;
 
-	std::cout << center.x << std::endl;
-
 	for (p = 0; p < 6; p++)
 	{
-		d = frustum[p][0] * center.x + frustum[p][3] * center.y + frustum[p][2] * center.z;
+		d = frustum[p][0] * center.x + frustum[p][1] * center.y + frustum[p][2] * center.z + frustum[p][3];
 		if (d <= -radius)
 			return 0;
 		if (d > radius)

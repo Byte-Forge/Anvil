@@ -264,8 +264,11 @@ void GL::Terrain::Generate()
 	{
 		for (unsigned int j = 0; j < m_height; j++)
 		{
-			float value = SimplexNoise::scaled_octave_noise_2d(0.01, 0.01, 0.1, 0.0, 2.0, i, j); //for flat terrain
+			float value = 0.0f;
 			value += SimplexNoise::scaled_octave_noise_2d(0.001, 0.7, 0.1, -10.0, 20.0, i/10.0, j/10.0); //for mountain terrain
+			if (value < 0.0)
+				value = 0.0;
+			value += SimplexNoise::scaled_octave_noise_2d(0.01, 0.01, 0.1, 0.0, 2.0, i, j); //for flat terrain
 			m_heightmap.push_back(value);
 			//m_heightmap.push_back((glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 10.0f);
 
