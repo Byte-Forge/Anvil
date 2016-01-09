@@ -225,7 +225,6 @@ void GL::Terrain::Update()
 	if (Core::GetCore()->GetCamera()->GetFrustum()->Updated() || faces_changed)
 	{
 		m_faces = m_quadtree->GetTriangles(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray());
-		std::cout << m_faces.size() << std::endl;
 		if (!m_faces.size() == 0)
 		{
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
@@ -265,12 +264,16 @@ void GL::Terrain::Generate()
 		for (unsigned int j = 0; j < m_height; j++)
 		{
 			float value = 0.0f;
-			value += SimplexNoise::scaled_octave_noise_2d(0.001, 0.7, 0.1, -10.0, 20.0, i/10.0, j/10.0); //for mountain terrain
+			value += SimplexNoise::scaled_octave_noise_2d(0.001, 0.7, 0.5, -20.0, 0.0, i / 100.0, j / 100.0); //for slightly evaluation
+			float mountain = SimplexNoise::scaled_octave_noise_2d(0.01, 0.1, 0.07, -10.0, 20.0, i/10.0, j/10.0); //for mountain terrain
 			if (value < 0.0)
 				value = 0.0;
+			if (mountain > 0.0)
+				value += SimplexNoise::scaled_octave_noise_2d(0.0001, 0.9, 0.1, 0.0, 10.0, i, j) * mountain / 10.0; //for mountains
+
 			value += SimplexNoise::scaled_octave_noise_2d(0.01, 0.01, 0.1, 0.0, 2.0, i, j); //for flat terrain
+
 			m_heightmap.push_back(value);
-			//m_heightmap.push_back((glm::sin(i + j)* (j % 3) + glm::cos(j) * (i % 4)) / 10.0f);
 
 			int mat1 = 0;
 			int mat2 = -1;

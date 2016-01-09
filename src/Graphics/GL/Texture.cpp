@@ -94,7 +94,9 @@ bool GL::Texture::Load(const gli::texture &tex)
 		case gli::TARGET_1D_ARRAY:
 		case gli::TARGET_2D:
 		case gli::TARGET_CUBE:
-			glTexStorage2D(m_target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, tex.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
+			glTexStorage2D(GL_PROXY_TEXTURE_CUBE_MAP, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, tex.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
+			std::cout << tex.target() << std::endl;
+			std::cout << gli::TARGET_CUBE << std::endl;
 			break;
 		case gli::TARGET_2D_ARRAY:
 		case gli::TARGET_3D:
@@ -134,11 +136,11 @@ bool GL::Texture::Load(const gli::texture &tex)
 					case gli::TARGET_CUBE:
 						if (gli::is_compressed(tex.format()))
 							glCompressedTexSubImage2D(Target, static_cast<GLint>(Level),
-													  0, 0,
-													  Dimensions.x,
-													  tex.target() == gli::TARGET_1D_ARRAY ? LayerGL : Dimensions.y,
-													  Format.Internal, static_cast<GLsizei>(tex.size(Level)),
-													  tex.data(Layer, Face, Level));
+											0, 0,
+											Dimensions.x,
+											tex.target() == gli::TARGET_1D_ARRAY ? LayerGL : Dimensions.y,
+											Format.Internal, static_cast<GLsizei>(tex.size(Level)),
+											tex.data(Layer, Face, Level));
 						else
 							glTexSubImage2D(Target, static_cast<GLint>(Level),
 											0, 0,

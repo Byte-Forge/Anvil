@@ -1,6 +1,7 @@
 #pragma once
 #include "../Graphics/IRenderable.hpp"
 #include "../Graphics/GL/Terrain.hpp"
+#include "../Graphics/GL/Skybox.hpp"
 #include <stdint.h>
 #include <string>
 #include <vector>
@@ -32,7 +33,9 @@ namespace hpse
 		{
 			return m_terrain;
 		}
+
 	private:
+		std::shared_ptr<GL::Skybox> m_skybox;
 		std::shared_ptr<GL::Terrain> m_terrain;
 
 	};

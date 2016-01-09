@@ -79,6 +79,11 @@ RendererGL::RendererGL()
 	m_guiShader->Use();
     SetupGUI();
 
+	m_skyboxShader = std::make_unique<GL::Shader>();
+	m_skyboxShader->Load("shader/skybox_vs.glsl", "shader/skybox_fs.glsl");
+	m_skyboxShader->Compile();
+	m_skyboxShader->Use();
+
 	m_terrainShader = std::make_unique<GL::Shader>();
 	m_terrainShader->Load("shader/terrain_vs.glsl", "shader/terrain_tcs.glsl", "shader/terrain_tes.glsl", "shader/terrain_fs.glsl");
 	m_terrainShader->Compile();
@@ -118,11 +123,16 @@ void RendererGL::Render(glm::mat4& ortho)
     glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	
+	m_skyboxShader->Use();
+	m_skybox->Update();
+	m_skybox->Render();
+
 	m_terrainShader->Use();
+	m_terrain->Update();
+	m_terrain->Render();
 
     for(auto& renderable : m_renderables)
         renderable->Update();
-
 	
     for(auto& renderable : m_renderables)
         renderable->Render();

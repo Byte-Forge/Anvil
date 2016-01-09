@@ -18,9 +18,24 @@ namespace hpse
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
 
+		inline std::uint32_t GetSkyboxUniformLocation(const std::string& id)
+		{
+			return m_skyboxShader->GetUniformLocation(id);
+		}
+
 		inline std::uint32_t GetTerrainUniformLocation(const std::string& id)
 		{
 			return m_terrainShader->GetUniformLocation(id);
+		}
+
+		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox)
+		{
+			m_skybox = skybox;
+		}
+
+		inline void RegisterTerrain(std::shared_ptr<IRenderable> terrain)
+		{
+			m_terrain = terrain;
 		}
 
 		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable)
@@ -35,7 +50,11 @@ namespace hpse
 	protected:
 		std::unique_ptr<IOverlay> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
+		std::unique_ptr<IShader> m_skyboxShader;
 		std::unique_ptr<IShader> m_terrainShader;
+
+		std::shared_ptr<IRenderable> m_skybox;
+		std::shared_ptr<IRenderable> m_terrain;
 		std::vector<std::shared_ptr<IRenderable>> m_renderables;
 	};
 }
