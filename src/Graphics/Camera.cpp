@@ -9,7 +9,7 @@ using namespace hpse;
 Camera::Camera()
 {
     m_up = glm::vec3(0.0, 1.0, 0.0);
-	m_pos = glm::vec3(-30.0, 30.0, -30.0);
+	m_currentPos = glm::vec3(-30.0, 30.0, -30.0);
 	m_lookat = glm::vec3(0.0, 0.0, 0.0);
 
     m_fov = 45.0;
@@ -30,8 +30,8 @@ void Camera::Move(glm::vec3 dir)
 	glm::vec3 foreward = glm::vec3({ m_direction.x, 0.0, m_direction.z });
 	glm::vec3 right = glm::vec3({ m_direction.z, 0.0, -m_direction.x });
 	//glm::vec3 up = glm::vec3({  });
-	glm::vec3 offset = (dir.x * right + dir.z * foreward) * speed * m_pos.y / 10.0f;
-	m_pos += offset;
+	glm::vec3 offset = (dir.x * right + dir.z * foreward) * speed * m_currentPos.y / 10.0f;
+	m_currentPos += offset;
 	m_lookat += offset;
 }
 
@@ -41,23 +41,23 @@ void Camera::Move(Direction dir)
 	switch (dir)
 	{
 	case FOREWARD:
-		offset = glm::vec3({ m_direction.x, 0.0, m_direction.z }) * speed * m_pos.y / 10.0f;
-		m_pos += offset;
+		offset = glm::vec3({ m_direction.x, 0.0, m_direction.z }) * speed * m_currentPos.y / 10.0f;
+		m_currentPos += offset;
 		m_lookat += offset;
 		break;
 	case BACK:
-		offset = glm::vec3({ m_direction.x, 0.0, m_direction.z }) * speed * m_pos.y / 10.0f;
-		m_pos -= offset;
+		offset = glm::vec3({ m_direction.x, 0.0, m_direction.z }) * speed * m_currentPos.y / 10.0f;
+		m_currentPos -= offset;
 		m_lookat -= offset;
 		break;
 	case LEFT:
-		offset = glm::vec3({ -m_direction.z, 0.0, m_direction.x }) * speed * m_pos.y / 10.0f;
-		m_pos -= offset;
+		offset = glm::vec3({ -m_direction.z, 0.0, m_direction.x }) * speed * m_currentPos.y / 10.0f;
+		m_currentPos -= offset;
 		m_lookat -= offset;
 		break;
 	case RIGHT:
-		offset = glm::vec3({ m_direction.z, 0.0, -m_direction.x }) * speed * m_pos.y / 10.0f;
-		m_pos -= offset;
+		offset = glm::vec3({ m_direction.z, 0.0, -m_direction.x }) * speed * m_currentPos.y / 10.0f;
+		m_currentPos -= offset;
 		m_lookat -= offset;
 		break;
 	}
@@ -65,8 +65,8 @@ void Camera::Move(Direction dir)
 
 void Camera::Rotate(float angle)
 {
-	glm::vec3 delta = m_pos - m_lookat;
-	m_pos = m_lookat + glm::rotateY(delta, angle);
+	glm::vec3 delta = m_currentPos - m_lookat;
+	m_currentPos = m_lookat + glm::rotateY(delta, angle);
 }
 
 void Camera::Rotate(Direction dir)
@@ -88,19 +88,20 @@ void Camera::Zoom(Direction dir)
 	switch (dir)
 	{
 	case ZOOM_OUT:
-		m_pos -= m_direction + m_direction;
+		m_currentPos -= m_direction + m_direction;
 		break;
 	case ZOOM_IN:
-		if (m_pos.y > 3)
-			m_pos += m_direction + m_direction;
+		if (m_currentPos.y > 3)
+			m_currentPos += m_direction + m_direction;
 		break;
 	}
 }
 
 void Camera::Update()
 {
-	m_direction = glm::normalize(m_lookat - m_pos);
-    m_view = glm::lookAt(m_pos, m_lookat, m_up);
+	m_position = m_currentPos;
+	m_direction = glm::normalize(m_lookat - m_position);
+    m_view = glm::lookAt(m_position, m_lookat, m_up);
     m_vp = m_proj * m_view;
 
 	m_frustum->Recalculate(m_view, m_proj);
@@ -141,6 +142,6 @@ void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm
 	*/
 	//std::cout << mouse_pos.x << ", " << mouse_pos.y << std::endl;
 
-	out_origin = m_pos + m_direction;
+	out_origin = m_currentPos + m_direction;
 	out_direction = m_direction;
 }

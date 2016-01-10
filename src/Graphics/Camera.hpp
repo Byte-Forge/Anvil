@@ -46,7 +46,7 @@ namespace hpse
 
 		inline const glm::vec3& GetPosition()
 		{
-			return m_pos;
+			return m_position;
 		}
 
 		inline const glm::mat4& GetProjectionMatrix()
@@ -76,7 +76,7 @@ namespace hpse
 
         inline void SetPosition(glm::vec3 pos)
         {
-            m_pos = pos;
+			m_position = pos;
         }
 
 		inline std::unique_ptr<Frustum>& GetFrustum()
@@ -91,7 +91,8 @@ namespace hpse
 
     private:
 		float speed = 1.0f;
-        glm::vec3 m_pos;
+		glm::vec3 m_position;
+        glm::vec3 m_currentPos; 
 		glm::vec3 m_direction;
         glm::vec3 m_lookat;
         glm::vec3 m_up;
