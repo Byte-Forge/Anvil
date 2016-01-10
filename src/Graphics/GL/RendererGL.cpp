@@ -120,23 +120,25 @@ void RendererGL::Clear()
 
 void RendererGL::Render(glm::mat4& ortho)
 {
-    glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	
 	m_skyboxShader->Use();
 	m_skybox->Update();
 	m_skybox->Render();
 
+	glEnable(GL_DEPTH_TEST);
+
 	m_terrainShader->Use();
 	m_terrain->Update();
 	m_terrain->Render();
 
+	/*
     for(auto& renderable : m_renderables)
         renderable->Update();
 	
     for(auto& renderable : m_renderables)
         renderable->Render();
-
+	*/
 	RenderGUI();
 }
 

@@ -43,6 +43,14 @@ GL::Skybox::Skybox()
 	m_normals.push_back(n_front);
 	m_normals.push_back(n_front);
 
+	m_uvs.push_back({ 0.5, 0.66 });
+	m_uvs.push_back({ 0.75, 0.66 });
+	m_uvs.push_back({ 0.75, 0.33 });
+
+	m_uvs.push_back({ 0.5, 0.66 });
+	m_uvs.push_back({ 0.75, 0.33 });
+	m_uvs.push_back({ 0.5, 0.33 });
+	/*
 	m_uvs.push_back({ v1.x, v1.y, v1.z, 5 });
 	m_uvs.push_back({ v4.x, v4.y, v4.z, 5 });
 	m_uvs.push_back({ v8.x, v8.y, v8.z, 5 });
@@ -50,6 +58,7 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ v1.x, v1.y, v1.z, 5 });
 	m_uvs.push_back({ v8.x, v8.y, v8.z, 5 });
 	m_uvs.push_back({ v5.x, v5.y, v5.z, 5 });
+	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -76,6 +85,15 @@ GL::Skybox::Skybox()
 	m_normals.push_back(n_back);
 	m_normals.push_back(n_back);
 
+	m_uvs.push_back({ 0.0, 0.66 });
+	m_uvs.push_back({ 0.25, 0.66 });
+	m_uvs.push_back({ 0.25, 0.33 });
+
+	m_uvs.push_back({ 0.0, 0.66 });
+	m_uvs.push_back({ 0.25, 0.33 });
+	m_uvs.push_back({ 0.0, 0.33 });
+
+	/*
 	m_uvs.push_back({ v3.x, v3.y, v3.z, 4 });
 	m_uvs.push_back({ v2.x, v2.y, v2.z, 4 });
 	m_uvs.push_back({ v6.x, v6.y, v6.z, 4 });
@@ -83,6 +101,7 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ v3.x, v3.y, v3.z, 4 });
 	m_uvs.push_back({ v6.x, v6.y, v6.z, 4 });
 	m_uvs.push_back({ v7.x, v7.y, v7.z, 4 });
+	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -109,6 +128,15 @@ GL::Skybox::Skybox()
 	m_normals.push_back(n_left);
 	m_normals.push_back(n_left);
 
+	m_uvs.push_back({ 0.25, 0.66 });
+	m_uvs.push_back({ 0.5, 0.66 });
+	m_uvs.push_back({ 0.5, 0.33 });
+
+	m_uvs.push_back({ 0.25, 0.66 });
+	m_uvs.push_back({ 0.5, 0.33 });
+	m_uvs.push_back({ 0.25, 0.33 });
+
+	/*
 	m_uvs.push_back({ v2.x, v2.y, v2.z, 1 });
 	m_uvs.push_back({ v1.x, v1.y, v1.z, 1 });
 	m_uvs.push_back({ v5.x, v5.y, v5.z, 1 });
@@ -116,6 +144,7 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ v2.x, v2.y, v2.z, 1 });
 	m_uvs.push_back({ v5.x, v5.y, v5.z, 1 });
 	m_uvs.push_back({ v6.x, v6.y, v6.z, 1 });
+	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -142,6 +171,15 @@ GL::Skybox::Skybox()
 	m_normals.push_back(n_right);
 	m_normals.push_back(n_right);
 
+	m_uvs.push_back({ 0.75, 0.66 });
+	m_uvs.push_back({ 1.0, 0.66 });
+	m_uvs.push_back({ 1.0, 0.33 });
+
+	m_uvs.push_back({ 0.75, 0.66 });
+	m_uvs.push_back({ 1.0, 0.33 });
+	m_uvs.push_back({ 0.75, 0.33 });
+
+	/*
 	m_uvs.push_back({ v4.x, v4.y, v4.z, 0 });
 	m_uvs.push_back({ v3.x, v3.y, v3.z, 0 });
 	m_uvs.push_back({ v7.x, v7.y, v7.z, 0 });
@@ -149,6 +187,7 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ v4.x, v4.y, v4.z, 0 });
 	m_uvs.push_back({ v7.x, v7.y, v7.z, 0 });
 	m_uvs.push_back({ v8.x, v8.y, v8.z, 0 });
+	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -175,6 +214,15 @@ GL::Skybox::Skybox()
 	m_normals.push_back(n_top);
 	m_normals.push_back(n_top);
 
+	m_uvs.push_back({ 0.25, 0.33 });
+	m_uvs.push_back({ 0.5, 0.33 });
+	m_uvs.push_back({ 0.5, 0.0 });
+
+	m_uvs.push_back({ 0.25, 0.33 });
+	m_uvs.push_back({ 0.5, 0.0 });
+	m_uvs.push_back({ 0.25, 0.0 });
+
+	/*
 	m_uvs.push_back({ v5.x, v5.y, v5.z, 2 });
 	m_uvs.push_back({ v8.x, v8.y, v8.z, 2 });
 	m_uvs.push_back({ v7.x, v7.y, v7.z, 2 });
@@ -182,6 +230,7 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ v5.x, v5.y, v5.z, 2 });
 	m_uvs.push_back({ v7.x, v7.y, v7.z, 2 });
 	m_uvs.push_back({ v6.x, v6.y, v6.z, 2 });
+	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -208,6 +257,15 @@ GL::Skybox::Skybox()
 	m_normals.push_back(n_bottom);
 	m_normals.push_back(n_bottom);
 
+	m_uvs.push_back({ 0.25, 0.99 });
+	m_uvs.push_back({ 0.5, 0.99 });
+	m_uvs.push_back({ 0.5, 0.66 });
+
+	m_uvs.push_back({ 0.25, 0.99 });
+	m_uvs.push_back({ 0.5, 0.66 });
+	m_uvs.push_back({ 0.25, 0.66 });
+
+	/*
 	m_uvs.push_back({ v2.x, v2.y, v2.z, 3 });
 	m_uvs.push_back({ v3.x, v3.y, v3.z, 3 });
 	m_uvs.push_back({ v4.x, v4.y, v4.z, 3 });
@@ -215,6 +273,7 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ v2.x, v2.y, v2.z, 3 });
 	m_uvs.push_back({ v4.x, v4.y, v4.z, 3 });
 	m_uvs.push_back({ v1.x, v1.y, v1.z, 3 });
+	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -224,8 +283,11 @@ GL::Skybox::Skybox()
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
 
-	m_diff = Core::GetCore()->GetResources()->GetTexture("skybox/skybox_1.dds");
+	m_diff = Core::GetCore()->GetResources()->GetTexture("skybox/skybox.dds");
 	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("DiffuseTextureSampler");
+
+	m_matrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("MVP");
+	m_CameraPos = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("CameraPosition");
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -272,6 +334,10 @@ void GL::Skybox::Update()
 
 void GL::Skybox::Render()
 {
+	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix())[0][0]);
+	glm::vec3 pos = Core::GetCore()->GetCamera()->GetPosition();
+	glUniform3f(m_CameraPos, pos.x, pos.y, pos.z);
+
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);

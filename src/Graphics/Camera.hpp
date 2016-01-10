@@ -44,7 +44,7 @@ namespace hpse
 			return m_lookat;
 		}
 
-		inline const glm::vec3 GetPosition()
+		inline const glm::vec3& GetPosition()
 		{
 			return m_pos;
 		}

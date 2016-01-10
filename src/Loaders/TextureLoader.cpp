@@ -8,10 +8,12 @@
 #include "../Core/ResourceHandler.hpp"
 #include "../Core.hpp"
 #include "../Exception.hpp"
+#include "../Loaders/Util.hpp"
+
 using namespace hpse;
 
 
-void TextureLoader::LoadTexture(const std::string& path)
+void TextureLoader::LoadTexture(const std::string& file, const std::string& path)
 {
 	std::cout << "loading texture: " << path << std::endl;
 
@@ -23,7 +25,7 @@ void TextureLoader::LoadTexture(const std::string& path)
 	if (!tex->Load(Texture))
 		throw HpseException("Failed to load texture" + path, __FILE__, __LINE__);
 
-	Core::GetCore()->GetResources()->AddResource(path, tex);
+	Core::GetCore()->GetResources()->AddResource(toUpper(file), tex);
 }
 
 std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::string> names)

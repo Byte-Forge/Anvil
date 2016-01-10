@@ -12,59 +12,58 @@ using namespace hpse;
 
 std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 {
-		
-	if (m_resources[toUpper(name)] == nullptr)
+	std::string file = m_texturesDir + name;
+	std::string path;
+
+	if (m_resources.count(toUpper(file)) == 0)
 	{
-		std::string path;
-		for (const auto& dir : m_texDirs)
+		if (GetFilePath(file, &path))
 		{
-			if (fileExists(dir + "/" + name))
-			{
-				path = dir + "/" + name;
-				break;
-			}
+			TextureLoader::LoadTexture(file, path);
 		}
-
-		if (path.size() == 0)
-		{
-			throw HpseException("Could not find texture resource named " + name, __FILE__, __LINE__);
-		}
-		TextureLoader::LoadTexture(path);
 	}			
-	else
-		return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(name)]);
-
-	return nullptr;
+	return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(m_texturesDir + name)]);
 }
 
 std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::string> names)
 {
 	std::vector<std::string> paths;
-	for (const auto& name : names)
+	for (auto& name : names)
 	{
 		std::string path;
-		for (const auto& dir : m_texDirs)
+		name = m_texturesDir + name;
+		if (GetFilePath(name, &path))
 		{
-			if (fileExists(dir + "/" + name))
-			{
-				path = dir + "/" + name;
-				break;
-			}
+			paths.push_back(path);
 		}
-		if (path.size() == 0)
-		{
-			throw HpseException("Could not find texture resource array: " + name, __FILE__, __LINE__);
-		}
-		paths.push_back(path);
 	}
-		
-
 	return TextureLoader::LoadTextureArray(paths);
 }
 
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 {
 	m_resources.insert({ toUpper(name), resource });
+}
+
+int ResourceHandler::GetFilePath(std::string name, std::string* path)
+{
+	//test if the file is in one of the mod folders, starting with the last added mod folder
+	for (int i = m_modDirs.size(); i > 0; i--)
+	{
+		const auto& dir = m_modDirs[i];
+		if (fileExists(dir + "/" + name))
+		{
+			*path = dir + "/" + name;
+			return 1;
+		}
+	}
+	if (fileExists(name)) //file in engine folde
+	{
+		*path = name;
+		return 1;
+	}
+	throw HpseException("No such file found: " + name, __FILE__, __LINE__);
+	return 0;
 }
 
 

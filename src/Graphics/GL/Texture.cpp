@@ -83,9 +83,6 @@ bool GL::Texture::Load(const gli::texture &tex)
 	glm::tvec3<GLsizei> const Dimensions(tex.dimensions());
 	GLsizei const FaceTotal = static_cast<GLsizei>(tex.layers() * tex.faces());
 
-	int width = Dimensions.x;
-	int height = Dimensions.y;
-	
 	switch (tex.target())
 	{
 		case gli::TARGET_1D:
@@ -94,9 +91,7 @@ bool GL::Texture::Load(const gli::texture &tex)
 		case gli::TARGET_1D_ARRAY:
 		case gli::TARGET_2D:
 		case gli::TARGET_CUBE:
-			glTexStorage2D(GL_PROXY_TEXTURE_CUBE_MAP, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, tex.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
-			std::cout << tex.target() << std::endl;
-			std::cout << gli::TARGET_CUBE << std::endl;
+			glTexStorage2D(m_target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, tex.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
 			break;
 		case gli::TARGET_2D_ARRAY:
 		case gli::TARGET_3D:
