@@ -17,3 +17,5 @@ game.PrintRenderer();
 -- Load our gui
 game.gui.LoadFile("ui/ui.html")
 
+game.AddModDir("mods/Test");
+

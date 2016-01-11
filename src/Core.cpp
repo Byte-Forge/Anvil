@@ -24,7 +24,7 @@ Core::Core()
 	m_gui = std::make_unique<GUI>(m_window);
 	m_resources = std::make_unique<ResourceHandler>();
 
-	m_script->LoadFile("./script/start.lua");
+	m_script->LoadFile("start.lua");
 
 	m_map = std::make_unique<Map>();
 	m_camera = std::make_unique<Camera>();

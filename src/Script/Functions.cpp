@@ -31,17 +31,7 @@ extern "C"
 		renderer->PrintInfo();
 	}
 
-	SCRIPT_FUNC void AddTextureDir(const char* dir)
-	{
-		
-	}
-
-	SCRIPT_FUNC void AddMapDir(const char* dir)
-	{
-		
-	}
-
-	SCRIPT_FUNC void AddModelDir(const char* dir)
+	SCRIPT_FUNC void AddModDir(const char* dir)
 	{
 		
 	}
