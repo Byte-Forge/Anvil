@@ -67,7 +67,11 @@ namespace hpse
 		{
 			return m_instance;
 		}
+
 	private:
+		static Core* m_instance;
+		bool m_running;
+
 		sf::Window m_window;
 		std::unique_ptr<ResourceHandler> m_resources;
 		std::unique_ptr<Graphics> m_graphics;
@@ -78,7 +82,5 @@ namespace hpse
 		std::unique_ptr<Camera> m_camera;
 		std::unique_ptr<Frustum> m_frustum;
 		std::map<std::string, bool> m_inputs;
-		bool m_running;
-		static Core* m_instance;
 	};
 }

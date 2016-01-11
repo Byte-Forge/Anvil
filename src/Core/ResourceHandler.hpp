@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "IResource.hpp"
 #include "../Graphics/ITexture.hpp"
+#include "../Graphics/Material.hpp"
 
 namespace hpse
 {
@@ -16,7 +17,10 @@ namespace hpse
     {
     public:
 		std::shared_ptr<ITexture> GetTextureArray(std::vector<std::string> names);
-        std::shared_ptr<ITexture> GetTexture(const std::string& name);
+        std::shared_ptr<ITexture> GetTexture(const std::string &name);
+
+		std::shared_ptr<Material> GetMaterial(const std::string &name);
+
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 
 		inline void AddModDir(const std::string& dir)

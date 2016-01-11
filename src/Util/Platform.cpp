@@ -6,6 +6,7 @@
 #include <dirent.h>
 #endif
 #include "StringHelper.hpp"
+
 using namespace hpse;
 
 

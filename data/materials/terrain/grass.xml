@@ -1,13 +1,11 @@
-<materials>
-	<material name = "grass">
-		<max_tessellation>64</max_tessellation>
-		<displacement_factor>0.01</displacement_factor>
-		<textures>
-			<diffuse>terrain/grass.dds</diffuse>
-			<normal>terrain/grass_norm.dds</normal>
-			<specular>terrain/grass_spec.dds</specular>
-			<displacement>terrain/grass_disp.dds</displacement>
-			<ambient_occ>terrain/grass_ao.dds</ambient_occ>
-		</textures>
-	</material>
-</materials>
+<material>
+	<max_tessellation>64</max_tessellation>
+	<displacement_factor>0.01</displacement_factor>
+	<textures>
+		<diffuse>terrain/grass.dds</diffuse>
+		<normal>terrain/grass_norm.dds</normal>
+		<specular>terrain/grass_spec.dds</specular>
+		<displacement>terrain/grass_disp.dds</displacement>
+		<ambient_occ>terrain/grass_ao.dds</ambient_occ>
+	</textures>
+</material>

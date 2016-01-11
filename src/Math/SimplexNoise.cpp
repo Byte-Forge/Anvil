@@ -16,8 +16,27 @@
 
 #include "SimplexNoise.hpp"
 #include <glm/glm.hpp>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace hpse;
+
+SimplexNoise::SimplexNoise()
+{
+	srand(time(NULL));
+	int val = 0;
+	for (int i = 0; i < 256; i++)
+	{
+		val = rand() % 256;
+		perm[i] = val;
+		perm[512 - (i + 1)] = val;
+	}
+}
+
+SimplexNoise::~SimplexNoise()
+{
+
+}
 
 // 2D Multi-octave Simplex noise.//
 // For each octave, a higher frequency/lower amplitude function will be added to the original.
@@ -570,9 +589,9 @@ const int SimplexNoise::grad4[32][4] = {
 	{ -1,1,1,0 },{ -1,1,-1,0 },{ -1,-1,1,0 },{ -1,-1,-1,0 }
 };
 
-
+/*
 // Permutation table.  The same list is repeated twice.
-const int SimplexNoise::perm[512] = {
+int SimplexNoise::perm[512] = {
 	151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,
 	8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,
 	35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,
@@ -599,6 +618,7 @@ const int SimplexNoise::perm[512] = {
 	107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,
 	138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
 };
+*/
 
 // A lookup table to traverse the simplex around a given point in 4D.
 const int SimplexNoise::simplex[64][4] = {

@@ -5,6 +5,7 @@
 #include <iostream>
 #include "../Loaders/Util.hpp"
 #include "../Loaders/TextureLoader.hpp"
+#include "../Loaders/MaterialLoader.hpp"
 #include "../Loaders/W4DLoader.hpp"
 #include "../Exception.hpp"
 
@@ -12,17 +13,15 @@ using namespace hpse;
 
 std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 {
-	std::string file = m_texturesDir + name;
 	std::string path;
-
-	if (m_resources.count(toUpper(file)) == 0)
+	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(file, &path))
+		if (GetFilePath(m_texturesDir + name, &path))
 		{
-			TextureLoader::LoadTexture(file, path);
+			TextureLoader::LoadTexture(name, path);
 		}
 	}			
-	return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(m_texturesDir + name)]);
+	return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(name)]);
 }
 
 std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::string> names)
@@ -38,6 +37,19 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 		}
 	}
 	return TextureLoader::LoadTextureArray(paths);
+}
+
+std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
+{
+	std::string path;
+	if (m_resources.count(toUpper(name)) == 0)
+	{
+		if (GetFilePath(m_materialsDir + name, &path))
+		{
+			MaterialLoader::LoadMaterial(name, path);
+		}
+	}
+	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(name)]);
 }
 
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
