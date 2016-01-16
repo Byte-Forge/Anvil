@@ -139,7 +139,7 @@ void RendererGL::Render(glm::mat4& ortho)
     for(auto& renderable : m_renderables)
         renderable->Render();
 	*/
-	RenderGUI();
+	//RenderGUI();
 }
 
 void RendererGL::RenderGUI()
