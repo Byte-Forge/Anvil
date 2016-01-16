@@ -20,8 +20,8 @@ set(SRC_DIR "src")
 #Find the Lua JIT compiler
 find_package(LuaJIT REQUIRED)
 
-#Find Chromium Embedded Framework
-find_package(Awesomium REQUIRED)
+#Find LibRocket
+find_package(ROCKET REQUIRED)
 
 #Find SFML modules for window and system
 find_package(SFML 2.3 COMPONENTS window system REQUIRED)
@@ -44,17 +44,12 @@ add_executable(${PROJ_NAME} ${SRC_FILES})
 
 #Include our dependencies
 target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR}
-						${AWESOMIUM_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
+						${ROCKET_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
 
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	#Link our dependencies
-	target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${AWESOMIUM_LIBRARY} ${OPENAL_LIBRARY}
-							${SFML_LIBRARIES} ${SFML_DEPENDENCIES} ${OPENGL_LIBRARIES})
-else()
-	#Link our dependencies
-	target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${AWESOMIUM_LIBRARY} ${OPENAL_LIBRARY}
-							${SFML_LIBRARIES} ${SFML_DEPENDENCIES} ${OPENGL_LIBRARIES} -ldl)
-endif()
+#Link our dependencies
+target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${ROCKET_LIBRARIES} ${OPENAL_LIBRARY}
+						${SFML_LIBRARIES} ${SFML_DEPENDENCIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS})
+
 
 #Use C++ 14
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)

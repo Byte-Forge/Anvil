@@ -2,9 +2,7 @@
 #include <memory>
 #include <string>
 #include <SFML/Window.hpp>
-#include <Awesomium/WebCore.h>
-#include "./GUI/SurfaceFactory.hpp"
-#include "./GUI/MethodHandler.hpp"
+#include <Rocket/Core.h>
 
 namespace hpse
 {
@@ -25,11 +23,7 @@ namespace hpse
 		void MouseLeft(bool isDown);
 		void KeyDown(sf::Event::KeyEvent& key);
 	private:
-		Awesomium::WebCore* m_core;
-		Awesomium::WebView* m_view;
-		Awesomium::JSObject m_jsGlobal;
-		SurfaceFactory* m_factory;
-		MethodHandler* m_jsHandler;
 		int m_mouseX, m_mouseY;
+	
 	};
 }
