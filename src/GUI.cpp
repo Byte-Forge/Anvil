@@ -4,13 +4,13 @@
 #include <iostream>
 #include "Exception.hpp"
 #include <Rocket/Debugger.h>
+#include "Core.hpp"
 using namespace hpse;
 
 GUI::GUI(sf::Window& window) : m_context(nullptr)
 {
 	Rocket::Core::SetSystemInterface(&m_system);
-	Rocket::Core::SetRenderInterface
-
+	Rocket::Core::SetRenderInterface(Core::GetCore()->GetGraphics()->GetRenderer()->GetRocketRenderer().get());
 	if (!Rocket::Core::Initialise())
 	{
 		throw HpseException("Failed to initialise librocket", __FILE__, __LINE__);

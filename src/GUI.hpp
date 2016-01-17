@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <Rocket/Core.h>
 #include "./GUI/SystemInterface.hpp"
+
 namespace hpse
 {
 
@@ -27,5 +28,6 @@ namespace hpse
 		int m_mouseX, m_mouseY;
 		SystemInterface m_system;
 		Rocket::Core::Context* m_context;
+	
 	};
 }

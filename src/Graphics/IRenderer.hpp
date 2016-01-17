@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <string>
+#include <Rocket/Core/RenderInterface.h>
 #include "../Types/Map.hpp"
 
 namespace hpse
@@ -47,6 +48,11 @@ namespace hpse
 		{
 			return m_overlay;
 		}
+
+		inline std::unique_ptr<Rocket::Core::RenderInterface>& GetRocketRenderer()
+		{
+			return m_rocketrenderer;
+		}
 	protected:
 		std::unique_ptr<IOverlay> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
@@ -55,6 +61,7 @@ namespace hpse
 
 		std::shared_ptr<IRenderable> m_skybox;
 		std::shared_ptr<IRenderable> m_terrain;
+		std::unique_ptr<Rocket::Core::RenderInterface> m_rocketrenderer;
 		std::vector<std::shared_ptr<IRenderable>> m_renderables;
 	};
 }

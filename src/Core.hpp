@@ -58,6 +58,11 @@ namespace hpse
 			return res;
 		}
 
+		inline sf::Window* GetWindow()
+		{
+			return &m_window;
+		}
+
 		inline void Quit()
 		{
 			m_running = false;
