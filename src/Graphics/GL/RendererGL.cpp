@@ -139,12 +139,14 @@ void RendererGL::Render(glm::mat4& ortho)
     for(auto& renderable : m_renderables)
         renderable->Render();
 	*/
+
+	glDisable(GL_DEPTH_TEST);
+
 	//RenderGUI();
 }
 
 void RendererGL::RenderGUI()
 {
-	glDisable(GL_DEPTH_TEST);
 	m_guiShader->Use();
 
 	glActiveTexture(GL_TEXTURE0);

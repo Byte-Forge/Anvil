@@ -6,8 +6,10 @@
 #include "../IRenderable.hpp"
 #include "../ITexture.hpp"
 #include "../Quadtree.hpp"
+#include "../Material.hpp"
 #include "flextGL.h"
 #include <vector>
+#include <memory>
 #include <glm/glm.hpp>
 
 namespace hpse
@@ -24,9 +26,11 @@ namespace hpse
 
             void Render();
             void Update();
+
         private:
 			std::uint32_t m_width, m_height;
 			std::vector<float> m_heightmap;
+			std::vector<std::string> m_terrainMaterials;
 			std::vector<glm::vec3> m_materialmap;
 			std::shared_ptr<Quadtree> m_quadtree;
 

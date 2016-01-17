@@ -24,15 +24,15 @@ namespace hpse
 		// Multi-octave Simplex noise
 		// For each octave, a higher frequency/lower amplitude function will be added to the original.
 		// The higher the persistence [0-1], the more of each succeeding octave will be added.
-		static float octave_noise_2d(const float octaves, const float persistence, const float scale, const float x, const float y);
-		static float octave_noise_3d(const float octaves, const float persistence, const float scale, const float x, const float y, const float z);
-		static float octave_noise_4d(const float octaves, const float persistence, const float scale, const float x, const float y, const float z, const float w);
+		static float octave_noise_2d(const int octaves, const float persistence, const float scale, const float x, const float y);
+		static float octave_noise_3d(const int octaves, const float persistence, const float scale, const float x, const float y, const float z);
+		static float octave_noise_4d(const int octaves, const float persistence, const float scale, const float x, const float y, const float z, const float w);
 
 		// Scaled Multi-octave Simplex noise
 		// The result will be between the two parameters passed.
-		static float scaled_octave_noise_2d(const float octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y);
-		static float scaled_octave_noise_3d(const float octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y, const float z);
-		static float scaled_octave_noise_4d(const float octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y, const float z, const float w);
+		static float scaled_octave_noise_2d(const int octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y);
+		static float scaled_octave_noise_3d(const int octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y, const float z);
+		static float scaled_octave_noise_4d(const int octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y, const float z, const float w);
 
 		// Scaled Raw Simplex noise
 		// The result will be between the two parameters passed
@@ -46,9 +46,9 @@ namespace hpse
 		static float raw_noise_4d(const float x, const float y, const float, const float w);
 
 	private:
+		static int perm[512];
 		static const int grad3[12][3];
 		static const int grad4[32][4];
-		static const int perm[512];
 		static const int simplex[64][4];
 
 		static int fastfloor(const float x);

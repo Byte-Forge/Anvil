@@ -1,0 +1,11 @@
+<material>
+	<max_tessellation>64</max_tessellation>
+	<displacement_factor>0.01</displacement_factor>
+	<textures>
+		<diffuse>terrain/gravel_small.dds</diffuse>
+		<normal>terrain/gravel_small_norm.dds</normal>
+		<specular>terrain/gravel_small_spec.dds</specular>
+		<displacement>terrain/gravel_small_disp.dds</displacement>
+		<ambient_occ>terrain/gravel_small_ao.dds</ambient_occ>
+	</textures>
+</material>

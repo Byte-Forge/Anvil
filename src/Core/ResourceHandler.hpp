@@ -7,8 +7,10 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include "IResource.hpp"
 #include "../Graphics/ITexture.hpp"
+#include "../Graphics/Material.hpp"
 
 namespace hpse
 {
@@ -16,15 +18,20 @@ namespace hpse
     {
     public:
 		std::shared_ptr<ITexture> GetTextureArray(std::vector<std::string> names);
-        std::shared_ptr<ITexture> GetTexture(const std::string& name);
+        std::shared_ptr<ITexture> GetTexture(const std::string &name);
+
+		std::vector<std::string> GetTerrainMaterials();
+		std::shared_ptr<Material> GetMaterial(const std::string &name);
+
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 
 		inline void AddModDir(const std::string& dir)
 		{
-			if (std::find(m_modDirs.begin(), m_modDirs.end(), dir) != m_modDirs.end())
+			/*
+			if (std::find(m_modDirs.begin(), m_modDirs.end(), m_modDir + dir) != m_modDirs.end())
 				return;
-
 			m_modDirs.push_back(dir);
+			*/
 		}
 
     private:
@@ -33,10 +40,11 @@ namespace hpse
 		std::string m_materialsDir = "materials/";
 		std::string m_w4dDir = "w4d/";
 		std::string m_uiDir = "ui/";
+		std::string m_modDir = "mods/";
 
-        std::map<const std::string, std::shared_ptr<IResource>> m_resources;
 		std::vector<std::string> m_modDirs;
 
+        std::map<const std::string, std::shared_ptr<IResource>> m_resources;
 		int GetFilePath(std::string name, std::string* path);
     };
 }

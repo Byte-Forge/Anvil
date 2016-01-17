@@ -16,6 +16,8 @@
 
 #include "SimplexNoise.hpp"
 #include <glm/glm.hpp>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace hpse;
 
@@ -23,7 +25,7 @@ using namespace hpse;
 // For each octave, a higher frequency/lower amplitude function will be added to the original.
 // The higher the persistence [0-1], the more of each succeeding octave will be added.
 
-float SimplexNoise::octave_noise_2d(const float octaves, const float persistence, const float scale, const float x, const float y) 
+float SimplexNoise::octave_noise_2d(const int octaves, const float persistence, const float scale, const float x, const float y) 
 {
 	float total = 0;
 	float frequency = scale;
@@ -48,7 +50,7 @@ float SimplexNoise::octave_noise_2d(const float octaves, const float persistence
 // For each octave, a higher frequency/lower amplitude function will be added to the original.
 // The higher the persistence [0-1], the more of each succeeding octave will be added.
 
-float SimplexNoise::octave_noise_3d(const float octaves, const float persistence, const float scale, const float x, const float y, const float z) 
+float SimplexNoise::octave_noise_3d(const int octaves, const float persistence, const float scale, const float x, const float y, const float z) 
 {
 	float total = 0;
 	float frequency = scale;
@@ -73,7 +75,7 @@ float SimplexNoise::octave_noise_3d(const float octaves, const float persistence
 // For each octave, a higher frequency/lower amplitude function will be added to the original.
 // The higher the persistence [0-1], the more of each succeeding octave will be added.
 
-float SimplexNoise::octave_noise_4d(const float octaves, const float persistence, const float scale, const float x, const float y, const float z, const float w)
+float SimplexNoise::octave_noise_4d(const int octaves, const float persistence, const float scale, const float x, const float y, const float z, const float w)
 {
 	float total = 0;
 	float frequency = scale;
@@ -97,7 +99,7 @@ float SimplexNoise::octave_noise_4d(const float octaves, const float persistence
 // 2D Scaled Multi-octave Simplex noise.
 // Returned value will be between loBound and hiBound.
 
-float SimplexNoise::scaled_octave_noise_2d(const float octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y) 
+float SimplexNoise::scaled_octave_noise_2d(const int octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y) 
 {
 	return octave_noise_2d(octaves, persistence, scale, x, y) * (hiBound - loBound) / 2 + (hiBound + loBound) / 2;
 }
@@ -106,7 +108,7 @@ float SimplexNoise::scaled_octave_noise_2d(const float octaves, const float pers
 // 3D Scaled Multi-octave Simplex noise.
 // Returned value will be between loBound and hiBound.
 
-float SimplexNoise::scaled_octave_noise_3d(const float octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y, const float z) 
+float SimplexNoise::scaled_octave_noise_3d(const int octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y, const float z) 
 {
 	return octave_noise_3d(octaves, persistence, scale, x, y, z) * (hiBound - loBound) / 2 + (hiBound + loBound) / 2;
 }
@@ -115,7 +117,7 @@ float SimplexNoise::scaled_octave_noise_3d(const float octaves, const float pers
 // 4D Scaled Multi-octave Simplex noise.
 // Returned value will be between loBound and hiBound.
 
-float SimplexNoise::scaled_octave_noise_4d(const float octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y, const float z, const float w)
+float SimplexNoise::scaled_octave_noise_4d(const int octaves, const float persistence, const float scale, const float loBound, const float hiBound, const float x, const float y, const float z, const float w)
 {
 	return octave_noise_4d(octaves, persistence, scale, x, y, z, w) * (hiBound - loBound) / 2 + (hiBound + loBound) / 2;
 }
@@ -251,7 +253,7 @@ float SimplexNoise::raw_noise_3d(const float x, const float y, const float z)
 	int k = fastfloor(z + s);
 
 	float G3 = 1.0 / 6.0; // Very nice and simple unskew factor, too
-	float t = (i + j + k)*G3;
+	float t = (i + j + k) * G3;
 	float X0 = i - t; // Unskew the cell origin back to (x,y,z) space
 	float Y0 = j - t;
 	float Z0 = k - t;
@@ -570,9 +572,8 @@ const int SimplexNoise::grad4[32][4] = {
 	{ -1,1,1,0 },{ -1,1,-1,0 },{ -1,-1,1,0 },{ -1,-1,-1,0 }
 };
 
-
 // Permutation table.  The same list is repeated twice.
-const int SimplexNoise::perm[512] = {
+int SimplexNoise::perm[512] = {
 	151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,
 	8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,
 	35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,

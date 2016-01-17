@@ -53,8 +53,8 @@ namespace hpse
 		inline glm::vec2 GetResolution()
 		{
 			glm::vec2 res;
-			res.x = (float)m_window.getSize().x;
-			res.y = (float)m_window.getSize().y;
+			res.x = m_window.getSize().x;
+			res.y = m_window.getSize().y;
 			return res;
 		}
 
@@ -67,7 +67,11 @@ namespace hpse
 		{
 			return m_instance;
 		}
+
 	private:
+		static Core* m_instance;
+		bool m_running;
+
 		sf::Window m_window;
 		std::unique_ptr<ResourceHandler> m_resources;
 		std::unique_ptr<Graphics> m_graphics;
@@ -78,7 +82,5 @@ namespace hpse
 		std::unique_ptr<Camera> m_camera;
 		std::unique_ptr<Frustum> m_frustum;
 		std::map<std::string, bool> m_inputs;
-		bool m_running;
-		static Core* m_instance;
 	};
 }

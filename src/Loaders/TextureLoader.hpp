@@ -10,7 +10,7 @@ namespace hpse
 	class TextureLoader
 	{
 	public:
-		static void LoadTexture(const std::string& file, const std::string& name);
-		static std::shared_ptr<ITexture> LoadTextureArray(std::vector<std::string> names);
+		static void LoadTexture(const std::string& name, const std::string& path);
+		static std::shared_ptr<ITexture> LoadTextureArray(std::vector<std::string> paths);
 	};
 }

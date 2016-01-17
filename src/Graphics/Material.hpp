@@ -7,7 +7,7 @@ namespace hpse
 	class Material : public IResource
 	{
 	public:
-		bool Load(const std::string& path);
+		void Load(const std::string& path);
 	private:
 		int m_maxTessellation;
 		float m_displacementFactor;

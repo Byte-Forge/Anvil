@@ -37,6 +37,5 @@ namespace hpse
 	private:
 		std::shared_ptr<GL::Skybox> m_skybox;
 		std::shared_ptr<GL::Terrain> m_terrain;
-
 	};
 }

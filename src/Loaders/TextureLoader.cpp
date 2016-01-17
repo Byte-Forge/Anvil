@@ -13,9 +13,9 @@
 using namespace hpse;
 
 
-void TextureLoader::LoadTexture(const std::string& file, const std::string& path)
+void TextureLoader::LoadTexture(const std::string& name, const std::string& path)
 {
-	std::cout << "loading texture: " << path << std::endl;
+	std::cout << "loading texture: " << name << std::endl;
 
 	gli::texture Texture = gli::load(path);
 	if (Texture.empty())
@@ -25,18 +25,18 @@ void TextureLoader::LoadTexture(const std::string& file, const std::string& path
 	if (!tex->Load(Texture))
 		throw HpseException("Failed to load texture" + path, __FILE__, __LINE__);
 
-	Core::GetCore()->GetResources()->AddResource(toUpper(file), tex);
+	Core::GetCore()->GetResources()->AddResource(toUpper(name), tex);
 }
 
-std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::string> names)
+std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::string> paths)
 {
 	std::vector<gli::texture> textures;
-	for (unsigned int i = 0; i < names.size(); i++)
+	for (unsigned int i = 0; i < paths.size(); i++)
 	{
-		std::cout << "loading texture: " << names[i] << std::endl;
-		gli::texture Texture = gli::load(names[i]);
+		std::cout << "loading texture: " << paths[i] << std::endl;
+		gli::texture Texture = gli::load(paths[i]);
 		if (Texture.empty())
-			throw HpseException("Failed to load empty texture" + names[i], __FILE__, __LINE__);
+			throw HpseException("Failed to load empty texture" + paths[i], __FILE__, __LINE__);
 		textures.push_back(Texture);
 	}
 	auto tex = Core::GetCore()->GetGraphics()->GetTexture();

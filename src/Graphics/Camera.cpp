@@ -2,6 +2,7 @@
 // Created by stephan on 08.12.15.
 //
 #include "Camera.hpp"
+#include "../Core.hpp"
 #include <iostream>
 
 using namespace hpse;
@@ -110,7 +111,6 @@ void Camera::Update()
 //out_origin starts at the near plane NOT the camera position
 void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction)
 {
-	/*
 	glm::vec2 resolution = Core::GetCore()->GetResolution();
 
 	glm::vec4 ray_start(
@@ -139,9 +139,7 @@ void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm
 
 	out_origin = glm::vec3(ray_start_world);
 	out_direction = glm::normalize(ray_dir_world);
-	*/
-	//std::cout << mouse_pos.x << ", " << mouse_pos.y << std::endl;
 
-	out_origin = m_currentPos + m_direction;
-	out_direction = m_direction;
+	//out_origin = m_position + m_direction;
+	//out_direction = m_direction;
 }

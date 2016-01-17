@@ -1,0 +1,11 @@
+<material>
+	<max_tessellation>64</max_tessellation>
+	<displacement_factor>0.01</displacement_factor>
+	<textures>
+		<diffuse>terrain/snowy_cliff.dds</diffuse>
+		<normal>terrain/snowy_cliff_norm.dds</normal>
+		<specular>terrain/snowy_cliff_spec.dds</specular>
+		<displacement>terrain/snowy_cliff_disp.dds</displacement>
+		<ambient_occ>terrain/snowy_cliff_ao.dds</ambient_occ>
+	</textures>
+</material>

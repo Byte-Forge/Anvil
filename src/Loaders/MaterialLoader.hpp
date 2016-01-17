@@ -4,6 +4,7 @@ namespace hpse
 {
 	class MaterialLoader
 	{
-		static void LoadMaterial(const std::string& name);
+	public:
+		static void LoadMaterial(const std::string &name, const std::string &path);
 	};
 }
