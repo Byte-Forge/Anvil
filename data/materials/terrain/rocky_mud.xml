@@ -1,0 +1,11 @@
+<material>
+	<max_tessellation>64</max_tessellation>
+	<displacement_factor>0.01</displacement_factor>
+	<textures>
+		<diffuse>terrain/rocky_mud.dds</diffuse>
+		<normal>terrain/rocky_mud_norm.dds</normal>
+		<specular>terrain/rocky_mud_spec.dds</specular>
+		<displacement>terrain/rocky_mud_disp.dds</displacement>
+		<ambient_occ>terrain/rocky_mud_ao.dds</ambient_occ>
+	</textures>
+</material>

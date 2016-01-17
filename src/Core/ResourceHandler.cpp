@@ -7,6 +7,7 @@
 #include "../Loaders/TextureLoader.hpp"
 #include "../Loaders/MaterialLoader.hpp"
 #include "../Loaders/W4DLoader.hpp"
+#include "../Util/Platform.hpp"
 #include "../Exception.hpp"
 
 using namespace hpse;
@@ -39,6 +40,34 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 	return TextureLoader::LoadTextureArray(paths);
 }
 
+std::vector<std::string> ResourceHandler::GetTerrainMaterials()
+{
+	std::vector<std::string> materials;
+	
+	std::vector<std::string> temp;
+	temp = IO::ListFiles(m_materialsDir + "terrain/", "xml");
+	for (int i = 0; i < temp.size(); i++)
+	{
+		if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
+		{
+			materials.push_back(temp[i]);
+		}
+	}
+
+	for (int i = 0; i < m_modDirs.size(); i++)
+	{
+		temp = IO::ListFiles(m_modDirs[i] + "/terrain/", "xml");
+		for (int i = 0; i < temp.size(); i++)
+		{
+			if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
+			{
+				materials.push_back(temp[i]);
+			}
+		}
+	}
+	return materials;
+}
+
 std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 {
 	std::string path;
@@ -69,7 +98,7 @@ int ResourceHandler::GetFilePath(std::string name, std::string* path)
 			return 1;
 		}
 	}
-	if (fileExists(name)) //file in engine folde
+	if (fileExists(name)) //file in engine folder
 	{
 		*path = name;
 		return 1;
@@ -77,5 +106,3 @@ int ResourceHandler::GetFilePath(std::string name, std::string* path)
 	throw HpseException("No such file found: " + name, __FILE__, __LINE__);
 	return 0;
 }
-
-

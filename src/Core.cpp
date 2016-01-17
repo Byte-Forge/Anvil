@@ -23,11 +23,11 @@ Core::Core()
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
 	m_resources = std::make_unique<ResourceHandler>();
+	m_camera = std::make_unique<Camera>();
 
 	m_script->LoadFile("start.lua");
 
 	m_map = std::make_unique<Map>();
-	m_camera = std::make_unique<Camera>();
 
 	//init user inputs
 	m_inputs.insert({ "FOREWARD", false });
@@ -218,15 +218,12 @@ void Core::Run()
 
 		if (m_inputs["MOUSE_BUTTON_LEFT_RELEASED"])
 		{
-			/*
 			glm::vec2 mousePos = { x_old, y_old };
 			glm::vec3 mouseWorld;
 			if (m_map->GetTerrain()->GetMousePositionInWorldSpace(mousePos, mouseWorld))
 			{
-				//std::cout << mouseWorld.x << ", " << mouseWorld.y << ", " << mouseWorld.z << std::endl;
-				m_map->GetTerrain()->SetTerrainHeight(mouseWorld, 1.0f, 2.0f);
+				m_map->GetTerrain()->SetTerrainHeight(mouseWorld, 15.0f, 20.0f);
 			}
-			*/
 			m_inputs["MOUSE_BUTTON_LEFT_RELEASED"] = false;
 		}
 

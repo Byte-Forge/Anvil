@@ -33,6 +33,6 @@ extern "C"
 
 	SCRIPT_FUNC void AddModDir(const char* dir)
 	{
-		
+		Core::GetCore()->GetResources()->AddModDir(dir);
 	}
 }

@@ -53,8 +53,8 @@ namespace hpse
 		inline glm::vec2 GetResolution()
 		{
 			glm::vec2 res;
-			res.x = (float)m_window.getSize().x;
-			res.y = (float)m_window.getSize().y;
+			res.x = m_window.getSize().x;
+			res.y = m_window.getSize().y;
 			return res;
 		}
 
