@@ -2,24 +2,42 @@
 #include "Environment.hpp"
 #include "./Util/Platform.hpp"
 #include <iostream>
-
-
+#include "Exception.hpp"
+#include <Rocket/Debugger.h>
 using namespace hpse;
 
-GUI::GUI(sf::Window& window) 
+GUI::GUI(sf::Window& window) : m_context(nullptr)
 {
-	
+	Rocket::Core::SetSystemInterface(&m_system);
+	Rocket::Core::SetRenderInterface
+
+	if (!Rocket::Core::Initialise())
+	{
+		throw HpseException("Failed to initialise librocket", __FILE__, __LINE__);
+	}
+
+	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(window.getSize().x, window.getSize().y));
+	Rocket::Debugger::Initialise(m_context);
+
 }
 
 GUI::~GUI()
 {
-	
+	m_context->RemoveReference();
+	Rocket::Core::Shutdown();
 }
 
 void GUI::Update()
 {
-	
+	//m_context->Update();
 }
+
+
+void GUI::Render()
+{
+	//m_context->Render();
+}
+
 
 void GUI::LoadURL(const std::string& file)
 {
