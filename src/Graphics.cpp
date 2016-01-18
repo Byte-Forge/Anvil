@@ -2,6 +2,8 @@
 #include "Graphics/GL/RendererGL.hpp"
 #include "Graphics/GL/Texture.hpp"
 #include <glm/gtx/transform.hpp>
+#define STB_IMAGE_IMPLEMENTATION
+#include "Util/stb_image.h"
 using namespace hpse;
 
 Graphics::Graphics(Graphics::RenderBackend backend) : m_backend(backend)

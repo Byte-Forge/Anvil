@@ -22,12 +22,14 @@ namespace hpse
 
 		//Events
 		void MouseMove(int x, int y);
-		void MouseLeft(bool isDown);
+		void MousePressed(int key);
+		void MouseReleased(int key);
 		void KeyDown(sf::Event::KeyEvent& key);
 	private:
 		int m_mouseX, m_mouseY;
 		SystemInterface m_system;
 		Rocket::Core::Context* m_context;
+		sf::Window* m_window;
 	
 	};
 }

@@ -6,7 +6,7 @@
 #include "../../Core.hpp"
 #include "../IRenderable.hpp"
 #include "../../Exception.hpp"
-#include "GuiRenderer.hpp"
+#include "RendererGui.hpp"
 #include <iostream>
 
 using namespace hpse;
@@ -90,7 +90,7 @@ RendererGL::RendererGL()
 	m_terrainShader->Compile();
 	m_terrainShader->Use();
 
-	m_rocketrenderer = std::make_unique<GL::GuiRenderer>(Core::GetCore()->GetWindow());
+	m_rocketrenderer = std::make_unique<GL::RendererGui>(Core::GetCore()->GetWindow());
 }
 
 RendererGL::~RendererGL()
