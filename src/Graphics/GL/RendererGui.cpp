@@ -33,7 +33,7 @@ struct Vertex
 };
 
 
-GL::RendererGui::RendererGui(sf::Window * window) : m_window(window)
+GL::RendererGui::RendererGui(sf::Window * window) : m_window(window), m_translID(0), m_orthoID(0)
 {
 	
 }
@@ -49,9 +49,6 @@ void GL::RendererGui::RenderGeometry(Rocket::Core::Vertex * vertices, int num_ve
 
 Rocket::Core::CompiledGeometryHandle GL::RendererGui::CompileGeometry(Rocket::Core::Vertex * vertices, int num_vertices, int * indices, int num_indices, Rocket::Core::TextureHandle texture)
 {
-	m_translID = static_cast<GLuint>(Core::GetCore()->GetGraphics()->GetRenderer()->GetGuiUniformLocation("translation"));
-	m_orthoID = static_cast<GLuint>(Core::GetCore()->GetGraphics()->GetRenderer()->GetGuiUniformLocation("ortho"));
-
 	std::vector<Vertex> data(num_vertices);
 
 	for (unsigned long i = 0; i < data.size(); i++)
@@ -85,13 +82,44 @@ Rocket::Core::CompiledGeometryHandle GL::RendererGui::CompileGeometry(Rocket::Co
 
 void GL::RendererGui::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle handle, const Rocket::Core::Vector2f & translation)
 {
+	m_translID = static_cast<GLuint>(Core::GetCore()->GetGraphics()->GetRenderer()->GetGuiUniformLocation("translation"));
+	m_orthoID = static_cast<GLuint>(Core::GetCore()->GetGraphics()->GetRenderer()->GetGuiUniformLocation("ortho"));
+	m_samplerID = static_cast<GLuint>(Core::GetCore()->GetGraphics()->GetRenderer()->GetGuiUniformLocation("tex"));
+
 	GLGeometry* geometry = reinterpret_cast<GLGeometry*>(handle);
 	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
+
+	// position
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT,
+		GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
+
+	// UV
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT,
+		GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoord));
+
+	// Colors
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT,
+		GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
 	glBindTexture(GL_TEXTURE_2D, geometry->m_texture);
-	glUniform2f(m_translID, translation.x, translation.y);
 
+	glUniform1i(m_samplerID, 0);
+	glUniform2f(m_translID, translation.x, translation.y);
+	auto* mat = glm::value_ptr(Core::GetCore()->GetGraphics()->GetOrtho());
+	glUniformMatrix4fv(m_orthoID, 1, GL_FALSE,mat);
 	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDrawElements(GL_TRIANGLES, geometry->m_numVerts, GL_UNSIGNED_INT, nullptr);
+	glDisable(GL_BLEND);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 }
 
 void GL::RendererGui::ReleaseCompiledGeometry(Rocket::Core::CompiledGeometryHandle geometry)

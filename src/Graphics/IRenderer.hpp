@@ -58,6 +58,11 @@ namespace hpse
 		{
 			return m_rocketrenderer;
 		}
+
+		inline void UseGuiShader()
+		{
+			m_guiShader->Use();
+		}
 	protected:
 		std::unique_ptr<IOverlay> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;

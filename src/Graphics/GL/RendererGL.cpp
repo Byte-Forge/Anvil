@@ -23,7 +23,7 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
     std::cout << "Type: ";
     switch (type) {
         case GL_DEBUG_TYPE_ERROR_ARB:
-            std::cout << "ERROR";
+			std::cout << "ERROR";
             break;
         case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
             std::cout << "DEPRECATED_BEHAVIOR";
@@ -54,6 +54,11 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
             break;
     }
     std::cout << std::endl;
+
+	if (type == GL_DEBUG_TYPE_ERROR_ARB)
+	{
+		throw HpseException("OpenGL Error, watch console for information", __FILE__, __LINE__);
+	}
 }
 #endif
 

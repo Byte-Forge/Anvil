@@ -37,7 +37,7 @@ namespace hpse
 			void ReleaseTexture(Rocket::Core::TextureHandle texture_handle);
 		private:
 			sf::Window* m_window;
-			GLuint m_translID,m_orthoID;
+			GLuint m_translID,m_orthoID,m_samplerID;
 		};
 	}
 }
