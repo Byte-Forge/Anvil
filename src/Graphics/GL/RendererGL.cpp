@@ -75,18 +75,18 @@ RendererGL::RendererGL()
     m_overlay = std::make_unique<GL::Overlay>();
 
 	m_guiShader = std::make_unique<GL::Shader>();
-	m_guiShader->Load("shader/gui_vs.glsl", "shader/gui_fs.glsl");
+	m_guiShader->Load("shader/gui.vert", "shader/gui.frag");
 	m_guiShader->Compile();
 	m_guiShader->Use();
     SetupGUI();
 
 	m_skyboxShader = std::make_unique<GL::Shader>();
-	m_skyboxShader->Load("shader/skybox_vs.glsl", "shader/skybox_fs.glsl");
+	m_skyboxShader->Load("shader/skybox.vert", "shader/skybox.frag");
 	m_skyboxShader->Compile();
 	m_skyboxShader->Use();
 
 	m_terrainShader = std::make_unique<GL::Shader>();
-	m_terrainShader->Load("shader/terrain_vs.glsl", "shader/terrain_tcs.glsl", "shader/terrain_tes.glsl", "shader/terrain_fs.glsl");
+	m_terrainShader->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
 	m_terrainShader->Compile();
 	m_terrainShader->Use();
 

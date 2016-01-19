@@ -23,18 +23,18 @@ void main()
 	
 	if(gl_InvocationID == 0)
 	{
-		float level = 32;
+		float level = 16;
 
 		float distance = length((V * vec4(tc_position[gl_InvocationID], 1)).xyz);
-		if (distance > 10)
+		if (distance > 6)
 		{
 			level /= 1.8;
 		}
-		if (distance > 20)
+		if (distance > 15)
 		{
 			level /= 2.4;
 		}
-		if (distance > 25)
+		if (distance > 20)
 		{
 			level = 1.0;
 		}

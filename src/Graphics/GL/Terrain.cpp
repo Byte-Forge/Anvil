@@ -79,9 +79,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 
 	m_lightID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos");
 
-	glGenVertexArrays(1, &m_vao);
-	glBindVertexArray(m_vao);
-
 	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(glm::vec3), &m_vertices[0], GL_STATIC_DRAW);
@@ -101,6 +98,9 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	glGenBuffers(1, &m_mbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_mbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_materials.size() * sizeof(std::uint32_t), &m_materials[0], GL_STATIC_DRAW);
+
+	glGenVertexArrays(1, &m_vao);
+	glBindVertexArray(m_vao);
 }
 
 GL::Terrain::~Terrain()
@@ -166,7 +166,7 @@ void GL::Terrain::Render()
 	glUniformMatrix3fv(m_modelView3x3MatrixID, 1, GL_FALSE, &glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)[0][0]);
 	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
 
-	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height/2.0 });
+	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
 	glUniform3f(m_lightID, lightPos.x, lightPos.y, lightPos.z);
 
 	glEnableVertexAttribArray(0);
