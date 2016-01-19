@@ -7,7 +7,7 @@
 #include "Core.hpp"
 using namespace hpse;
 
-GUI::GUI(sf::Window& window) : m_context(nullptr)
+GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 {
 	Rocket::Core::SetSystemInterface(&m_system);
 	Rocket::Core::SetRenderInterface(Core::GetCore()->GetGraphics()->GetRenderer()->GetRocketRenderer().get());
@@ -29,13 +29,13 @@ GUI::~GUI()
 
 void GUI::Update()
 {
-	//m_context->Update();
+	m_context->Update();
 }
 
 
 void GUI::Render()
 {
-	//m_context->Render();
+	m_context->Render();
 }
 
 
@@ -46,22 +46,37 @@ void GUI::LoadURL(const std::string& file)
 
 void GUI::LoadFile(const std::string& file)
 {
-	
+	auto* document = m_context->LoadDocument(file.c_str());
+	if (document)
+	{
+		document->Show();
+		document->RemoveReference();
+		std::cout << "Document " << file << " is loaded" << std::endl;
+	}
+	else
+	{
+		std::cout << "Document " << file << " is NULL" << std::endl;
+	}
 }
 
 void GUI::Resize(int width, int height)
 {
-	
+	m_context->SetDimensions(Rocket::Core::Vector2i(width, height));
 }
 
 void GUI::MouseMove(int x, int y)
 {
-	
+	m_context->ProcessMouseMove(x, y, m_system.GetKeyModifiers(m_window));
 }
 
-void GUI::MouseLeft(bool isDown)
+void GUI::MousePressed(int key)
 {
-	
+	m_context->ProcessMouseButtonDown(key, m_system.GetKeyModifiers(m_window));
+}
+
+void GUI::MouseReleased(int key)
+{
+	m_context->ProcessMouseButtonUp(key, m_system.GetKeyModifiers(m_window));
 }
 
 void GUI::KeyDown(sf::Event::KeyEvent &key)

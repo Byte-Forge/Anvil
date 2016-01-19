@@ -6,7 +6,7 @@
 #include "../../Core.hpp"
 #include "../IRenderable.hpp"
 #include "../../Exception.hpp"
-#include "GuiRenderer.hpp"
+#include "RendererGui.hpp"
 #include <iostream>
 
 using namespace hpse;
@@ -23,7 +23,7 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
     std::cout << "Type: ";
     switch (type) {
         case GL_DEBUG_TYPE_ERROR_ARB:
-            std::cout << "ERROR";
+			std::cout << "ERROR";
             break;
         case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
             std::cout << "DEPRECATED_BEHAVIOR";
@@ -54,6 +54,11 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
             break;
     }
     std::cout << std::endl;
+
+	if (type == GL_DEBUG_TYPE_ERROR_ARB)
+	{
+		throw HpseException("OpenGL Error, watch console for information", __FILE__, __LINE__);
+	}
 }
 #endif
 
@@ -90,7 +95,7 @@ RendererGL::RendererGL()
 	m_terrainShader->Compile();
 	m_terrainShader->Use();
 
-	m_rocketrenderer = std::make_unique<GL::GuiRenderer>(Core::GetCore()->GetWindow());
+	m_rocketrenderer = std::make_unique<GL::RendererGui>(Core::GetCore()->GetWindow());
 }
 
 RendererGL::~RendererGL()

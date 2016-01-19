@@ -29,6 +29,11 @@ namespace hpse
 			return m_terrainShader->GetUniformLocation(id);
 		}
 
+		inline std::uint32_t GetGuiUniformLocation(const std::string& id)
+		{
+			return m_guiShader->GetUniformLocation(id);
+		}
+
 		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox)
 		{
 			m_skybox = skybox;
@@ -52,6 +57,11 @@ namespace hpse
 		inline std::unique_ptr<Rocket::Core::RenderInterface>& GetRocketRenderer()
 		{
 			return m_rocketrenderer;
+		}
+
+		inline void UseGuiShader()
+		{
+			m_guiShader->Use();
 		}
 	protected:
 		std::unique_ptr<IOverlay> m_overlay;

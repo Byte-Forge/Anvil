@@ -102,11 +102,9 @@ void Core::Run()
 				break;
 
 			case sf::Event::MouseButtonPressed:
+				m_gui->MousePressed(event.mouseButton.button);
 				if (event.mouseButton.button == sf::Mouse::Left)
-				{
-					m_gui->MouseLeft(true);
 					m_inputs["MOUSE_BUTTON_LEFT"] = true;
-				}
 				else if (event.mouseButton.button == sf::Mouse::Middle)
 					m_inputs["MOUSE_BUTTON_MIDDLE"] = true;
 				else if (event.mouseButton.button == sf::Mouse::Right)
@@ -114,9 +112,9 @@ void Core::Run()
 				break;
 
 			case sf::Event::MouseButtonReleased:
+				m_gui->MouseReleased(event.mouseButton.button);
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
-					m_gui->MouseLeft(false);
 					m_inputs["MOUSE_BUTTON_LEFT"] = false;
 					m_inputs["MOUSE_BUTTON_LEFT_RELEASED"] = true;
 				}
@@ -228,7 +226,8 @@ void Core::Run()
 		}
 
 		m_graphics->Render();
-
+		m_graphics->GetRenderer()->UseGuiShader();
+		m_gui->Render();
 		m_window.display();
 	}
 }
