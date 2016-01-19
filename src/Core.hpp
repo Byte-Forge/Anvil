@@ -86,6 +86,7 @@ namespace hpse
 		std::unique_ptr<Map> m_map;
 		std::unique_ptr<Camera> m_camera;
 		std::unique_ptr<Frustum> m_frustum;
-		std::map<std::string, bool> m_inputs;
+		std::map<int, int> m_keyInputs; // -1 just released, 0 not pressed, 1 pressed
+		std::map<int, int> m_mouseInputs; // -1 just released, 0 not pressed, 1 pressed
 	};
 }

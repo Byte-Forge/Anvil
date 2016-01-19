@@ -10,13 +10,13 @@ Core::Core()
 {
 	m_instance = this;
 
-	#ifdef NDEBUG
-	m_window.create(sf::VideoMode(800, 600),"hpse",sf::Style::Default,
+#ifdef NDEBUG
+	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Core));
-	#else
+#else
 	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 5, sf::ContextSettings::Debug));
-	#endif	
+#endif	
 
 	m_audio = std::make_unique<Audio>();
 	m_graphics = std::make_unique<Graphics>();
@@ -29,24 +29,26 @@ Core::Core()
 
 	m_map = std::make_unique<Map>();
 
-	//init user inputs
-	m_inputs.insert({ "FOREWARD", false });
-	m_inputs.insert({ "BACK", false });
-	m_inputs.insert({ "LEFT", false });
-	m_inputs.insert({ "RIGHT", false });
+	m_keyInputs.insert({ sf::Keyboard::W, 0 });
+	m_keyInputs.insert({ sf::Keyboard::Up, 0 });
+	m_keyInputs.insert({ sf::Keyboard::S, 0 });
+	m_keyInputs.insert({ sf::Keyboard::Down, 0 });
+	m_keyInputs.insert({ sf::Keyboard::A, 0 });
+	m_keyInputs.insert({ sf::Keyboard::Left, 0 });
+	m_keyInputs.insert({ sf::Keyboard::D, 0 });
+	m_keyInputs.insert({ sf::Keyboard::Right, 0 });
+	m_keyInputs.insert({ sf::Keyboard::PageUp, 0 });
+	m_keyInputs.insert({ sf::Keyboard::PageDown, 0 });
+	m_keyInputs.insert({ sf::Keyboard::Q, 0 });
+	m_keyInputs.insert({ sf::Keyboard::E, 0 });
 
-	m_inputs.insert({ "ZOOM_IN", false });
-	m_inputs.insert({ "ZOOM_OUT", false });
-	m_inputs.insert({ "ROTATE_LEFT", false });
-	m_inputs.insert({ "ROTATE_RIGHT", false });
-
-	m_inputs.insert({ "MOUSE_BUTTON_LEFT", false });
-	m_inputs.insert({ "MOUSE_BUTTON_LEFT_RELEASED", false });
-	m_inputs.insert({ "MOUSE_BUTTON_MIDDLE", false });
-	m_inputs.insert({ "MOUSE_BUTTON_RIGHT", false });
-
-	m_inputs.insert({ "MOUSE_MOVED", false });
-	m_inputs.insert({ "MOUSE_WHEEL_MOVED", false });
+	m_mouseInputs.insert({ sf::Event::MouseMoved, 0 });
+	m_mouseInputs.insert({ sf::Event::MouseButtonPressed, 0 });
+	m_mouseInputs.insert({ sf::Event::MouseButtonReleased, 0 });
+	m_mouseInputs.insert({ sf::Mouse::Left, 0 });
+	m_mouseInputs.insert({ sf::Mouse::Middle, 0 });
+	m_mouseInputs.insert({ sf::Mouse::Right, 0 });
+	m_mouseInputs.insert({ sf::Event::MouseWheelMoved, 0 });
 }
 
 Core::~Core()
@@ -78,12 +80,15 @@ void Core::Run()
 		*user input is handled this way because of better performance 
 		*and the benefit of processing multiple events at the same time
 		*/
+		m_mouseInputs[sf::Event::MouseWheelMoved] = 0;
+		m_mouseInputs[sf::Event::MouseMoved] = 0;
+		m_mouseInputs[sf::Mouse::Left] = 0;
+
 		while (m_window.pollEvent(event))
 		{
 			switch (event.type)
 			{
-				int code;
-			//close the window
+				//close the window
 			case sf::Event::Closed:
 				Quit();
 				break;
@@ -98,123 +103,67 @@ void Core::Run()
 				delta_y = event.mouseMove.y - y_old;
 				x_old = event.mouseMove.x;
 				y_old = event.mouseMove.y;
-				m_inputs["MOUSE_MOVED"] = true;
+				m_mouseInputs[sf::Event::MouseMoved] = 1;
 				break;
 
 			case sf::Event::MouseButtonPressed:
 				m_gui->MousePressed(event.mouseButton.button);
-				if (event.mouseButton.button == sf::Mouse::Left)
-					m_inputs["MOUSE_BUTTON_LEFT"] = true;
-				else if (event.mouseButton.button == sf::Mouse::Middle)
-					m_inputs["MOUSE_BUTTON_MIDDLE"] = true;
-				else if (event.mouseButton.button == sf::Mouse::Right)
-					m_inputs["MOUSE_BUTTON_RIGHT"] = true;
+				m_mouseInputs[event.mouseButton.button] = 1;
 				break;
 
 			case sf::Event::MouseButtonReleased:
 				m_gui->MouseReleased(event.mouseButton.button);
-				if (event.mouseButton.button == sf::Mouse::Left)
-				{
-					m_inputs["MOUSE_BUTTON_LEFT"] = false;
-					m_inputs["MOUSE_BUTTON_LEFT_RELEASED"] = true;
-				}
-				else if (event.mouseButton.button == sf::Mouse::Middle)
-					m_inputs["MOUSE_BUTTON_MIDDLE"] = false;
-				else if (event.mouseButton.button == sf::Mouse::Right)
-					m_inputs["MOUSE_BUTTON_RIGHT"] = false;
+				m_mouseInputs[event.mouseButton.button] = -1; //set it to just released
 				break;
 
-			//this should be handled like the other inputs
 			case sf::Event::MouseWheelMoved:
 				delta_wheel = event.mouseWheel.delta;
-				m_inputs["MOUSE_WHEEL_MOVED"] = true;
+				m_mouseInputs[sf::Event::MouseWheelMoved] = 1;
 				break;
 
 			case sf::Event::KeyPressed:
-				code = event.key.code;
-				if(event.key.code==sf::Keyboard::Escape)
+				if (event.key.code == sf::Keyboard::Escape)
 					Quit();
-				if (code == sf::Keyboard::W || code == sf::Keyboard::Up) 
-					m_inputs["FOREWARD"] = true;
-				else if (code == sf::Keyboard::S || code == sf::Keyboard::Down)
-					m_inputs["BACK"] = true;
-				else if (code == sf::Keyboard::A || code == sf::Keyboard::Left)
-					m_inputs["LEFT"] = true;
-				else if (code == sf::Keyboard::D || code == sf::Keyboard::Right)
-					m_inputs["RIGHT"] = true;
-				else if (code == sf::Keyboard::PageUp)
-					m_inputs["ZOOM_OUT"] = true;
-				else if (code == sf::Keyboard::PageDown)
-					m_inputs["ZOOM_IN"] = true;
-				else if (code == sf::Keyboard::Q || code == sf::Keyboard::Comma)
-					m_inputs["ROTATE_LEFT"] = true;
-				else if (code == sf::Keyboard::E || code == sf::Keyboard::Period)
-					m_inputs["ROTATE_RIGHT"] = true;
+				m_keyInputs[event.key.code] = 1;
 				break;
 
 			case sf::Event::KeyReleased:
-				code = event.key.code;
-				if (code == sf::Keyboard::W || code == sf::Keyboard::Up)
-					m_inputs["FOREWARD"] = false;
-				else if (code == sf::Keyboard::S || code == sf::Keyboard::Down)
-					m_inputs["BACK"] = false;
-				else if (code == sf::Keyboard::A || code == sf::Keyboard::Left)
-					m_inputs["LEFT"] = false;
-				else if (code == sf::Keyboard::D || code == sf::Keyboard::Right)
-					m_inputs["RIGHT"] = false;
-				else if (code == sf::Keyboard::PageUp)
-					m_inputs["ZOOM_OUT"] = false;
-				else if (code == sf::Keyboard::PageDown)
-					m_inputs["ZOOM_IN"] = false;
-				else if (code == sf::Keyboard::Q || code == sf::Keyboard::Comma)
-					m_inputs["ROTATE_LEFT"] = false;
-				else if (code == sf::Keyboard::E || code == sf::Keyboard::Period)
-					m_inputs["ROTATE_RIGHT"] = false;
+				m_keyInputs[event.key.code] = -1;
 				break;
 			}
 		}
 
-		if (m_inputs["FOREWARD"])
+		if (m_keyInputs[sf::Keyboard::W] == 1 || m_keyInputs[sf::Keyboard::Up] == 1)
 			m_camera->Move(FOREWARD);
-		if (m_inputs["BACK"])
+		if (m_keyInputs[sf::Keyboard::S] == 1 || m_keyInputs[sf::Keyboard::Down] == 1)
 			m_camera->Move(BACK);
-		if (m_inputs["LEFT"])
+		if (m_keyInputs[sf::Keyboard::A] == 1 || m_keyInputs[sf::Keyboard::Left] == 1)
 			m_camera->Move(LEFT);
-		if (m_inputs["RIGHT"])
+		if (m_keyInputs[sf::Keyboard::D] == 1 || m_keyInputs[sf::Keyboard::Right] == 1)
 			m_camera->Move(RIGHT);
-		if (m_inputs["ZOOM_OUT"])
+		if (m_keyInputs[sf::Keyboard::PageUp] == 1 || ((m_mouseInputs[sf::Event::MouseWheelMoved] == 1) && delta_wheel < 0))
 			m_camera->Zoom(ZOOM_OUT);
-		if (m_inputs["ZOOM_IN"])
+		if (m_keyInputs[sf::Keyboard::PageDown] == 1 || ((m_mouseInputs[sf::Event::MouseWheelMoved] == 1) && delta_wheel > 0))
 			m_camera->Zoom(ZOOM_IN);
-		if (m_inputs["ROTATE_LEFT"])
+		if (m_keyInputs[sf::Keyboard::Q] == 1)
 			m_camera->Rotate(LEFT);
-		if (m_inputs["ROTATE_RIGHT"])
+		if (m_keyInputs[sf::Keyboard::E] == 1)
 			m_camera->Rotate(RIGHT);
 
-		if (m_inputs["MOUSE_WHEEL_MOVED"])
+		if (m_mouseInputs[sf::Event::MouseMoved] == 1)
 		{
-			if (delta_wheel > 0)
-				m_camera->Zoom(ZOOM_IN);
-			else 
-				m_camera->Zoom(ZOOM_OUT);
-			m_inputs["MOUSE_WHEEL_MOVED"] = false;
-		}
-
-		if (m_inputs["MOUSE_MOVED"])
-		{
-			if (m_inputs["MOUSE_BUTTON_RIGHT"])
+			if (m_mouseInputs[sf::Mouse::Right] == 1)
 			{
 				glm::vec3 dir = { delta_x / 4.0, 0.0, delta_y / 4.0 };
 				m_camera->Move(dir);
 			}
-			else if (m_inputs["MOUSE_BUTTON_MIDDLE"])
+			else if (m_mouseInputs[sf::Mouse::Middle] == 1)
 			{
 				m_camera->Rotate(delta_x / 100.0f);
 			}
-			m_inputs["MOUSE_MOVED"] = false;
 		}
 
-		if (m_inputs["MOUSE_BUTTON_LEFT_RELEASED"])
+		if (m_mouseInputs[sf::Mouse::Left] == -1)
 		{
 			glm::vec2 mousePos = { x_old, y_old };
 			glm::vec3 mouseWorld;
@@ -222,7 +171,6 @@ void Core::Run()
 			{
 				m_map->GetTerrain()->SetTerrainHeight(mouseWorld, 15.0f, 20.0f);
 			}
-			m_inputs["MOUSE_BUTTON_LEFT_RELEASED"] = false;
 		}
 
 		m_graphics->Render();

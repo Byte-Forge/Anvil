@@ -80,7 +80,7 @@ RendererGL::RendererGL()
     m_overlay = std::make_unique<GL::Overlay>();
 
 	m_guiShader = std::make_unique<GL::Shader>();
-	m_guiShader->Load("shader/gui.vert", "shader/gui.frag");
+	m_guiShader->Load("shader/gui_vs.glsl", "shader/gui_fs.glsl");
 	m_guiShader->Compile();
 	m_guiShader->Use();
     SetupGUI();
