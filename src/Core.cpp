@@ -174,7 +174,6 @@ void Core::Run()
 		}
 
 		m_graphics->Render();
-		m_graphics->GetRenderer()->UseGuiShader();
 		m_gui->Render();
 		m_window.display();
 	}

@@ -1,5 +1,4 @@
 #pragma once
-#include "IOverlay.hpp"
 #include "IShader.hpp"
 #include "IRenderable.hpp"
 #include <glm/glm.hpp>
@@ -10,7 +9,7 @@
 
 namespace hpse
 {
-	class IRenderer
+	class IRenderer : public Rocket::Core::RenderInterface
 	{
 	public:
 		virtual void Clear() = 0;
@@ -29,11 +28,6 @@ namespace hpse
 			return m_terrainShader->GetUniformLocation(id);
 		}
 
-		inline std::uint32_t GetGuiUniformLocation(const std::string& id)
-		{
-			return m_guiShader->GetUniformLocation(id);
-		}
-
 		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox)
 		{
 			m_skybox = skybox;
@@ -49,29 +43,13 @@ namespace hpse
 			m_renderables.push_back(renderable);
 		}
 
-		inline std::unique_ptr<IOverlay>& GetOverlay()
-		{
-			return m_overlay;
-		}
-
-		inline std::unique_ptr<Rocket::Core::RenderInterface>& GetRocketRenderer()
-		{
-			return m_rocketrenderer;
-		}
-
-		inline void UseGuiShader()
-		{
-			m_guiShader->Use();
-		}
 	protected:
-		std::unique_ptr<IOverlay> m_overlay;
 		std::unique_ptr<IShader> m_guiShader;
 		std::unique_ptr<IShader> m_skyboxShader;
 		std::unique_ptr<IShader> m_terrainShader;
 
 		std::shared_ptr<IRenderable> m_skybox;
 		std::shared_ptr<IRenderable> m_terrain;
-		std::unique_ptr<Rocket::Core::RenderInterface> m_rocketrenderer;
 		std::vector<std::shared_ptr<IRenderable>> m_renderables;
 	};
 }

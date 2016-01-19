@@ -10,7 +10,7 @@ using namespace hpse;
 GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 {
 	Rocket::Core::SetSystemInterface(&m_system);
-	Rocket::Core::SetRenderInterface(Core::GetCore()->GetGraphics()->GetRenderer()->GetRocketRenderer().get());
+	Rocket::Core::SetRenderInterface(Core::GetCore()->GetGraphics()->GetRenderer().get());
 	if (!Rocket::Core::Initialise())
 	{
 		throw HpseException("Failed to initialise librocket", __FILE__, __LINE__);
