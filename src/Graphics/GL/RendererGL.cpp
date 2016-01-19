@@ -88,6 +88,7 @@ RendererGL::RendererGL()
 	m_skyboxShader->Use();
 
 	m_terrainShader = std::make_unique<GL::Shader>();
+	m_terrainShader->Define("WIREFRAME");
 	m_terrainShader->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
 	m_terrainShader->Compile();
 	m_terrainShader->Use();

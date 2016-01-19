@@ -18,6 +18,8 @@ namespace hpse
             Shader();
             ~Shader();
 
+			void Define(const std::string& macro);
+			void Define(const std::string& macro, const std::string& value);
             void Load(const std::string& vertShader, const std::string& fragShader);
             void Load(const std::string& vertShader, const std::string& geoShader, const std::string& fragShader);
 			void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& fragShader);
@@ -32,6 +34,8 @@ namespace hpse
             void LoadShader(const std::string& file,GLenum type);
             GLuint m_program;
             std::map<GLenum,GLuint> m_shaders;
+			std::map<std::string,std::string> m_macros;
+			static const std::string glslVersion;
         };
     }
 }

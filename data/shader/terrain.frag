@@ -1,6 +1,3 @@
-#version 400 core
-
-
 //default
 
 //in vec3 position;

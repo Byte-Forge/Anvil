@@ -1,5 +1,3 @@
-#version 330 core
-
 in vec2 v_uv;
 
 //uniform samplerCube DiffuseTextureSampler;

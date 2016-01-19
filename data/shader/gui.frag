@@ -1,4 +1,3 @@
-#version 330 core
 in vec2 coord;
 in vec4 vertColor;
 

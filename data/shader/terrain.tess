@@ -1,5 +1,3 @@
-#version 400 core
-
 layout(vertices = 3) out;
 
 in vec3 v_position[];

@@ -1,5 +1,3 @@
-#version 400 core
-
 layout(triangles) in;
 
 //for wireframe
