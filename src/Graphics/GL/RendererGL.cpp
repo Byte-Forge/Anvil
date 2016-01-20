@@ -240,6 +240,7 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 
 void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle handle, const Rocket::Core::Vector2f & translation)
 {
+	glActiveTexture(GL_TEXTURE0);
 	m_guiShader->Use();
 	auto translID = static_cast<GLuint>(m_guiShader->GetUniformLocation("translation"));
 	auto orthoID = static_cast<GLuint>(m_guiShader->GetUniformLocation("ortho"));
