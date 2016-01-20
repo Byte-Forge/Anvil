@@ -23,9 +23,9 @@ namespace hpse
 			return m_skyboxShader->GetUniformLocation(id);
 		}
 
-		inline std::uint32_t GetTerrainUniformLocation(const std::string& id)
+		inline std::uint32_t GetTerrainUniformLocation(const std::string& id, ShaderMode mode)
 		{
-			return m_terrainShader->GetUniformLocation(id);
+			return m_terrainShaders[mode]->GetUniformLocation(id);
 		}
 
 		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox)
@@ -43,10 +43,29 @@ namespace hpse
 			m_renderables.push_back(renderable);
 		}
 
+		inline void ToggleWireframeMode()
+		{
+			if (m_wireframeMode)
+				m_wireframeMode = false;
+			else
+				m_wireframeMode = true;
+		}
+
+		inline void ToggleNormalsMode()
+		{
+			if (m_normalsMode)
+				m_normalsMode = false;
+			else
+				m_normalsMode = true;
+		}
+
 	protected:
+		bool m_wireframeMode;
+		bool m_normalsMode;
+
 		std::unique_ptr<IShader> m_guiShader;
 		std::unique_ptr<IShader> m_skyboxShader;
-		std::unique_ptr<IShader> m_terrainShader;
+		std::vector<std::unique_ptr<IShader>> m_terrainShaders;
 
 		std::shared_ptr<IRenderable> m_skybox;
 		std::shared_ptr<IRenderable> m_terrain;

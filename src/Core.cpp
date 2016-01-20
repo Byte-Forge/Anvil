@@ -28,27 +28,6 @@ Core::Core()
 	m_script->LoadFile("start.lua");
 
 	m_map = std::make_unique<Map>();
-
-	m_keyInputs.insert({ sf::Keyboard::W, 0 });
-	m_keyInputs.insert({ sf::Keyboard::Up, 0 });
-	m_keyInputs.insert({ sf::Keyboard::S, 0 });
-	m_keyInputs.insert({ sf::Keyboard::Down, 0 });
-	m_keyInputs.insert({ sf::Keyboard::A, 0 });
-	m_keyInputs.insert({ sf::Keyboard::Left, 0 });
-	m_keyInputs.insert({ sf::Keyboard::D, 0 });
-	m_keyInputs.insert({ sf::Keyboard::Right, 0 });
-	m_keyInputs.insert({ sf::Keyboard::PageUp, 0 });
-	m_keyInputs.insert({ sf::Keyboard::PageDown, 0 });
-	m_keyInputs.insert({ sf::Keyboard::Q, 0 });
-	m_keyInputs.insert({ sf::Keyboard::E, 0 });
-
-	m_mouseInputs.insert({ sf::Event::MouseMoved, 0 });
-	m_mouseInputs.insert({ sf::Event::MouseButtonPressed, 0 });
-	m_mouseInputs.insert({ sf::Event::MouseButtonReleased, 0 });
-	m_mouseInputs.insert({ sf::Mouse::Left, 0 });
-	m_mouseInputs.insert({ sf::Mouse::Middle, 0 });
-	m_mouseInputs.insert({ sf::Mouse::Right, 0 });
-	m_mouseInputs.insert({ sf::Event::MouseWheelMoved, 0 });
 }
 
 Core::~Core()
@@ -80,10 +59,6 @@ void Core::Run()
 		*user input is handled this way because of better performance 
 		*and the benefit of processing multiple events at the same time
 		*/
-		m_mouseInputs[sf::Event::MouseWheelMoved] = 0;
-		m_mouseInputs[sf::Event::MouseMoved] = 0;
-		m_mouseInputs[sf::Mouse::Left] = 0;
-
 		while (m_window.pollEvent(event))
 		{
 			switch (event.type)
@@ -150,6 +125,18 @@ void Core::Run()
 		if (m_keyInputs[sf::Keyboard::E] == 1)
 			m_camera->Rotate(RIGHT);
 
+		if (m_keyInputs[sf::Keyboard::F1] == -1)
+		{
+			this->GetGraphics()->GetRenderer()->ToggleWireframeMode();
+			m_keyInputs[sf::Keyboard::F1] = 0;
+		}
+
+		if (m_keyInputs[sf::Keyboard::F2] == -1)
+		{
+			this->GetGraphics()->GetRenderer()->ToggleNormalsMode();
+			m_keyInputs[sf::Keyboard::F2] = 0;
+		}
+
 		if (m_mouseInputs[sf::Event::MouseMoved] == 1)
 		{
 			if (m_mouseInputs[sf::Mouse::Right] == 1)
@@ -161,6 +148,7 @@ void Core::Run()
 			{
 				m_camera->Rotate(delta_x / 100.0f);
 			}
+			m_mouseInputs[sf::Event::MouseMoved] = 0;
 		}
 
 		if (m_mouseInputs[sf::Mouse::Left] == -1)
@@ -171,7 +159,10 @@ void Core::Run()
 			{
 				m_map->GetTerrain()->SetTerrainHeight(mouseWorld, 15.0f, 20.0f);
 			}
+			m_mouseInputs[sf::Mouse::Left] = 0;
 		}
+
+		m_mouseInputs[sf::Event::MouseWheelMoved] = 0;
 
 		m_graphics->Render();
 		m_gui->Render();

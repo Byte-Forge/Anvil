@@ -66,18 +66,46 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	m_disp = Core::GetCore()->GetResources()->GetTextureArray(dispTextures);
 	m_ambi = Core::GetCore()->GetResources()->GetTextureArray(aoTextures);
 
-	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler");
-	m_nrmID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler");
-	m_specID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler");
-	m_dispID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler");
-	m_ambiID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler");
+	m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", ShaderMode::DEFAULT));
+	m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler", ShaderMode::DEFAULT));
+	m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler", ShaderMode::DEFAULT));
+	m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler", ShaderMode::DEFAULT));
+	m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler", ShaderMode::DEFAULT));
 
-	m_modelMatrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M");
-	m_viewMatrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V");
-	m_modelView3x3MatrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3");
-	m_matrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP");
+	m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M", ShaderMode::DEFAULT));
+	m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V", ShaderMode::DEFAULT));
+	m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3", ShaderMode::DEFAULT));
+	m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", ShaderMode::DEFAULT));
 
-	m_lightID = Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos");
+	m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", ShaderMode::DEFAULT));
+
+
+	m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", ShaderMode::WIREFRAME));
+	m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler", ShaderMode::WIREFRAME));
+	m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler", ShaderMode::WIREFRAME));
+	m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler", ShaderMode::WIREFRAME));
+	m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler", ShaderMode::WIREFRAME));
+
+	m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M", ShaderMode::WIREFRAME));
+	m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V", ShaderMode::WIREFRAME));
+	m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3", ShaderMode::WIREFRAME));
+	m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", ShaderMode::WIREFRAME));
+
+	m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", ShaderMode::WIREFRAME));
+
+
+	m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", ShaderMode::NORMALS));
+	m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler", ShaderMode::NORMALS));
+	m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler", ShaderMode::NORMALS));
+	m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler", ShaderMode::NORMALS));
+	m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler", ShaderMode::NORMALS));
+
+	m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M", ShaderMode::NORMALS));
+	m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V", ShaderMode::NORMALS));
+	m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3", ShaderMode::NORMALS));
+	m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", ShaderMode::NORMALS));
+
+	m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", ShaderMode::NORMALS));
 
 	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -159,15 +187,15 @@ void GL::Terrain::SetTerrainHeight(glm::vec3 &pos, float height, float radius)
 	UpdateBufferData();
 }
 
-void GL::Terrain::Render()
+void GL::Terrain::Render(ShaderMode mode)
 {
-	glUniformMatrix4fv(m_modelMatrixID, 1, GL_FALSE, &m_mod[0][0]);
-	glUniformMatrix4fv(m_viewMatrixID, 1, GL_FALSE, &Core::GetCore()->GetCamera()->GetViewMatrix()[0][0]);
-	glUniformMatrix3fv(m_modelView3x3MatrixID, 1, GL_FALSE, &glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)[0][0]);
-	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
+	glUniformMatrix4fv(m_modelMatrixIDs[mode], 1, GL_FALSE, &m_mod[0][0]);
+	glUniformMatrix4fv(m_viewMatrixIDs[mode], 1, GL_FALSE, &Core::GetCore()->GetCamera()->GetViewMatrix()[0][0]);
+	glUniformMatrix3fv(m_modelView3x3MatrixIDs[mode], 1, GL_FALSE, &glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)[0][0]);
+	glUniformMatrix4fv(m_matrixIDs[mode], 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
 
 	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
-	glUniform3f(m_lightID, lightPos.x, lightPos.y, lightPos.z);
+	glUniform3f(m_lightIDs[mode], lightPos.x, lightPos.y, lightPos.z);
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -189,23 +217,23 @@ void GL::Terrain::Render()
 
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();
-	glUniform1i(m_diffID, 0);
+	glUniform1i(m_diffIDs[mode], 0);
 
 	glActiveTexture(GL_TEXTURE1); //normal textures
 	m_nrm->Bind();
-	glUniform1i(m_nrmID, 1);
+	glUniform1i(m_nrmIDs[mode], 1);
 
 	glActiveTexture(GL_TEXTURE2); //spec textures
 	m_spec->Bind();
-	glUniform1i(m_specID, 2);
+	glUniform1i(m_specIDs[mode], 2);
 
 	glActiveTexture(GL_TEXTURE3); //disp textures
 	m_disp->Bind();
-	glUniform1i(m_dispID, 3);
+	glUniform1i(m_dispIDs[mode], 3);
 
 	glActiveTexture(GL_TEXTURE4); //ambi textures
 	m_ambi->Bind();
-	glUniform1i(m_ambiID, 4);
+	glUniform1i(m_ambiIDs[mode], 4);
 
 	//used for tesselation
 	glPatchParameteri(GL_PATCH_VERTICES, 3);

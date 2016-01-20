@@ -24,7 +24,7 @@ namespace hpse
 			int GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos);
 			void SetTerrainHeight(glm::vec3 &pos, float height, float radius);
 
-            void Render();
+            void Render(ShaderMode mode);
             void Update();
 
         private:
@@ -40,7 +40,7 @@ namespace hpse
 			bool materials_changed = true;
 
 			//rendering stuff
-			GLuint m_lightID;
+			std::vector<GLuint> m_lightIDs;
 
 			std::shared_ptr<ITexture> m_diff;
 			std::shared_ptr<ITexture> m_nrm;
@@ -48,20 +48,13 @@ namespace hpse
 			std::shared_ptr<ITexture> m_disp;
 			std::shared_ptr<ITexture> m_ambi;
 
-			GLuint m_diffID;
-			GLuint m_nrmID;
-			GLuint m_specID;
-			GLuint m_dispID;
-			GLuint m_ambiID;
+			std::vector<GLuint> m_diffIDs, m_nrmIDs, m_specIDs, m_dispIDs, m_ambiIDs;
 
 			glm::mat4 m_mvp;
 			glm::mat4 m_mod;
 			glm::mat3 m_mv3x3;
 
-			GLuint m_matrixID;
-			GLuint m_modelMatrixID;
-			GLuint m_viewMatrixID;
-			GLuint m_modelView3x3MatrixID;
+			std::vector<GLuint> m_matrixIDs, m_modelMatrixIDs, m_viewMatrixIDs, m_modelView3x3MatrixIDs;
 
 			std::vector<glm::vec3> m_vertices;
 			std::vector<glm::vec2> m_uvs;

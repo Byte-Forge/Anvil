@@ -1,10 +1,14 @@
 layout(triangles) in;
 
-//for wireframe
-layout(line_strip, max_vertices = 3) out; 
+#ifdef WIREFRAME
 
-//for default rendering
-//layout(triangle_strip, max_vertices = 3) out;
+layout(line_strip, max_vertices = 10) out; 
+
+#else
+
+layout(triangle_strip, max_vertices = 3) out;
+
+#endif
 
 in vec3 e_position[];
 in vec2 e_uv[];
@@ -25,6 +29,8 @@ out vec3 material;
 
 out vec3 eyeDir;
 out vec3 lightDir;
+
+out vec3 col;
 
 void calculateLightingData(int i)
 {
@@ -84,8 +90,14 @@ void main()
 	{
 		createPt(i);
 	}
+	#ifdef WIREFRAME
+		createPt(0); //to close the triangle send first vertex again
+	#endif
+	
+	col = vec3(0.0, 0.0, 0.0);
 	EndPrimitive();
 	
+	#ifdef NORMALS
 	for(i=0; i < gl_in.length(); i++)
 	{
 		gl_Position = MVP * vec4(e_position[i], 1.0);
@@ -94,9 +106,9 @@ void main()
 		gl_Position = MVP * vec4(e_position[i] + e_normal[i], 1.0);
 		EmitVertex();
 		
-		gl_Position = MVP * vec4(e_position[i] + e_normal[i] + vec3(0.1, 0.0, 0.01), 1.0);
-		EmitVertex();
-		
+		col = vec3(1.0, 0.0, 0.0);
 		EndPrimitive();
 	}
+	
+	#endif
 }

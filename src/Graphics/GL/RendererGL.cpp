@@ -80,18 +80,25 @@ RendererGL::RendererGL()
 	m_guiShader = std::make_unique<GL::Shader>();
 	m_guiShader->Load("shader/gui.vert", "shader/gui.frag");
 	m_guiShader->Compile();
-	m_guiShader->Use();
 
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/skybox.vert", "shader/skybox.frag");
 	m_skyboxShader->Compile();
-	m_skyboxShader->Use();
 
-	m_terrainShader = std::make_unique<GL::Shader>();
-	m_terrainShader->Define("WIREFRAME");
-	m_terrainShader->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
-	m_terrainShader->Compile();
-	m_terrainShader->Use();
+	m_terrainShaders.push_back(std::make_unique<GL::Shader>());
+	m_terrainShaders[ShaderMode::DEFAULT]->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
+	m_terrainShaders[ShaderMode::DEFAULT]->Compile();
+
+	m_terrainShaders.push_back(std::make_unique<GL::Shader>());
+	m_terrainShaders[ShaderMode::WIREFRAME]->Define("WIREFRAME");
+	m_terrainShaders[ShaderMode::WIREFRAME]->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
+	m_terrainShaders[ShaderMode::WIREFRAME]->Compile();
+
+	m_terrainShaders.push_back(std::make_unique<GL::Shader>());
+	m_terrainShaders[ShaderMode::NORMALS]->Define("WIREFRAME");
+	m_terrainShaders[ShaderMode::NORMALS]->Define("NORMALS");
+	m_terrainShaders[ShaderMode::NORMALS]->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
+	m_terrainShaders[ShaderMode::NORMALS]->Compile();
 }
 
 RendererGL::~RendererGL()
@@ -128,13 +135,26 @@ void RendererGL::Render(glm::mat4& ortho)
 	
 	m_skyboxShader->Use();
 	m_skybox->Update();
-	m_skybox->Render();
+	m_skybox->Render(ShaderMode::DEFAULT);
 
 	glEnable(GL_DEPTH_TEST);
 
-	m_terrainShader->Use();
+	m_terrainShaders[ShaderMode::DEFAULT]->Use();
 	m_terrain->Update();
-	m_terrain->Render();
+	m_terrain->Render(ShaderMode::DEFAULT);
+
+	if (m_normalsMode)
+	{
+		m_terrainShaders[ShaderMode::NORMALS]->Use();
+		m_terrain->Update();
+		m_terrain->Render(ShaderMode::NORMALS);
+	}
+	else if (m_wireframeMode)
+	{
+		m_terrainShaders[ShaderMode::WIREFRAME]->Use();
+		m_terrain->Update();
+		m_terrain->Render(ShaderMode::WIREFRAME);
+	}
 
 	/*
     for(auto& renderable : m_renderables)
