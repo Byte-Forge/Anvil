@@ -208,12 +208,15 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 
 	for (unsigned long i = 0; i < data.size(); i++)
 	{
+		
 		data[i].Position = *(glm::vec2*)&vertices[i].position;
 		data[i].TexCoord = *(glm::vec2*)&vertices[i].tex_coord;
 		data[i].Color = glm::vec4((float)vertices[i].colour.red / 255.f,
 			(float)vertices[i].colour.green / 255.f,
 			(float)vertices[i].colour.blue / 255.f,
 			(float)vertices[i].colour.alpha / 255.f);
+
+		std::cout << data[i].Position.x << "-"<<data[i].Position.y << std::endl;
 	};
 
 	GLGeometry* geometry = new GLGeometry();
