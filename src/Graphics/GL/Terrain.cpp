@@ -174,7 +174,7 @@ void GL::Terrain::Render(int mode)
 	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
 	glUniform3f(m_lightIDs[mode], lightPos.x, lightPos.y, lightPos.z);
 
-	glUniform1i(m_tessLevelIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTessellation());
+	glUniform1i(m_tessLevelIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessellationLevel());
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -335,31 +335,83 @@ void GL::Terrain::Generate()
 	}
 }
 
+/*
 void GL::Terrain::ComputeNormals(std::vector<glm::vec3> &normals)
 {
-	for (std::uint32_t i = 0; i < m_width; i++)
+for (std::uint32_t i = 0; i < m_width; i++)
+{
+for (std::uint32_t j = 0; j < m_height; j++)
+{
+int index = i + (j * m_width);
+glm::vec3 normal = { 0.0, 0.0, 0.0 };
+if (i < m_width - 1 && j < m_height - 1)
+{
+normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + m_width + 1], m_heightmap[index + 1]);
+normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + m_width], m_heightmap[index + m_width + 1]);
+}
+if (j < m_height - 1 && i > 0)
+{
+normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - 1], m_heightmap[index + m_width]);
+}
+if (i < m_width - 1 && j > 0)
+{
+normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + 1], m_heightmap[index - m_width]);
+}
+if (i > 0 && j > 0)
+{
+normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - m_width], m_heightmap[index - m_width - 1]);
+normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - m_width - 1], m_heightmap[index - 1]);
+}
+normals.push_back(glm::normalize(normal));
+}
+}
+}
+
+*/
+
+void GL::Terrain::ComputeNormals(std::vector<glm::vec3> &normals)
+{
+	glm::vec3 a;
+	glm::vec3 b;
+	glm::vec3 c;
+	for (unsigned int i = 0; i < m_width; i++)
 	{
-		for (std::uint32_t j = 0; j < m_height; j++)
+		for (unsigned int j = 0; j < m_height; j++)
 		{
 			int index = i + (j * m_width);
 			glm::vec3 normal = { 0.0, 0.0, 0.0 };
+			a.x = i;
+			a.z = j;
+			a.y = m_heightmap[index];
 			if (i < m_width - 1 && j < m_height - 1)
 			{
-				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + m_width + 1], m_heightmap[index + 1]);
-				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + m_width], m_heightmap[index + m_width + 1]);
+				b = { i + 1, m_heightmap[index + m_width + 1], j + 1 };
+				c = { i + 1, m_heightmap[index + 1], j };
+				normal += Math::ComputeNormal(a, b, c);
+				b = { i, m_heightmap[index + m_width], j + 1 };
+				c = { i + 1, m_heightmap[index + m_width + 1], j + 1};
+				normal += Math::ComputeNormal(a, b, c);
 			}
 			if (j < m_height - 1 && i > 0)
 			{
-				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - 1], m_heightmap[index + m_width]);
+				b = { i - 1, m_heightmap[index - 1], j };
+				c = { i, m_heightmap[index + m_width], j + 1 };
+				normal += Math::ComputeNormal(a, b, c);
 			}
 			if (i < m_width - 1 && j > 0)
 			{
-				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + 1], m_heightmap[index - m_width]);
+				b = { i + 1, m_heightmap[index + 1], j };
+				c = { i, m_heightmap[index - m_width], j - 1 };
+				normal += Math::ComputeNormal(a, b, c);
 			}
 			if (i > 0 && j > 0)
 			{
-				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - m_width], m_heightmap[index - m_width - 1]);
-				normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - m_width - 1], m_heightmap[index - 1]);
+				b = { i, m_heightmap[index - m_width], j - 1};
+				c = { i - 1, m_heightmap[index - m_width - 1], j - 1 };
+				normal += Math::ComputeNormal(a, b, c);
+				b = { i - 1, m_heightmap[index - m_width - 1], j - 1 };
+				c = { i - 1, m_heightmap[index - 1], j };
+				normal += Math::ComputeNormal(a, b, c);
 			}
 			normals.push_back(glm::normalize(normal));
 		}
@@ -383,9 +435,9 @@ void GL::Terrain::UpdateBufferData()
 
 	//fill the vectors for buffer objects
 	int index = 0;
-	for (std::uint32_t i = 0; i < m_width - 1; i++)
+	for (unsigned int i = 0; i < m_width - 1; i++)
 	{
-		for (std::uint32_t j = 0; j < m_height - 1; j++)
+		for (unsigned int j = 0; j < m_height - 1; j++)
 		{
 			glm::vec3 a = { (float)i, m_heightmap[i + j * m_width], (float)j };
 			glm::vec3 b = { (float)(i + 1), m_heightmap[i + 1 + j * m_width], (float)j };

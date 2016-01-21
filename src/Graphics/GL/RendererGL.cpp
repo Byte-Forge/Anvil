@@ -86,7 +86,7 @@ RendererGL::RendererGL()
 	m_skyboxShader->Compile();
 
 
-	for (int i = 0; i < m_shaderModes.size(); i++)
+	for (unsigned int i = 0; i < m_shaderModes.size(); i++)
 	{
 		m_terrainShaders.push_back(std::make_unique<GL::Shader>());
 		m_terrainShaders[i]->Define(m_shaderModes[i]);

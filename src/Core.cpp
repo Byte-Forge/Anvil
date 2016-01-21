@@ -141,14 +141,12 @@ void Core::Run()
 		{
 			this->GetGraphics()->GetRenderer()->IncreaseTessellation();
 			m_keyInputs[sf::Keyboard::F3] = 0;
-			std::cout << this->GetGraphics()->GetRenderer()->GetMaxTessellation() << std::endl;
 		}
 
 		if (m_keyInputs[sf::Keyboard::F4] == -1)
 		{
 			this->GetGraphics()->GetRenderer()->DecreaseTessellation();
 			m_keyInputs[sf::Keyboard::F4] = 0;
-			std::cout << this->GetGraphics()->GetRenderer()->GetMaxTessellation() << std::endl;
 		}
 
 		if (m_mouseInputs[sf::Event::MouseMoved] == 1)

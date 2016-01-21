@@ -76,7 +76,11 @@ void createPt(int i)
 
 	calculateLightingData(i);
 	
-    gl_Position = MVP * vec4(e_position[i], 1.0);
+	#ifdef WIREFRAME
+		gl_Position = MVP * vec4(e_position[i] + vec3(0.0, 0.01, 0.0), 1.0);
+	#else
+		gl_Position = MVP * vec4(e_position[i], 1.0);
+	#endif
 	EmitVertex();
 }
 

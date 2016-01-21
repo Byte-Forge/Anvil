@@ -68,23 +68,23 @@ namespace hpse
 
 		inline void IncreaseTessellation()
 		{
-			if (m_maxTessellation < 64) //above nothing happens
-				m_maxTessellation += 1;
+			if (m_tessellationLevel < 64) //above nothing happens
+				m_tessellationLevel += 1;
 		}
 
 		inline void DecreaseTessellation()
 		{
-			if (m_maxTessellation > 1) //should be at least 1
-				m_maxTessellation -= 1;
+			if (m_tessellationLevel > 1) //should be at least 1
+				m_tessellationLevel -= 1;
 		}
 
-		inline int GetMaxTessellation()
+		inline int GetTessellationLevel()
 		{
-			return m_maxTessellation;
+			return m_tessellationLevel;
 		}
 
 	protected:
-		int m_maxTessellation = 0;
+		int m_tessellationLevel = 32;
 		std::array<std::string, 3> m_shaderModes = { "DEFAULT", "WIREFRAME", "NORMALS" };
 
 		bool m_wireframeMode = false;
