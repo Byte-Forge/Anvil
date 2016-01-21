@@ -332,7 +332,7 @@ void GL::Skybox::Update()
 
 }
 
-void GL::Skybox::Render(ShaderMode mode)
+void GL::Skybox::Render(int mode)
 {
 	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix())[0][0]);
 	glm::vec3 pos = Core::GetCore()->GetCamera()->GetPosition();

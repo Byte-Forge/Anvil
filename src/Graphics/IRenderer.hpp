@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <string>
+#include <array>
 #include <Rocket/Core/RenderInterface.h>
 #include "../Types/Map.hpp"
 
@@ -23,7 +24,7 @@ namespace hpse
 			return m_skyboxShader->GetUniformLocation(id);
 		}
 
-		inline std::uint32_t GetTerrainUniformLocation(const std::string& id, ShaderMode mode)
+		inline std::uint32_t GetTerrainUniformLocation(const std::string& id, int mode)
 		{
 			return m_terrainShaders[mode]->GetUniformLocation(id);
 		}
@@ -59,7 +60,15 @@ namespace hpse
 				m_normalsMode = true;
 		}
 
+		//why do we have to use the 3 here?
+		inline std::array<std::string, 3> GetShaderModes()
+		{
+			return m_shaderModes;
+		}
+
 	protected:
+		std::array<std::string, 3> m_shaderModes = { "DEFAULT", "WIREFRAME", "NORMALS" };
+
 		bool m_wireframeMode;
 		bool m_normalsMode;
 

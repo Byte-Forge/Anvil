@@ -85,20 +85,14 @@ RendererGL::RendererGL()
 	m_skyboxShader->Load("shader/skybox.vert", "shader/skybox.frag");
 	m_skyboxShader->Compile();
 
-	m_terrainShaders.push_back(std::make_unique<GL::Shader>());
-	m_terrainShaders[ShaderMode::DEFAULT]->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
-	m_terrainShaders[ShaderMode::DEFAULT]->Compile();
 
-	m_terrainShaders.push_back(std::make_unique<GL::Shader>());
-	m_terrainShaders[ShaderMode::WIREFRAME]->Define("WIREFRAME");
-	m_terrainShaders[ShaderMode::WIREFRAME]->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
-	m_terrainShaders[ShaderMode::WIREFRAME]->Compile();
-
-	m_terrainShaders.push_back(std::make_unique<GL::Shader>());
-	m_terrainShaders[ShaderMode::NORMALS]->Define("WIREFRAME");
-	m_terrainShaders[ShaderMode::NORMALS]->Define("NORMALS");
-	m_terrainShaders[ShaderMode::NORMALS]->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
-	m_terrainShaders[ShaderMode::NORMALS]->Compile();
+	for (int i = 0; i < m_shaderModes.size(); i++)
+	{
+		m_terrainShaders.push_back(std::make_unique<GL::Shader>());
+		m_terrainShaders[i]->Define(m_shaderModes[i]);
+		m_terrainShaders[i]->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
+		m_terrainShaders[i]->Compile();
+	}
 }
 
 RendererGL::~RendererGL()
@@ -135,25 +129,26 @@ void RendererGL::Render(glm::mat4& ortho)
 	
 	m_skyboxShader->Use();
 	m_skybox->Update();
-	m_skybox->Render(ShaderMode::DEFAULT);
+	m_skybox->Render(0);
 
 	glEnable(GL_DEPTH_TEST);
 
-	m_terrainShaders[ShaderMode::DEFAULT]->Use();
+	m_terrainShaders[0]->Use();
 	m_terrain->Update();
-	m_terrain->Render(ShaderMode::DEFAULT);
+	m_terrain->Render(0);
 
+	//this should be not an int what is used here, sth like "NORMALS", WIREFRAME etc ?
 	if (m_normalsMode)
 	{
-		m_terrainShaders[ShaderMode::NORMALS]->Use();
+		m_terrainShaders[2]->Use();
 		m_terrain->Update();
-		m_terrain->Render(ShaderMode::NORMALS);
+		m_terrain->Render(2);
 	}
-	else if (m_wireframeMode)
+	if (m_wireframeMode)
 	{
-		m_terrainShaders[ShaderMode::WIREFRAME]->Use();
+		m_terrainShaders[1]->Use();
 		m_terrain->Update();
-		m_terrain->Render(ShaderMode::WIREFRAME);
+		m_terrain->Render(1);
 	}
 
 	/*
@@ -165,8 +160,6 @@ void RendererGL::Render(glm::mat4& ortho)
 	*/
 
 	glDisable(GL_DEPTH_TEST);
-
-	//RenderGUI();
 }
 
 void RendererGL::Resize(int width, int height)
@@ -235,8 +228,6 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 			(float)vertices[i].colour.green / 255.f,
 			(float)vertices[i].colour.blue / 255.f,
 			(float)vertices[i].colour.alpha / 255.f);
-
-		std::cout << data[i].Position.x << "-"<<data[i].Position.y << std::endl;
 	};
 
 	GLGeometry* geometry = new GLGeometry();

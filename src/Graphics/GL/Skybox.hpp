@@ -17,7 +17,7 @@ namespace hpse
 			Skybox();
 			~Skybox();
 
-			void Render(ShaderMode mode);
+			void Render(int mode);
 			void Update();
 		private:
 			std::shared_ptr<ITexture> m_diff;

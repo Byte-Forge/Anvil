@@ -20,12 +20,7 @@ out vec3 color;
 
 void main()
 {
-	#ifdef WIREFRAME
-
-		color = col;
-		
-	#else
-
+	#ifdef DEFAULT
 		vec3 LightColor = vec3(1,1,1);
 		float LightPower = 400000.0;
 
@@ -55,6 +50,7 @@ void main()
 		color = 
 			(MaterialAmbientColor * MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance)) +
 			MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
-
+	#else
+		color = col;
 	#endif
 }

@@ -24,7 +24,7 @@ namespace hpse
 			int GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos);
 			void SetTerrainHeight(glm::vec3 &pos, float height, float radius);
 
-            void Render(ShaderMode mode);
+            void Render(int mode);
             void Update();
 
         private:

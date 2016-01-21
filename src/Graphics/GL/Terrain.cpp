@@ -66,46 +66,21 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 	m_disp = Core::GetCore()->GetResources()->GetTextureArray(dispTextures);
 	m_ambi = Core::GetCore()->GetResources()->GetTextureArray(aoTextures);
 
-	m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", ShaderMode::DEFAULT));
-	m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler", ShaderMode::DEFAULT));
-	m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler", ShaderMode::DEFAULT));
-	m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler", ShaderMode::DEFAULT));
-	m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler", ShaderMode::DEFAULT));
+	for (int i = 0; i < Core::GetCore()->GetGraphics()->GetRenderer()->GetShaderModes().size(); i++)
+	{
+		m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", i));
+		m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler", i));
+		m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler", i));
+		m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler", i));
+		m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler", i));
 
-	m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M", ShaderMode::DEFAULT));
-	m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V", ShaderMode::DEFAULT));
-	m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3", ShaderMode::DEFAULT));
-	m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", ShaderMode::DEFAULT));
+		m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M", i));
+		m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V", i));
+		m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3", i));
+		m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", i));
 
-	m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", ShaderMode::DEFAULT));
-
-
-	m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", ShaderMode::WIREFRAME));
-	m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler", ShaderMode::WIREFRAME));
-	m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler", ShaderMode::WIREFRAME));
-	m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler", ShaderMode::WIREFRAME));
-	m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler", ShaderMode::WIREFRAME));
-
-	m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M", ShaderMode::WIREFRAME));
-	m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V", ShaderMode::WIREFRAME));
-	m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3", ShaderMode::WIREFRAME));
-	m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", ShaderMode::WIREFRAME));
-
-	m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", ShaderMode::WIREFRAME));
-
-
-	m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", ShaderMode::NORMALS));
-	m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler", ShaderMode::NORMALS));
-	m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler", ShaderMode::NORMALS));
-	m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler", ShaderMode::NORMALS));
-	m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler", ShaderMode::NORMALS));
-
-	m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M", ShaderMode::NORMALS));
-	m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V", ShaderMode::NORMALS));
-	m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3", ShaderMode::NORMALS));
-	m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", ShaderMode::NORMALS));
-
-	m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", ShaderMode::NORMALS));
+		m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", i));
+	}
 
 	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -187,7 +162,7 @@ void GL::Terrain::SetTerrainHeight(glm::vec3 &pos, float height, float radius)
 	UpdateBufferData();
 }
 
-void GL::Terrain::Render(ShaderMode mode)
+void GL::Terrain::Render(int mode)
 {
 	glUniformMatrix4fv(m_modelMatrixIDs[mode], 1, GL_FALSE, &m_mod[0][0]);
 	glUniformMatrix4fv(m_viewMatrixIDs[mode], 1, GL_FALSE, &Core::GetCore()->GetCamera()->GetViewMatrix()[0][0]);

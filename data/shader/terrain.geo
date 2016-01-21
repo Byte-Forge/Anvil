@@ -1,13 +1,11 @@
 layout(triangles) in;
 
 #ifdef WIREFRAME
-
-layout(line_strip, max_vertices = 10) out; 
-
+	layout(line_strip, max_vertices = 4) out; 
+#elif defined NORMALS
+	layout(line_strip, max_vertices = 6) out; 
 #else
-
-layout(triangle_strip, max_vertices = 3) out;
-
+	layout(triangle_strip, max_vertices = 3) out;
 #endif
 
 in vec3 e_position[];
@@ -85,30 +83,32 @@ void createPt(int i)
 
 void main()
 {
-	int i;
-	for(i=0; i < gl_in.length(); i++)
-	{
-		createPt(i);
-	}
-	#ifdef WIREFRAME
-		createPt(0); //to close the triangle send first vertex again
-	#endif
-	
-	col = vec3(0.0, 0.0, 0.0);
-	EndPrimitive();
-	
 	#ifdef NORMALS
-	for(i=0; i < gl_in.length(); i++)
-	{
-		gl_Position = MVP * vec4(e_position[i], 1.0);
-		EmitVertex();
-		
-		gl_Position = MVP * vec4(e_position[i] + e_normal[i], 1.0);
-		EmitVertex();
-		
-		col = vec3(1.0, 0.0, 0.0);
+		int i;
+		for(i=0; i < gl_in.length(); i++)
+		{
+			gl_Position = MVP * vec4(e_position[i], 1.0);
+			EmitVertex();
+			
+			gl_Position = MVP * vec4(e_position[i] + e_normal[i], 1.0);
+			EmitVertex();
+			
+			col = vec3(1.0, 0.0, 0.0);
+			EndPrimitive();
+		}
+	
+	#else
+		int i;
+		for(i=0; i < gl_in.length(); i++)
+		{
+			createPt(i);
+		}
+		#ifdef WIREFRAME
+			createPt(0); //to close the triangle send first vertex again
+		#endif
+	
+		col = vec3(0.0, 0.0, 0.0);
 		EndPrimitive();
-	}
 	
 	#endif
 }

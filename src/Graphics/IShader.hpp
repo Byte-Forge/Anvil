@@ -6,13 +6,6 @@
 
 namespace hpse
 {
-	enum ShaderMode
-	{
-		DEFAULT = 0,
-		WIREFRAME = 1,
-		NORMALS = 2 
-	};
-
     class IShader
     {
     public:
