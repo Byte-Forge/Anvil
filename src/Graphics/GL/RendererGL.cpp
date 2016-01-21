@@ -133,23 +133,25 @@ void RendererGL::Render(glm::mat4& ortho)
 
 	glEnable(GL_DEPTH_TEST);
 
-	m_terrainShaders[0]->Use();
-	m_terrain->Update();
-	m_terrain->Render(0);
-
-	//this should be not an int what is used here, sth like "NORMALS", WIREFRAME etc ?
-	if (m_normalsMode)
-	{
-		m_terrainShaders[2]->Use();
-		m_terrain->Update();
-		m_terrain->Render(2);
-	}
 	if (m_wireframeMode)
 	{
 		m_terrainShaders[1]->Use();
 		m_terrain->Update();
 		m_terrain->Render(1);
 	}
+	else
+	{
+		m_terrainShaders[0]->Use();
+		m_terrain->Update();
+		m_terrain->Render(0);
+	}
+	if (m_normalsMode)
+	{
+		m_terrainShaders[2]->Use();
+		m_terrain->Update();
+		m_terrain->Render(2);
+	}
+
 
 	/*
     for(auto& renderable : m_renderables)
