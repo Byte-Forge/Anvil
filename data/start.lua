@@ -15,7 +15,7 @@ print("Architecture: " .. jit.arch)
 game.PrintRenderer();
 
 -- Load our gui
-game.gui.LoadFile("ui/ui.html")
+game.gui.LoadFile("ui/demo.rml")
 
 game.AddModDir("mods/Test");
 
