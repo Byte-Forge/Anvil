@@ -40,7 +40,7 @@ namespace hpse
 			bool materials_changed = true;
 
 			//rendering stuff
-			std::vector<GLuint> m_lightIDs;
+			std::vector<GLuint> m_tessLevelIDs, m_lightIDs;
 
 			std::shared_ptr<ITexture> m_diff;
 			std::shared_ptr<ITexture> m_nrm;

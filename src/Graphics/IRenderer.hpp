@@ -66,11 +66,29 @@ namespace hpse
 			return m_shaderModes;
 		}
 
+		inline void IncreaseTessellation()
+		{
+			if (m_maxTessellation < 64) //above nothing happens
+				m_maxTessellation += 1;
+		}
+
+		inline void DecreaseTessellation()
+		{
+			if (m_maxTessellation > 1) //should be at least 1
+				m_maxTessellation -= 1;
+		}
+
+		inline int GetMaxTessellation()
+		{
+			return m_maxTessellation;
+		}
+
 	protected:
+		int m_maxTessellation = 0;
 		std::array<std::string, 3> m_shaderModes = { "DEFAULT", "WIREFRAME", "NORMALS" };
 
-		bool m_wireframeMode;
-		bool m_normalsMode;
+		bool m_wireframeMode = false;
+		bool m_normalsMode = false;
 
 		std::unique_ptr<IShader> m_guiShader;
 		std::unique_ptr<IShader> m_skyboxShader;

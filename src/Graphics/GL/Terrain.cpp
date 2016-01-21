@@ -80,6 +80,8 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 		m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", i));
 
 		m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", i));
+
+		m_tessLevelIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("maxTessellation", i));
 	}
 
 	glGenBuffers(1, &m_vbo);
@@ -171,6 +173,8 @@ void GL::Terrain::Render(int mode)
 
 	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
 	glUniform3f(m_lightIDs[mode], lightPos.x, lightPos.y, lightPos.z);
+
+	glUniform1i(m_tessLevelIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTessellation());
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
