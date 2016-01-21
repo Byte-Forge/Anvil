@@ -81,6 +81,7 @@ void createPt(int i)
 	#else
 		gl_Position = MVP * vec4(e_position[i], 1.0);
 	#endif
+	col = vec3(0.0, 0.0, 0.0);
 	EmitVertex();
 }
 
