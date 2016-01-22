@@ -2,12 +2,13 @@ in vec2 coord;
 in vec4 vertColor;
 
 uniform sampler2D tex;
+uniform bool useTex;
 out vec4 fragColor;
 
 void main(void)
 {
-    if(texture(tex, coord) == vec4(0, 0, 0, 1))
-    	fragColor = vertColor;
+    if(useTex)
+    	fragColor = texture(tex, coord)*vertColor;
 	else
-		fragColor = texture(tex, coord) * vertColor;
+		fragColor = vertColor;
 }

@@ -258,6 +258,7 @@ void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle han
 	auto translID = static_cast<GLuint>(m_guiShader->GetUniformLocation("translation"));
 	auto orthoID = static_cast<GLuint>(m_guiShader->GetUniformLocation("ortho"));
 	auto samplerID = static_cast<GLuint>(m_guiShader->GetUniformLocation("tex"));
+	auto useTexID = static_cast<GLuint>(m_guiShader->GetUniformLocation("useTex"));
 
 	GLGeometry* geometry = reinterpret_cast<GLGeometry*>(handle);
 	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
@@ -279,8 +280,14 @@ void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle han
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
 	glBindTexture(GL_TEXTURE_2D, geometry->m_texture);
+	
+	if (geometry->m_texture)
+		glUniform1i(useTexID, 1);
+	else
+		glUniform1i(useTexID, 0);
 
 	glUniform1i(samplerID, 0);
+	
 	glUniform2f(translID, translation.x, translation.y);
 	auto* mat = glm::value_ptr(Core::GetCore()->GetGraphics()->GetOrtho());
 	glUniformMatrix4fv(orthoID, 1, GL_FALSE, mat);
