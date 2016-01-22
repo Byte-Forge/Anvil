@@ -100,10 +100,12 @@ void Core::Run()
 				if (event.key.code == sf::Keyboard::Escape)
 					Quit();
 				m_keyInputs[event.key.code] = 1;
+				m_gui->KeyDown(event.key);
 				break;
 
 			case sf::Event::KeyReleased:
 				m_keyInputs[event.key.code] = -1;
+				m_gui->KeyReleased(event.key);
 				break;
 			}
 		}

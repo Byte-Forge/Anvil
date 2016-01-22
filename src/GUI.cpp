@@ -81,6 +81,18 @@ void GUI::MouseReleased(int key)
 
 void GUI::KeyDown(sf::Event::KeyEvent &key)
 {
-	
+	m_context->ProcessKeyDown(m_system.TranslateKey(key.code),
+		m_system.GetKeyModifiers(m_window));
+}
+
+void GUI::KeyReleased(sf::Event::KeyEvent & key)
+{
+	if (key.code == sf::Keyboard::F11)
+	{
+		Rocket::Debugger::SetVisible(!Rocket::Debugger::IsVisible());
+	};
+
+	m_context->ProcessKeyUp(m_system.TranslateKey(key.code),
+		m_system.GetKeyModifiers(m_window));
 }
 

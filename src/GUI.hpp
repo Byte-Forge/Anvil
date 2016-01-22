@@ -25,6 +25,7 @@ namespace hpse
 		void MousePressed(int key);
 		void MouseReleased(int key);
 		void KeyDown(sf::Event::KeyEvent& key);
+		void KeyReleased(sf::Event::KeyEvent& key);
 	private:
 		int m_mouseX, m_mouseY;
 		SystemInterface m_system;
