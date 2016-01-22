@@ -90,7 +90,7 @@ RendererGL::RendererGL()
 	{
 		m_terrainShaders.push_back(std::make_unique<GL::Shader>());
 		m_terrainShaders[i]->Define(m_shaderModes[i]);
-		m_terrainShaders[i]->Load("shader/terrain.vert", "shader/terrain.tess", "shader/terrain.eval", "shader/terrain.geo", "shader/terrain.frag");
+		m_terrainShaders[i]->Load("shader/terrain.vert", "shader/terrain.tesc", "shader/terrain.tese", "shader/terrain.geom", "shader/terrain.frag");
 		m_terrainShaders[i]->Compile();
 	}
 }
