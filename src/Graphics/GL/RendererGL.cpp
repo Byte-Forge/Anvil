@@ -185,7 +185,7 @@ public:
 	GLuint m_vbo, m_ibo, m_texture;
 	int m_numVerts;
 
-	GLGeometry() : m_vbo(0), m_ibo(0)
+	GLGeometry() : m_vbo(0), m_ibo(0), m_texture(0), m_numVerts(0)
 	{
 	};
 
@@ -206,7 +206,6 @@ struct Vertex
 	glm::vec2 Position, TexCoord;
 	glm::vec4 Color;
 };
-
 
 void RendererGL::RenderGeometry(Rocket::Core::Vertex * vertices, int num_vertices, int * indices,
 	int num_indices, Rocket::Core::TextureHandle texture, const Rocket::Core::Vector2f & translation)
@@ -337,7 +336,7 @@ bool RendererGL::LoadTexture(Rocket::Core::TextureHandle & texture_handle, Rocke
 	file_interface->Close(file_handle);
 
 
-	unsigned char *data = stbi_load_from_memory(buffer, buffer_size, &texture_dimensions.x, &texture_dimensions.y, NULL, 0);
+	unsigned char *data = stbi_load_from_memory(buffer, buffer_size, &texture_dimensions.x, &texture_dimensions.y, NULL, STBI_rgb_alpha);
 	if (data == NULL)
 		return false;
 
@@ -346,6 +345,8 @@ bool RendererGL::LoadTexture(Rocket::Core::TextureHandle & texture_handle, Rocke
 	texture_handle = handle;
 	glBindTexture(GL_TEXTURE_2D, handle);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_dimensions.x, texture_dimensions.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	stbi_image_free(data);
 
 	return true;
@@ -358,7 +359,8 @@ bool RendererGL::GenerateTexture(Rocket::Core::TextureHandle & texture_handle, c
 	texture_handle = handle;
 	glBindTexture(GL_TEXTURE_2D, handle);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, source_dimensions.x, source_dimensions.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, source);
-
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	return true;
 }
 
