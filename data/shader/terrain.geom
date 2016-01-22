@@ -92,13 +92,14 @@ void main()
 		int i;
 		for(i=0; i < gl_in.length(); i++)
 		{
+			col = vec3(1.0, 0.0, 0.0);
 			gl_Position = MVP * vec4(e_position[i], 1.0);
 			EmitVertex();
 			
+			col = vec3(1.0, 0.0, 0.0);
 			gl_Position = MVP * vec4(e_position[i] + e_normal[i], 1.0);
 			EmitVertex();
-			
-			col = vec3(1.0, 0.0, 0.0);
+
 			EndPrimitive();
 		}
 	
