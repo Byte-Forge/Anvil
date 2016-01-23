@@ -5,6 +5,7 @@
 #include "../ITexture.hpp"
 #include "flextGL.h"
 #include "../IRenderable.hpp"
+#include "Buffer.hpp"
 
 
 namespace hpse
@@ -32,10 +33,10 @@ namespace hpse
 			std::vector<std::uint32_t> m_faces;
 
 			GLuint m_vao;
-			GLuint m_vbo;
-			GLuint m_uvbo;
-			GLuint m_nbo;
-			GLuint m_fbo;
+			Buffer m_vbo;
+			Buffer m_uvbo;
+			Buffer m_nbo;
+			Buffer m_fbo;
 		};
 	}
 }

@@ -84,25 +84,25 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : m_width(width)
 		m_tessLevelIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("maxTessellation", i));
 	}
 
-	glGenBuffers(1, &m_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(glm::vec3), &m_vertices[0], GL_STATIC_DRAW);
+	m_vbo = GL::Buffer(ARRAY_BUFFER);
+	m_vbo.Bind();
+	m_vbo.Update(m_vertices.size() * sizeof(glm::vec3), &m_vertices[0]);
 
-	glGenBuffers(1, &m_uvbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
-	glBufferData(GL_ARRAY_BUFFER, m_uvs.size() * sizeof(glm::vec2), &m_uvs[0], GL_STATIC_DRAW);
+	m_uvbo = GL::Buffer(ARRAY_BUFFER);
+	m_uvbo.Bind();
+	m_uvbo.Update(m_uvs.size() * sizeof(glm::vec2), &m_uvs[0]);
 
-	glGenBuffers(1, &m_nbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
-	glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(glm::vec3), &m_normals[0], GL_STATIC_DRAW);
+	m_nbo = GL::Buffer(ARRAY_BUFFER);
+	m_nbo.Bind();
+	m_nbo.Update(m_normals.size() * sizeof(glm::vec3), &m_normals[0]);
 
-	glGenBuffers(1, &m_fbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
+	m_fbo = GL::Buffer(ELEMENT_ARRAY_BUFFER);
+	m_fbo.Bind();
+	m_fbo.Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
 
-	glGenBuffers(1, &m_mbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_mbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_materials.size() * sizeof(std::uint32_t), &m_materials[0], GL_STATIC_DRAW);
+	m_mbo = GL::Buffer(ARRAY_BUFFER);
+	m_mbo.Bind();
+	m_mbo.Update(m_materials.size() * sizeof(std::uint32_t), &m_materials[0]);
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -112,21 +112,6 @@ GL::Terrain::~Terrain()
 {
 	glDeleteVertexArrays(1, &m_vao);
 	m_vao = 0;
-
-	glDeleteBuffers(1, &m_vbo);
-	m_vbo = 0;
-
-	glDeleteBuffers(1, &m_uvbo);
-	m_uvbo = 0;
-
-	glDeleteBuffers(1, &m_nbo);
-	m_nbo = 0;
-
-	glDeleteBuffers(1, &m_fbo);
-	m_fbo = 0;
-
-	glDeleteBuffers(1, &m_mbo);
-	m_mbo = 0;
 }
 
 int GL::Terrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
@@ -177,21 +162,21 @@ void GL::Terrain::Render(int mode)
 	glUniform1i(m_tessLevelIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessellationLevel());
 
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	m_vbo.Bind();
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
+	m_uvbo.Bind();
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
+	m_nbo.Bind();
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
+	m_fbo.Bind();
 
 	glEnableVertexAttribArray(3);
-	glBindBuffer(GL_ARRAY_BUFFER, m_mbo);
+	m_mbo.Bind();
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
@@ -232,7 +217,7 @@ void GL::Terrain::Update()
 		m_faces = m_quadtree->GetTriangles(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray());
 		if (!m_faces.size() == 0)
 		{
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
+			m_fbo.Bind();
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
 			faces_changed = false;
 		}
@@ -240,22 +225,22 @@ void GL::Terrain::Update()
 
 	if (heightmap_changed)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		m_vbo.Bind();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_vertices.size(), &m_vertices[0], GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
+		m_nbo.Bind();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_normals.size(), &m_normals[0], GL_STATIC_DRAW);
 		heightmap_changed = false;
 	}
 	if (uvs_changed)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
+		m_uvbo.Bind();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_uvs.size(), &m_uvs[0], GL_STATIC_DRAW);
 		uvs_changed = false;
 	}
 	if (materials_changed)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, m_mbo);
+		m_mbo.Bind();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_materials.size(), &m_materials[0], GL_STATIC_DRAW);
 		materials_changed = false;
 	}

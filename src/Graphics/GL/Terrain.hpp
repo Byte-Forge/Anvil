@@ -7,6 +7,7 @@
 #include "../ITexture.hpp"
 #include "../Quadtree.hpp"
 #include "../Material.hpp"
+#include "Buffer.hpp"
 #include "flextGL.h"
 #include <vector>
 #include <memory>
@@ -63,11 +64,7 @@ namespace hpse
 			std::vector<glm::vec3> m_materials;
 
 			GLuint m_vao;
-			GLuint m_vbo;
-			GLuint m_uvbo;
-			GLuint m_nbo;
-			GLuint m_fbo;
-			GLuint m_mbo;
+			Buffer m_vbo, m_uvbo, m_nbo, m_fbo, m_mbo;
 
 			void Generate();
 			void ComputeNormals(std::vector<glm::vec3> &normals);

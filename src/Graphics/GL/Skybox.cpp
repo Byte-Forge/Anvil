@@ -292,39 +292,27 @@ GL::Skybox::Skybox()
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
-	glGenBuffers(1, &m_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(glm::vec3), &m_vertices[0], GL_STATIC_DRAW);
+	m_vbo = GL::Buffer(ARRAY_BUFFER);
+	m_vbo.Bind();
+	m_vbo.Update(m_vertices.size() * sizeof(glm::vec3), &m_vertices[0]);
 
-	glGenBuffers(1, &m_uvbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
-	glBufferData(GL_ARRAY_BUFFER, m_uvs.size() * sizeof(glm::vec2), &m_uvs[0], GL_STATIC_DRAW);
+	m_uvbo = GL::Buffer(ARRAY_BUFFER);
+	m_uvbo.Bind();
+	m_uvbo.Update(m_uvs.size() * sizeof(glm::vec2), &m_uvs[0]);
 
-	glGenBuffers(1, &m_nbo);
-	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
-	glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(glm::vec3), &m_normals[0], GL_STATIC_DRAW);
+	m_nbo = GL::Buffer(ARRAY_BUFFER);
+	m_nbo.Bind();
+	m_nbo.Update(m_normals.size() * sizeof(glm::vec3), &m_normals[0]);
 
-	glGenBuffers(1, &m_fbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
+	m_fbo = GL::Buffer(ELEMENT_ARRAY_BUFFER);
+	m_fbo.Bind();
+	m_fbo.Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
 }
 
 GL::Skybox::~Skybox()
 {
 	glDeleteVertexArrays(1, &m_vao);
 	m_vao = 0;
-
-	glDeleteBuffers(1, &m_vbo);
-	m_vbo = 0;
-
-	glDeleteBuffers(1, &m_uvbo);
-	m_uvbo = 0;
-
-	glDeleteBuffers(1, &m_nbo);
-	m_nbo = 0;
-
-	glDeleteBuffers(1, &m_fbo);
-	m_fbo = 0;
 }
 
 void GL::Skybox::Update()
@@ -339,18 +327,18 @@ void GL::Skybox::Render(int mode)
 	glUniform3f(m_CameraPos, pos.x, pos.y, pos.z);
 
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	m_vbo.Bind();
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, m_uvbo);
+	m_uvbo.Bind();
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
+	m_nbo.Bind();
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_fbo);
+	m_fbo.Bind();
 
 	glActiveTexture(GL_TEXTURE0); //diffuse texture
 	m_diff->Bind();
