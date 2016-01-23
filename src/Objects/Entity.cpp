@@ -3,14 +3,15 @@
 //
 #include "Entity.hpp"
 #include "../Core.hpp"
-#include "../Core/ResourceHandler.hpp"
-#include <iostream>
+#include "../Exception.hpp"
+#include "../Util/tinyxml2.h"
 
 using namespace hpse;
+using namespace tinyxml2;
 
-Entity::Entity(const std::string& name)
+Entity::Entity()
 {
-	m_name = name;
+
 }
 
 Entity::~Entity()
@@ -18,33 +19,33 @@ Entity::~Entity()
 
 }
 
-void Entity::SetModel(const std::string& model)
+void Entity::Update()
 {
-	m_w4dModel = model;
+
 }
 
-std::shared_ptr<IResource> Entity::GetModel()
+void Entity::Render(int mode)
 {
-	return nullptr;
+
 }
 
-void Entity::SetWeaponLaunchBone(const std::string& bone)
+bool Entity::Load(const std::string& path)
 {
-	m_weaponLaunchBone = bone;
-}
+	XMLDocument doc;
+	doc.LoadFile(path.c_str());
 
-void Entity::AddProp(const std::string& pivot,const std::string& prop)
-{
-	if (m_props.count(pivot) > 0)
-		m_props[pivot] = prop;
-	else
-		m_props.insert({ pivot, prop });
-}
+	XMLNode *entity = doc.FirstChild();
+	if (entity == nullptr)  throw HpseException("missing entity node: " + path, __FILE__, __LINE__);
 
-void Entity::AddFX(const std::string& pivot, const std::string& fx)
-{
-	if (m_boneFXs.count(pivot) > 0)
-		m_boneFXs[pivot] = fx;
-	else
-		m_boneFXs.insert({ pivot, fx });
+	XMLElement *mesh = entity->FirstChildElement("mesh");
+	if (mesh == nullptr) throw HpseException("entity has no mesh member: " + path, __FILE__, __LINE__);
+	m_model= Core::GetCore()->GetResources()->GetModel(mesh->GetText());  
+
+	XMLElement *materials = entity->FirstChildElement("materials");
+	if (materials == nullptr) throw HpseException("entity has no materials member: " + path, __FILE__, __LINE__);
+
+	for (XMLElement* material = materials->FirstChildElement(); material != NULL; material = material->NextSiblingElement())
+	{
+		m_materials.push_back(Core::GetCore()->GetResources()->GetMaterial(material->GetText()));
+	}
 }

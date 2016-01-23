@@ -222,13 +222,9 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 
 	for (unsigned long i = 0; i < data.size(); i++)
 	{
-		
 		data[i].Position = *(glm::vec2*)&vertices[i].position;
 		data[i].TexCoord = *(glm::vec2*)&vertices[i].tex_coord;
-		data[i].Color = glm::vec4((float)vertices[i].colour.red / 255.f,
-			(float)vertices[i].colour.green / 255.f,
-			(float)vertices[i].colour.blue / 255.f,
-			(float)vertices[i].colour.alpha / 255.f);
+		data[i].Color = glm::vec4((float)vertices[i].colour.red / 255.f, (float)vertices[i].colour.green / 255.f, (float)vertices[i].colour.blue / 255.f, (float)vertices[i].colour.alpha / 255.f);
 	};
 
 	GLGeometry* geometry = new GLGeometry();
@@ -236,8 +232,7 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 
 	glGenBuffers(1, &geometry->m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * num_vertices, &data[0],
-		GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * num_vertices, &data[0], GL_STATIC_DRAW);
 
 	glGenBuffers(1, &geometry->m_ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
@@ -264,18 +259,15 @@ void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle han
 
 	// position
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT,
-		GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
 
 	// UV
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT,
-		GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoord));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoord));
 
 	// Colors
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 4, GL_FLOAT,
-		GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
 	glBindTexture(GL_TEXTURE_2D, geometry->m_texture);

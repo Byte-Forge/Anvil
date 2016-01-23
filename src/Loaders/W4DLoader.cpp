@@ -65,44 +65,6 @@ void loadHierarchy(std::ifstream& file, std::uint32_t chunkEnd)
 //# model
 //#######################################################################################
 
-Texture loadTexture(std::ifstream& file)
-{
-	Texture texture;
-	texture.name = readString(file);
-	texture.type = read<std::uint8_t>(file);
-	texture.value = read<glm::float32>(file);
-	return texture;
-}
-
-MeshMaterial loadMeshMaterial(std::ifstream& file, std::uint32_t chunkEnd)
-{
-	MeshMaterial material;
-	material.diffuse = read<RGBA>(file);
-	material.diffuse_intensity = read<glm::float32>(file);
-	material.specular = read<RGBA>(file);
-	material.specular_intensity = read<glm::float32>(file);
-	material.emit = read<glm::float32>(file);
-	material.alpha = read<glm::float32>(file);
-
-	while (file.tellg() < chunkEnd)
-	{
-		std::uint32_t chunkType = read<std::uint32_t>(file);
-		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
-
-		switch (chunkType)
-		{
-		case 31:
-			material.textures.push_back(loadTexture(file));
-			break;
-		default:
-			std::cout << "unknown chunktype in mesh material chunk: " << chunkType << std::endl;
-			file.seekg(chunkEnd, std::ios::beg);
-		}
-	}
-	return material;
-}
-
 MeshHeader loadMeshHeader(std::ifstream& file)
 {
 	MeshHeader header;
@@ -148,9 +110,6 @@ Mesh loadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 			while (file.tellg() < chunkEnd)
 				mesh.vertInfs.push_back(read<MeshVertexInfluences>(file));
 			break;
-		case 30:
-			mesh.materials.push_back(loadMeshMaterial(file, chunkEnd));
-			break;
 		default:
 			std::cout << "unknown chunktype in mesh chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
@@ -162,7 +121,6 @@ Mesh loadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 void loadModel(std::ifstream& file, std::uint32_t chunkEnd)
 {
 	W4DModel model;
-	model.name = readString(file);
 	model.hieraName = readString(file);
 
 	while (file.tellg() < chunkEnd)
@@ -176,7 +134,7 @@ void loadModel(std::ifstream& file, std::uint32_t chunkEnd)
 		{
 		case 1:
 			m = loadMesh(file, chunkEnd);
-			model.meshes.insert({m.header.meshName, m});
+			model.meshes.push_back(m);
 			break;
 		case 1024:
 			model.volume = read<Box>(file);

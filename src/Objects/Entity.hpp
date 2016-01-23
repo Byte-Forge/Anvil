@@ -5,29 +5,27 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <map>
+#include "../Types/W4D.hpp"
+#include "../Graphics/Material.hpp"
 #include "../Core/IResource.hpp"
+#include "../Graphics/IRenderable.hpp"
 
 
 namespace hpse
 {
-    class Entity : public IResource
+    class Entity : public IResource, public IRenderable
     {
 	public:
-		Entity(const std::string& name);
+		Entity();
 		~Entity();
-		void SetModel(const std::string& model);
-		std::shared_ptr<IResource> GetModel(); 
-		void SetWeaponLaunchBone(const std::string& bone);
-		void AddProp(const std::string& pivot, const std::string& prop);
-		void AddFX(const std::string& pivot, const std::string& fx);
 
+		void Render(int mode);
+		void Update();
+
+		bool Load(const std::string& path);
 	private:
-		std::string m_name = NULL;
-		std::string m_w4dModel = NULL;
-		std::string m_weaponLaunchBone = NULL;
-		std::map <std::string, std::string> m_props;
-		std::map <std::string, std::string> m_boneFXs;
+		std::shared_ptr<W4DModel> m_model;
+		std::vector<std::shared_ptr<Material>> m_materials;
     };
 }
 

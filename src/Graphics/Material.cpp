@@ -44,10 +44,4 @@ void Material::Load(const std::string& path)
 	XMLElement *ambient_occ = textures->FirstChildElement("ambient_occ");
 	if (ambient_occ == nullptr) m_ambientOccTexture = "";
 	m_ambientOccTexture = ambient_occ->GetText();
-
-	std::cout << m_diffuseTexture << std::endl;
-	std::cout << m_normalTexture << std::endl;
-	std::cout << m_specularTexture << std::endl;
-	std::cout << m_displacementTexture << std::endl;
-	std::cout << m_ambientOccTexture << std::endl;
 }

@@ -125,45 +125,6 @@ namespace hpse
 	};
 
 	//#######################################################################################
-	//  texture animation
-	//#######################################################################################		
-
-	// chunk 32
-	//struct TextureAnimation 
-	//{
-	//not sure what values we need here
-	//};
-
-	//#######################################################################################
-	//# texture
-	//#######################################################################################	
-
-	// chunk 31
-	struct Texture
-	{
-		std::string name;
-		std::uint8_t type; //0 standard, 1 normal, 2 displacement
-		glm::float32 value; // factor for normal, displacement etc
-		//TextureAnimation animations[1];
-	};
-
-	//#######################################################################################
-	//# material
-	//#######################################################################################	
-
-	// chunk 30
-	struct MeshMaterial
-	{
-		RGBA diffuse;
-		glm::float32 diffuse_intensity;
-		RGBA specular;
-		glm::float32 specular_intensity;
-		glm::float32 emit;
-		glm::float32 alpha;
-		std::vector<Texture> textures;
-	};
-
-	//#######################################################################################
 	//# mesh
 	//#######################################################################################	
 
@@ -178,6 +139,7 @@ namespace hpse
 		// 129->skin - two sided
 
 		std::string meshName;
+		int materialID;
 		std::uint16_t parentPivot;
 		glm::uint32 faceCount;
 		glm::uint32 vertCount;
@@ -189,10 +151,9 @@ namespace hpse
 		MeshHeader header;
 		std::vector<glm::f32vec3> vertices;
 		std::vector<glm::f32vec3> normals;
-		std::vector<glm::i32vec3> faces;
 		std::vector<glm::f32vec2> uvCoords;
+		std::vector<glm::i32vec3> faces;
 		std::vector<MeshVertexInfluences> vertInfs;
-		std::vector<MeshMaterial> materials;
 	};
 
 	//#######################################################################################
@@ -203,9 +164,8 @@ namespace hpse
 	class W4DModel : public IResource
 	{
 	public:
-		std::string name;
 		std::string hieraName; // is the name of the model by default
-		std::map<std::string, Mesh> meshes;
+		std::vector<Mesh> meshes;
 		BoundingVolume volume;
 	};
 }

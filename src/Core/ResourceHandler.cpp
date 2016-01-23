@@ -4,6 +4,7 @@
 #include "ResourceHandler.hpp"
 #include <iostream>
 #include "../Loaders/Util.hpp"
+#include "../Loaders/EntityLoader.hpp"
 #include "../Loaders/TextureLoader.hpp"
 #include "../Loaders/MaterialLoader.hpp"
 #include "../Loaders/W4DLoader.hpp"
@@ -11,6 +12,19 @@
 #include "../Exception.hpp"
 
 using namespace hpse;
+
+std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
+{
+	std::string path;
+	if (m_resources.count(toUpper(name)) == 0)
+	{
+		if (GetFilePath(m_objectsDir + name, &path))
+		{
+			EntityLoader::LoadEntity(name, path);
+		}
+	}
+	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(name)]);
+}
 
 std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 {
@@ -40,6 +54,20 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 	return TextureLoader::LoadTextureArray(paths);
 }
 
+std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
+{
+	std::string path;
+	if (m_resources.count(toUpper(name)) == 0)
+	{
+		if (GetFilePath(m_materialsDir + name, &path))
+		{
+			MaterialLoader::LoadMaterial(name, path);
+		}
+	}
+	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(name)]);
+}
+
+
 std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 {
 	std::vector<std::string> materials;
@@ -68,7 +96,7 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	return materials;
 }
 
-std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
+std::shared_ptr<W4DModel> ResourceHandler::GetModel(const std::string &name)
 {
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
@@ -78,8 +106,9 @@ std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 			MaterialLoader::LoadMaterial(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<W4DModel> (m_resources[toUpper(name)]);
 }
+
 
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 {
