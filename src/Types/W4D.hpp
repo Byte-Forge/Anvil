@@ -139,7 +139,7 @@ namespace hpse
 		// 129->skin - two sided
 
 		std::string meshName;
-		int materialID;
+		std::uint16_t materialID;
 		std::uint16_t parentPivot;
 		glm::uint32 faceCount;
 		glm::uint32 vertCount;

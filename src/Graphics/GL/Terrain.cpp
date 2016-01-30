@@ -131,7 +131,25 @@ int GL::Terrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos
 	return 0;
 }
 
-void GL::Terrain::SetTerrainHeight(glm::vec3 &pos, float height, float radius)
+void GL::Terrain::SetMaterial(glm::vec3 &pos, float radius, int material)
+{
+	glm::vec2 pos_2 = { pos.x, pos.z };
+	for (unsigned int i = pos_2.x - radius + 1; i < pos_2.x + radius + 1; i++)
+	{
+		for (unsigned int j = pos_2.y - radius + 1; j < pos_2.y + radius + 1; j++)
+		{
+			glm::vec2 vertex = { i, j };
+			if (glm::distance(vertex, pos_2) <= radius)
+			{
+				m_materialmap[i + j*m_width] = glm::vec3(material, m_materialmap[i + j*m_width].x, m_materialmap[i + j*m_width].z);
+				materials_changed = true;
+			}
+		}
+	}
+	UpdateBufferData();
+}
+
+void GL::Terrain::SetHeight(glm::vec3 &pos, float radius, float height)
 {
 	glm::vec2 pos_2 = { pos.x, pos.z };
 	for (unsigned int i = pos_2.x - radius + 1; i < pos_2.x + radius + 1; i++)
@@ -257,13 +275,13 @@ void GL::Terrain::Generate()
 		for (unsigned int j = 0; j < m_height; j++)
 		{
 			float value = 0.0f;
+			
 			value += SimplexNoise::scaled_octave_noise_2d(8, 0.7, 0.5, -20.0, 0.0, i / 100.0, j / 100.0); //for slightly evaluation
 			float mountain = SimplexNoise::scaled_octave_noise_2d(2, 0.5, 0.1, -10.0, 20.0, i/10.0, j/10.0); //for mountain terrain
 			if (value < 0.0)
 				value = 0.0;
 			if (mountain > 0.0)
 				value += SimplexNoise::scaled_octave_noise_2d(8, 0.3, 0.1, 0.0, 10.0, i, j) * mountain / 10.0; //for mountains
-
 			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01, 0.1, 0.0, 2.0, i, j); //for flat terrain
 
 			m_heightmap.push_back(value);
@@ -319,40 +337,6 @@ void GL::Terrain::Generate()
 		}
 	}
 }
-
-/*
-void GL::Terrain::ComputeNormals(std::vector<glm::vec3> &normals)
-{
-for (std::uint32_t i = 0; i < m_width; i++)
-{
-for (std::uint32_t j = 0; j < m_height; j++)
-{
-int index = i + (j * m_width);
-glm::vec3 normal = { 0.0, 0.0, 0.0 };
-if (i < m_width - 1 && j < m_height - 1)
-{
-normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + m_width + 1], m_heightmap[index + 1]);
-normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + m_width], m_heightmap[index + m_width + 1]);
-}
-if (j < m_height - 1 && i > 0)
-{
-normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - 1], m_heightmap[index + m_width]);
-}
-if (i < m_width - 1 && j > 0)
-{
-normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index + 1], m_heightmap[index - m_width]);
-}
-if (i > 0 && j > 0)
-{
-normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - m_width], m_heightmap[index - m_width - 1]);
-normal += Math::ComputeNormal(m_heightmap[index], m_heightmap[index - m_width - 1], m_heightmap[index - 1]);
-}
-normals.push_back(glm::normalize(normal));
-}
-}
-}
-
-*/
 
 void GL::Terrain::ComputeNormals(std::vector<glm::vec3> &normals)
 {
@@ -439,13 +423,13 @@ void GL::Terrain::UpdateBufferData()
 				m_vertices.push_back(c);
 				m_vertices.push_back(d);
 
-				m_normals.push_back(normals[i + j * m_width]);
-				m_normals.push_back(normals[i + 1 + j * m_width]);
-				m_normals.push_back(normals[i + 1 + (j + 1) * m_width]);
+				m_normals.push_back(normals[j + i * m_width]);
+				m_normals.push_back(normals[j + 1 + i * m_width]);
+				m_normals.push_back(normals[j + 1 + (i + 1) * m_width]);
 
-				m_normals.push_back(normals[i + j*m_width]);
-				m_normals.push_back(normals[i + 1 + (j + 1)*m_width]);
-				m_normals.push_back(normals[i + (j + 1)*m_width]);
+				m_normals.push_back(normals[j + i * m_width]);
+				m_normals.push_back(normals[j + 1 + (i + 1)*m_width]);
+				m_normals.push_back(normals[j + (i + 1)*m_width]);
 			}
 		
 			if (uvs_changed)

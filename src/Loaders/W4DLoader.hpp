@@ -6,6 +6,6 @@ namespace hpse
 	class W4DLoader
 	{
 	public:
-		static void Load(const std::string& name);
+		static void Load(const std::string& name, const std::string& path);
 	};
 }

@@ -23,7 +23,8 @@ namespace hpse
             Terrain(std::uint32_t width, std::uint32_t height);
 			~Terrain();
 			int GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos);
-			void SetTerrainHeight(glm::vec3 &pos, float height, float radius);
+			void SetMaterial(glm::vec3 &pos, float radius, int material);
+			void SetHeight(glm::vec3 &pos, float radius, float height);
 
             void Render(int mode);
             void Update();

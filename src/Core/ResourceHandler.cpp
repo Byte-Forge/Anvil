@@ -101,9 +101,9 @@ std::shared_ptr<W4DModel> ResourceHandler::GetModel(const std::string &name)
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(m_materialsDir + name, &path))
+		if (GetFilePath(m_w4dDir + name, &path))
 		{
-			MaterialLoader::LoadMaterial(name, path);
+			W4DLoader::Load(name, path);
 		}
 	}
 	return std::dynamic_pointer_cast<W4DModel> (m_resources[toUpper(name)]);
