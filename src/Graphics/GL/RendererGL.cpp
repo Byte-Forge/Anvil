@@ -73,6 +73,12 @@ RendererGL::RendererGL()
 	if(!FLEXT_ARB_texture_storage)
 		throw HpseException("ARB_texture_storage not supported!", __FILE__, __LINE__);
 
+	if (!FLEXT_ARB_buffer_storage)
+		throw HpseException("ARB_buffer_storage not supported!", __FILE__, __LINE__);
+
+	if (!FLEXT_ARB_robustness)
+		throw HpseException("ARB_robustness not supported!", __FILE__, __LINE__);
+
 	if(!FLEXT_ARB_texture_compression_bptc)
 		throw HpseException("BPTC texture compression not supported!", __FILE__, __LINE__);
 
@@ -125,8 +131,16 @@ void RendererGL::Clear()
 
 void RendererGL::Render(glm::mat4& ortho)
 {
+	//check if driver chrashed
+	GLenum status = glGetGraphicsResetStatusARB();
+	if (status != GL_NO_ERROR)
+	{
+		//we fucked up
+		//TODO: reupload all opengl data and continue the game
+		throw HpseException("GL Drivercrash", __FILE__, __LINE__);
+	}
+
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
-	
 	m_skyboxShader->Use();
 	m_skybox->Update();
 	m_skybox->Render(0);
