@@ -17,13 +17,13 @@ namespace hpse
 		void SetHeight(glm::vec3 &pos, float radius, float height);
 	protected:
 		void Generate();
-		void ComputeNormals(std::vector<glm::vec3> &normals);
+		void ComputeNormals(std::vector<std::vector<glm::vec3>> &normals);
 		void UpdateBufferData();
 
 		std::uint32_t m_width, m_height;
-		std::vector<float> m_heightmap;
+		std::vector<std::vector<float>> m_heightmap;
 		std::vector<std::string> m_terrainMaterials;
-		std::vector<glm::vec3> m_materialmap;
+		std::vector<std::vector<glm::vec3>> m_materialmap;
 		std::shared_ptr<Quadtree> m_quadtree;
 
 		std::vector<glm::vec3> m_vertices;

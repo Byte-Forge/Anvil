@@ -6,7 +6,7 @@
 
 using namespace hpse;
 
-ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width),m_height(height)
+ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width), m_height(height)
 {
 }
 
@@ -37,7 +37,7 @@ void ITerrain::SetMaterial(glm::vec3 &pos, float radius, int material)
 			glm::vec2 vertex = { i, j };
 			if (glm::distance(vertex, pos_2) <= radius)
 			{
-				m_materialmap[i + j*m_width] = glm::vec3(material, m_materialmap[i + j*m_width].x, m_materialmap[i + j*m_width].z);
+				m_materialmap[i][j] = glm::vec3(material, m_materialmap[i][j].x, m_materialmap[i][j].z);
 				materials_changed = true;
 			}
 		}
@@ -55,7 +55,7 @@ void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 			glm::vec2 vertex = { i, j };
 			if (glm::distance(vertex, pos_2) <= radius)
 			{
-				m_heightmap[i + j*m_width] = height;
+				m_heightmap[i][j] = height;
 				heightmap_changed = true;
 			}
 		}
@@ -71,6 +71,11 @@ void ITerrain::Generate()
 
 	for (unsigned int i = 0; i < m_width; i++)
 	{
+		std::vector<float> v;
+		m_heightmap.push_back(v);
+
+		std::vector<glm::vec3> m;
+		m_materialmap.push_back(m);
 		for (unsigned int j = 0; j < m_height; j++)
 		{
 			float value = 0.0f;
@@ -83,7 +88,7 @@ void ITerrain::Generate()
 
 			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01, 0.1, 0.0, 2.0, i, j); //for flat terrain
 
-			m_heightmap.push_back(value);
+			m_heightmap[i].push_back(value);
 
 			int mat1 = 0;
 			int mat2 = -1;
@@ -132,51 +137,52 @@ void ITerrain::Generate()
 				val = 0.0;
 			}
 
-			m_materialmap.push_back({ mat1, mat2, val });
+			m_materialmap[i].push_back({ mat1, mat2, val });
 		}
 	}
 }
 
-void ITerrain::ComputeNormals(std::vector<glm::vec3> &normals)
+void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals)
 {
 	glm::vec3 a;
 	glm::vec3 b;
 	glm::vec3 c;
 	for (unsigned int i = 0; i < m_width; i++)
 	{
+		std::vector<glm::vec3> n;
+		normals.push_back(n);
 		for (unsigned int j = 0; j < m_height; j++)
 		{
-			int index = i + (j * m_width);
 			glm::vec3 normal = { 0.0, 0.0, 0.0 };
 			a.x = i;
 			a.z = j;
-			a.y = m_heightmap[index];
+			a.y = m_heightmap[i][j];
 			if (i < m_width - 1 && j < m_height - 1)
 			{
-				b = { i + 1, m_heightmap[index + m_width + 1], j + 1 };
-				c = { i + 1, m_heightmap[index + 1], j };
+				b = { i + 1, m_heightmap[i+1][j+1], j + 1 };
+				c = { i + 1, m_heightmap[i+1][j], j };
 				normal += Math::ComputeNormal(a, b, c);
-				b = { i, m_heightmap[index + m_width], j + 1 };
-				c = { i + 1, m_heightmap[index + m_width + 1], j + 1 };
+				b = { i, m_heightmap[i][j+1], j + 1 };
+				c = { i + 1, m_heightmap[i+1][j+1], j + 1 };
 				normal += Math::ComputeNormal(a, b, c);
 			}
 			if (i > 0 && j > 0)
 			{
-				b = { i, m_heightmap[index - m_width], j - 1 };
-				c = { i - 1, m_heightmap[index - m_width - 1], j - 1 };
+				b = { i, m_heightmap[i][j-1], j - 1 };
+				c = { i - 1, m_heightmap[i-1][j-1], j - 1 };
 				normal += Math::ComputeNormal(a, b, c);
-				b = { i - 1, m_heightmap[index - m_width - 1], j - 1 };
-				c = { i - 1, m_heightmap[index - 1], j };
+				b = { i - 1, m_heightmap[i-1][j-1], j - 1 };
+				c = { i - 1, m_heightmap[i - 1][j], j };
 				normal += Math::ComputeNormal(a, b, c);
 			}
-			normals.push_back(glm::normalize(normal));
+			normals[i].push_back(glm::normalize(normal));
 		}
 	}
 }
 
 void ITerrain::UpdateBufferData()
 {
-	std::vector<glm::vec3> normals;
+	std::vector<std::vector<glm::vec3>> normals;
 	if (heightmap_changed)
 	{
 		ComputeNormals(normals);
@@ -195,10 +201,10 @@ void ITerrain::UpdateBufferData()
 	{
 		for (unsigned int j = 0; j < m_height - 1; j++)
 		{
-			glm::vec3 a = { (float)i, m_heightmap[i + j * m_width], (float)j };
-			glm::vec3 b = { (float)(i + 1), m_heightmap[i + 1 + j * m_width], (float)j };
-			glm::vec3 c = { (float)(i + 1), m_heightmap[i + 1 + (j + 1) * m_width], (float)(j + 1) };
-			glm::vec3 d = { (float)i, m_heightmap[i + (j + 1) * m_width], (float)(j + 1) };
+			glm::vec3 a = { (float)i, m_heightmap[i][j], (float)j };
+			glm::vec3 b = { (float)(i + 1), m_heightmap[i + 1][j], (float)j };
+			glm::vec3 c = { (float)(i + 1), m_heightmap[i + 1][j + 1], (float)(j + 1) };
+			glm::vec3 d = { (float)i, m_heightmap[i][j + 1], (float)(j + 1) };
 
 			if (heightmap_changed)
 			{
@@ -210,13 +216,13 @@ void ITerrain::UpdateBufferData()
 				m_vertices.push_back(c);
 				m_vertices.push_back(d);
 
-				m_normals.push_back(normals[i + j * m_width]);
-				m_normals.push_back(normals[i + 1 + j * m_width]);
-				m_normals.push_back(normals[i + 1 + (j + 1) * m_width]);
+				m_normals.push_back(normals[i][j]);
+				m_normals.push_back(normals[i + 1][j]);
+				m_normals.push_back(normals[i + 1][j + 1]);
 
-				m_normals.push_back(normals[i + j*m_width]);
-				m_normals.push_back(normals[i + 1 + (j + 1)*m_width]);
-				m_normals.push_back(normals[i + (j + 1)*m_width]);
+				m_normals.push_back(normals[i][j]);
+				m_normals.push_back(normals[i + 1][j + 1]);
+				m_normals.push_back(normals[i][j + 1]);
 			}
 
 			if (uvs_changed)
@@ -233,13 +239,13 @@ void ITerrain::UpdateBufferData()
 
 			if (materials_changed)
 			{
-				m_materials.push_back(m_materialmap[i + j*m_width]);
-				m_materials.push_back(m_materialmap[i + 1 + j*m_width]);
-				m_materials.push_back(m_materialmap[i + 1 + (j + 1)*m_width]);
+				m_materials.push_back(m_materialmap[i][j+1]);
+				m_materials.push_back(m_materialmap[i+1][j+1]);
+				m_materials.push_back(m_materialmap[i+1][j+1]);
 
-				m_materials.push_back(m_materialmap[i + j*m_width]);
-				m_materials.push_back(m_materialmap[i + 1 + (j + 1)*m_width]);
-				m_materials.push_back(m_materialmap[i + (j + 1)*m_width]);
+				m_materials.push_back(m_materialmap[i][j+1]);
+				m_materials.push_back(m_materialmap[i+1][j+1]);
+				m_materials.push_back(m_materialmap[i][j+1]);
 			}
 
 			if (faces_changed)
