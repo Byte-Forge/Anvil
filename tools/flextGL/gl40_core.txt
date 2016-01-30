@@ -3,6 +3,9 @@
 
 version 4.0 core
 
-extension ARB_debug_output required
+extension ARB_debug_output optional
 extension ARB_texture_storage required
 extension ARB_texture_compression_bptc required
+extension ARB_buffer_storage required
+extension ARB_bindless_texture optional
+extension ARB_robustness required
