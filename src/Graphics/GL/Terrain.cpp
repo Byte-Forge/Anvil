@@ -5,7 +5,6 @@
 #include "flextGL.h"
 #include "../../Core.hpp"
 #include "../../Math.hpp"
-#include "../../Math/Collision.hpp"
 #include "../../Math/SimplexNoise.hpp"
 #include <iostream>
 #include <vector>
@@ -112,23 +111,6 @@ GL::Terrain::~Terrain()
 {
 	glDeleteVertexArrays(1, &m_vao);
 	m_vao = 0;
-}
-
-int GL::Terrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
-{
-	glm::vec3 origin;
-	glm::vec3 direction;
-	Core::GetCore()->GetCamera()->ScreenPosToWorldRay(mousePos, origin, direction);
-	glm::vec3 point;
-	for (unsigned int i = 0; i < m_faces.size(); i += 3)
-	{
-		if (Collision::Ray_Tri_Intersect(m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]], origin, direction, &point))
-		{
-			pos = point;
-			return 1;
-		}
-	}
-	return 0;
 }
 
 void GL::Terrain::Render(int mode)

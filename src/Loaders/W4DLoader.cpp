@@ -70,6 +70,7 @@ MeshHeader loadMeshHeader(std::ifstream& file)
 	MeshHeader header;
 	header.type = read<std::uint8_t>(file);
 	header.meshName = readString(file);
+	header.materialID = read<std::uint16_t>(file);
 	header.parentPivot = read<std::uint16_t>(file);
 	header.faceCount = read<std::uint32_t>(file);
 	header.vertCount = read<std::uint32_t>(file);
@@ -151,12 +152,9 @@ void loadModel(std::ifstream& file, std::uint32_t chunkEnd)
 	//Core::GetResources()->AddResource(model.name, p);
 }
 
-void W4DLoader::Load(const std::string& name)
+void W4DLoader::Load(const std::string& name, const std::string& path)
 {
-	const std::string path = "w4d/";
-	const std::string ext = ".w4d";
-
-	std::ifstream file(path + name + ext, std::ios::binary);
+	std::ifstream file(path, std::ios::binary);
 	long size = getFStreamSize(file);
 
 	while (file.tellg() < size)

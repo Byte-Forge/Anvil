@@ -106,5 +106,3 @@ namespace hpse
 		std::unique_ptr<Frustum> m_frustum;
     };
 }
-
-

@@ -22,11 +22,9 @@ namespace hpse
         public:
             Terrain(std::uint32_t width, std::uint32_t height);
 			~Terrain();
-			int GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos);
-
+			
             void Render(int mode);
             void Update();
-
         private:
 			//rendering stuff
 			std::vector<GLuint> m_tessLevelIDs, m_lightIDs;

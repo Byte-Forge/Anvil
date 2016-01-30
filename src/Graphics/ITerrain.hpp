@@ -4,13 +4,17 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <memory>
+
 namespace hpse
 {
 	class ITerrain : public IRenderable
 	{
 	public:
 		ITerrain(std::uint32_t width, std::uint32_t height);
-		void SetTerrainHeight(glm::vec3 &pos, float height, float radius);
+
+		int GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos);
+		void SetMaterial(glm::vec3 &pos, float radius, int material);
+		void SetHeight(glm::vec3 &pos, float radius, float height);
 	protected:
 		void Generate();
 		void ComputeNormals(std::vector<glm::vec3> &normals);

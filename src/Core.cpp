@@ -171,7 +171,9 @@ void Core::Run()
 			glm::vec3 mouseWorld;
 			if (m_map->GetTerrain()->GetMousePositionInWorldSpace(mousePos, mouseWorld))
 			{
-				m_map->GetTerrain()->SetTerrainHeight(mouseWorld, 15.0f, 20.0f);
+				m_map->GetTerrain()->SetMaterial(mouseWorld, 20.0f, 0);
+				m_map->GetTerrain()->SetHeight(mouseWorld, 20.0f, 5.0f);
+				std::cout << "set material" << std::endl;
 			}
 			m_mouseInputs[sf::Mouse::Left] = 0;
 		}

@@ -1,14 +1,51 @@
 #include "ITerrain.hpp"
 #include "../Core.hpp"
 #include "../Math/SimplexNoise.hpp"
+#include "../Math/Collision.hpp"
 #include "../Math.hpp"
+
 using namespace hpse;
 
 ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width),m_height(height)
 {
 }
 
-void ITerrain::SetTerrainHeight(glm::vec3 & pos, float height, float radius)
+int ITerrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
+{
+	glm::vec3 origin;
+	glm::vec3 direction;
+	Core::GetCore()->GetCamera()->ScreenPosToWorldRay(mousePos, origin, direction);
+	glm::vec3 point;
+	for (unsigned int i = 0; i < m_faces.size(); i += 3)
+	{
+		if (Collision::Ray_Tri_Intersect(m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]], origin, direction, &point))
+		{
+			pos = point;
+			return 1;
+		}
+	}
+	return 0;
+}
+
+void ITerrain::SetMaterial(glm::vec3 &pos, float radius, int material)
+{
+	glm::vec2 pos_2 = { pos.x, pos.z };
+	for (unsigned int i = pos_2.x - radius + 1; i < pos_2.x + radius + 1; i++)
+	{
+		for (unsigned int j = pos_2.y - radius + 1; j < pos_2.y + radius + 1; j++)
+		{
+			glm::vec2 vertex = { i, j };
+			if (glm::distance(vertex, pos_2) <= radius)
+			{
+				m_materialmap[i + j*m_width] = glm::vec3(material, m_materialmap[i + j*m_width].x, m_materialmap[i + j*m_width].z);
+				materials_changed = true;
+			}
+		}
+	}
+	UpdateBufferData();
+}
+
+void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 {
 	glm::vec2 pos_2 = { pos.x, pos.z };
 	for (unsigned int i = pos_2.x - radius + 1; i < pos_2.x + radius + 1; i++)

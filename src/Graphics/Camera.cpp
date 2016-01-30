@@ -113,33 +113,11 @@ void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm
 {
 	glm::vec2 resolution = Core::GetCore()->GetResolution();
 
-	glm::vec4 ray_start(
-	((float)mouse_pos.x / (float)resolution.x - 0.5f) * 2.0f,
-	((float)mouse_pos.y / (float)resolution.y - 0.5f) * 2.0f,
-	-1.0, 1.0f);
+	glm::vec4 ray_start((mouse_pos.x / resolution.x - 0.5f) * 2.0f, -(mouse_pos.y / resolution.y - 0.5f) * 2.0f, 0.0, 1.0);
 
-	glm::vec4 ray_end(
-	((float)mouse_pos.x / (float)resolution.x - 0.5f) * 2.0f,
-	((float)mouse_pos.y / (float)resolution.y - 0.5f) * 2.0f,
-	0.0, 1.0f);
+	std::cout << ray_start.x << ", " << ray_start.y << std::endl;
 
-	glm::mat4 InverseProjectionMatrix = glm::inverse(Core::GetCore()->GetCamera()->GetProjectionMatrix());
-	glm::mat4 InverseViewMatrix = glm::inverse(Core::GetCore()->GetCamera()->GetViewMatrix());
-
-	glm::vec4 ray_start_camera = InverseProjectionMatrix * ray_start;
-	ray_start_camera /= ray_start_camera.w;
-	glm::vec4 ray_start_world = InverseViewMatrix       * ray_start_camera;
-	ray_start_world /= ray_start_world.w;
-	glm::vec4 ray_end_camera = InverseProjectionMatrix * ray_end;
-	ray_end_camera /= ray_end_camera.w;
-	glm::vec4 ray_end_world = InverseViewMatrix       * ray_end_camera;
-	ray_end_world /= ray_end_world.w;
-
-	glm::vec3 ray_dir_world(ray_end_world - ray_start_world);
-
-	out_origin = glm::vec3(ray_start_world);
-	out_direction = glm::normalize(ray_dir_world);
-
-	//out_origin = m_position + m_direction;
-	//out_direction = m_direction;
+	glm::vec4 temp = (glm::inverse(m_proj * m_view)) * ray_start;
+	out_origin = glm::vec3(temp.x, temp.y, temp.z);
+	out_direction = m_direction;
 }
