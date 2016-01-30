@@ -11,6 +11,7 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 {
 	Rocket::Core::SetSystemInterface(&m_system);
 	Rocket::Core::SetRenderInterface(Core::GetCore()->GetGraphics()->GetRenderer().get());
+	
 	if (!Rocket::Core::Initialise())
 	{
 		throw HpseException("Failed to initialise librocket", __FILE__, __LINE__);
@@ -18,7 +19,7 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 
 	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(window.getSize().x, window.getSize().y));
 	Rocket::Debugger::Initialise(m_context);
-
+	m_context->AddEventListener("LoadMaps", &m_listener, false);
 }
 
 GUI::~GUI()
@@ -35,7 +36,7 @@ void GUI::Update()
 
 void GUI::Render()
 {
-	m_context->Render();
+	//m_context->Render();
 }
 
 
