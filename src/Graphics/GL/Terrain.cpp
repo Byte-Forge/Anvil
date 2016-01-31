@@ -129,7 +129,7 @@ GL::Terrain::~Terrain()
 void GL::Terrain::Render(int mode)
 {
 	glBindVertexArray(m_vao);
-	glUniformMatrix4fv(m_modelMatrixIDs[mode], 1, GL_FALSE, &m_mod[0][0]);
+	glUniformMatrix4fv(m_modelMatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(m_mod));
 	glUniformMatrix4fv(m_viewMatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewMatrix()));
 	glUniformMatrix3fv(m_modelView3x3MatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)));
 	glUniformMatrix4fv(m_matrixIDs[mode], 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod));
