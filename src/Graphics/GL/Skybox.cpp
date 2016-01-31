@@ -307,12 +307,27 @@ GL::Skybox::Skybox()
 	m_fbo = GL::Buffer(ELEMENT_ARRAY_BUFFER);
 	m_fbo.Bind();
 	m_fbo.Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
+
+	glEnableVertexAttribArray(0);
+	m_vbo.Bind();
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	m_uvbo.Bind();
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glEnableVertexAttribArray(2);
+	m_nbo.Bind();
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 }
 
 GL::Skybox::~Skybox()
 {
-	glDeleteVertexArrays(1, &m_vao);
-	m_vao = 0;
+	if (m_vao)
+	{
+		glDeleteVertexArrays(1, &m_vao);
+		m_vao = 0;
+	}
 }
 
 void GL::Skybox::Update()
@@ -327,18 +342,6 @@ void GL::Skybox::Render(int mode)
 	glm::vec3 pos = Core::GetCore()->GetCamera()->GetPosition();
 	glUniform3f(m_CameraPos, pos.x, pos.y, pos.z);
 
-	glEnableVertexAttribArray(0);
-	m_vbo.Bind();
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glEnableVertexAttribArray(1);
-	m_uvbo.Bind();
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glEnableVertexAttribArray(2);
-	m_nbo.Bind();
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
 	m_fbo.Bind();
 
 	glActiveTexture(GL_TEXTURE0); //diffuse texture
@@ -346,8 +349,4 @@ void GL::Skybox::Render(int mode)
 	glUniform1i(m_diffID, 0);
 
 	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
 }

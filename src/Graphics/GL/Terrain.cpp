@@ -83,28 +83,41 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 		m_tessLevelIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("maxTessellation", i));
 	}
 
+	glGenVertexArrays(1, &m_vao);
+	glBindVertexArray(m_vao);
+
 	m_vbo = GL::Buffer(ARRAY_BUFFER);
 	m_vbo.Bind();
 	m_vbo.Update(m_vertices.size() * sizeof(glm::vec3), &m_vertices[0]);
 
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
 	m_uvbo = GL::Buffer(ARRAY_BUFFER);
 	m_uvbo.Bind();
 	m_uvbo.Update(m_uvs.size() * sizeof(glm::vec2), &m_uvs[0]);
+	
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	m_nbo = GL::Buffer(ARRAY_BUFFER);
 	m_nbo.Bind();
 	m_nbo.Update(m_normals.size() * sizeof(glm::vec3), &m_normals[0]);
 
-	m_fbo = GL::Buffer(ELEMENT_ARRAY_BUFFER);
-	m_fbo.Bind();
-	m_fbo.Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	m_mbo = GL::Buffer(ARRAY_BUFFER);
 	m_mbo.Bind();
 	m_mbo.Update(m_materials.size() * sizeof(std::uint32_t), &m_materials[0]);
 
-	glGenVertexArrays(1, &m_vao);
-	glBindVertexArray(m_vao);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	m_fbo = GL::Buffer(ELEMENT_ARRAY_BUFFER);
+	m_fbo.Bind();
+	m_fbo.Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
+
 }
 
 GL::Terrain::~Terrain()
@@ -117,32 +130,20 @@ void GL::Terrain::Render(int mode)
 {
 	glBindVertexArray(m_vao);
 	glUniformMatrix4fv(m_modelMatrixIDs[mode], 1, GL_FALSE, &m_mod[0][0]);
-	glUniformMatrix4fv(m_viewMatrixIDs[mode], 1, GL_FALSE, &Core::GetCore()->GetCamera()->GetViewMatrix()[0][0]);
-	glUniformMatrix3fv(m_modelView3x3MatrixIDs[mode], 1, GL_FALSE, &glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)[0][0]);
-	glUniformMatrix4fv(m_matrixIDs[mode], 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod)[0][0]);
+	glUniformMatrix4fv(m_viewMatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewMatrix()));
+	glUniformMatrix3fv(m_modelView3x3MatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)));
+	glUniformMatrix4fv(m_matrixIDs[mode], 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod));
 
 	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
 	glUniform3f(m_lightIDs[mode], lightPos.x, lightPos.y, lightPos.z);
 
 	glUniform1i(m_tessLevelIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessellationLevel());
 
-	glEnableVertexAttribArray(0);
 	m_vbo.Bind();
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glEnableVertexAttribArray(1);
-	m_uvbo.Bind();
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glEnableVertexAttribArray(2);
 	m_nbo.Bind();
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
+	m_uvbo.Bind();
 	m_fbo.Bind();
-
-	glEnableVertexAttribArray(3);
 	m_mbo.Bind();
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();
@@ -169,10 +170,6 @@ void GL::Terrain::Render(int mode)
 
 	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(3);
 }
 
 void GL::Terrain::Update()
