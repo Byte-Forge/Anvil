@@ -161,7 +161,7 @@ void GL::Terrain::Render(int mode)
 
 	//used for tesselation
 	glPatchParameteri(GL_PATCH_VERTICES, 3);
-
+	m_fbo.Bind();
 	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
 
 }

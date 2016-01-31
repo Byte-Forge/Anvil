@@ -48,7 +48,7 @@ struct Vertex
 	glm::vec4 Color;
 };
 
-#ifndef NDEBUG
+#if 1
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
                                GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
@@ -103,7 +103,7 @@ RendererGL::RendererGL()
 {
     flextInit();
 
-	#ifndef NDEBUG
+	#if 1
 	if (FLEXT_ARB_debug_output)
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
         glDebugMessageCallbackARB(debugCallback, nullptr);
@@ -244,16 +244,12 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 	GLGeometry* geometry = new GLGeometry();
 	geometry->m_numVerts = num_indices;
 
-	glGenVertexArrays(1, &geometry->m_vao);
-	glBindVertexArray(geometry->m_vao);
-
 	glGenBuffers(1, &geometry->m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * num_vertices, &data[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &geometry->m_ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * num_indices, indices, GL_STATIC_DRAW);
+	glGenVertexArrays(1, &geometry->m_vao);
+	glBindVertexArray(geometry->m_vao);
 
 	// position
 	glEnableVertexAttribArray(0);
@@ -267,7 +263,9 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glGenBuffers(1, &geometry->m_ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * num_indices, indices, GL_STATIC_DRAW);
 
 	geometry->m_texture = texture;
 
@@ -296,6 +294,7 @@ void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle han
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
 	glDrawElements(GL_TRIANGLES, geometry->m_numVerts, GL_UNSIGNED_INT, nullptr);
 	glDisable(GL_BLEND);
 }
@@ -333,7 +332,6 @@ bool RendererGL::LoadTexture(Rocket::Core::TextureHandle & texture_handle, Rocke
 	unsigned char* buffer = new unsigned char[buffer_size];
 	file_interface->Read(buffer, buffer_size, file_handle);
 	file_interface->Close(file_handle);
-
 
 	unsigned char *data = stbi_load_from_memory(buffer, buffer_size, &texture_dimensions.x, &texture_dimensions.y, NULL, STBI_rgb_alpha);
 	if (data == NULL)
