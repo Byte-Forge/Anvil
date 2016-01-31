@@ -281,9 +281,6 @@ void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle han
 
 	GLGeometry* geometry = reinterpret_cast<GLGeometry*>(handle);
 	glBindVertexArray(geometry->m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
 	glBindTexture(GL_TEXTURE_2D, geometry->m_texture);
 	
 	if (geometry->m_texture)

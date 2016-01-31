@@ -139,12 +139,6 @@ void GL::Terrain::Render(int mode)
 
 	glUniform1i(m_tessLevelIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessellationLevel());
 
-	m_vbo.Bind();
-	m_nbo.Bind();
-	m_uvbo.Bind();
-	m_fbo.Bind();
-	m_mbo.Bind();
-
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();
 	glUniform1i(m_diffIDs[mode], 0);
