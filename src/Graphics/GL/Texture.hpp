@@ -16,6 +16,7 @@ namespace hpse
         {
         public:
             ~Texture();
+			Texture & operator=(const Texture&) = delete;
 
 			bool Load(const gli::texture& tex);
 			bool Load(std::vector<gli::texture> textures);

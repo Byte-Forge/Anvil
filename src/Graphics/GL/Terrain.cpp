@@ -86,37 +86,37 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
-	m_vbo = GL::Buffer(ARRAY_BUFFER);
-	m_vbo.Bind();
-	m_vbo.Update(m_vertices.size() * sizeof(glm::vec3), &m_vertices[0]);
+	m_vbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+	m_vbo->Bind();
+	m_vbo->Update(m_vertices.size() * sizeof(glm::vec3), &m_vertices[0]);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	m_uvbo = GL::Buffer(ARRAY_BUFFER);
-	m_uvbo.Bind();
-	m_uvbo.Update(m_uvs.size() * sizeof(glm::vec2), &m_uvs[0]);
+	m_uvbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+	m_uvbo->Bind();
+	m_uvbo->Update(m_uvs.size() * sizeof(glm::vec2), &m_uvs[0]);
 	
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	m_nbo = GL::Buffer(ARRAY_BUFFER);
-	m_nbo.Bind();
-	m_nbo.Update(m_normals.size() * sizeof(glm::vec3), &m_normals[0]);
+	m_nbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+	m_nbo->Bind();
+	m_nbo->Update(m_normals.size() * sizeof(glm::vec3), &m_normals[0]);
 
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	m_mbo = GL::Buffer(ARRAY_BUFFER);
-	m_mbo.Bind();
-	m_mbo.Update(m_materials.size() * sizeof(std::uint32_t), &m_materials[0]);
+	m_mbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+	m_mbo->Bind();
+	m_mbo->Update(m_materials.size() * sizeof(std::uint32_t), &m_materials[0]);
 
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	m_fbo = GL::Buffer(ELEMENT_ARRAY_BUFFER);
-	m_fbo.Bind();
-	m_fbo.Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
+	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
+	m_fbo->Bind();
+	m_fbo->Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
 
 }
 
@@ -161,7 +161,7 @@ void GL::Terrain::Render(int mode)
 
 	//used for tesselation
 	glPatchParameteri(GL_PATCH_VERTICES, 3);
-	m_fbo.Bind();
+	m_fbo->Bind();
 	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
 
 }
@@ -173,7 +173,7 @@ void GL::Terrain::Update()
 		m_faces = m_quadtree->GetTriangles(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray());
 		if (!m_faces.size() == 0)
 		{
-			m_fbo.Bind();
+			m_fbo->Bind();
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
 			faces_changed = false;
 		}
@@ -181,22 +181,22 @@ void GL::Terrain::Update()
 
 	if (heightmap_changed)
 	{
-		m_vbo.Bind();
+		m_vbo->Bind();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_vertices.size(), &m_vertices[0], GL_STATIC_DRAW);
 
-		m_nbo.Bind();
+		m_nbo->Bind();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_normals.size(), &m_normals[0], GL_STATIC_DRAW);
 		heightmap_changed = false;
 	}
 	if (uvs_changed)
 	{
-		m_uvbo.Bind();
+		m_uvbo->Bind();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_uvs.size(), &m_uvs[0], GL_STATIC_DRAW);
 		uvs_changed = false;
 	}
 	if (materials_changed)
 	{
-		m_mbo.Bind();
+		m_mbo->Bind();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_materials.size(), &m_materials[0], GL_STATIC_DRAW);
 		materials_changed = false;
 	}

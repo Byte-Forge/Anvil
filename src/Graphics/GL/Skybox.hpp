@@ -33,10 +33,10 @@ namespace hpse
 			std::vector<std::uint32_t> m_faces;
 
 			GLuint m_vao;
-			Buffer m_vbo;
-			Buffer m_uvbo;
-			Buffer m_nbo;
-			Buffer m_fbo;
+			std::unique_ptr<Buffer> m_vbo;
+			std::unique_ptr<Buffer> m_uvbo;
+			std::unique_ptr<Buffer> m_nbo;
+			std::unique_ptr<Buffer> m_fbo;
 		};
 	}
 }

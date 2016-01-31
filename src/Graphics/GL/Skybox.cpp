@@ -50,15 +50,6 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ 0.5, 0.66 });
 	m_uvs.push_back({ 0.75, 0.33 });
 	m_uvs.push_back({ 0.5, 0.33 });
-	/*
-	m_uvs.push_back({ v1.x, v1.y, v1.z, 5 });
-	m_uvs.push_back({ v4.x, v4.y, v4.z, 5 });
-	m_uvs.push_back({ v8.x, v8.y, v8.z, 5 });
-
-	m_uvs.push_back({ v1.x, v1.y, v1.z, 5 });
-	m_uvs.push_back({ v8.x, v8.y, v8.z, 5 });
-	m_uvs.push_back({ v5.x, v5.y, v5.z, 5 });
-	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -93,16 +84,6 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ 0.25, 0.33 });
 	m_uvs.push_back({ 0.0, 0.33 });
 
-	/*
-	m_uvs.push_back({ v3.x, v3.y, v3.z, 4 });
-	m_uvs.push_back({ v2.x, v2.y, v2.z, 4 });
-	m_uvs.push_back({ v6.x, v6.y, v6.z, 4 });
-
-	m_uvs.push_back({ v3.x, v3.y, v3.z, 4 });
-	m_uvs.push_back({ v6.x, v6.y, v6.z, 4 });
-	m_uvs.push_back({ v7.x, v7.y, v7.z, 4 });
-	*/
-
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -135,16 +116,6 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ 0.25, 0.66 });
 	m_uvs.push_back({ 0.5, 0.33 });
 	m_uvs.push_back({ 0.25, 0.33 });
-
-	/*
-	m_uvs.push_back({ v2.x, v2.y, v2.z, 1 });
-	m_uvs.push_back({ v1.x, v1.y, v1.z, 1 });
-	m_uvs.push_back({ v5.x, v5.y, v5.z, 1 });
-
-	m_uvs.push_back({ v2.x, v2.y, v2.z, 1 });
-	m_uvs.push_back({ v5.x, v5.y, v5.z, 1 });
-	m_uvs.push_back({ v6.x, v6.y, v6.z, 1 });
-	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -179,16 +150,6 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ 1.0, 0.33 });
 	m_uvs.push_back({ 0.75, 0.33 });
 
-	/*
-	m_uvs.push_back({ v4.x, v4.y, v4.z, 0 });
-	m_uvs.push_back({ v3.x, v3.y, v3.z, 0 });
-	m_uvs.push_back({ v7.x, v7.y, v7.z, 0 });
-
-	m_uvs.push_back({ v4.x, v4.y, v4.z, 0 });
-	m_uvs.push_back({ v7.x, v7.y, v7.z, 0 });
-	m_uvs.push_back({ v8.x, v8.y, v8.z, 0 });
-	*/
-
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -221,16 +182,6 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ 0.25, 0.33 });
 	m_uvs.push_back({ 0.5, 0.0 });
 	m_uvs.push_back({ 0.25, 0.0 });
-
-	/*
-	m_uvs.push_back({ v5.x, v5.y, v5.z, 2 });
-	m_uvs.push_back({ v8.x, v8.y, v8.z, 2 });
-	m_uvs.push_back({ v7.x, v7.y, v7.z, 2 });
-
-	m_uvs.push_back({ v5.x, v5.y, v5.z, 2 });
-	m_uvs.push_back({ v7.x, v7.y, v7.z, 2 });
-	m_uvs.push_back({ v6.x, v6.y, v6.z, 2 });
-	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -265,15 +216,6 @@ GL::Skybox::Skybox()
 	m_uvs.push_back({ 0.5, 0.66 });
 	m_uvs.push_back({ 0.25, 0.66 });
 
-	/*
-	m_uvs.push_back({ v2.x, v2.y, v2.z, 3 });
-	m_uvs.push_back({ v3.x, v3.y, v3.z, 3 });
-	m_uvs.push_back({ v4.x, v4.y, v4.z, 3 });
-
-	m_uvs.push_back({ v2.x, v2.y, v2.z, 3 });
-	m_uvs.push_back({ v4.x, v4.y, v4.z, 3 });
-	m_uvs.push_back({ v1.x, v1.y, v1.z, 3 });
-	*/
 
 	m_faces.push_back(index++);
 	m_faces.push_back(index++);
@@ -289,33 +231,34 @@ GL::Skybox::Skybox()
 	m_matrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("MVP");
 	m_CameraPos = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("CameraPosition");
 
+
+	m_vbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+	m_vbo->Bind();
+	m_vbo->Update(m_vertices.size() * sizeof(glm::vec3), &m_vertices[0]);
+	
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
-
-	m_vbo = GL::Buffer(ARRAY_BUFFER);
-	m_vbo.Bind();
-	m_vbo.Update(m_vertices.size() * sizeof(glm::vec3), &m_vertices[0]);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	m_uvbo = GL::Buffer(ARRAY_BUFFER);
-	m_uvbo.Bind();
-	m_uvbo.Update(m_uvs.size() * sizeof(glm::vec2), &m_uvs[0]);
+	m_uvbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+	m_uvbo->Bind();
+	m_uvbo->Update(m_uvs.size() * sizeof(glm::vec2), &m_uvs[0]);
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	m_nbo = GL::Buffer(ARRAY_BUFFER);
-	m_nbo.Bind();
-	m_nbo.Update(m_normals.size() * sizeof(glm::vec3), &m_normals[0]);
+	m_nbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+	m_nbo->Bind();
+	m_nbo->Update(m_normals.size() * sizeof(glm::vec3), &m_normals[0]);
 
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-	m_fbo = GL::Buffer(ELEMENT_ARRAY_BUFFER);
-	m_fbo.Bind();
-	m_fbo.Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);	
+	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
+	m_fbo->Bind();
+	m_fbo->Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);	
 }
 
 GL::Skybox::~Skybox()
@@ -343,6 +286,6 @@ void GL::Skybox::Render(int mode)
 	m_diff->Bind();
 	glUniform1i(m_diffID, 0);
 
-	m_fbo.Bind();
+	m_fbo->Bind();
 	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
 }

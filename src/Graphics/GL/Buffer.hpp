@@ -21,7 +21,10 @@ namespace hpse
 		{
 		public:
 			Buffer(BufferType type = ARRAY_BUFFER);
+			Buffer(const Buffer& that) = delete;
 			~Buffer();
+
+			Buffer & operator=(const Buffer&) = delete;
 
 			void Bind();
 			void Update(unsigned int bufferSize, const void* data, DrawType draw = STATIC);

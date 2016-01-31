@@ -10,13 +10,8 @@ Core::Core()
 {
 	m_instance = this;
 
-#ifdef NDEBUG
 	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Core));
-#else
-	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
-		sf::ContextSettings(24, 8, 0, 4, 5, sf::ContextSettings::Debug));
-#endif	
 
 	m_audio = std::make_unique<Audio>();
 	m_graphics = std::make_unique<Graphics>();

@@ -44,7 +44,7 @@ namespace hpse
 			std::vector<GLuint> m_matrixIDs, m_modelMatrixIDs, m_viewMatrixIDs, m_modelView3x3MatrixIDs;
 
 			GLuint m_vao;
-			Buffer m_vbo, m_uvbo, m_nbo, m_fbo, m_mbo;
+			std::unique_ptr<Buffer> m_vbo, m_uvbo, m_nbo, m_fbo, m_mbo;
         };
     }
 }
