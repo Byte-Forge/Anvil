@@ -36,7 +36,7 @@ void GUI::Update()
 
 void GUI::Render()
 {
-	//m_context->Render();
+	m_context->Render();
 }
 
 

@@ -40,8 +40,6 @@ namespace hpse
 		/// Called by Rocket when a loaded texture is no longer required.
 		void ReleaseTexture(Rocket::Core::TextureHandle texture_handle);
 	private:
-		GLuint m_guiVbo;
-		GLuint m_guiVao;
-		GLuint m_guiIbo;
+		GLuint m_guiOrthoID, m_guiTranslID, m_guiSamplerID, m_guiUseTexID;
 	};
 }

@@ -322,6 +322,7 @@ void GL::Skybox::Update()
 
 void GL::Skybox::Render(int mode)
 {
+	glBindVertexArray(m_vao);
 	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, &(Core::GetCore()->GetCamera()->GetViewProjectionMatrix())[0][0]);
 	glm::vec3 pos = Core::GetCore()->GetCamera()->GetPosition();
 	glUniform3f(m_CameraPos, pos.x, pos.y, pos.z);

@@ -1,4 +1,4 @@
-#include "RendererGL.hpp"
+﻿#include "RendererGL.hpp"
 #include "Texture.hpp"
 #include "Shader.hpp"
 #include "../Types.hpp"
@@ -9,6 +9,37 @@
 #include <iostream>
 
 using namespace hpse;
+
+class GLGeometry
+{
+public:
+	GLuint m_vbo, m_ibo, m_vao,m_texture;
+	int m_numVerts;
+
+	GLGeometry() : m_vbo(0), m_ibo(0), m_texture(0), m_numVerts(0),m_vao(0)
+	{
+	};
+
+	~GLGeometry()
+	{
+		if (m_vao)
+			glDeleteVertexArrays(1, &m_vao);
+
+		if (m_vbo)
+			glDeleteBuffers(1, &m_vbo);
+
+		if (m_ibo)
+			glDeleteBuffers(1, &m_ibo);
+
+		m_vbo = m_ibo = 0;
+	};
+};
+
+struct Vertex
+{
+	glm::vec2 Position, TexCoord;
+	glm::vec4 Color;
+};
 
 #ifndef NDEBUG
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
@@ -64,9 +95,10 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 RendererGL::RendererGL()
 {
     flextInit();
-	
+
 	#ifndef NDEBUG
-    if(FLEXT_ARB_debug_output)
+	if (FLEXT_ARB_debug_output)
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
         glDebugMessageCallbackARB(debugCallback, nullptr);
 	#endif
 
@@ -87,6 +119,11 @@ RendererGL::RendererGL()
 	m_guiShader->Load("shader/gui.vert", "shader/gui.frag");
 	m_guiShader->Compile();
 
+	m_guiTranslID = static_cast<GLuint>(m_guiShader->GetUniformLocation("translation"));
+	m_guiOrthoID = static_cast<GLuint>(m_guiShader->GetUniformLocation("ortho"));
+	m_guiSamplerID = static_cast<GLuint>(m_guiShader->GetUniformLocation("tex"));
+	m_guiUseTexID = static_cast<GLuint>(m_guiShader->GetUniformLocation("useTex"));
+
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/skybox.vert", "shader/skybox.frag");
 	m_skyboxShader->Compile();
@@ -103,23 +140,7 @@ RendererGL::RendererGL()
 
 RendererGL::~RendererGL()
 {	
-	if(m_guiVao)
-	{
-		glDeleteVertexArrays(1, &m_guiVao);
-		m_guiVao = 0;
-	}
-	
-	if (m_guiVbo)
-	{
-		glDeleteBuffers(1, &m_guiVbo);
-		m_guiVbo = 0;
-	}
-	
-	if (m_guiIbo)
-	{
-		glDeleteBuffers(1, &m_guiIbo);
-		m_guiIbo = 0;
-	}	
+
 }
 
 void RendererGL::Clear()
@@ -193,34 +214,6 @@ void RendererGL::PrintInfo()
     std::cout << "GLSL Version: " << glslversion << std::endl;
 }
 
-class GLGeometry
-{
-public:
-	GLuint m_vbo, m_ibo, m_texture;
-	int m_numVerts;
-
-	GLGeometry() : m_vbo(0), m_ibo(0), m_texture(0), m_numVerts(0)
-	{
-	};
-
-	~GLGeometry()
-	{
-		if (m_vbo)
-			glDeleteBuffers(1, &m_vbo);
-
-		if (m_ibo)
-			glDeleteBuffers(1, &m_ibo);
-
-		m_vbo = m_ibo = 0;
-	};
-};
-
-struct Vertex
-{
-	glm::vec2 Position, TexCoord;
-	glm::vec4 Color;
-};
-
 void RendererGL::RenderGeometry(Rocket::Core::Vertex * vertices, int num_vertices, int * indices,
 	int num_indices, Rocket::Core::TextureHandle texture, const Rocket::Core::Vector2f & translation)
 {
@@ -244,6 +237,9 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 	GLGeometry* geometry = new GLGeometry();
 	geometry->m_numVerts = num_indices;
 
+	glGenVertexArrays(1, &geometry->m_vao);
+	glBindVertexArray(geometry->m_vao);
+
 	glGenBuffers(1, &geometry->m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * num_vertices, &data[0], GL_STATIC_DRAW);
@@ -251,25 +247,6 @@ Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::V
 	glGenBuffers(1, &geometry->m_ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * num_indices, indices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	geometry->m_texture = texture;
-
-	return Rocket::Core::CompiledGeometryHandle(geometry);
-}
-
-void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle handle, const Rocket::Core::Vector2f & translation)
-{
-	glActiveTexture(GL_TEXTURE0);
-	m_guiShader->Use();
-	auto translID = static_cast<GLuint>(m_guiShader->GetUniformLocation("translation"));
-	auto orthoID = static_cast<GLuint>(m_guiShader->GetUniformLocation("ortho"));
-	auto samplerID = static_cast<GLuint>(m_guiShader->GetUniformLocation("tex"));
-	auto useTexID = static_cast<GLuint>(m_guiShader->GetUniformLocation("useTex"));
-
-	GLGeometry* geometry = reinterpret_cast<GLGeometry*>(handle);
-	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
 
 	// position
 	glEnableVertexAttribArray(0);
@@ -283,28 +260,40 @@ void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle han
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	geometry->m_texture = texture;
+
+	return Rocket::Core::CompiledGeometryHandle(geometry);
+}
+
+void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle handle, const Rocket::Core::Vector2f & translation)
+{
+	glActiveTexture(GL_TEXTURE0);
+	m_guiShader->Use();
+
+	GLGeometry* geometry = reinterpret_cast<GLGeometry*>(handle);
+	glBindVertexArray(geometry->m_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
 	glBindTexture(GL_TEXTURE_2D, geometry->m_texture);
 	
 	if (geometry->m_texture)
-		glUniform1i(useTexID, 1);
+		glUniform1i(m_guiUseTexID, 1);
 	else
-		glUniform1i(useTexID, 0);
+		glUniform1i(m_guiUseTexID, 0);
 
-	glUniform1i(samplerID, 0);
+	glUniform1i(m_guiSamplerID, 0);
 	
-	glUniform2f(translID, translation.x, translation.y);
+	glUniform2f(m_guiTranslID, translation.x, translation.y);
 	auto* mat = glm::value_ptr(Core::GetCore()->GetGraphics()->GetOrtho());
-	glUniformMatrix4fv(orthoID, 1, GL_FALSE, mat);
+	glUniformMatrix4fv(m_guiOrthoID, 1, GL_FALSE, mat);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDrawElements(GL_TRIANGLES, geometry->m_numVerts, GL_UNSIGNED_INT, nullptr);
 	glDisable(GL_BLEND);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
 }
 
 void RendererGL::ReleaseCompiledGeometry(Rocket::Core::CompiledGeometryHandle geometry)
@@ -375,4 +364,3 @@ void RendererGL::ReleaseTexture(Rocket::Core::TextureHandle texture_handle)
 	glDeleteTextures(1, &texture_handle);
 	texture_handle = 0;
 }
-
