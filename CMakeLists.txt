@@ -9,7 +9,7 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 #Use static SFML on windows
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	set(SFML_STATIC_LIBRARIES TRUE)
-	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
 else()
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
 endif()

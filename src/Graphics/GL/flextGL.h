@@ -89,7 +89,6 @@ typedef ptrdiff_t GLintptr;
 typedef ptrdiff_t GLsizeiptr;
 typedef int64_t GLint64;
 typedef uint64_t GLuint64;
-typedef uint64_t GLuint64EXT;
 typedef struct __GLsync *GLsync;
 typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam);
 
@@ -1074,10 +1073,6 @@ typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLen
 #define GL_BUFFER_IMMUTABLE_STORAGE 0x821F
 #define GL_BUFFER_STORAGE_FLAGS 0x8220
 
-/* GL_ARB_bindless_texture */
-
-#define GL_UNSIGNED_INT64_ARB 0x140F
-
 /* GL_ARB_robustness */
 
 #define GL_NO_ERROR 0
@@ -1090,60 +1085,6 @@ typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLen
 #define GL_NO_RESET_NOTIFICATION_ARB 0x8261
 
 /* --------------------------- FUNCTION PROTOTYPES --------------------------- */
-
-
-/* GL_ARB_bindless_texture */
-
-typedef GLuint64 (APIENTRY PFNGLGETIMAGEHANDLEARB_PROC (GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum format));
-typedef GLuint64 (APIENTRY PFNGLGETTEXTUREHANDLEARB_PROC (GLuint texture));
-typedef GLuint64 (APIENTRY PFNGLGETTEXTURESAMPLERHANDLEARB_PROC (GLuint texture, GLuint sampler));
-typedef void (APIENTRY PFNGLGETVERTEXATTRIBLUI64VARB_PROC (GLuint index, GLenum pname, GLuint64EXT * params));
-typedef GLboolean (APIENTRY PFNGLISIMAGEHANDLERESIDENTARB_PROC (GLuint64 handle));
-typedef GLboolean (APIENTRY PFNGLISTEXTUREHANDLERESIDENTARB_PROC (GLuint64 handle));
-typedef void (APIENTRY PFNGLMAKEIMAGEHANDLENONRESIDENTARB_PROC (GLuint64 handle));
-typedef void (APIENTRY PFNGLMAKEIMAGEHANDLERESIDENTARB_PROC (GLuint64 handle, GLenum access));
-typedef void (APIENTRY PFNGLMAKETEXTUREHANDLENONRESIDENTARB_PROC (GLuint64 handle));
-typedef void (APIENTRY PFNGLMAKETEXTUREHANDLERESIDENTARB_PROC (GLuint64 handle));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMHANDLEUI64ARB_PROC (GLuint program, GLint location, GLuint64 value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMHANDLEUI64VARB_PROC (GLuint program, GLint location, GLsizei count, const GLuint64 * values));
-typedef void (APIENTRY PFNGLUNIFORMHANDLEUI64ARB_PROC (GLint location, GLuint64 value));
-typedef void (APIENTRY PFNGLUNIFORMHANDLEUI64VARB_PROC (GLint location, GLsizei count, const GLuint64 * value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL1UI64ARB_PROC (GLuint index, GLuint64EXT x));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL1UI64VARB_PROC (GLuint index, const GLuint64EXT * v));
-
-GLAPI PFNGLGETIMAGEHANDLEARB_PROC *glpfGetImageHandleARB;
-GLAPI PFNGLGETTEXTUREHANDLEARB_PROC *glpfGetTextureHandleARB;
-GLAPI PFNGLGETTEXTURESAMPLERHANDLEARB_PROC *glpfGetTextureSamplerHandleARB;
-GLAPI PFNGLGETVERTEXATTRIBLUI64VARB_PROC *glpfGetVertexAttribLui64vARB;
-GLAPI PFNGLISIMAGEHANDLERESIDENTARB_PROC *glpfIsImageHandleResidentARB;
-GLAPI PFNGLISTEXTUREHANDLERESIDENTARB_PROC *glpfIsTextureHandleResidentARB;
-GLAPI PFNGLMAKEIMAGEHANDLENONRESIDENTARB_PROC *glpfMakeImageHandleNonResidentARB;
-GLAPI PFNGLMAKEIMAGEHANDLERESIDENTARB_PROC *glpfMakeImageHandleResidentARB;
-GLAPI PFNGLMAKETEXTUREHANDLENONRESIDENTARB_PROC *glpfMakeTextureHandleNonResidentARB;
-GLAPI PFNGLMAKETEXTUREHANDLERESIDENTARB_PROC *glpfMakeTextureHandleResidentARB;
-GLAPI PFNGLPROGRAMUNIFORMHANDLEUI64ARB_PROC *glpfProgramUniformHandleui64ARB;
-GLAPI PFNGLPROGRAMUNIFORMHANDLEUI64VARB_PROC *glpfProgramUniformHandleui64vARB;
-GLAPI PFNGLUNIFORMHANDLEUI64ARB_PROC *glpfUniformHandleui64ARB;
-GLAPI PFNGLUNIFORMHANDLEUI64VARB_PROC *glpfUniformHandleui64vARB;
-GLAPI PFNGLVERTEXATTRIBL1UI64ARB_PROC *glpfVertexAttribL1ui64ARB;
-GLAPI PFNGLVERTEXATTRIBL1UI64VARB_PROC *glpfVertexAttribL1ui64vARB;
-
-#define glGetImageHandleARB glpfGetImageHandleARB
-#define glGetTextureHandleARB glpfGetTextureHandleARB
-#define glGetTextureSamplerHandleARB glpfGetTextureSamplerHandleARB
-#define glGetVertexAttribLui64vARB glpfGetVertexAttribLui64vARB
-#define glIsImageHandleResidentARB glpfIsImageHandleResidentARB
-#define glIsTextureHandleResidentARB glpfIsTextureHandleResidentARB
-#define glMakeImageHandleNonResidentARB glpfMakeImageHandleNonResidentARB
-#define glMakeImageHandleResidentARB glpfMakeImageHandleResidentARB
-#define glMakeTextureHandleNonResidentARB glpfMakeTextureHandleNonResidentARB
-#define glMakeTextureHandleResidentARB glpfMakeTextureHandleResidentARB
-#define glProgramUniformHandleui64ARB glpfProgramUniformHandleui64ARB
-#define glProgramUniformHandleui64vARB glpfProgramUniformHandleui64vARB
-#define glUniformHandleui64ARB glpfUniformHandleui64ARB
-#define glUniformHandleui64vARB glpfUniformHandleui64vARB
-#define glVertexAttribL1ui64ARB glpfVertexAttribL1ui64ARB
-#define glVertexAttribL1ui64vARB glpfVertexAttribL1ui64vARB
 
 
 /* GL_ARB_buffer_storage */
@@ -2348,7 +2289,6 @@ GLAPI PFNGLUNIFORMSUBROUTINESUIV_PROC *glpfUniformSubroutinesuiv;
 
 /* --------------------------- CATEGORY DEFINES ------------------------------ */
 
-#define GL_ARB_bindless_texture
 #define GL_ARB_buffer_storage
 #define GL_ARB_debug_output
 #define GL_ARB_robustness
@@ -2374,7 +2314,6 @@ extern int FLEXT_ARB_debug_output;
 extern int FLEXT_ARB_texture_storage;
 extern int FLEXT_ARB_texture_compression_bptc;
 extern int FLEXT_ARB_buffer_storage;
-extern int FLEXT_ARB_bindless_texture;
 extern int FLEXT_ARB_robustness;
 
 int flextInit(void);

@@ -101,26 +101,6 @@ void flextLoadOpenGLFunctions(void)
     /* --- Function pointer loading --- */
 
 
-    /* GL_ARB_bindless_texture */
-
-    glpfGetImageHandleARB = (PFNGLGETIMAGEHANDLEARB_PROC*)get_proc("glGetImageHandleARB");
-    glpfGetTextureHandleARB = (PFNGLGETTEXTUREHANDLEARB_PROC*)get_proc("glGetTextureHandleARB");
-    glpfGetTextureSamplerHandleARB = (PFNGLGETTEXTURESAMPLERHANDLEARB_PROC*)get_proc("glGetTextureSamplerHandleARB");
-    glpfGetVertexAttribLui64vARB = (PFNGLGETVERTEXATTRIBLUI64VARB_PROC*)get_proc("glGetVertexAttribLui64vARB");
-    glpfIsImageHandleResidentARB = (PFNGLISIMAGEHANDLERESIDENTARB_PROC*)get_proc("glIsImageHandleResidentARB");
-    glpfIsTextureHandleResidentARB = (PFNGLISTEXTUREHANDLERESIDENTARB_PROC*)get_proc("glIsTextureHandleResidentARB");
-    glpfMakeImageHandleNonResidentARB = (PFNGLMAKEIMAGEHANDLENONRESIDENTARB_PROC*)get_proc("glMakeImageHandleNonResidentARB");
-    glpfMakeImageHandleResidentARB = (PFNGLMAKEIMAGEHANDLERESIDENTARB_PROC*)get_proc("glMakeImageHandleResidentARB");
-    glpfMakeTextureHandleNonResidentARB = (PFNGLMAKETEXTUREHANDLENONRESIDENTARB_PROC*)get_proc("glMakeTextureHandleNonResidentARB");
-    glpfMakeTextureHandleResidentARB = (PFNGLMAKETEXTUREHANDLERESIDENTARB_PROC*)get_proc("glMakeTextureHandleResidentARB");
-    glpfProgramUniformHandleui64ARB = (PFNGLPROGRAMUNIFORMHANDLEUI64ARB_PROC*)get_proc("glProgramUniformHandleui64ARB");
-    glpfProgramUniformHandleui64vARB = (PFNGLPROGRAMUNIFORMHANDLEUI64VARB_PROC*)get_proc("glProgramUniformHandleui64vARB");
-    glpfUniformHandleui64ARB = (PFNGLUNIFORMHANDLEUI64ARB_PROC*)get_proc("glUniformHandleui64ARB");
-    glpfUniformHandleui64vARB = (PFNGLUNIFORMHANDLEUI64VARB_PROC*)get_proc("glUniformHandleui64vARB");
-    glpfVertexAttribL1ui64ARB = (PFNGLVERTEXATTRIBL1UI64ARB_PROC*)get_proc("glVertexAttribL1ui64ARB");
-    glpfVertexAttribL1ui64vARB = (PFNGLVERTEXATTRIBL1UI64VARB_PROC*)get_proc("glVertexAttribL1ui64vARB");
-
-
     /* GL_ARB_buffer_storage */
 
     glpfBufferStorage = (PFNGLBUFFERSTORAGE_PROC*)get_proc("glBufferStorage");
@@ -537,29 +517,9 @@ int FLEXT_ARB_debug_output = GL_FALSE;
 int FLEXT_ARB_texture_storage = GL_FALSE;
 int FLEXT_ARB_texture_compression_bptc = GL_FALSE;
 int FLEXT_ARB_buffer_storage = GL_FALSE;
-int FLEXT_ARB_bindless_texture = GL_FALSE;
 int FLEXT_ARB_robustness = GL_FALSE;
 
 /* ---------------------- Function pointer definitions --------------------- */
-
-/* GL_ARB_bindless_texture */
-
-PFNGLGETIMAGEHANDLEARB_PROC* glpfGetImageHandleARB = NULL;
-PFNGLGETTEXTUREHANDLEARB_PROC* glpfGetTextureHandleARB = NULL;
-PFNGLGETTEXTURESAMPLERHANDLEARB_PROC* glpfGetTextureSamplerHandleARB = NULL;
-PFNGLGETVERTEXATTRIBLUI64VARB_PROC* glpfGetVertexAttribLui64vARB = NULL;
-PFNGLISIMAGEHANDLERESIDENTARB_PROC* glpfIsImageHandleResidentARB = NULL;
-PFNGLISTEXTUREHANDLERESIDENTARB_PROC* glpfIsTextureHandleResidentARB = NULL;
-PFNGLMAKEIMAGEHANDLENONRESIDENTARB_PROC* glpfMakeImageHandleNonResidentARB = NULL;
-PFNGLMAKEIMAGEHANDLERESIDENTARB_PROC* glpfMakeImageHandleResidentARB = NULL;
-PFNGLMAKETEXTUREHANDLENONRESIDENTARB_PROC* glpfMakeTextureHandleNonResidentARB = NULL;
-PFNGLMAKETEXTUREHANDLERESIDENTARB_PROC* glpfMakeTextureHandleResidentARB = NULL;
-PFNGLPROGRAMUNIFORMHANDLEUI64ARB_PROC* glpfProgramUniformHandleui64ARB = NULL;
-PFNGLPROGRAMUNIFORMHANDLEUI64VARB_PROC* glpfProgramUniformHandleui64vARB = NULL;
-PFNGLUNIFORMHANDLEUI64ARB_PROC* glpfUniformHandleui64ARB = NULL;
-PFNGLUNIFORMHANDLEUI64VARB_PROC* glpfUniformHandleui64vARB = NULL;
-PFNGLVERTEXATTRIBL1UI64ARB_PROC* glpfVertexAttribL1ui64ARB = NULL;
-PFNGLVERTEXATTRIBL1UI64VARB_PROC* glpfVertexAttribL1ui64vARB = NULL;
 
 /* GL_ARB_buffer_storage */
 
@@ -966,9 +926,6 @@ static void add_extension(const char* extension)
     }
     if (strcmp("GL_ARB_buffer_storage", extension) == 0) {
         FLEXT_ARB_buffer_storage = GL_TRUE;
-    }
-    if (strcmp("GL_ARB_bindless_texture", extension) == 0) {
-        FLEXT_ARB_bindless_texture = GL_TRUE;
     }
     if (strcmp("GL_ARB_robustness", extension) == 0) {
         FLEXT_ARB_robustness = GL_TRUE;
