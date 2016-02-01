@@ -34,12 +34,14 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 	Rocket::Core::Lua::Interpreter::Initialise();
 	Rocket::Controls::Lua::RegisterTypes(Rocket::Core::Lua::Interpreter::GetLuaState());
 
+	m_script.Initialise(Rocket::Core::Lua::Interpreter::GetLuaState());
 	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(window.getSize().x, window.getSize().y));
 	Rocket::Debugger::Initialise(m_context);
 }
 
 GUI::~GUI()
 {
+	Rocket::Core::Lua::Interpreter::Shutdown();
 	m_context->RemoveReference();
 	Rocket::Core::Shutdown();
 }
