@@ -34,8 +34,22 @@ FIND_LIBRARY(ROCKET_CONTROLS
   PATHS
   ${rocket_search_paths}
 )
+FIND_LIBRARY(ROCKET_CONTROLS_LUA
+  RocketControlsLua
+  HINTS
+  PATH_SUFFIXES ${rocket_search_suffixes}
+  PATHS
+  ${rocket_search_paths}
+)
 FIND_LIBRARY(ROCKET_CORE
   RocketCore
+  HINTS
+  PATH_SUFFIXES ${rocket_search_suffixes}
+  PATHS
+  ${rocket_search_paths}
+)
+FIND_LIBRARY(ROCKET_CORE_LUA
+  RocketCoreLua
   HINTS
   PATH_SUFFIXES ${rocket_search_suffixes}
   PATHS
@@ -56,8 +70,22 @@ FIND_LIBRARY(ROCKET_CONTROLS_D
   PATHS
   ${rocket_search_paths}
 )
+FIND_LIBRARY(ROCKET_CONTROLS_LUA_D
+  RocketControlsLua_d
+  HINTS
+  PATH_SUFFIXES ${rocket_search_suffixes}
+  PATHS
+  ${rocket_search_paths}
+)
 FIND_LIBRARY(ROCKET_CORE_D
   RocketCore_d
+  HINTS
+  PATH_SUFFIXES ${rocket_search_suffixes}
+  PATHS
+  ${rocket_search_paths}
+)
+FIND_LIBRARY(ROCKET_CORE_LUA_D
+  RocketCoreLua_d
   HINTS
   PATH_SUFFIXES ${rocket_search_suffixes}
   PATHS
@@ -76,10 +104,10 @@ SET(ROCKET_FOUND "NO")
 IF(ROCKET_CONTROLS AND ROCKET_CORE AND ROCKET_DEBUGGER AND ROCKET_INCLUDE_DIR)
     SET(ROCKET_FOUND "YES")
     IF(ROCKET_CONTROLS_D AND ROCKET_CORE_D AND ROCKET_DEBUGGER_D)
-        SET(ROCKET_LIBRARIES optimized ${ROCKET_CONTROLS} optimized ${ROCKET_CORE} optimized ${ROCKET_DEBUGGER})
-        SET(ROCKET_LIBRARIES ${ROCKET_LIBRARIES} debug ${ROCKET_CONTROLS_D} debug ${ROCKET_CORE_D} debug ${ROCKET_DEBUGGER_D})
+        SET(ROCKET_LIBRARIES optimized ${ROCKET_CONTROLS} optimized ${ROCKET_CONTROLS_LUA} optimized ${ROCKET_CORE} optimized ${ROCKET_CORE_LUA} optimized ${ROCKET_DEBUGGER})
+        SET(ROCKET_LIBRARIES ${ROCKET_LIBRARIES} debug ${ROCKET_CONTROLS_D} debug ${ROCKET_CONTROLS_LUA_D} debug ${ROCKET_CORE_D} debug ${ROCKET_CORE_LUA_D} debug ${ROCKET_DEBUGGER_D})
     ELSE()
-        SET(ROCKET_LIBRARIES ${ROCKET_CONTROLS} ${ROCKET_CORE} ${ROCKET_DEBUGGER})
+        SET(ROCKET_LIBRARIES ${ROCKET_CONTROLS} ${ROCKET_CONTROLS_LUA} ${ROCKET_CORE} ${ROCKET_CORE_LUA} ${ROCKET_DEBUGGER})
     ENDIF()
 ENDIF()
 

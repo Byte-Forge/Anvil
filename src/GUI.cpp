@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Exception.hpp"
 #include <Rocket/Debugger.h>
+#include <Rocket/Core/Lua/Interpreter.h>
+#include <Rocket/Controls/Lua/Controls.h>
 #include "Core.hpp"
 using namespace hpse;
 
@@ -11,15 +13,17 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 {
 	Rocket::Core::SetSystemInterface(&m_system);
 	Rocket::Core::SetRenderInterface(Core::GetCore()->GetGraphics()->GetRenderer().get());
-	
+
 	if (!Rocket::Core::Initialise())
 	{
 		throw HpseException("Failed to initialise librocket", __FILE__, __LINE__);
 	}
 
+	Rocket::Core::Lua::Interpreter::Initialise();
+	Rocket::Controls::Lua::RegisterTypes(Rocket::Core::Lua::Interpreter::GetLuaState());
+
 	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(window.getSize().x, window.getSize().y));
 	Rocket::Debugger::Initialise(m_context);
-	m_context->AddEventListener("LoadMaps", &m_listener, false);
 }
 
 GUI::~GUI()
@@ -49,7 +53,7 @@ void GUI::LoadFile(const std::string& file)
 {
 	auto* document = m_context->LoadDocument(file.c_str());
 	if (document)
-	{
+	{	
 		document->Show();
 		document->RemoveReference();
 		std::cout << "Document " << file << " is loaded" << std::endl;
