@@ -19,14 +19,14 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 {
 	m_quadtree = std::make_shared<Quadtree>(glm::vec2(m_width / 2.f, m_height / 2.f), glm::vec2(m_width / 2.f, m_height / 2.f));
 
-	long long begin = (std::chrono::system_clock::now().time_since_epoch()).count();
+	auto begin = std::chrono::system_clock::now();
 
 	Generate();
-
 	UpdateBufferData();
 
-	long long end = (std::chrono::system_clock::now().time_since_epoch()).count();
-	std::cout << "# created the terrain in: " << (end - begin) / 10000 << "ms" << std::endl;
+	auto end = std::chrono::system_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin);
+	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;
 
 	//this should be in a WorldBuilder class or sth
 	std::vector<std::string> diffuseTextures;
