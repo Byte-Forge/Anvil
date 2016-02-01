@@ -41,13 +41,16 @@ find_package(FREETYPE REQUIRED)
 #Find GLI
 find_package(GLI REQUIRED)
 
+#Find Cereal
+find_package(Cereal REQUIRED)
+
 #Compile all files
 file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/[a-z,A-Z]*.[c,h,def]*)
 add_executable(${PROJ_NAME} ${SRC_FILES})
 
 #Include our dependencies
 target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
-						${ROCKET_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
+						${ROCKET_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${CEREAL_INCLUDE_DIRS})
 
 #Link our dependencies
 target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${ROCKET_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES}
