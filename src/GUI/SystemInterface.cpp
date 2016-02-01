@@ -300,7 +300,8 @@ bool SystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocket::Cor
 		Type = "[Assert]";
 		break;
 	case Rocket::Core::Log::LT_WARNING:
-		Type = "[Warning]";
+		//suppress warnings
+		return true;
 		break;
 	case Rocket::Core::Log::LT_INFO:
 		Type = "[Info]";

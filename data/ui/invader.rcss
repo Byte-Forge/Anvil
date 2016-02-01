@@ -100,13 +100,13 @@ div#content
 p
 {
 	text-align: left;
-	margin-bottom: 1em;
+	margin-bottom: 1 em;
 }
 
 h1
 {
-	margin-left: 0.4em;
-	margin-bottom: 0.4em;
+	margin-left: 0.4 em;
+	margin-bottom: 0.4 em;
 
 	text-align: left;
 	font-size: 16;
