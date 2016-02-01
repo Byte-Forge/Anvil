@@ -73,23 +73,23 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	std::vector<std::string> materials;
 	
 	std::vector<std::string> temp;
-	temp = IO::ListFiles(m_materialsDir + "terrain/", "xml");
+	temp = IO::ListFiles(m_materialsDir + "terrain/", "mat");
 	for (int i = 0; i < temp.size(); i++)
 	{
 		if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
 		{
-			materials.push_back(temp[i]);
+			materials.push_back("terrain/" + temp[i]);
 		}
 	}
 
 	for (int i = 0; i < m_modDirs.size(); i++)
 	{
-		temp = IO::ListFiles(m_modDirs[i] + "/terrain/", "xml");
+		temp = IO::ListFiles(m_modDirs[i] + m_materialsDir + "terrain/", "xml");
 		for (int i = 0; i < temp.size(); i++)
 		{
 			if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
 			{
-				materials.push_back(temp[i]);
+				materials.push_back("terrain/" + temp[i]);
 			}
 		}
 	}

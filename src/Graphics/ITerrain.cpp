@@ -65,10 +65,7 @@ void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 
 void ITerrain::Generate()
 {
-	m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
-	for (int i = 0; i < m_terrainMaterials.size(); i++)
-		std::cout << m_terrainMaterials[i] << std::endl;
-
+	UpdateTextures();
 	for (unsigned int i = 0; i < m_width; i++)
 	{
 		std::vector<float> v;
@@ -90,10 +87,11 @@ void ITerrain::Generate()
 
 			m_heightmap[i].push_back(value);
 
-			int mat1 = 0;
+			int mat1 = (i/2) % (m_terrainMaterials.size()+1);
 			int mat2 = -1;
-			float val = 0.5;
+			float val = 0.0;
 
+			/*
 			if (value > -5)
 			{
 				mat1 = 0;
@@ -136,6 +134,7 @@ void ITerrain::Generate()
 				mat2 = -1;
 				val = 0.0;
 			}
+			*/
 
 			m_materialmap[i].push_back({ mat1, mat2, val });
 		}
@@ -264,4 +263,31 @@ void ITerrain::UpdateBufferData()
 			}
 		}
 	}
+}
+
+void ITerrain::UpdateTextures()
+{
+	m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
+
+	std::vector<std::string> diffuseTextures;
+	std::vector<std::string> normTextures;
+	std::vector<std::string> specTextures;
+	std::vector<std::string> dispTextures;
+	std::vector<std::string> aoTextures;
+
+	for (int i = 0; i < m_terrainMaterials.size(); i++)
+	{
+		std::shared_ptr<Material> m = Core::GetCore()->GetResources()->GetMaterial(m_terrainMaterials[i]);
+		diffuseTextures.push_back(m->m_diffuseTexture);
+		normTextures.push_back(m->m_normalTexture);
+		specTextures.push_back(m->m_specularTexture);
+		dispTextures.push_back(m->m_displacementTexture);
+		aoTextures.push_back(m->m_ambientOccTexture);
+	}
+
+	m_diff = Core::GetCore()->GetResources()->GetTextureArray(diffuseTextures);
+	m_nrm = Core::GetCore()->GetResources()->GetTextureArray(normTextures);
+	m_spec = Core::GetCore()->GetResources()->GetTextureArray(specTextures);
+	m_disp = Core::GetCore()->GetResources()->GetTextureArray(dispTextures);
+	m_ambi = Core::GetCore()->GetResources()->GetTextureArray(aoTextures);
 }

@@ -4,7 +4,6 @@
 
 #pragma once
 #include "../ITerrain.hpp"
-#include "../ITexture.hpp"
 #include "../Quadtree.hpp"
 #include "../Material.hpp"
 #include "Buffer.hpp"
@@ -28,12 +27,6 @@ namespace hpse
         private:
 			//rendering stuff
 			std::vector<GLuint> m_tessLevelIDs, m_lightIDs;
-
-			std::shared_ptr<ITexture> m_diff;
-			std::shared_ptr<ITexture> m_nrm;
-			std::shared_ptr<ITexture> m_spec;
-			std::shared_ptr<ITexture> m_disp;
-			std::shared_ptr<ITexture> m_ambi;
 
 			std::vector<GLuint> m_diffIDs, m_nrmIDs, m_specIDs, m_dispIDs, m_ambiIDs;
 

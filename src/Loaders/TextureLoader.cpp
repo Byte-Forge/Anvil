@@ -15,8 +15,6 @@ using namespace hpse;
 
 void TextureLoader::LoadTexture(const std::string& name, const std::string& path)
 {
-	std::cout << "loading texture: " << name << std::endl;
-
 	gli::texture Texture = gli::load(path);
 	if (Texture.empty())
 		throw HpseException("Failed to load empty texture" + path, __FILE__, __LINE__);
@@ -33,7 +31,6 @@ std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::strin
 	std::vector<gli::texture> textures;
 	for (unsigned int i = 0; i < paths.size(); i++)
 	{
-		std::cout << "loading texture: " << paths[i] << std::endl;
 		gli::texture Texture = gli::load(paths[i]);
 		if (Texture.empty())
 			throw HpseException("Failed to load empty texture" + paths[i], __FILE__, __LINE__);

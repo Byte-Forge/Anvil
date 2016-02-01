@@ -1,0 +1,12 @@
+{
+	"material":
+	{
+		"max_tessellation": 64,
+		"displacement_factor": 0.01,
+		"diffuse": "terrain/grass.dds",
+		"normal": "terrain/grass_norm.dds",
+		"specular": "terrain/grass_spec.dds",
+		"displacement": "terrain/grass_disp.dds",
+		"ambient_occ": "terrain/grass_ao.dds"
+	}
+}

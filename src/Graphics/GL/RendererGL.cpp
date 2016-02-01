@@ -363,6 +363,6 @@ bool RendererGL::GenerateTexture(Rocket::Core::TextureHandle & texture_handle, c
 
 void RendererGL::ReleaseTexture(Rocket::Core::TextureHandle texture_handle)
 {
-	glDeleteTextures(1, &texture_handle);
+	glDeleteTextures(1, reinterpret_cast<GLuint*>(&texture_handle));
 	texture_handle = 0;
 }

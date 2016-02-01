@@ -2,7 +2,6 @@
 #include "../Graphics/Material.hpp"
 #include "../Core.hpp"
 #include "../Loaders/Util.hpp"
-#include <iostream>
 
 using namespace hpse;
 

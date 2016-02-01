@@ -1,47 +1,29 @@
 #include "Material.hpp"
-#include "../Util/tinyxml2.h"
 #include "../Exception.hpp"
-#include <iostream>
+#include <fstream>
+#include <cereal/archives/json.hpp>
 
 using namespace hpse;
-using namespace tinyxml2;
 
-void Material::Load(const std::string& path)
+void Material::Load(const std::string &path)
 {
-	XMLDocument doc;
-	doc.LoadFile(path.c_str());
+	std::ifstream is(path);
+	try
+	{
+		cereal::JSONInputArchive archive(is);
+		archive(*this);
+	}
+	catch (cereal::RapidJSONException& e)
+	{
+		std::string m = " in file: ";
+		std::string msg = e.what() + m + path;
+		throw HpseException(msg, __FILE__, __LINE__);
+		//maybe parse the file again to show the user where exactly the error is
+	}
+}
 
-	XMLNode *material = doc.FirstChild();
-	if (material == nullptr)  throw HpseException("missing material node: " + path, __FILE__, __LINE__);
-
-	XMLElement *max_tess = material->FirstChildElement("max_tessellation");
-	if (max_tess == nullptr) throw HpseException("material has no max_tessellation member: " + path, __FILE__, __LINE__);
-	max_tess->QueryIntText(&m_maxTessellation);
-
-	XMLElement *disp_factor = material->FirstChildElement("displacement_factor");
-	if (disp_factor == nullptr) throw HpseException("material has no displacement_factor member: " + path, __FILE__, __LINE__);
-	disp_factor->QueryFloatText(&m_displacementFactor);
-
-	XMLElement *textures = material->FirstChildElement("textures");
-	if (textures == nullptr) throw HpseException("material has no textures member: " + path, __FILE__, __LINE__);
-
-	XMLElement *diffuse = textures->FirstChildElement("diffuse");
-	if (diffuse == nullptr) throw HpseException("material has no diffuse texture member: " + path, __FILE__, __LINE__);
-	m_diffuseTexture = diffuse->GetText();
-
-	XMLElement *normal = textures->FirstChildElement("normal");
-	if (normal == nullptr) m_normalTexture = "";
-	m_normalTexture = normal->GetText();
-
-	XMLElement *specular = textures->FirstChildElement("specular");
-	if (specular == nullptr) m_specularTexture = "";
-	m_specularTexture = specular->GetText();
-
-	XMLElement *displacement = textures->FirstChildElement("displacement");
-	if (displacement == nullptr) m_displacementTexture = "";
-	m_displacementTexture = displacement->GetText();
-
-	XMLElement *ambient_occ = textures->FirstChildElement("ambient_occ");
-	if (ambient_occ == nullptr) m_ambientOccTexture = "";
-	m_ambientOccTexture = ambient_occ->GetText();
+template<class Archive>
+void Material::serialize(Archive& archive)
+{
+	archive(m_maxTessellation, m_displacementFactor, m_diffuseTexture, m_normalTexture, m_specularTexture, m_displacementTexture, m_ambientOccTexture);
 }

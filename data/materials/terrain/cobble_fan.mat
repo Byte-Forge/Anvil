@@ -1,0 +1,13 @@
+{
+	"material":
+	{
+		"max_tessellation": 64,
+		"displacement_factor": 0.01,
+		"diffuse": "terrain/cobble_fan.dds",
+		"normal": "terrain/cobble_fan_norm.dds",
+		"specular": "terrain/cobble_fan_spec.dds",
+		"displacement": "terrain/cobble_fan_disp.dds",
+		"ambient_occ": "terrain/cobble_fan_ao.dds"
+	}
+}
+

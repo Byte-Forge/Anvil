@@ -1,0 +1,12 @@
+{
+	"material":
+	{
+		"max_tessellation": 64,
+		"displacement_factor": 0.01,
+		"diffuse": "terrain/mountain_terrain.dds",
+		"normal": "terrain/mountain_terrain_norm.dds",
+		"specular": "terrain/mountain_terrain_spec.dds",
+		"displacement": "terrain/mountain_terrain_disp.dds",
+		"ambient_occ": "terrain/mountain_terrain_ao.dds"
+	}
+}
