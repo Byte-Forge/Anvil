@@ -1,0 +1,12 @@
+{
+	"material":
+	{
+		"max_tessellation": 64,
+		"displacement_factor": 0.01,
+		"diffuse": "terrain/dirt_rocky_clumps.dds",
+		"normal": "terrain/dirt_rocky_clumps_norm.dds",
+		"specular": "terrain/dirt_rocky_clumps_spec.dds",
+		"displacement": "terrain/dirt_rocky_clumps_disp.dds",
+		"ambient_occ": "terrain/dirt_rocky_clumps_ao.dds"
+	}
+}

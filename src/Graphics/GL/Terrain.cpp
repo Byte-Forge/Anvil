@@ -28,43 +28,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin);
 	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;
 
-	//this should be in a WorldBuilder class or sth
-	std::vector<std::string> diffuseTextures;
-	diffuseTextures.push_back("terrain/gravel_small.dds");
-	diffuseTextures.push_back("terrain/grass.dds");
-	diffuseTextures.push_back("terrain/rocky_mud.dds");
-	diffuseTextures.push_back("terrain/snowy_cliff.dds");
-
-	std::vector<std::string> normTextures;
-	normTextures.push_back("terrain/gravel_small_norm.dds");
-	normTextures.push_back("terrain/grass_norm.dds");
-	normTextures.push_back("terrain/rocky_mud_norm.dds");
-	normTextures.push_back("terrain/snowy_cliff_norm.dds");
-
-	std::vector<std::string> specTextures;
-	specTextures.push_back("terrain/gravel_small_spec.dds");
-	specTextures.push_back("terrain/grass_spec.dds");
-	specTextures.push_back("terrain/rocky_mud_spec.dds");
-	specTextures.push_back("terrain/snowy_cliff_spec.dds");
-
-	std::vector<std::string> dispTextures;
-	dispTextures.push_back("terrain/gravel_small_disp.dds");
-	dispTextures.push_back("terrain/grass_disp.dds");
-	dispTextures.push_back("terrain/rocky_mud_disp.dds");
-	dispTextures.push_back("terrain/snowy_cliff_disp.dds");
-
-	std::vector<std::string> aoTextures;
-	aoTextures.push_back("terrain/gravel_small_ao.dds");
-	aoTextures.push_back("terrain/grass_ao.dds");
-	aoTextures.push_back("terrain/rocky_mud_ao.dds");
-	aoTextures.push_back("terrain/snowy_cliff_ao.dds");
-
-	m_diff = Core::GetCore()->GetResources()->GetTextureArray(diffuseTextures);
-	m_nrm = Core::GetCore()->GetResources()->GetTextureArray(normTextures);
-	m_spec = Core::GetCore()->GetResources()->GetTextureArray(specTextures);
-	m_disp = Core::GetCore()->GetResources()->GetTextureArray(dispTextures);
-	m_ambi = Core::GetCore()->GetResources()->GetTextureArray(aoTextures);
-
 	for (int i = 0; i < Core::GetCore()->GetGraphics()->GetRenderer()->GetShaderModes().size(); i++)
 	{
 		m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", i));

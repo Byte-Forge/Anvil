@@ -1,5 +1,6 @@
 #pragma once
 #include "IRenderable.hpp"
+#include "ITexture.hpp"
 #include "Quadtree.hpp"
 #include <vector>
 #include <glm/glm.hpp>
@@ -19,6 +20,13 @@ namespace hpse
 		void Generate();
 		void ComputeNormals(std::vector<std::vector<glm::vec3>> &normals);
 		void UpdateBufferData();
+		void UpdateTextures();
+
+		std::shared_ptr<ITexture> m_diff;
+		std::shared_ptr<ITexture> m_nrm;
+		std::shared_ptr<ITexture> m_spec;
+		std::shared_ptr<ITexture> m_disp;
+		std::shared_ptr<ITexture> m_ambi;
 
 		std::uint32_t m_width, m_height;
 		std::vector<std::vector<float>> m_heightmap;

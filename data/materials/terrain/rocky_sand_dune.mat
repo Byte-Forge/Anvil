@@ -1,0 +1,12 @@
+{
+	"material":
+	{
+		"max_tessellation": 64,
+		"displacement_factor": 0.01,
+		"diffuse": "terrain/rocky_sand_dune.dds",
+		"normal": "terrain/rocky_sand_dune_norm.dds",
+		"specular": "terrain/rocky_sand_dune_spec.dds",
+		"displacement": "terrain/rocky_sand_dune_disp.dds",
+		"ambient_occ": "terrain/rocky_sand_dune_ao.dds"
+	}
+}
