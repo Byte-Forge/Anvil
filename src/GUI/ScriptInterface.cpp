@@ -3,6 +3,7 @@
 #include <Rocket/Core/Lua/LuaType.h>
 #include <Rocket/Core/Lua/lua.hpp>
 #include "../Core.hpp"
+#include "../Util/FPS.hpp"
 using namespace hpse;
 
 int GameShutdown(lua_State* L);
@@ -38,6 +39,7 @@ int GameShutdown(lua_State* L)
 
 int GameGetFPS(lua_State* L)
 {
-	lua_pushnumber(L, 60);
+	double fps = FPS::GetFPS();
+	lua_pushnumber(L,fps);
 	return 1;
 }

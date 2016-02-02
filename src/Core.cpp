@@ -1,5 +1,6 @@
 #include "Core.hpp" 
-#include "Math\Collision.hpp"
+#include "Math/Collision.hpp"
+#include "Util/FPS.hpp"
 #include <iostream>
 
 using namespace hpse;
@@ -34,7 +35,6 @@ Core::~Core()
 void Core::Run()
 {
 	sf::Event event;
-	m_window.setFramerateLimit(60);
 
 	//mouse variables
 	int x_old = 0; 
@@ -45,11 +45,12 @@ void Core::Run()
 
 	while (m_window.isOpen() && m_running)
 	{
+		FPS::Update();
 		m_graphics->Clear();
 		m_gui->Update();
 		m_script->Update();
 		m_camera->Update();
-
+		
 		/*
 		*user input is handled this way because of better performance 
 		*and the benefit of processing multiple events at the same time

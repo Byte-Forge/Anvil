@@ -1,0 +1,7 @@
+<template name="fpsCounter" content="content">
+<head>
+	<link type="text/rcss" href="fps.rcss"/>
+	<script src="fps.lua"/>
+</head>
+<body onupdate="UpdateFPS(document)">
+</body>
