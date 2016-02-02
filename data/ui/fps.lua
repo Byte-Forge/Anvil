@@ -1,3 +1,3 @@
 function UpdateFPS(element)
-	element.inner_rml = Game.GetFPS()
+	element.inner_rml = 'FPS: ' .. Game.GetFPS()
 end
