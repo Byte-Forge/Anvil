@@ -3,5 +3,5 @@
 	<link type="text/rcss" href="fps.rcss"/>
 	<script src="fps.lua"/>
 </head>
-<body onupdate="UpdateFPS(document)">
+<body onupdate="UpdateFPS(element)">
 </body>

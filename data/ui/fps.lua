@@ -1,4 +1,3 @@
-function UpdateFPS(document)
-	local fps = document.context.focus_element
-	fps.inner_rml = Game.GetFPS()
+function UpdateFPS(element)
+	element.inner_rml = Game.GetFPS()
 end
