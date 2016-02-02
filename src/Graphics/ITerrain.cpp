@@ -87,7 +87,7 @@ void ITerrain::Generate()
 
 			m_heightmap[i].push_back(value);
 
-			int mat1 = (i/2) % (m_terrainMaterials.size()+1);
+			int mat1 = (i/20) % (m_terrainMaterials.size());
 			int mat2 = -1;
 			float val = 0.0;
 
