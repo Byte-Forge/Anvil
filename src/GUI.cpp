@@ -7,6 +7,7 @@
 #include <Rocket/Core/Lua/Interpreter.h>
 #include <Rocket/Controls/Lua/Controls.h>
 #include "Core.hpp"
+#include "Util/Platform.hpp"
 using namespace hpse;
 
 GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
@@ -19,15 +20,28 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 		throw HpseException("Failed to initialise librocket", __FILE__, __LINE__);
 	}
 
+	Rocket::Core::String font_names[4];
+	auto fonts = IO::ListFiles("ui/fonts/");
+
+	for (auto font : fonts)
+	{
+		if (!Rocket::Core::FontDatabase::LoadFontFace(Rocket::Core::String("ui/fonts/") + Rocket::Core::String(font.c_str())))
+		{
+			throw HpseException("Failed to load font: " + font, __FILE__, __LINE__);
+		}
+	}
+
 	Rocket::Core::Lua::Interpreter::Initialise();
 	Rocket::Controls::Lua::RegisterTypes(Rocket::Core::Lua::Interpreter::GetLuaState());
 
+	m_script.Initialise(Rocket::Core::Lua::Interpreter::GetLuaState());
 	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(window.getSize().x, window.getSize().y));
 	Rocket::Debugger::Initialise(m_context);
 }
 
 GUI::~GUI()
 {
+	Rocket::Core::Lua::Interpreter::Shutdown();
 	m_context->RemoveReference();
 	Rocket::Core::Shutdown();
 }
