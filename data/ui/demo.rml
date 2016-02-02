@@ -3,6 +3,7 @@
 		<title>Menu</title>
 		<link type="text/template" href="fps.rml" />	
 	</head>
-	<body template="fpsCounter">
+	<body>
+	 	<template src="fpsCounter"/>
 	</body>
 </rml>
