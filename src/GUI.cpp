@@ -6,9 +6,12 @@
 #include <Rocket/Debugger.h>
 #include <Rocket/Core/Lua/Interpreter.h>
 #include <Rocket/Controls/Lua/Controls.h>
+#include <functional>
 #include "Core.hpp"
 #include "Util/Platform.hpp"
 using namespace hpse;
+
+const int GUI::UPDATES_PER_SECOND = 30;
 
 GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 {
@@ -37,6 +40,9 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 	m_script.Initialise(Rocket::Core::Lua::Interpreter::GetLuaState());
 	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(window.getSize().x, window.getSize().y));
 	Rocket::Debugger::Initialise(m_context);
+
+	m_updateInterval = std::chrono::high_resolution_clock::duration(std::chrono::seconds(1)) / UPDATES_PER_SECOND;
+	m_last = std::chrono::high_resolution_clock::now();
 }
 
 GUI::~GUI()
@@ -49,6 +55,27 @@ GUI::~GUI()
 void GUI::Update()
 {
 	m_context->Update();
+
+	std::function<void(Rocket::Core::Element*)> updateElement = [&] (Rocket::Core::Element* element)
+	{
+		element->DispatchEvent("update", Rocket::Core::Dictionary(), false);
+		for (int i = 0;i < element->GetNumChildren();++i)
+		{
+			auto* child = element->GetChild(i);
+			updateElement(child);
+		}
+	};
+	auto* root = m_context->GetRootElement();
+
+	auto now = std::chrono::high_resolution_clock::now();
+	auto passed_time = now - m_last;
+	int updates = passed_time / m_updateInterval;
+
+	for (int i = 0;i < updates;++i)
+	{
+		updateElement(root);	
+		m_last += m_updateInterval;
+	}
 }
 
 

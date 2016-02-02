@@ -2,6 +2,15 @@
 * Default styles for all the basic elements.
 */
 
+body
+{
+	font-family: Delicious;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 15;
+	color: white;
+}
+
 div
 {
 	display: block;
