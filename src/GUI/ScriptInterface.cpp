@@ -17,7 +17,7 @@ void ScriptInterface::Initialise(lua_State * L)
 
 	if (lua_isnil(L, game))
 	{
-		Rocket::Core::Log::Message(Rocket::Core::Log::LT_ERROR, "Error creating the Game table from C++ in ScriptInterface::Initialise");
+		Rocket::Core::Log::Message(Rocket::Core::Log::LT_ERROR, "Error creating the Game table from C++ in ScriptInterface::Initialise()");
 		return;
 	}
 

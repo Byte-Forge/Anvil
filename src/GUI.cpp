@@ -6,6 +6,7 @@
 #include <Rocket/Debugger.h>
 #include <Rocket/Core/Lua/Interpreter.h>
 #include <Rocket/Controls/Lua/Controls.h>
+#include <functional>
 #include "Core.hpp"
 #include "Util/Platform.hpp"
 using namespace hpse;
@@ -49,6 +50,19 @@ GUI::~GUI()
 void GUI::Update()
 {
 	m_context->Update();
+
+	std::function<void(Rocket::Core::Element*)> updateElement = [&] (Rocket::Core::Element* element)
+	{
+		element->DispatchEvent("update", Rocket::Core::Dictionary(), false);
+		for (int i = 0;i < element->GetNumChildren();++i)
+		{
+			auto* child = element->GetChild(i);
+			updateElement(child);
+		}
+	};
+	auto* root = m_context->GetRootElement();
+
+	updateElement(root);
 }
 
 

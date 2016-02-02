@@ -1,5 +1,7 @@
 #include <Rocket/Core.h>
 #include "SystemInterface.hpp"
+#include <iostream>
+#include "../Exception.hpp"
 using namespace hpse;
 
 int SystemInterface::GetKeyModifiers(sf::Window *Window)
@@ -286,6 +288,19 @@ float SystemInterface::GetElapsedTime()
 
 bool SystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocket::Core::String& message)
 {
+	if (type == Rocket::Core::Log::LT_WARNING)
+	{
+		std::cout << "[Warning] - " << message.CString() << std::endl;
+		return false;
+	}
+	else if (type == Rocket::Core::Log::LT_ERROR)
+	{
+		std::string msg = "LibRocket Error: " + std::string(message.CString());
+		throw HpseException(msg, __FILE__, __LINE__);
+		return true;
+	}
+		
+
 	std::string Type;
 
 	switch(type)
@@ -293,15 +308,8 @@ bool SystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocket::Cor
 	case Rocket::Core::Log::LT_ALWAYS:
 		Type = "[Always]";
 		break;
-	case Rocket::Core::Log::LT_ERROR:
-		Type = "[Error]";
-		break;
 	case Rocket::Core::Log::LT_ASSERT:
 		Type = "[Assert]";
-		break;
-	case Rocket::Core::Log::LT_WARNING:
-		//suppress warnings
-		return true;
 		break;
 	case Rocket::Core::Log::LT_INFO:
 		Type = "[Info]";
@@ -311,7 +319,7 @@ bool SystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocket::Cor
 		break;
 	};
 
-	printf("%s - %s\n", Type.c_str(), message.CString());
+	std::cout << Type << " - " << message.CString() << std::endl;
 
 	return true;
 };
