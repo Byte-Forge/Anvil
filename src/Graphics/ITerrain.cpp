@@ -66,14 +66,14 @@ void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 void ITerrain::Generate()
 {
 	UpdateTextures();
-	for (unsigned int i = 0; i < m_width; i++)
+	for (unsigned int i = 0; i <= m_width; i++)
 	{
 		std::vector<float> v;
 		m_heightmap.push_back(v);
 
 		std::vector<glm::vec3> m;
 		m_materialmap.push_back(m);
-		for (unsigned int j = 0; j < m_height; j++)
+		for (unsigned int j = 0; j <= m_height; j++)
 		{
 			float value = 0.0f;
 			value += SimplexNoise::scaled_octave_noise_2d(8, 0.7, 0.5, -20.0, 0.0, i / 100.0, j / 100.0); //for slightly evaluation
@@ -146,11 +146,11 @@ void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals)
 	glm::vec3 a;
 	glm::vec3 b;
 	glm::vec3 c;
-	for (unsigned int i = 0; i < m_width; i++)
+	for (unsigned int i = 0; i <= m_width; i++)
 	{
 		std::vector<glm::vec3> n;
 		normals.push_back(n);
-		for (unsigned int j = 0; j < m_height; j++)
+		for (unsigned int j = 0; j <= m_height; j++)
 		{
 			glm::vec3 normal = { 0.0, 0.0, 0.0 };
 			a.x = i;
@@ -196,9 +196,9 @@ void ITerrain::UpdateBufferData()
 
 	//fill the vectors for buffer objects
 	int index = 0;
-	for (unsigned int i = 0; i < m_width - 1; i++)
+	for (unsigned int i = 0; i < m_width; i++)
 	{
-		for (unsigned int j = 0; j < m_height - 1; j++)
+		for (unsigned int j = 0; j < m_height; j++)
 		{
 			glm::vec3 a = { (float)i, m_heightmap[i][j], (float)j };
 			glm::vec3 b = { (float)(i + 1), m_heightmap[i + 1][j], (float)j };

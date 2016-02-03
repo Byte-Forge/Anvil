@@ -25,9 +25,7 @@ void Material::Load(const std::string &path)
 	{
 		//throw HpseException(path, __FILE__, __LINE__);
 	}
-	
 
-	std::cout << "####: " << m_normalTexture << std::endl;
 }
 
 template<class Archive>
