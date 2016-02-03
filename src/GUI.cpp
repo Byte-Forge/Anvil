@@ -41,8 +41,9 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(window.getSize().x, window.getSize().y));
 	Rocket::Debugger::Initialise(m_context);
 
-	m_updateInterval = std::chrono::high_resolution_clock::duration(std::chrono::seconds(1)) / UPDATES_PER_SECOND;
-	m_last = std::chrono::high_resolution_clock::now();
+	m_updateInterval = (1.0f / UPDATES_PER_SECOND)*1e6;
+
+	m_accumulatedTime = 0;
 }
 
 GUI::~GUI()
@@ -67,14 +68,13 @@ void GUI::Update()
 	};
 	auto* root = m_context->GetRootElement();
 
-	auto now = std::chrono::high_resolution_clock::now();
-	auto passed_time = now - m_last;
-	int updates = passed_time / m_updateInterval;
+	m_accumulatedTime += Core::GetCore()->GetTimer().GetElapsedTime();
+	auto updates = m_accumulatedTime / m_updateInterval;
 
 	for (int i = 0;i < updates;++i)
 	{
 		updateElement(root);	
-		m_last += m_updateInterval;
+		m_accumulatedTime -= m_updateInterval;
 	}
 }
 
