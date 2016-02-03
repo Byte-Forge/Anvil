@@ -1,6 +1,6 @@
 #include "Skybox.hpp"
 #include "../../Core.hpp"
-
+#include <numeric>
 using namespace hpse;
 
 GL::Skybox::Skybox()
@@ -24,206 +24,43 @@ GL::Skybox::Skybox()
 	glm::vec3 n_front = { 0.0, 0.0, 1.0 };
 	glm::vec3 n_back = { 0.0, 0.0, -1.0 };
 
-	int index = 0;
+	//vertices
+	std::vector<glm::vec3> vertices{v1,v4,v8,v1,v8,v5, //front
+									v3,v2,v6,v3,v6,v7, //back
+									v2,v1,v5,v2,v5,v6, //left
+									v4,v3,v7,v4,v7,v8, //right
+									v5,v8,v7,v5,v7,v6, //top
+									v2,v3,v4,v2,v4,v1 }; //bottom
+	m_vertices = vertices;
 
-	//front
-	m_vertices.push_back(v1);
-	m_vertices.push_back(v4);
-	m_vertices.push_back(v8);
+	//faces
+	m_faces.resize(36);
+	std::iota(m_faces.begin(), m_faces.end(), 0);
 
-	m_vertices.push_back(v1);
-	m_vertices.push_back(v8);
-	m_vertices.push_back(v5);
+	//normals
+	m_normals.resize(36);
+	std::fill(m_normals.begin(),	m_normals.begin() + 6,	n_front);
+	std::fill(m_normals.begin()+6,	m_normals.begin() + 12, n_back);
+	std::fill(m_normals.begin()+12, m_normals.begin() + 18, n_left);
+	std::fill(m_normals.begin()+18, m_normals.begin() + 24, n_right);
+	std::fill(m_normals.begin()+24, m_normals.begin() + 30, n_top);
+	std::fill(m_normals.begin()+30, m_normals.end(),		n_bottom);
+	
 
-	m_normals.push_back(n_front);
-	m_normals.push_back(n_front);
-	m_normals.push_back(n_front);
+	std::vector<glm::vec2> uvs = {	{ 0.5,  0.66},{ 0.75, 0.66},{ 0.75, 0.33},//front
+									{ 0.5,  0.66},{ 0.75, 0.33},{ 0.5,  0.33},
+									{ 0.0,  0.66},{ 0.25, 0.66},{ 0.25, 0.33},//back
+									{ 0.0,  0.66},{ 0.25, 0.33},{ 0.0,  0.33},
+									{ 0.25, 0.66},{ 0.5,  0.66},{ 0.5,  0.33},//left
+									{ 0.25, 0.66},{ 0.5,  0.33},{ 0.25, 0.33},
+									{ 0.75, 0.66},{ 1.0,  0.66},{ 1.0,  0.33},//right
+									{ 0.75, 0.66},{ 1.0,  0.33},{ 0.75, 0.33},
+									{ 0.25, 0.33},{ 0.5,  0.33},{ 0.5,  0.0 },//top
+									{ 0.25, 0.33},{ 0.5,  0.0 },{ 0.25, 0.0 },
+									{ 0.25, 0.99},{ 0.5,  0.99},{ 0.5,  0.66},//bottom
+									{ 0.25, 0.99},{ 0.5,  0.66},{ 0.25, 0.66} };
 
-	m_normals.push_back(n_front);
-	m_normals.push_back(n_front);
-	m_normals.push_back(n_front);
-
-	m_uvs.push_back({ 0.5, 0.66 });
-	m_uvs.push_back({ 0.75, 0.66 });
-	m_uvs.push_back({ 0.75, 0.33 });
-
-	m_uvs.push_back({ 0.5, 0.66 });
-	m_uvs.push_back({ 0.75, 0.33 });
-	m_uvs.push_back({ 0.5, 0.33 });
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	//back
-	m_vertices.push_back(v3);
-	m_vertices.push_back(v2);
-	m_vertices.push_back(v6);
-
-	m_vertices.push_back(v3);
-	m_vertices.push_back(v6);
-	m_vertices.push_back(v7);
-
-	m_normals.push_back(n_back);
-	m_normals.push_back(n_back);
-	m_normals.push_back(n_back);
-
-	m_normals.push_back(n_back);
-	m_normals.push_back(n_back);
-	m_normals.push_back(n_back);
-
-	m_uvs.push_back({ 0.0, 0.66 });
-	m_uvs.push_back({ 0.25, 0.66 });
-	m_uvs.push_back({ 0.25, 0.33 });
-
-	m_uvs.push_back({ 0.0, 0.66 });
-	m_uvs.push_back({ 0.25, 0.33 });
-	m_uvs.push_back({ 0.0, 0.33 });
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	//left
-	m_vertices.push_back(v2);
-	m_vertices.push_back(v1);
-	m_vertices.push_back(v5);
-
-	m_vertices.push_back(v2);
-	m_vertices.push_back(v5);
-	m_vertices.push_back(v6);
-
-	m_normals.push_back(n_left);
-	m_normals.push_back(n_left);
-	m_normals.push_back(n_left);
-
-	m_normals.push_back(n_left);
-	m_normals.push_back(n_left);
-	m_normals.push_back(n_left);
-
-	m_uvs.push_back({ 0.25, 0.66 });
-	m_uvs.push_back({ 0.5, 0.66 });
-	m_uvs.push_back({ 0.5, 0.33 });
-
-	m_uvs.push_back({ 0.25, 0.66 });
-	m_uvs.push_back({ 0.5, 0.33 });
-	m_uvs.push_back({ 0.25, 0.33 });
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	//right
-	m_vertices.push_back(v4);
-	m_vertices.push_back(v3);
-	m_vertices.push_back(v7);
-
-	m_vertices.push_back(v4);
-	m_vertices.push_back(v7);
-	m_vertices.push_back(v8);
-
-	m_normals.push_back(n_right);
-	m_normals.push_back(n_right);
-	m_normals.push_back(n_right);
-
-	m_normals.push_back(n_right);
-	m_normals.push_back(n_right);
-	m_normals.push_back(n_right);
-
-	m_uvs.push_back({ 0.75, 0.66 });
-	m_uvs.push_back({ 1.0, 0.66 });
-	m_uvs.push_back({ 1.0, 0.33 });
-
-	m_uvs.push_back({ 0.75, 0.66 });
-	m_uvs.push_back({ 1.0, 0.33 });
-	m_uvs.push_back({ 0.75, 0.33 });
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	//top
-	m_vertices.push_back(v5);
-	m_vertices.push_back(v8);
-	m_vertices.push_back(v7);
-
-	m_vertices.push_back(v5);
-	m_vertices.push_back(v7);
-	m_vertices.push_back(v6);
-
-	m_normals.push_back(n_top);
-	m_normals.push_back(n_top); 
-	m_normals.push_back(n_top);
-
-	m_normals.push_back(n_top);
-	m_normals.push_back(n_top);
-	m_normals.push_back(n_top);
-
-	m_uvs.push_back({ 0.25, 0.33 });
-	m_uvs.push_back({ 0.5, 0.33 });
-	m_uvs.push_back({ 0.5, 0.0 });
-
-	m_uvs.push_back({ 0.25, 0.33 });
-	m_uvs.push_back({ 0.5, 0.0 });
-	m_uvs.push_back({ 0.25, 0.0 });
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	//bottom
-	m_vertices.push_back(v2);
-	m_vertices.push_back(v3);
-	m_vertices.push_back(v4);
-
-	m_vertices.push_back(v2);
-	m_vertices.push_back(v4);
-	m_vertices.push_back(v1);
-
-	m_normals.push_back(n_bottom);
-	m_normals.push_back(n_bottom);
-	m_normals.push_back(n_bottom);
-
-	m_normals.push_back(n_bottom);
-	m_normals.push_back(n_bottom);
-	m_normals.push_back(n_bottom);
-
-	m_uvs.push_back({ 0.25, 0.99 });
-	m_uvs.push_back({ 0.5, 0.99 });
-	m_uvs.push_back({ 0.5, 0.66 });
-
-	m_uvs.push_back({ 0.25, 0.99 });
-	m_uvs.push_back({ 0.5, 0.66 });
-	m_uvs.push_back({ 0.25, 0.66 });
-
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
-	m_faces.push_back(index++);
+	m_uvs = uvs;
 
 	m_diff = Core::GetCore()->GetResources()->GetTexture("skybox/skybox.dds");
 	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("DiffuseTextureSampler");
