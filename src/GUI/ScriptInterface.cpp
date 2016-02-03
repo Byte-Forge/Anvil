@@ -49,6 +49,7 @@ int GameGetFPS(lua_State* L)
 
 int GameGetPolygons(lua_State* L)
 {
-	lua_pushnumber(L, 100);
+	int polyCount = Core::GetCore()->GetMap()->GetTerrain()->GetPolycount();
+	lua_pushnumber(L, polyCount);
 	return 1;
 }

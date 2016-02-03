@@ -16,6 +16,10 @@ namespace hpse
 		int GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos);
 		void SetMaterial(glm::vec3 &pos, float radius, int material);
 		void SetHeight(glm::vec3 &pos, float radius, float height);
+		inline int GetPolycount()
+		{
+			return m_faces.size() / 3;
+		}
 	protected:
 		void Generate();
 		void ComputeNormals(std::vector<std::vector<glm::vec3>> &normals);
