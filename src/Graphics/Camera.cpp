@@ -91,14 +91,15 @@ void Camera::Rotate(Direction dir)
 
 void Camera::Zoom(Direction dir)
 {
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e4;
 	switch (dir)
 	{
 	case ZOOM_OUT:
-		m_currentPos -= m_direction + m_direction;
+		m_currentPos -= m_direction * timePassed;
 		break;
 	case ZOOM_IN:
 		if (m_currentPos.y > 3)
-			m_currentPos += m_direction + m_direction;
+			m_currentPos += m_direction * timePassed;
 		break;
 	}
 }
