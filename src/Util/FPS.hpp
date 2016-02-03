@@ -4,17 +4,18 @@
 
 namespace hpse
 {
-	class FPS
+	namespace Util
 	{
-	public:
-		static double GetFPS();
-		static void Update();
+		class FPS
+		{
+		public:
+			double GetFPS();
+			void Update();
 
-	private:
-		static std::chrono::high_resolution_clock::time_point m_start;
-		static std::chrono::high_resolution_clock::time_point m_end;
-		static double m_fps;
-		static double m_averageFps;
-		static std::deque<double> m_fps_list;
-	};
+		private:
+			double m_fps;
+			double m_averageFps;
+			std::deque<double> m_fps_list;
+		};
+	}
 }

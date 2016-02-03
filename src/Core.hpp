@@ -9,6 +9,8 @@
 #include "Core/ResourceHandler.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Frustum.hpp"
+#include "Util/Timer.hpp"
+#include "Util/FPS.hpp"
 
 namespace hpse
 {
@@ -73,6 +75,16 @@ namespace hpse
 			return m_instance;
 		}
 
+		Util::Timer& GetTimer()
+		{
+			return m_timer;
+		}
+
+		Util::FPS& GetFPS()
+		{
+			return m_fps;
+		}
+
 	private:
 		static Core* m_instance;
 		bool m_running;
@@ -86,6 +98,8 @@ namespace hpse
 		std::unique_ptr<Map> m_map;
 		std::unique_ptr<Camera> m_camera;
 		std::unique_ptr<Frustum> m_frustum;
+		Util::Timer m_timer;
+		Util::FPS m_fps;
 		std::map<int, int> m_keyInputs; // -1 just released, 0 not pressed, 1 pressed
 		std::map<int, int> m_mouseInputs; // -1 just released, 0 not pressed, 1 pressed
 	};

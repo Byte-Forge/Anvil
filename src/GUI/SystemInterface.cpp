@@ -288,38 +288,12 @@ float SystemInterface::GetElapsedTime()
 
 bool SystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocket::Core::String& message)
 {
-	if (type == Rocket::Core::Log::LT_WARNING)
-	{
-		std::cout << "[Warning] - " << message.CString() << std::endl;
-		return false;
-	}
-	else if (type == Rocket::Core::Log::LT_ERROR)
+	if (type == Rocket::Core::Log::LT_ERROR)
 	{
 		std::string msg = "LibRocket Error: " + std::string(message.CString());
 		throw HpseException(msg, __FILE__, __LINE__);
 		return true;
 	}
 		
-
-	std::string Type;
-
-	switch(type)
-	{
-	case Rocket::Core::Log::LT_ALWAYS:
-		Type = "[Always]";
-		break;
-	case Rocket::Core::Log::LT_ASSERT:
-		Type = "[Assert]";
-		break;
-	case Rocket::Core::Log::LT_INFO:
-		Type = "[Info]";
-		break;
-	case Rocket::Core::Log::LT_DEBUG:
-		Type = "[Debug]";
-		break;
-	};
-
-	std::cout << Type << " - " << message.CString() << std::endl;
-
-	return true;
+	return false;
 };

@@ -10,7 +10,7 @@ Core* Core::m_instance = nullptr;
 Core::Core()
 {
 	m_instance = this;
-
+	
 	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Core));
 
@@ -42,10 +42,12 @@ void Core::Run()
 	int delta_x = 0;
 	int delta_y = 0;
 	int delta_wheel = 0;
+	m_running = true;
 
 	while (m_window.isOpen() && m_running)
 	{
-		FPS::Update();
+		m_timer.Update();
+		m_fps.Update();
 		m_graphics->Clear();
 		m_gui->Update();
 		m_script->Update();

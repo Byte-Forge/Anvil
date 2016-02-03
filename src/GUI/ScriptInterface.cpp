@@ -42,7 +42,7 @@ int GameShutdown(lua_State* L)
 
 int GameGetFPS(lua_State* L)
 {
-	double fps = FPS::GetFPS();
+	double fps = Core::GetCore()->GetFPS().GetFPS();
 	lua_pushnumber(L,fps);
 	return 1;
 }

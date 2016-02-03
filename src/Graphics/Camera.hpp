@@ -90,7 +90,8 @@ namespace hpse
 		}
 
     private:
-		float speed = 1.0f;
+		//Movement per second
+		float m_speed = 1.0f;
 		glm::vec3 m_position;
         glm::vec3 m_currentPos; 
 		glm::vec3 m_direction;
