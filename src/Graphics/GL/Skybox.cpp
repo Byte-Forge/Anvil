@@ -234,7 +234,7 @@ GL::Skybox::Skybox()
 
 	m_vbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
 	m_vbo->Bind();
-	m_vbo->Update((unsigned int)m_vertices.size() * sizeof(glm::vec3), &m_vertices[0]);
+	m_vbo->Update(static_cast<unsigned int>(m_vertices.size() * sizeof(glm::vec3)), &m_vertices[0]);
 	
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -244,21 +244,21 @@ GL::Skybox::Skybox()
 
 	m_uvbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
 	m_uvbo->Bind();
-	m_uvbo->Update((unsigned int)m_uvs.size() * sizeof(glm::vec2), &m_uvs[0]);
+	m_uvbo->Update(static_cast<unsigned int>(m_uvs.size() * sizeof(glm::vec2)), glm::value_ptr(m_uvs.front()));
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	m_nbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
 	m_nbo->Bind();
-	m_nbo->Update((unsigned int)m_normals.size() * sizeof(glm::vec3), &m_normals[0]);
+	m_nbo->Update(static_cast<unsigned int>(m_normals.size() * sizeof(glm::vec3)), glm::value_ptr(m_normals.front()));
 
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
 	m_fbo->Bind();
-	m_fbo->Update((unsigned int)m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
+	m_fbo->Update(static_cast<unsigned int>(m_faces.size() * sizeof(std::uint32_t)),&m_faces.front());
 }
 
 GL::Skybox::~Skybox()
@@ -287,5 +287,5 @@ void GL::Skybox::Render(int mode)
 	glUniform1i(m_diffID, 0);
 
 	m_fbo->Bind();
-	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, (void*)0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_faces.size()), GL_UNSIGNED_INT,nullptr);
 }
