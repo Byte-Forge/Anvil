@@ -34,8 +34,8 @@ namespace hpse
 		ScriptInterface m_script;
 		Rocket::Core::Context* m_context;
 		sf::Window* m_window;
-		std::chrono::high_resolution_clock::time_point m_last;
-		std::chrono::high_resolution_clock::duration m_updateInterval;
+		double m_accumulatedTime;
+		double m_updateInterval;
 		static const int UPDATES_PER_SECOND;
 	};
 }
