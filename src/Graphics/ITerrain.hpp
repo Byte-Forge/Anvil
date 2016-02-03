@@ -18,7 +18,7 @@ namespace hpse
 		void SetHeight(glm::vec3 &pos, float radius, float height);
 		inline int GetPolycount()
 		{
-			return m_faces.size() / 3;
+			return (int)m_faces.size() / 3;
 		}
 	protected:
 		void Generate();

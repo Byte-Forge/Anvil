@@ -27,12 +27,13 @@ Camera::~Camera()
 
 void Camera::Move(glm::vec3 dir)
 {
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e4;
+	float speed = m_speed * timePassed;
 	//add also the up direction
 	glm::vec3 foreward = glm::vec3({ m_direction.x, 0.0, m_direction.z });
 	glm::vec3 right = glm::vec3({ m_direction.z, 0.0, -m_direction.x });
 	//glm::vec3 up = glm::vec3({  });
-	double secondsPassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
-	glm::vec3 offset = (dir.x * right + dir.z * foreward) *m_speed * m_currentPos.y / 10.0f;
+	glm::vec3 offset = (dir.x * right + dir.z * foreward) * speed * m_currentPos.y / 10.0f;
 	m_currentPos += offset;
 	m_lookat += offset;
 }
@@ -40,26 +41,27 @@ void Camera::Move(glm::vec3 dir)
 void Camera::Move(Direction dir)
 {
 	glm::vec3 offset;
-	double secondsPassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e4;
+	float speed = m_speed * timePassed;
 	switch (dir)
 	{
 	case FOREWARD:
-		offset = glm::vec3({ m_direction.x, 0.0, m_direction.z }) * m_speed * m_currentPos.y / 10.0f;
+		offset = glm::vec3({ m_direction.x, 0.0, m_direction.z }) * speed * m_currentPos.y / 10.0f;
 		m_currentPos += offset;
 		m_lookat += offset;
 		break;
 	case BACK:
-		offset = glm::vec3({ m_direction.x, 0.0, m_direction.z }) * m_speed * m_currentPos.y / 10.0f;
+		offset = glm::vec3({ m_direction.x, 0.0, m_direction.z }) * speed * m_currentPos.y / 10.0f;
 		m_currentPos -= offset;
 		m_lookat -= offset;
 		break;
 	case LEFT:
-		offset = glm::vec3({ -m_direction.z, 0.0, m_direction.x }) * m_speed * m_currentPos.y / 10.0f;
+		offset = glm::vec3({ -m_direction.z, 0.0, m_direction.x }) * speed * m_currentPos.y / 10.0f;
 		m_currentPos -= offset;
 		m_lookat -= offset;
 		break;
 	case RIGHT:
-		offset = glm::vec3({ m_direction.z, 0.0, -m_direction.x }) * m_speed * m_currentPos.y / 10.0f;
+		offset = glm::vec3({ m_direction.z, 0.0, -m_direction.x }) * speed * m_currentPos.y / 10.0f;
 		m_currentPos -= offset;
 		m_lookat -= offset;
 		break;
@@ -68,8 +70,9 @@ void Camera::Move(Direction dir)
 
 void Camera::Rotate(float angle)
 {
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e4;
 	glm::vec3 delta = m_currentPos - m_lookat;
-	m_currentPos = m_lookat + glm::rotateY(delta, angle);
+	m_currentPos = m_lookat + glm::rotateY(delta, angle * timePassed);
 }
 
 void Camera::Rotate(Direction dir)

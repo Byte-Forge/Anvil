@@ -76,14 +76,14 @@ void ITerrain::Generate()
 		for (unsigned int j = 0; j <= m_height; j++)
 		{
 			float value = 0.0f;
-			value += SimplexNoise::scaled_octave_noise_2d(8, 0.7, 0.5, -20.0, 0.0, i / 100.0, j / 100.0); //for slightly evaluation
-			float mountain = SimplexNoise::scaled_octave_noise_2d(2, 0.5, 0.1, -10.0, 20.0, i / 10.0, j / 10.0); //for mountain terrain
+			value += SimplexNoise::scaled_octave_noise_2d(8, 0.7f, 0.5f, -20.0f, 0.0f, i / 100.0f, j / 100.0f); //for slightly evaluation
+			float mountain = SimplexNoise::scaled_octave_noise_2d(2, 0.5f, 0.1f, -10.0f, 20.0f, i / 10.0f, j / 10.0f); //for mountain terrain
 			if (value < 0.0)
 				value = 0.0;
 			if (mountain > 0.0)
-				value += SimplexNoise::scaled_octave_noise_2d(8, 0.3, 0.1, 0.0, 10.0, i, j) * mountain / 10.0; //for mountains
+				value += SimplexNoise::scaled_octave_noise_2d(8, 0.3f, 0.1f, 0.0f, 10.0f, i, j) * mountain / 10.0; //for mountains
 
-			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01, 0.1, 0.0, 2.0, i, j); //for flat terrain
+			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01f, 0.1f, 0.0f, 2.0f, i, j); //for flat terrain
 
 			m_heightmap[i].push_back(value);
 

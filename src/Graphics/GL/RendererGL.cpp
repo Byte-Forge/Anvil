@@ -333,7 +333,7 @@ bool RendererGL::LoadTexture(Rocket::Core::TextureHandle & texture_handle, Rocke
 	file_interface->Read(buffer, buffer_size, file_handle);
 	file_interface->Close(file_handle);
 
-	unsigned char *data = stbi_load_from_memory(buffer, buffer_size, &texture_dimensions.x, &texture_dimensions.y, NULL, STBI_rgb_alpha);
+	unsigned char *data = stbi_load_from_memory(buffer, (int)buffer_size, &texture_dimensions.x, &texture_dimensions.y, NULL, STBI_rgb_alpha);
 	if (data == NULL)
 		return false;
 

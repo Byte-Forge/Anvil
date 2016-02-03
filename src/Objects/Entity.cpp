@@ -48,4 +48,5 @@ bool Entity::Load(const std::string& path)
 	{
 		m_materials.push_back(Core::GetCore()->GetResources()->GetMaterial(material->GetText()));
 	}
+	return true;
 }
