@@ -1,7 +1,12 @@
-<template name="fpsCounter" content="content">
+<template name="fpsDisplay" content="content">
 <head>
 	<link type="text/rcss" href="fps.rcss"/>
-	<script src="fps.lua"/>
+	<script>
+	function UpdateFPS(element)
+		element.inner_rml = 'FPS: ' .. Game.GetFPS()
+	end
+	</script>
 </head>
-<body onupdate="UpdateFPS(element)">
+<body>
+	<div onupdate="UpdateFPS(element)"/>
 </body>

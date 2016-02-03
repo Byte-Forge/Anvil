@@ -2,8 +2,10 @@
 	<head>
 		<title>Menu</title>
 		<link type="text/template" href="fps.rml" />	
+		<link type="text/template" href="poly.rml" />	
 	</head>
 	<body>
-	 	<template src="fpsCounter"/>
+	 	<template src="fpsDisplay"/>
+	 	<template src="polyDisplay"/>
 	</body>
 </rml>

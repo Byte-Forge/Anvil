@@ -1,0 +1,12 @@
+<template name="polyDisplay" content="content">
+<head>
+	<link type="text/rcss" href="poly.rcss"/>
+	<script>
+	function UpdatePoly(element)
+		element.inner_rml = 'Rendered polygons: ' .. Game.GetPolygons()
+	end
+	</script>
+</head>
+<body>
+	<div onupdate="UpdatePoly(element)"/>
+</body>
