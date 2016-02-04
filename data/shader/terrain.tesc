@@ -33,7 +33,8 @@ void main()
 		}
 		else
 		{
-			value = 1.0/exp((distance-3)/15.0);
+			//value = 1.0/exp((distance-3)/15.0);
+			value = 1.0/((distance-3)*(distance-3)/20.0+1);
 			level = max(value * level, 1);
 		}
 	
