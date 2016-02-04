@@ -8,6 +8,8 @@ in vec3 v_material[];
 uniform mat4 V;
 uniform int maxTessellation;
 
+out float value;
+
 out vec3 tc_position[];
 out vec2 tc_uv[];
 out vec3 tc_normal[];
@@ -25,13 +27,14 @@ void main()
 		float level = max(maxTessellation, 1); //has to be at least 1
 
 		float distance = length((V * vec4(tc_position[gl_InvocationID], 1)).xyz);
-		if (distance > 6)
+		if (distance < 3)
 		{
-			level /= 4.0;
+			value = 1.0;
 		}
-		if (distance > 20)
+		else
 		{
-			level = 1.0;
+			value = 1.0/exp((distance-3)/15.0);
+			level = max(value * level, 1);
 		}
 	
 		gl_TessLevelInner[0] = level;

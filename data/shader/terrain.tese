@@ -5,6 +5,8 @@ in vec2 tc_uv[];
 in vec3 tc_normal[];
 in vec3 tc_material[];
 
+in float value;
+
 uniform sampler2DArray DisplacementTextureSampler;
 
 out vec3 e_position;
@@ -21,5 +23,5 @@ void main()
 	
 	float height = mix(texture(DisplacementTextureSampler, vec3(e_uv, e_material[0])).x, texture(DisplacementTextureSampler, vec3(e_uv, e_material[1])).x, e_material[2]);
 
-	e_position += e_normal * (height * 0.45f);
+	e_position += e_normal * (height * 0.30f * value);
 }
