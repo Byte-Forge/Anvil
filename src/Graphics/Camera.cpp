@@ -27,7 +27,7 @@ Camera::~Camera()
 
 void Camera::Move(glm::vec3 dir)
 {
-	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e4;
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
 	float speed = m_speed * timePassed;
 	//add also the up direction
 	glm::vec3 foreward = glm::vec3({ m_direction.x, 0.0, m_direction.z });
@@ -41,7 +41,7 @@ void Camera::Move(glm::vec3 dir)
 void Camera::Move(Direction dir)
 {
 	glm::vec3 offset;
-	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e4;
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
 	float speed = m_speed * timePassed;
 	switch (dir)
 	{
@@ -70,14 +70,14 @@ void Camera::Move(Direction dir)
 
 void Camera::Rotate(float angle)
 {
-	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e4;
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
 	glm::vec3 delta = m_currentPos - m_lookat;
 	m_currentPos = m_lookat + glm::rotateY(delta, angle * timePassed);
 }
 
 void Camera::Rotate(Direction dir)
 {
-	float angle = 0.05f;
+	float angle = 5.0f;
 	switch (dir)
 	{
 	case (LEFT) :
@@ -91,15 +91,15 @@ void Camera::Rotate(Direction dir)
 
 void Camera::Zoom(Direction dir)
 {
-	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e4;
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
 	switch (dir)
 	{
 	case ZOOM_OUT:
-		m_currentPos -= m_direction * timePassed;
+		m_currentPos -= m_direction * timePassed * 200.0f;
 		break;
 	case ZOOM_IN:
 		if (m_currentPos.y > 3)
-			m_currentPos += m_direction * timePassed;
+			m_currentPos += m_direction * timePassed * 200.0f;
 		break;
 	}
 }
