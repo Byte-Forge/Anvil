@@ -275,7 +275,7 @@ void ITerrain::UpdateTextures()
 	std::vector<std::string> dispTextures;
 	std::vector<std::string> aoTextures;
 
-	for (int i = 0; i < m_terrainMaterials.size(); i++)
+	for (int i = 0; i < 1; i++)
 	{
 		std::shared_ptr<Material> m = Core::GetCore()->GetResources()->GetMaterial(m_terrainMaterials[i]);
 		diffuseTextures.push_back(m->m_diffuseTexture);

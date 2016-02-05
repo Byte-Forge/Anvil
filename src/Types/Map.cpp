@@ -9,7 +9,7 @@ Map::Map()
 	if (Core::GetCore()->GetGraphics()->GetBackend() == Graphics::OpenGL)
 	{
 		m_skybox = std::make_shared<GL::Skybox>();
-		m_terrain = std::make_shared<GL::Terrain>(200, 200);
+		m_terrain = std::make_shared<GL::Terrain>(20, 20);
 	}
 
 	Core::GetCore()->GetGraphics()->GetRenderer()->RegisterSkybox(m_skybox);
