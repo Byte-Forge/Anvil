@@ -75,18 +75,8 @@ int flextInit(void)
         fprintf(stderr, "       Try updating your graphics driver.\n");
         return GL_FALSE;
     }
-    if (!FLEXT_ARB_texture_compression_bptc) {
-        fprintf(stderr, "Error: OpenGL extension GL_ARB_texture_compression_bptc not supported.\n");
-        fprintf(stderr, "       Try updating your graphics driver.\n");
-        return GL_FALSE;
-    }
-    if (!FLEXT_ARB_buffer_storage) {
-        fprintf(stderr, "Error: OpenGL extension GL_ARB_buffer_storage not supported.\n");
-        fprintf(stderr, "       Try updating your graphics driver.\n");
-        return GL_FALSE;
-    }
-    if (!FLEXT_ARB_robustness) {
-        fprintf(stderr, "Error: OpenGL extension GL_ARB_robustness not supported.\n");
+    if (!FLEXT_EXT_texture_compression_s3tc) {
+        fprintf(stderr, "Error: OpenGL extension GL_EXT_texture_compression_s3tc not supported.\n");
         fprintf(stderr, "       Try updating your graphics driver.\n");
         return GL_FALSE;
     }
@@ -101,11 +91,6 @@ void flextLoadOpenGLFunctions(void)
     /* --- Function pointer loading --- */
 
 
-    /* GL_ARB_buffer_storage */
-
-    glpfBufferStorage = (PFNGLBUFFERSTORAGE_PROC*)get_proc("glBufferStorage");
-
-
     /* GL_ARB_debug_output */
 
     glpfDebugMessageCallbackARB = (PFNGLDEBUGMESSAGECALLBACKARB_PROC*)get_proc("glDebugMessageCallbackARB");
@@ -114,27 +99,15 @@ void flextLoadOpenGLFunctions(void)
     glpfGetDebugMessageLogARB = (PFNGLGETDEBUGMESSAGELOGARB_PROC*)get_proc("glGetDebugMessageLogARB");
 
 
-    /* GL_ARB_robustness */
-
-    glpfGetGraphicsResetStatusARB = (PFNGLGETGRAPHICSRESETSTATUSARB_PROC*)get_proc("glGetGraphicsResetStatusARB");
-    glpfGetnCompressedTexImageARB = (PFNGLGETNCOMPRESSEDTEXIMAGEARB_PROC*)get_proc("glGetnCompressedTexImageARB");
-    glpfGetnTexImageARB = (PFNGLGETNTEXIMAGEARB_PROC*)get_proc("glGetnTexImageARB");
-    glpfGetnUniformdvARB = (PFNGLGETNUNIFORMDVARB_PROC*)get_proc("glGetnUniformdvARB");
-    glpfGetnUniformfvARB = (PFNGLGETNUNIFORMFVARB_PROC*)get_proc("glGetnUniformfvARB");
-    glpfGetnUniformivARB = (PFNGLGETNUNIFORMIVARB_PROC*)get_proc("glGetnUniformivARB");
-    glpfGetnUniformuivARB = (PFNGLGETNUNIFORMUIVARB_PROC*)get_proc("glGetnUniformuivARB");
-    glpfReadnPixelsARB = (PFNGLREADNPIXELSARB_PROC*)get_proc("glReadnPixelsARB");
-
-
-    /* GL_ARB_texture_compression_bptc */
-
-
-
     /* GL_ARB_texture_storage */
 
     glpfTexStorage1D = (PFNGLTEXSTORAGE1D_PROC*)get_proc("glTexStorage1D");
     glpfTexStorage2D = (PFNGLTEXSTORAGE2D_PROC*)get_proc("glTexStorage2D");
     glpfTexStorage3D = (PFNGLTEXSTORAGE3D_PROC*)get_proc("glTexStorage3D");
+
+
+    /* GL_EXT_texture_compression_s3tc */
+
 
 
     /* GL_VERSION_1_2 */
@@ -515,15 +488,9 @@ void flextLoadOpenGLFunctions(void)
 /* ----------------------- Extension flag definitions ---------------------- */
 int FLEXT_ARB_debug_output = GL_FALSE;
 int FLEXT_ARB_texture_storage = GL_FALSE;
-int FLEXT_ARB_texture_compression_bptc = GL_FALSE;
-int FLEXT_ARB_buffer_storage = GL_FALSE;
-int FLEXT_ARB_robustness = GL_FALSE;
+int FLEXT_EXT_texture_compression_s3tc = GL_FALSE;
 
 /* ---------------------- Function pointer definitions --------------------- */
-
-/* GL_ARB_buffer_storage */
-
-PFNGLBUFFERSTORAGE_PROC* glpfBufferStorage = NULL;
 
 /* GL_ARB_debug_output */
 
@@ -531,17 +498,6 @@ PFNGLDEBUGMESSAGECALLBACKARB_PROC* glpfDebugMessageCallbackARB = NULL;
 PFNGLDEBUGMESSAGECONTROLARB_PROC* glpfDebugMessageControlARB = NULL;
 PFNGLDEBUGMESSAGEINSERTARB_PROC* glpfDebugMessageInsertARB = NULL;
 PFNGLGETDEBUGMESSAGELOGARB_PROC* glpfGetDebugMessageLogARB = NULL;
-
-/* GL_ARB_robustness */
-
-PFNGLGETGRAPHICSRESETSTATUSARB_PROC* glpfGetGraphicsResetStatusARB = NULL;
-PFNGLGETNCOMPRESSEDTEXIMAGEARB_PROC* glpfGetnCompressedTexImageARB = NULL;
-PFNGLGETNTEXIMAGEARB_PROC* glpfGetnTexImageARB = NULL;
-PFNGLGETNUNIFORMDVARB_PROC* glpfGetnUniformdvARB = NULL;
-PFNGLGETNUNIFORMFVARB_PROC* glpfGetnUniformfvARB = NULL;
-PFNGLGETNUNIFORMIVARB_PROC* glpfGetnUniformivARB = NULL;
-PFNGLGETNUNIFORMUIVARB_PROC* glpfGetnUniformuivARB = NULL;
-PFNGLREADNPIXELSARB_PROC* glpfReadnPixelsARB = NULL;
 
 /* GL_ARB_texture_storage */
 
@@ -921,14 +877,8 @@ static void add_extension(const char* extension)
     if (strcmp("GL_ARB_texture_storage", extension) == 0) {
         FLEXT_ARB_texture_storage = GL_TRUE;
     }
-    if (strcmp("GL_ARB_texture_compression_bptc", extension) == 0) {
-        FLEXT_ARB_texture_compression_bptc = GL_TRUE;
-    }
-    if (strcmp("GL_ARB_buffer_storage", extension) == 0) {
-        FLEXT_ARB_buffer_storage = GL_TRUE;
-    }
-    if (strcmp("GL_ARB_robustness", extension) == 0) {
-        FLEXT_ARB_robustness = GL_TRUE;
+    if (strcmp("GL_EXT_texture_compression_s3tc", extension) == 0) {
+        FLEXT_EXT_texture_compression_s3tc = GL_TRUE;
     }
 }
 

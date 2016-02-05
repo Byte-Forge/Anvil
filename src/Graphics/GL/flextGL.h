@@ -1054,46 +1054,14 @@ typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLen
 
 #define GL_TEXTURE_IMMUTABLE_FORMAT 0x912F
 
-/* GL_ARB_texture_compression_bptc */
+/* GL_EXT_texture_compression_s3tc */
 
-#define GL_COMPRESSED_RGBA_BPTC_UNORM_ARB 0x8E8C
-#define GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM_ARB 0x8E8D
-#define GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_ARB 0x8E8E
-#define GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_ARB 0x8E8F
-
-/* GL_ARB_buffer_storage */
-
-#define GL_MAP_READ_BIT 0x0001
-#define GL_MAP_WRITE_BIT 0x0002
-#define GL_MAP_PERSISTENT_BIT 0x0040
-#define GL_MAP_COHERENT_BIT 0x0080
-#define GL_DYNAMIC_STORAGE_BIT 0x0100
-#define GL_CLIENT_STORAGE_BIT 0x0200
-#define GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT 0x00004000
-#define GL_BUFFER_IMMUTABLE_STORAGE 0x821F
-#define GL_BUFFER_STORAGE_FLAGS 0x8220
-
-/* GL_ARB_robustness */
-
-#define GL_NO_ERROR 0
-#define GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT_ARB 0x00000004
-#define GL_LOSE_CONTEXT_ON_RESET_ARB 0x8252
-#define GL_GUILTY_CONTEXT_RESET_ARB 0x8253
-#define GL_INNOCENT_CONTEXT_RESET_ARB 0x8254
-#define GL_UNKNOWN_CONTEXT_RESET_ARB 0x8255
-#define GL_RESET_NOTIFICATION_STRATEGY_ARB 0x8256
-#define GL_NO_RESET_NOTIFICATION_ARB 0x8261
+#define GL_COMPRESSED_RGB_S3TC_DXT1_EXT 0x83F0
+#define GL_COMPRESSED_RGBA_S3TC_DXT1_EXT 0x83F1
+#define GL_COMPRESSED_RGBA_S3TC_DXT3_EXT 0x83F2
+#define GL_COMPRESSED_RGBA_S3TC_DXT5_EXT 0x83F3
 
 /* --------------------------- FUNCTION PROTOTYPES --------------------------- */
-
-
-/* GL_ARB_buffer_storage */
-
-typedef void (APIENTRY PFNGLBUFFERSTORAGE_PROC (GLenum target, GLsizeiptr size, const void * data, GLbitfield flags));
-
-GLAPI PFNGLBUFFERSTORAGE_PROC *glpfBufferStorage;
-
-#define glBufferStorage glpfBufferStorage
 
 
 /* GL_ARB_debug_output */
@@ -1114,42 +1082,6 @@ GLAPI PFNGLGETDEBUGMESSAGELOGARB_PROC *glpfGetDebugMessageLogARB;
 #define glGetDebugMessageLogARB glpfGetDebugMessageLogARB
 
 
-/* GL_ARB_robustness */
-
-typedef GLenum (APIENTRY PFNGLGETGRAPHICSRESETSTATUSARB_PROC (void));
-typedef void (APIENTRY PFNGLGETNCOMPRESSEDTEXIMAGEARB_PROC (GLenum target, GLint lod, GLsizei bufSize, void * img));
-typedef void (APIENTRY PFNGLGETNTEXIMAGEARB_PROC (GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void * img));
-typedef void (APIENTRY PFNGLGETNUNIFORMDVARB_PROC (GLuint program, GLint location, GLsizei bufSize, GLdouble * params));
-typedef void (APIENTRY PFNGLGETNUNIFORMFVARB_PROC (GLuint program, GLint location, GLsizei bufSize, GLfloat * params));
-typedef void (APIENTRY PFNGLGETNUNIFORMIVARB_PROC (GLuint program, GLint location, GLsizei bufSize, GLint * params));
-typedef void (APIENTRY PFNGLGETNUNIFORMUIVARB_PROC (GLuint program, GLint location, GLsizei bufSize, GLuint * params));
-typedef void (APIENTRY PFNGLREADNPIXELSARB_PROC (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void * data));
-
-GLAPI PFNGLGETGRAPHICSRESETSTATUSARB_PROC *glpfGetGraphicsResetStatusARB;
-GLAPI PFNGLGETNCOMPRESSEDTEXIMAGEARB_PROC *glpfGetnCompressedTexImageARB;
-GLAPI PFNGLGETNTEXIMAGEARB_PROC *glpfGetnTexImageARB;
-GLAPI PFNGLGETNUNIFORMDVARB_PROC *glpfGetnUniformdvARB;
-GLAPI PFNGLGETNUNIFORMFVARB_PROC *glpfGetnUniformfvARB;
-GLAPI PFNGLGETNUNIFORMIVARB_PROC *glpfGetnUniformivARB;
-GLAPI PFNGLGETNUNIFORMUIVARB_PROC *glpfGetnUniformuivARB;
-GLAPI PFNGLREADNPIXELSARB_PROC *glpfReadnPixelsARB;
-
-#define glGetGraphicsResetStatusARB glpfGetGraphicsResetStatusARB
-#define glGetnCompressedTexImageARB glpfGetnCompressedTexImageARB
-#define glGetnTexImageARB glpfGetnTexImageARB
-#define glGetnUniformdvARB glpfGetnUniformdvARB
-#define glGetnUniformfvARB glpfGetnUniformfvARB
-#define glGetnUniformivARB glpfGetnUniformivARB
-#define glGetnUniformuivARB glpfGetnUniformuivARB
-#define glReadnPixelsARB glpfReadnPixelsARB
-
-
-/* GL_ARB_texture_compression_bptc */
-
-
-
-
-
 /* GL_ARB_texture_storage */
 
 typedef void (APIENTRY PFNGLTEXSTORAGE1D_PROC (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width));
@@ -1163,6 +1095,12 @@ GLAPI PFNGLTEXSTORAGE3D_PROC *glpfTexStorage3D;
 #define glTexStorage1D glpfTexStorage1D
 #define glTexStorage2D glpfTexStorage2D
 #define glTexStorage3D glpfTexStorage3D
+
+
+/* GL_EXT_texture_compression_s3tc */
+
+
+
 
 
 /* GL_VERSION_1_0 */
@@ -2289,11 +2227,9 @@ GLAPI PFNGLUNIFORMSUBROUTINESUIV_PROC *glpfUniformSubroutinesuiv;
 
 /* --------------------------- CATEGORY DEFINES ------------------------------ */
 
-#define GL_ARB_buffer_storage
 #define GL_ARB_debug_output
-#define GL_ARB_robustness
-#define GL_ARB_texture_compression_bptc
 #define GL_ARB_texture_storage
+#define GL_EXT_texture_compression_s3tc
 #define GL_VERSION_1_0
 #define GL_VERSION_1_1
 #define GL_VERSION_1_2
@@ -2312,9 +2248,7 @@ GLAPI PFNGLUNIFORMSUBROUTINESUIV_PROC *glpfUniformSubroutinesuiv;
 
 extern int FLEXT_ARB_debug_output;
 extern int FLEXT_ARB_texture_storage;
-extern int FLEXT_ARB_texture_compression_bptc;
-extern int FLEXT_ARB_buffer_storage;
-extern int FLEXT_ARB_robustness;
+extern int FLEXT_EXT_texture_compression_s3tc;
 
 int flextInit(void);
 
