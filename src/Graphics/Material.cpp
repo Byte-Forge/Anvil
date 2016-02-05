@@ -31,8 +31,7 @@ void Material::Load(const std::string &path)
 template<class Archive>
 void Material::serialize(Archive& archive)
 {
-	archive(cereal::make_nvp("max_tessellation" ,m_maxTessellation), 
-		cereal::make_nvp("displacement_factor", m_displacementFactor), 
+	archive(cereal::make_nvp("displacement_factor", m_displacementFactor), 
 		cereal::make_nvp("diffuse", m_diffuseTexture),
 		cereal::make_nvp("normal", m_normalTexture),
 		cereal::make_nvp("specular", m_specularTexture),
