@@ -109,11 +109,11 @@ RendererGL::RendererGL()
         glDebugMessageCallbackARB(debugCallback, nullptr);
 	#endif
 
-	if(!FLEXT_ARB_texture_storage)
+	if(FLEXT_ARB_texture_storage == GL_FALSE)
 		throw HpseException("ARB_texture_storage not supported!", __FILE__, __LINE__);
 
 
-	if(!FLEXT_EXT_texture_compression_s3tc)
+	if(FLEXT_EXT_texture_compression_s3tc== GL_FALSE)
 		throw HpseException("S3TC texture compression not supported!", __FILE__, __LINE__);
 
 
