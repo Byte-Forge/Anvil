@@ -106,9 +106,10 @@ RendererGL::RendererGL()
 	#if 1
 	if (FLEXT_ARB_debug_output)
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
-        glDebugMessageCallbackARB(debugCallback, nullptr);
+        glDebugMessageCallbackARB(debugCallback, nullptr);	//crashes on mac
 	#endif
 
+	//doesnt throw a exception on mac??
 	if(!FLEXT_ARB_texture_storage)
 		throw HpseException("ARB_texture_storage not supported!", __FILE__, __LINE__);
 
@@ -179,7 +180,6 @@ void RendererGL::Render(glm::mat4& ortho)
 		m_terrain->Update();
 		m_terrain->Render(2);
 	}
-
 
 	/*
     for(auto& renderable : m_renderables)
