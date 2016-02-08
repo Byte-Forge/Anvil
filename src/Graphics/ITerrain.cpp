@@ -87,7 +87,7 @@ void ITerrain::Generate()
 
 			m_heightmap[i].push_back(value);
 
-			int mat1 = (i/20) % (m_terrainMaterials.size());
+			int mat1 = (i/2) % (m_terrainMaterials.size());
 			int mat2 = -1;
 			float val = 0.0;
 
@@ -275,7 +275,7 @@ void ITerrain::UpdateTextures()
 	std::vector<std::string> dispTextures;
 	std::vector<std::string> aoTextures;
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < m_terrainMaterials.size(); i++)
 	{
 		std::shared_ptr<Material> m = Core::GetCore()->GetResources()->GetMaterial(m_terrainMaterials[i]);
 		diffuseTextures.push_back(m->m_diffuseTexture);
