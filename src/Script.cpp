@@ -6,7 +6,7 @@ using namespace hpse;
 
 Script::Script()
 {
-	m_state = luaL_newstate();
+	m_state = luaL_newstate();  //crash on mac, maybe lua as dynamic build
 	luaL_openlibs(m_state);
 }
 
