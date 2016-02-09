@@ -19,6 +19,12 @@ namespace hpse
 		virtual void Resize(int width,int height) = 0;
 		virtual void PrintInfo() = 0;
 
+		//GPU info functions
+		virtual int GetTotalVRAM() = 0;
+		virtual int GetUsedVRAM() = 0;
+		virtual const std::string& GetGPUName() = 0;
+		
+
 		inline std::uint32_t GetSkyboxUniformLocation(const std::string& id)
 		{
 			return m_skyboxShader->GetUniformLocation(id);

@@ -201,6 +201,8 @@ void RendererGL::PrintInfo()
 {
     char* vendor = (char*)glGetString(GL_VENDOR);
     std::cout << "GPU Vendor: " << vendor << std::endl;
+	char* device = (char*)glGetString(GL_RENDERER);
+	std::cout << "GPU Device: " << device << std::endl;
     char* version = (char*)glGetString(GL_VERSION);
     std::cout << "OpenGL Version: " << version << std::endl;
     char* glslversion = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
@@ -351,4 +353,19 @@ void RendererGL::ReleaseTexture(Rocket::Core::TextureHandle texture_handle)
 {
 	glDeleteTextures(1, reinterpret_cast<GLuint*>(&texture_handle));
 	texture_handle = 0;
+}
+
+const std::string& RendererGL::GetGPUName()
+{
+	return std::string((char*)glGetString(GL_RENDERER));
+}
+
+int RendererGL::GetUsedVRAM()
+{
+	return 0;
+}
+
+int RendererGL::GetTotalVRAM()
+{
+	return 1;
 }

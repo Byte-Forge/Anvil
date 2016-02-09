@@ -9,6 +9,9 @@ using namespace hpse;
 int GameShutdown(lua_State* L);
 int GameGetFPS(lua_State* L);
 int GameGetPolygons(lua_State* L);
+int GameGetGPUName(lua_State* L);
+int GameGetTotalVRAM(lua_State* L);
+int GameGetUsedVRAM(lua_State* L);
 
 void ScriptInterface::Initialise(lua_State * L)
 {
@@ -31,6 +34,9 @@ void ScriptInterface::Initialise(lua_State * L)
 	lua_pushcfunction(L, GameGetPolygons);
 	lua_setfield(L, game, "GetPolygons");
 
+	lua_pushcfunction(L, GameGetGPUName);
+	lua_setfield(L, game, "GetGPUName");
+
 	lua_pop(L, 1); //pop Game
 }
 
@@ -51,5 +57,26 @@ int GameGetPolygons(lua_State* L)
 {
 	int polyCount = Core::GetCore()->GetMap()->GetTerrain()->GetPolycount();
 	lua_pushnumber(L, polyCount);
+	return 1;
+}
+
+int GameGetGPUName(lua_State* L)
+{
+	auto name = Core::GetCore()->GetGraphics()->GetRenderer()->GetGPUName();
+	lua_pushstring(L, name.c_str());
+	return 1;
+}
+
+int GameGetTotalVRAM(lua_State* L)
+{
+	int vram = Core::GetCore()->GetGraphics()->GetRenderer()->GetTotalVRAM();
+	lua_pushnumber(L, vram);
+	return 1;
+}
+
+int GameGetUsedVRAM(lua_State* L)
+{
+	int vram = Core::GetCore()->GetGraphics()->GetRenderer()->GetUsedVRAM();
+	lua_pushnumber(L, vram);
 	return 1;
 }

@@ -15,6 +15,9 @@ namespace hpse
 		void Render(glm::mat4& ortho);
 		void Resize(int width, int height);
 		void PrintInfo();
+		int GetTotalVRAM();
+		int GetUsedVRAM();
+		const std::string& GetGPUName();
 
 		/// Called by Rocket when it wants to render geometry that it does not wish to optimise.
 		void RenderGeometry(Rocket::Core::Vertex* vertices, int num_vertices, int* indices, int num_indices,
