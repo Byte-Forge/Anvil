@@ -13,6 +13,13 @@ namespace hpse
 	class IRenderer : public Rocket::Core::RenderInterface
 	{
 	public:
+		enum Vendor
+		{
+			NVIDIA	= 0,
+			AMD		= 1,
+			OTHER	= 2,
+		};
+
 		virtual void Clear() = 0;
 		virtual void Render(glm::mat4& ortho) = 0;
 
@@ -22,7 +29,7 @@ namespace hpse
 		//GPU info functions
 		virtual int GetTotalVRAM() = 0;
 		virtual int GetUsedVRAM() = 0;
-		virtual const std::string& GetGPUName() = 0;
+		virtual const std::string GetGPUName() = 0;
 		
 
 		inline std::uint32_t GetSkyboxUniformLocation(const std::string& id)
@@ -92,6 +99,7 @@ namespace hpse
 	protected:
 		int m_tessellationLevel = 32;
 		std::array<std::string, 3> m_shaderModes = { "DEFAULT", "WIREFRAME", "NORMALS" };
+		Vendor m_vendor;
 
 		bool m_wireframeMode = false;
 		bool m_normalsMode = false;

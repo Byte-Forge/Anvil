@@ -17,7 +17,7 @@ namespace hpse
 		void PrintInfo();
 		int GetTotalVRAM();
 		int GetUsedVRAM();
-		const std::string& GetGPUName();
+		const std::string GetGPUName();
 
 		/// Called by Rocket when it wants to render geometry that it does not wish to optimise.
 		void RenderGeometry(Rocket::Core::Vertex* vertices, int num_vertices, int* indices, int num_indices,
@@ -44,5 +44,7 @@ namespace hpse
 		void ReleaseTexture(Rocket::Core::TextureHandle texture_handle);
 	private:
 		GLuint m_guiOrthoID, m_guiTranslID, m_guiSamplerID, m_guiUseTexID;
+		int m_totalVRAM;
+		std::string m_deviceName;
 	};
 }

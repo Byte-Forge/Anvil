@@ -10,6 +10,19 @@
 
 using namespace hpse;
 
+
+std::map<std::string, IRenderer::Vendor> vendorMap = 
+{	{"NVIDIA Corporation",IRenderer::NVIDIA},
+	{"AMD",IRenderer::AMD} };
+
+
+//NVIDIA
+#define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX          0x9047
+#define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX    0x9048
+#define GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX  0x9049
+#define GPU_MEMORY_INFO_EVICTION_COUNT_NVX            0x904A
+#define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX            0x904B
+
 class GLGeometry
 {
 public:
@@ -99,7 +112,7 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 }
 #endif
 
-RendererGL::RendererGL()
+RendererGL::RendererGL() 
 {
     flextInit();
 
@@ -139,6 +152,22 @@ RendererGL::RendererGL()
 		m_terrainShaders[i]->Load("shader/terrain.vert", "shader/terrain.tesc", "shader/terrain.tese", "shader/terrain.geom", "shader/terrain.frag");
 		m_terrainShaders[i]->Compile();
 	}
+
+	m_vendor = OTHER;
+	auto iterator = vendorMap.find(reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+	if (iterator != vendorMap.end())
+		m_vendor = (*iterator).second;
+
+	m_deviceName = (char*)glGetString(GL_RENDERER);
+	if (m_vendor == NVIDIA)
+	{
+		glGetIntegerv(GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &m_totalVRAM);
+		m_totalVRAM /= 1024;
+	}	
+	else if (m_vendor == AMD)
+		m_totalVRAM = 0;
+	else
+		m_totalVRAM = 0;
 }
 
 RendererGL::~RendererGL()
@@ -355,17 +384,24 @@ void RendererGL::ReleaseTexture(Rocket::Core::TextureHandle texture_handle)
 	texture_handle = 0;
 }
 
-const std::string& RendererGL::GetGPUName()
+const std::string RendererGL::GetGPUName()
 {
-	return std::string((char*)glGetString(GL_RENDERER));
+	return m_deviceName;
 }
 
 int RendererGL::GetUsedVRAM()
 {
-	return 0;
+	int vram = 0;
+	if (m_vendor == NVIDIA)
+	{
+		glGetIntegerv(GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &vram);
+		vram /= 1024;
+		vram = m_totalVRAM - vram;
+	}
+	return vram;
 }
 
 int RendererGL::GetTotalVRAM()
 {
-	return 1;
+	return m_totalVRAM;
 }

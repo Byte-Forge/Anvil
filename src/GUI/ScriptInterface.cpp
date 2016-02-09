@@ -37,6 +37,12 @@ void ScriptInterface::Initialise(lua_State * L)
 	lua_pushcfunction(L, GameGetGPUName);
 	lua_setfield(L, game, "GetGPUName");
 
+	lua_pushcfunction(L, GameGetUsedVRAM);
+	lua_setfield(L, game, "GetUsedVRAM");
+
+	lua_pushcfunction(L, GameGetTotalVRAM);
+	lua_setfield(L, game, "GetTotalVRAM");
+
 	lua_pop(L, 1); //pop Game
 }
 
