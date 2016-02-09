@@ -4,8 +4,8 @@
 #include "../Loaders/Util.hpp"
 #include "../Exception.hpp"
 #include <memory>
-#include "rapidjson/document.h"
-#include "rapidjson/filereadstream.h"
+#include <rapidjson/document.h>
+#include <rapidjson/istreamwrapper.h>
 
 using namespace hpse;
 using namespace rapidjson;
@@ -14,11 +14,16 @@ void EntityLoader::LoadEntity(const std::string &name, const std::string &path)
 {
 	std::shared_ptr<Entity> ent; 
 
-	FILE* f = fopen(path.c_str(), "r");
-	char readBuffer[65536];
-	FileReadStream fs(f, readBuffer, sizeof(readBuffer));
+	std::ifstream fin(path, std::ios::in);
+	
+	if (fin.fail())
+	{
+		throw HpseException("Failed to open entity: " + name, __FILE__, __LINE__);
+	}
+
+	IStreamWrapper isw(fin);
 	Document d;
-	d.ParseStream(fs);
+	d.ParseStream(isw);
 
 	if (d["entity"].IsObject())
 	{
@@ -43,6 +48,6 @@ void EntityLoader::LoadEntity(const std::string &name, const std::string &path)
 		throw HpseException("Entity file has no entity object: " + path, __FILE__, __LINE__);
 	}
 
-	fclose(f);
+	fin.close();
 	Core::GetCore()->GetResources()->AddResource(toUpper(name), ent);
 }
