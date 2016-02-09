@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <glm/glm.hpp>
 #include <fstream>
+#include <vector>
 
 namespace hpse
 {
@@ -24,12 +25,22 @@ namespace hpse
 
 	//Read an array of a type 
 	template<typename T>
-	static inline void ReadArray(std::ifstream& fin, unsigned int chunksize, T*& arr)
+	inline void readArray(std::ifstream& fin, unsigned int chunksize, T*& arr)
 	{
 		auto num_elements = chunksize / sizeof(T);
 		arr = new T[num_elements];
 
 		fin.read((char*)arr, sizeof(T)*num_elements);
+	}
+
+	template<typename T>
+	inline std::vector<T> readVector(std::ifstream& fin, unsigned int chunksize)
+	{
+		std::vector<T> result;
+		auto num_elements = chunksize / sizeof(T);
+		result.resize(num_elements);
+
+		fin.read((char*)&result[0], sizeof(T)*num_elements);
 	}
 
 	inline std::string readString(std::ifstream& fin)
