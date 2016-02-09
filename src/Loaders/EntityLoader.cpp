@@ -18,7 +18,7 @@ void EntityLoader::LoadEntity(const std::string &name, const std::string &path)
 	
 	if (fin.fail())
 	{
-		throw HpseException("Failed to open entity: " + name, __FILE__, __LINE__);
+		throw HpseException("Failed to open entity file: " + name, __FILE__, __LINE__);
 	}
 
 	IStreamWrapper isw(fin);
@@ -27,19 +27,22 @@ void EntityLoader::LoadEntity(const std::string &name, const std::string &path)
 
 	if (d["entity"].IsObject())
 	{
-		if (!d["entity"]["parent"].IsNull())
-			ent = std::make_shared<Entity>(Core::GetCore()->GetResources()->GetEntity(d["entity"]["parent"].GetString()));
-		else
-			ent = std::make_shared<Entity>();
-
-		if (!d["entity"]["model"].IsNull())
-			ent->m_model = Core::GetCore()->GetResources()->GetModel(d["entity"]["model"].GetString());
-
-		if (!d["entity"]["materials"].IsNull() && d["entity"]["materials"].IsArray())
+		if (d["entity"].IsObject())
 		{
-			for (int i = 0; i < d["entity"]["materials"].Size(); i++)
+			if (d["entity"].HasMember("parent"))
+				ent = std::make_shared<Entity>(Core::GetCore()->GetResources()->GetEntity(d["entity"]["parent"].GetString()));
+			else
+				ent = std::make_shared<Entity>();
+
+			if (d["entity"].HasMember("model"))
+				ent->m_model = Core::GetCore()->GetResources()->GetModel(d["entity"]["model"].GetString());
+
+			if (d["entity"].HasMember("materials") && d["entity"]["materials"].IsArray())
 			{
-				ent->m_materials.push_back(Core::GetCore()->GetResources()->GetMaterial(d["entity"]["materials"][i].GetString()));
+				for (int i = 0; i < d["entity"]["materials"].Size(); i++)
+				{
+					ent->m_materials.push_back(Core::GetCore()->GetResources()->GetMaterial(d["entity"]["materials"][i].GetString()));
+				}
 			}
 		}
 	}
