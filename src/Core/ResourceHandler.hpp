@@ -10,7 +10,7 @@
 #include <iostream>
 #include "IResource.hpp"
 #include "../Objects/Entity.hpp"
-#include "../Types/W4D.hpp"
+#include "../Types/BF3D.hpp"
 #include "../Graphics/ITexture.hpp"
 #include "../Graphics/Material.hpp"
 
@@ -27,7 +27,7 @@ namespace hpse
 		std::shared_ptr<Material> GetMaterial(const std::string &name);
 		std::vector<std::string> GetTerrainMaterials();
 
-		std::shared_ptr<W4DModel> GetModel(const std::string &name);
+		std::shared_ptr<BF3DModel> GetModel(const std::string &name);
 
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 
@@ -45,9 +45,9 @@ namespace hpse
 		std::string m_texturesDir = "textures/";
 		std::string m_shadersDir = "shader/";
 		std::string m_materialsDir = "materials/";
-		std::string m_w4dDir = "w4d/";
+		std::string m_bf3dDir = "bf3d/";
 		std::string m_uiDir = "ui/";
-		std::string m_objectsDir = "objects/";
+		std::string m_entitiesDir = "entities/";
 		std::string m_modDir = "mods/";
 
 		std::vector<std::string> m_modDirs;

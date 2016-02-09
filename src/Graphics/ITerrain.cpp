@@ -65,6 +65,8 @@ void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 
 void ITerrain::Generate()
 {
+	Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
+
 	UpdateTextures();
 	for (unsigned int i = 0; i <= m_width; i++)
 	{
@@ -87,9 +89,9 @@ void ITerrain::Generate()
 
 			m_heightmap[i].push_back(value);
 
-			int mat1 = (i/2) % (m_terrainMaterials.size());
-			int mat2 = -1;
-			float val = 0.0;
+			int mat1 = (i/5) % (m_terrainMaterials.size());
+			int mat2 =  mat1 + 1;
+			float val = (i%5)* 0.2f;
 
 			/*
 			if (value > -5)

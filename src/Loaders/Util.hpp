@@ -22,6 +22,16 @@ namespace hpse
 		return result;
 	}
 
+	//Read an array of a type 
+	template<typename T>
+	static inline void ReadArray(std::ifstream& fin, unsigned int chunksize, T*& arr)
+	{
+		auto num_elements = chunksize / sizeof(T);
+		arr = new T[num_elements];
+
+		fin.read((char*)arr, sizeof(T)*num_elements);
+	}
+
 	inline std::string readString(std::ifstream& fin)
 	{
 		std::string result;

@@ -1,9 +1,9 @@
 #pragma once
-#include <fstream>
+#include <string>
 
 namespace hpse
 {
-	class W4DLoader
+	class BF3DLoader
 	{
 	public:
 		static void Load(const std::string& name, const std::string& path);

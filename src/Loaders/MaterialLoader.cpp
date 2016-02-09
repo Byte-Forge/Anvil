@@ -12,7 +12,7 @@ using namespace rapidjson;
 
 void MaterialLoader::LoadMaterial(const std::string &name, const std::string &path)
 {
-	std::shared_ptr<Material> mat = std::make_shared<Material>();
+	std::shared_ptr<Material> mat;
 
 	FILE* f = fopen(path.c_str(), "r");
 	char readBuffer[65536];
@@ -22,17 +22,18 @@ void MaterialLoader::LoadMaterial(const std::string &name, const std::string &pa
 
 	if (d["material"].IsObject())
 	{
-		if (d["material"]["displacement_factor"].IsDouble())
+		mat = std::make_shared<Material>();
+		if (!d["material"]["displacement_factor"].IsNull())
 			mat->m_displacementFactor = d["material"]["displacement_factor"].GetDouble();
-		if (d["material"]["diffuse"].IsString())
+		if (!d["material"]["diffuse"].IsNull())
 			mat->m_diffuseTexture = d["material"]["diffuse"].GetString();
-		if (d["material"]["normal"].IsString())
+		if (!d["material"]["normal"].IsNull())
 			mat->m_normalTexture = d["material"]["normal"].GetString();
-		if (d["material"]["specular"].IsString())
+		if (!d["material"]["specular"].IsNull())
 			mat->m_specularTexture= d["material"]["specular"].GetString();
-		if (d["material"]["displacement"].IsString())
+		if (!d["material"]["displacement"].IsNull())
 			mat->m_displacementTexture = d["material"]["displacement"].GetString();
-		if (d["material"]["ambient_occ"].IsString())
+		if (!d["material"]["ambient_occ"].IsNull())
 			mat->m_ambientOccTexture = d["material"]["ambient_occ"].GetString();
 	}
 	else

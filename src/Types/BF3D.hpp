@@ -161,10 +161,10 @@ namespace hpse
 	//#######################################################################################
 
 	// chunk 0
-	class W4DModel : public IResource
+	class BF3DModel : public IResource
 	{
 	public:
-		std::string hieraName; // is the name of the model by default
+		std::string hieraName; // is empty
 		std::vector<Mesh> meshes;
 		BoundingVolume volume;
 	};

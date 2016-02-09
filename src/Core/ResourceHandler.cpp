@@ -7,7 +7,7 @@
 #include "../Loaders/EntityLoader.hpp"
 #include "../Loaders/TextureLoader.hpp"
 #include "../Loaders/MaterialLoader.hpp"
-#include "../Loaders/W4DLoader.hpp"
+#include "../Loaders/BF3DLoader.hpp"
 #include "../Util/Platform.hpp"
 #include "../Exception.hpp"
 
@@ -18,7 +18,7 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(m_objectsDir + name, &path))
+		if (GetFilePath(m_entitiesDir + name, &path))
 		{
 			EntityLoader::LoadEntity(name, path);
 		}
@@ -73,7 +73,7 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	std::vector<std::string> materials;
 	
 	std::vector<std::string> temp;
-	temp = IO::ListFiles(m_materialsDir + "terrain/", "mat");
+	temp = IO::ListFiles(m_materialsDir + "terrain/", "json");
 	for (int i = 0; i < temp.size(); i++)
 	{
 		if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
@@ -84,7 +84,7 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 
 	for (int i = 0; i < m_modDirs.size(); i++)
 	{
-		temp = IO::ListFiles(m_modDirs[i] + m_materialsDir + "terrain/", "xml");
+		temp = IO::ListFiles(m_modDirs[i] + m_materialsDir + "terrain/", "json");
 		for (int i = 0; i < temp.size(); i++)
 		{
 			if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
@@ -96,17 +96,17 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	return materials;
 }
 
-std::shared_ptr<W4DModel> ResourceHandler::GetModel(const std::string &name)
+std::shared_ptr<BF3DModel> ResourceHandler::GetModel(const std::string &name)
 {
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(m_w4dDir + name, &path))
+		if (GetFilePath(m_bf3dDir + name, &path))
 		{
-			W4DLoader::Load(name, path);
+			BF3DLoader::Load(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<W4DModel> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<BF3DModel> (m_resources[toUpper(name)]);
 }
 
 
@@ -118,7 +118,7 @@ void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IReso
 int ResourceHandler::GetFilePath(std::string name, std::string* path)
 {
 	//test if the file is in one of the mod folders, starting with the last added mod folder
-	for (int i = m_modDirs.size(); i > 0; i--)
+	for (size_t i = m_modDirs.size(); i > 0; i--)
 	{
 		const auto& dir = m_modDirs[i];
 		if (fileExists(dir + "/" + name))

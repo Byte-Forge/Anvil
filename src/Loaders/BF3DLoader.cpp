@@ -1,4 +1,4 @@
-#include "W4DLoader.hpp"
+#include "BF3DLoader.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 #include "Util.hpp"        
 #include "../Core.hpp"
-#include "../Types/W4D.hpp"
+#include "../Types/BF3D.hpp"
 #include "../Core/ResourceHandler.hpp"
 #include <stdint.h>
 
@@ -36,7 +36,7 @@ HierarchyPivot loadHierarchyPivot(std::ifstream& file)
 	return pivot;
 }
 
-void loadHierarchy(std::ifstream& file, std::uint32_t chunkEnd)
+void loadHierarchy(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<Hierarchy> hierarchy;
 	while (file.tellg() < chunkEnd)
@@ -48,6 +48,7 @@ void loadHierarchy(std::ifstream& file, std::uint32_t chunkEnd)
 		switch (chunkType)
 		{
 		case 257:
+			hierarchy = std::make_shared<Hierarchy>();
 			hierarchy->header = loadHierarchyHeader(file);
 			break;
 		case 258:
@@ -58,7 +59,7 @@ void loadHierarchy(std::ifstream& file, std::uint32_t chunkEnd)
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
-	//Core::GetResources()->AddResource(name, p);
+	Core::GetCore()->GetResources()->AddResource(name, hierarchy);
 }
 
 //#######################################################################################
@@ -92,22 +93,27 @@ Mesh loadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 			mesh.header = loadMeshHeader(file);
 			break;
 		case 3:
+			//read the at once?
 			while (file.tellg() < chunkEnd)
 				mesh.vertices.push_back(read<glm::f32vec3>(file));
 			break;
 		case 4:
+			//read the at once?
 			while (file.tellg() < chunkEnd)
 				mesh.normals.push_back(read<glm::f32vec3>(file));
 			break;
 		case 5:
+			//read the at once?
 			while (file.tellg() < chunkEnd)
 				mesh.faces.push_back(read<glm::i32vec3>(file));
 			break;
 		case 6:
+			//read the at once?
 			while (file.tellg() < chunkEnd)
 				mesh.uvCoords.push_back(read<glm::f32vec2>(file));
 			break;
 		case 7:
+			//read the at once?
 			while (file.tellg() < chunkEnd)
 				mesh.vertInfs.push_back(read<MeshVertexInfluences>(file));
 			break;
@@ -119,10 +125,10 @@ Mesh loadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 	return mesh;
 }
 
-void loadModel(std::ifstream& file, std::uint32_t chunkEnd)
+void loadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
-	W4DModel model;
-	model.hieraName = readString(file);
+	std::shared_ptr<BF3DModel> model =  std::make_shared<BF3DModel>();
+	model->hieraName = readString(file);
 
 	while (file.tellg() < chunkEnd)
 	{
@@ -130,29 +136,26 @@ void loadModel(std::ifstream& file, std::uint32_t chunkEnd)
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
 		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
 
-		Mesh m;
 		switch (chunkType)
 		{
 		case 1:
-			m = loadMesh(file, chunkEnd);
-			model.meshes.push_back(m);
+			model->meshes.push_back(loadMesh(file, chunkEnd));
 			break;
 		case 1024:
-			model.volume = read<Box>(file);
+			model->volume = read<Box>(file);
 			break;
 		case 1025:
-			model.volume = read<Sphere>(file);
+			model->volume = read<Sphere>(file);
 			break;
 		default:
 			std::cout << "unknown chunktype in model chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
-	std::shared_ptr<IResource> p (&model);
-	//Core::GetResources()->AddResource(model.name, p);
+	Core::GetCore()->GetResources()->AddResource(name, model);
 }
 
-void W4DLoader::Load(const std::string& name, const std::string& path)
+void BF3DLoader::Load(const std::string& name, const std::string& path)
 {
 	std::ifstream file(path, std::ios::binary);
 	long size = getFStreamSize(file);
@@ -166,12 +169,10 @@ void W4DLoader::Load(const std::string& name, const std::string& path)
 		switch (chunkType)
 		{
 		case 0:
-			std::cout << "loading model: " << name << std::endl;
-			loadModel(file, chunkEnd);
+			loadModel(name, file, chunkEnd);
 			break;
 		case 256:
-			std::cout << "loading hierarchy: " << name << std::endl;
-			loadHierarchy(file, chunkEnd);
+			loadHierarchy(name, file, chunkEnd);
 			break;
 
 		default:
