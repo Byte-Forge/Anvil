@@ -23,6 +23,7 @@ namespace hpse
 	protected:
 		void Generate();
 		void ComputeNormals(std::vector<std::vector<glm::vec3>> &normals);
+		void CreateHeightmap();
 		void UpdateBufferData();
 		void UpdateTextures();
 

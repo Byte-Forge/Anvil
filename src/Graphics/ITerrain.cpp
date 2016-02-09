@@ -3,7 +3,7 @@
 #include "../Math/SimplexNoise.hpp"
 #include "../Math/Collision.hpp"
 #include "../Math.hpp"
-
+#include <future>
 using namespace hpse;
 
 ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width), m_height(height)
@@ -67,80 +67,11 @@ void ITerrain::Generate()
 {
 	Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
 
+	m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
+	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
-	for (unsigned int i = 0; i <= m_width; i++)
-	{
-		std::vector<float> v;
-		m_heightmap.push_back(v);
-
-		std::vector<glm::vec3> m;
-		m_materialmap.push_back(m);
-		for (unsigned int j = 0; j <= m_height; j++)
-		{
-			float value = 0.0f;
-			value += SimplexNoise::scaled_octave_noise_2d(8, 0.7f, 0.5f, -20.0f, 0.0f, i / 100.0f, j / 100.0f); //for slightly evaluation
-			float mountain = SimplexNoise::scaled_octave_noise_2d(2, 0.5f, 0.1f, -10.0f, 20.0f, i / 10.0f, j / 10.0f); //for mountain terrain
-			if (value < 0.0)
-				value = 0.0;
-			if (mountain > 0.0)
-				value += SimplexNoise::scaled_octave_noise_2d(8, 0.3f, 0.1f, 0.0f, 10.0f, i, j) * mountain / 10.0; //for mountains
-
-			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01f, 0.1f, 0.0f, 2.0f, i, j); //for flat terrain
-
-			m_heightmap[i].push_back(value);
-
-			int mat1 = (i/5) % (m_terrainMaterials.size());
-			int mat2 =  mat1 + 1;
-			float val = (i%5)* 0.2f;
-
-			/*
-			if (value > -5)
-			{
-				mat1 = 0;
-				mat2 = 1;
-				val = 0.5;
-			}
-			if (value > 0)
-			{
-				mat1 = 1;
-				mat2 = -1;
-				val = 0.0;
-			}
-			if (value > 3)
-			{
-				mat1 = 1;
-				mat2 = 2;
-				val = 0.5;
-			}
-			if (value > 5)
-			{
-				mat1 = 2;
-				mat2 = -1;
-				val = 0.0;
-			}
-			if (value > 10)
-			{
-				mat1 = 2;
-				mat2 = 3;
-				val = 0.2;
-			}
-			if (value > 15)
-			{
-				mat1 = 2;
-				mat2 = 3;
-				val = 0.5;
-			}
-			if (value > 19)
-			{
-				mat1 = 3;
-				mat2 = -1;
-				val = 0.0;
-			}
-			*/
-
-			m_materialmap[i].push_back({ mat1, mat2, val });
-		}
-	}
+	//wait until heightmap creation is done
+	hand.get();
 }
 
 void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals)
@@ -177,6 +108,38 @@ void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals)
 				normal += Math::ComputeNormal(a, b, c);
 			}
 			normals[i].push_back(glm::normalize(normal));
+		}
+	}
+}
+
+void ITerrain::CreateHeightmap()
+{
+	for (unsigned int i = 0; i <= m_width; i++)
+	{
+		std::vector<float> v;
+		m_heightmap.push_back(v);
+
+		std::vector<glm::vec3> m;
+		m_materialmap.push_back(m);
+		for (unsigned int j = 0; j <= m_height; j++)
+		{
+			float value = 0.0f;
+			value += SimplexNoise::scaled_octave_noise_2d(8, 0.7f, 0.5f, -20.0f, 0.0f, i / 100.0f, j / 100.0f); //for slightly evaluation
+			float mountain = SimplexNoise::scaled_octave_noise_2d(2, 0.5f, 0.1f, -10.0f, 20.0f, i / 10.0f, j / 10.0f); //for mountain terrain
+			if (value < 0.0)
+				value = 0.0;
+			if (mountain > 0.0)
+				value += SimplexNoise::scaled_octave_noise_2d(8, 0.3f, 0.1f, 0.0f, 10.0f, i, j) * mountain / 10.0; //for mountains
+
+			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01f, 0.1f, 0.0f, 2.0f, i, j); //for flat terrain
+
+			m_heightmap[i].push_back(value);
+
+			int mat1 = (i / 5) % (m_terrainMaterials.size());
+			int mat2 = mat1 + 1;
+			float val = (i % 5)* 0.2f;
+
+			m_materialmap[i].push_back({ mat1, mat2, val });
 		}
 	}
 }
@@ -269,7 +232,7 @@ void ITerrain::UpdateBufferData()
 
 void ITerrain::UpdateTextures()
 {
-	m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
+
 
 	std::vector<std::string> diffuseTextures;
 	std::vector<std::string> normTextures;
@@ -277,9 +240,9 @@ void ITerrain::UpdateTextures()
 	std::vector<std::string> dispTextures;
 	std::vector<std::string> aoTextures;
 
-	for (int i = 0; i < m_terrainMaterials.size(); i++)
+	for (auto& mat: m_terrainMaterials)
 	{
-		std::shared_ptr<Material> m = Core::GetCore()->GetResources()->GetMaterial(m_terrainMaterials[i]);
+		std::shared_ptr<Material> m = Core::GetCore()->GetResources()->GetMaterial(mat);
 		diffuseTextures.push_back(m->m_diffuseTexture);
 		normTextures.push_back(m->m_normalTexture);
 		specTextures.push_back(m->m_specularTexture);
