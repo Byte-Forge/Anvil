@@ -8,9 +8,8 @@
 #include "ResourceHandler.hpp"
 #include <iostream>
 #include "../Loaders/Util.hpp"
-#include "../Loaders/EntityLoader.hpp"
 #include "../Loaders/TextureLoader.hpp"
-#include "../Loaders/MaterialLoader.hpp"
+#include "../Loaders/JsonLoader.hpp"
 #include "../Loaders/BF3DLoader.hpp"
 #include "../Util/Platform.hpp"
 #include "../Exception.hpp"
@@ -24,7 +23,7 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 	{
 		if (GetFilePath(m_entitiesDir + name, &path))
 		{
-			EntityLoader::LoadEntity(name, path);
+			JsonLoader::LoadEntity(name, path);
 		}
 	}
 	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(name)]);
@@ -65,7 +64,7 @@ std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 	{
 		if (GetFilePath(m_materialsDir + name, &path))
 		{
-			MaterialLoader::LoadMaterial(name, path);
+			JsonLoader::LoadMaterial(name, path);
 		}
 	}
 	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(name)]);
@@ -112,7 +111,6 @@ std::shared_ptr<BF3DModel> ResourceHandler::GetModel(const std::string &name)
 	}
 	return std::dynamic_pointer_cast<BF3DModel> (m_resources[toUpper(name)]);
 }
-
 
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 {

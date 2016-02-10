@@ -75,7 +75,13 @@ void ITerrain::Generate()
 {
 	Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
 
-	m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
+	//m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
+	m_terrainMaterials.push_back("terrain/gravel_small.json");
+	m_terrainMaterials.push_back("terrain/sand_beach.json");
+	m_terrainMaterials.push_back("terrain/grass.json");
+	m_terrainMaterials.push_back("terrain/grass_2.json");
+	m_terrainMaterials.push_back("terrain/cliff_snowy.json");
+
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
 	//wait until heightmap creation is done
@@ -143,9 +149,18 @@ void ITerrain::CreateHeightmap()
 
 			m_heightmap[i].push_back(value);
 
-			int mat1 = (i / 5) % (m_terrainMaterials.size());
-			int mat2 = mat1 + 1;
-			float val = (i % 5)* 0.2f;
+			int mat1 = 0;
+			int mat2 = -1;
+			float val = 0.0f;
+
+			if (value > -5)
+				mat1 = 1;
+			if (value > 0)
+				mat1 = 2;
+			if (value > 5)
+				mat1 = 3;
+			if (value > 10)
+				mat1 = 4;
 
 			m_materialmap[i].push_back({ mat1, mat2, val });
 		}
