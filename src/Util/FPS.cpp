@@ -1,8 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* FPS.cpp
+************************************
+*/
+
 #include "FPS.hpp"
 #include <numeric>
 #include "../Core.hpp"
-using namespace hpse;
 
+using namespace anvil;
 
 double Util::FPS::GetFPS()
 {

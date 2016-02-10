@@ -1,5 +1,11 @@
-#include "BF3DLoader.hpp"
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* BF3DLoader.cpp
+************************************
+*/
 
+#include "BF3DLoader.hpp"
 #include <fstream>
 #include <iostream>
 #include <memory> 
@@ -10,7 +16,7 @@
 #include "../Core/ResourceHandler.hpp"
 #include <stdint.h>
 
-using namespace hpse;
+using namespace anvil;
 
 //#######################################################################################
 //# hierarchy

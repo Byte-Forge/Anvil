@@ -1,9 +1,16 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Core.cpp
+************************************
+*/
+
 #include "Core.hpp" 
 #include "Math/Collision.hpp"
 #include "Util/FPS.hpp"
 #include <iostream>
 
-using namespace hpse;
+using namespace anvil;
 
 Core* Core::m_instance = nullptr;
 
@@ -11,7 +18,7 @@ Core::Core()
 {
 	m_instance = this;
 	
-	m_window.create(sf::VideoMode(800, 600), "hpse", sf::Style::Default,
+	m_window.create(sf::VideoMode(800, 600), "anvil engine", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Core));
 
 	m_audio = std::make_unique<Audio>();

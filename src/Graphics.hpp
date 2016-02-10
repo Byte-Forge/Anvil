@@ -1,10 +1,17 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Graphics.hpp
+************************************
+*/
+
 #pragma once
 #include <memory>
 #include "Graphics/IRenderer.hpp"
 #include <stdint.h>
 #include <glm/glm.hpp>
 
-namespace hpse
+namespace anvil
 {
 	class Graphics
 	{

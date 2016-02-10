@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* BF3D.hpp
+************************************
+*/
+
 #pragma once
 #include <glm/glm.hpp>
 #include <string>
@@ -6,7 +13,7 @@
 #include "../Core/IResource.hpp"
 #include <stdint.h>
 
-namespace hpse
+namespace anvil
 {
 	//#######################################################################################
 	//# basic structs

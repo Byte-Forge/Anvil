@@ -1,9 +1,16 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* SystemInterface.hpp
+************************************
+*/
+
 #pragma once
 #include <Rocket/Core/SystemInterface.h>
 #include <Rocket/Core/Input.h>
 #include <SFML/Window.hpp>
 
-namespace hpse
+namespace anvil
 {
 	class SystemInterface : public Rocket::Core::SystemInterface
 	{

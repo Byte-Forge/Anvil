@@ -1,8 +1,16 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Script.cpp
+************************************
+*/
+
 #include "Script.hpp"
 #include "Environment.hpp"
 #include <fstream>
 #include <iostream>
-using namespace hpse;
+
+using namespace anvil;
 
 Script::Script()
 {

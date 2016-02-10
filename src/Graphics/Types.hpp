@@ -1,7 +1,14 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Types.hpp
+************************************
+*/
+
 #pragma once
 #include <glm/glm.hpp>
 
-namespace hpse
+namespace anvil
 {
 	struct Vertex2D
 	{

@@ -1,8 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Material.hpp
+************************************
+*/
+
 #pragma once
 #include <string>
 #include "../Core/IResource.hpp"
 
-namespace hpse
+namespace anvil
 {
 	class Material : public IResource
 	{

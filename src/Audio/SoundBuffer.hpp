@@ -1,12 +1,15 @@
-//
-// Created by stephan on 24.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* SoundBuffer.hpp
+************************************
+*/
 
 #pragma once
 #include <AL/al.h>
 #include "../Core/IResource.hpp"
 
-namespace hpse
+namespace anvil
 {
     class SoundBuffer : public IResource
     {

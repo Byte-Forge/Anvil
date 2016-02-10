@@ -1,11 +1,15 @@
-//
-// Created by stephan on 12.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Audio.cpp
+************************************
+*/
 
 #include "Audio.hpp"
 #include <iostream>
 #include <cstring>
-using namespace hpse;
+
+using namespace anvil;
 
 Audio::Audio() : m_device(nullptr), m_context(nullptr)
 {

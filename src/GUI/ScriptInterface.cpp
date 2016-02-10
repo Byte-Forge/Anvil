@@ -1,10 +1,18 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* ScriptInterface.cpp
+************************************
+*/
+
 #include "ScriptInterface.hpp"
 #include <Rocket/Core/Factory.h>
 #include <Rocket/Core/Lua/LuaType.h>
 #include <Rocket/Core/Lua/lua.hpp>
 #include "../Core.hpp"
 #include "../Util/FPS.hpp"
-using namespace hpse;
+
+using namespace anvil;
 
 int GameShutdown(lua_State* L);
 int GameGetFPS(lua_State* L);

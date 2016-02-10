@@ -1,8 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Collision.cpp
+************************************
+*/
+
 #include "Collision.hpp"
 #include "../Core.hpp"
 #include <iostream>
 
-using namespace hpse;
+using namespace anvil;
 
 bool Collision::Contains2D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size)
 {

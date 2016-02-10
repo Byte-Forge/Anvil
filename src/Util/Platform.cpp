@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Platform.cpp
+************************************
+*/
+
 #include "Platform.hpp"
 #ifdef _WIN32
 #include <Windows.h>
@@ -7,8 +14,7 @@
 #endif
 #include "StringHelper.hpp"
 
-using namespace hpse;
-
+using namespace anvil;
 
 std::vector<std::string> IO::ListFiles(const std::string & dir, const std::string & ext)
 {
@@ -54,7 +60,7 @@ std::vector<std::string> IO::ListFiles(const std::string & dir, const std::strin
 	return files;
 }
 
-void hpse::ShowError(const std::string & msg)
+void anvil::ShowError(const std::string & msg)
 {
 	#ifdef _WIN32
 	MessageBox(NULL, msg.c_str(), "Error", MB_OK | MB_ICONERROR);

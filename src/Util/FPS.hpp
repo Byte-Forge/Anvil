@@ -1,8 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* FPS.hpp
+************************************
+*/
+
 #pragma once
 #include <chrono>
 #include <deque>
 
-namespace hpse
+namespace anvil
 {
 	namespace Util
 	{

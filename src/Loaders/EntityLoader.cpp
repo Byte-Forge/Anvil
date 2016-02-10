@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* EntityLoader.cpp
+************************************
+*/
+
 #include "EntityLoader.hpp"
 #include "../Core.hpp"
 #include "../Objects/Entity.hpp"
@@ -7,7 +14,7 @@
 #include <rapidjson/document.h>
 #include <rapidjson/istreamwrapper.h>
 
-using namespace hpse;
+using namespace anvil;
 using namespace rapidjson;
 
 void EntityLoader::LoadEntity(const std::string &name, const std::string &path)
@@ -18,7 +25,7 @@ void EntityLoader::LoadEntity(const std::string &name, const std::string &path)
 	
 	if (fin.fail())
 	{
-		throw HpseException("Failed to open entity file: " + name, __FILE__, __LINE__);
+		throw AnvilException("Failed to open entity file: " + name, __FILE__, __LINE__);
 	}
 
 	IStreamWrapper isw(fin);
@@ -48,7 +55,7 @@ void EntityLoader::LoadEntity(const std::string &name, const std::string &path)
 	}
 	else
 	{
-		throw HpseException("Entity file has no entity object: " + path, __FILE__, __LINE__);
+		throw AnvilException("Entity file has no entity object: " + path, __FILE__, __LINE__);
 	}
 
 	fin.close();

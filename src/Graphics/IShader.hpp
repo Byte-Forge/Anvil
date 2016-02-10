@@ -1,10 +1,14 @@
-//
-// Created by stephan on 28.10.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* IShader.hpp
+************************************
+*/
+
 #pragma once
 #include <string>
 
-namespace hpse
+namespace anvil
 {
     class IShader
     {

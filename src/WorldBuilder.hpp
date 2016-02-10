@@ -1,6 +1,13 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* WorldBuilder.hpp
+************************************
+*/
+
 #pragma once
 
-namespace hpse
+namespace anvil
 {
 	class WorldBuilder
 	{

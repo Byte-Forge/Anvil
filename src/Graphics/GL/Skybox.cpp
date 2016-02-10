@@ -1,7 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Skybox.cpp
+************************************
+*/
+
 #include "Skybox.hpp"
 #include "../../Core.hpp"
 #include <numeric>
-using namespace hpse;
+
+using namespace anvil;
 
 GL::Skybox::Skybox()
 {

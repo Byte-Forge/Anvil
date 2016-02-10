@@ -1,9 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Frustum.hpp
+************************************
+*/
+
 #pragma once
 #include <array>
 #include <glm/glm.hpp>
 
-
-namespace hpse
+namespace anvil
 {
 	class Frustum
 	{

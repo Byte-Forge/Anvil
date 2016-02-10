@@ -1,9 +1,12 @@
-//
-// Created by stephan on 17.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Sound.cpp
+************************************
+*/
 
 #include "Sound.hpp"
-using namespace hpse;
+using namespace anvil;
 
 Sound::Sound() : m_source(0)
 {

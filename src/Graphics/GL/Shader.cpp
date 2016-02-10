@@ -1,6 +1,9 @@
-//
-// Created by stephan on 28.10.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Shader.cpp
+************************************
+*/
 
 #include "Shader.hpp"
 #include "flextGL.h"
@@ -9,7 +12,8 @@
 #include <vector>
 #include <cstring>
 #include "../../Exception.hpp"
-using namespace hpse;
+
+using namespace anvil;
 
 const std::string GL::Shader::glslVersion = "400 core";
 
@@ -28,12 +32,12 @@ GL::Shader::~Shader()
     glDeleteProgram(m_program);
 }
 
-void hpse::GL::Shader::Define(const std::string & macro)
+void GL::Shader::Define(const std::string & macro)
 {
 	m_macros[macro] = std::string();
 }
 
-void hpse::GL::Shader::Define(const std::string & macro, const std::string & value)
+void GL::Shader::Define(const std::string & macro, const std::string & value)
 {
 	m_macros[macro] = value;
 }
@@ -73,7 +77,7 @@ void GL::Shader::LoadShader(const std::string& file, GLenum type)
 {
     std::ifstream fin(file);
     if(fin.fail())
-		throw HpseException("Failed to load shader " + file, __FILE__, __LINE__);
+		throw AnvilException("Failed to load shader " + file, __FILE__, __LINE__);
 
     
 	int* size = new int[2];

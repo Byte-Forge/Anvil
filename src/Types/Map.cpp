@@ -1,8 +1,16 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Map.cpp
+************************************
+*/
+
 #include "Map.hpp"
 #include "../Graphics/GL/Terrain.hpp"
 #include "../Graphics.hpp"
 #include "../Core.hpp"
-using namespace hpse;
+
+using namespace anvil;
 
 Map::Map()
 {

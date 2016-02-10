@@ -1,6 +1,9 @@
-//
-// Created by stephan on 08.12.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Camera.hpp
+************************************
+*/
 
 #pragma once
 #include "Frustum.hpp"
@@ -13,7 +16,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace hpse
+namespace anvil
 {
 	enum Direction
 	{

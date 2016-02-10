@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Collision.hpp
+************************************
+*/
+
 #pragma once
 #include <glm/glm.hpp>
 #include <array>
@@ -5,7 +12,7 @@
 
 #define EPSILON 0.000001
 
-namespace hpse
+namespace anvil
 {
 
 	class Collision

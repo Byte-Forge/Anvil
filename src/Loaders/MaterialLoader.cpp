@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* MaterialLoader.cpp
+************************************
+*/
+
 #include "MaterialLoader.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Core.hpp"
@@ -7,7 +14,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/filereadstream.h"
 
-using namespace hpse;
+using namespace anvil;
 using namespace rapidjson;
 
 void MaterialLoader::LoadMaterial(const std::string &name, const std::string &path)
@@ -38,7 +45,7 @@ void MaterialLoader::LoadMaterial(const std::string &name, const std::string &pa
 	}
 	else
 	{
-		throw HpseException("Material file has no material object", __FILE__, __LINE__);
+		throw AnvilException("Material file has no material object", __FILE__, __LINE__);
 	}
 
 	fclose(f);

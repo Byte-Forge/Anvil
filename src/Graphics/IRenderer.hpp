@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* IRenderer.hpp
+************************************
+*/
+
 #pragma once
 #include "IShader.hpp"
 #include "IRenderable.hpp"
@@ -8,7 +15,7 @@
 #include <Rocket/Core/RenderInterface.h>
 #include "../Types/Map.hpp"
 
-namespace hpse
+namespace anvil
 {
 	class IRenderer : public Rocket::Core::RenderInterface
 	{

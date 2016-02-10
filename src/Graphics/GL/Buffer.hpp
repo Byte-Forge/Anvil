@@ -1,6 +1,13 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Buffer.hpp
+************************************
+*/
+
 #pragma once
 
-namespace hpse
+namespace anvil
 {
 	namespace GL
 	{

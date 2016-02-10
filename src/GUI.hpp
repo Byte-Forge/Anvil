@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* GUI.hpp
+************************************
+*/
+
 #pragma once
 #include <memory>
 #include <string>
@@ -7,7 +14,7 @@
 #include "./GUI/SystemInterface.hpp"
 #include "./GUI/ScriptInterface.hpp"
 
-namespace hpse
+namespace anvil
 {
 
 	class GUI

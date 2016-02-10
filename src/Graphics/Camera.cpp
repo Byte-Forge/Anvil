@@ -1,11 +1,15 @@
-//
-// Created by stephan on 08.12.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Camera.cpp
+************************************
+*/
+
 #include "Camera.hpp"
 #include "../Core.hpp"
 #include <iostream>
 
-using namespace hpse;
+using namespace anvil;
 
 Camera::Camera()
 {

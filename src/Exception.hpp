@@ -1,11 +1,18 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Exception.hpp
+************************************
+*/
+
 #pragma once
 #include <exception>
 #include <string>
 
-class HpseException : public std::exception
+class AnvilException : public std::exception
 {
 public:
-	HpseException(const std::string& msg,const char* file, int line);
+	AnvilException(const std::string& msg,const char* file, int line);
 	virtual const char* what() const throw();
 private:
 	std::string m_message;

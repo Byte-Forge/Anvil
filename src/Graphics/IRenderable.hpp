@@ -1,7 +1,14 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* IRenderable.hpp
+************************************
+*/
+
 #pragma once
 #include "IShader.hpp"
 
-namespace hpse
+namespace anvil
 {
 	class IRenderable
 	{

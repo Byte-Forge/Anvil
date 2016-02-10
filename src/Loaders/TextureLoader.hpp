@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* TextureLoader.hpp
+************************************
+*/
+
 #pragma once
 #include <fstream>
 #include <iostream>
@@ -5,7 +12,7 @@
 #include <vector>
 #include "../Graphics/ITexture.hpp"
 
-namespace hpse
+namespace anvil
 {
 	class TextureLoader
 	{

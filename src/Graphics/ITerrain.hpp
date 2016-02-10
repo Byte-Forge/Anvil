@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* ITerrain.hpp
+************************************
+*/
+
 #pragma once
 #include "IRenderable.hpp"
 #include "ITexture.hpp"
@@ -6,7 +13,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 
-namespace hpse
+namespace anvil
 {
 	class ITerrain : public IRenderable
 	{

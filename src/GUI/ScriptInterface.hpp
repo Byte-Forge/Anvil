@@ -1,7 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* ScriptInterface.hpp
+************************************
+*/
+
 #pragma once
 
 struct lua_State;
-namespace hpse
+
+namespace anvil
 {
 	class ScriptInterface
 	{

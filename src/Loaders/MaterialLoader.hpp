@@ -1,7 +1,14 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* MaterialLoader.hpp
+************************************
+*/
+
 #pragma once
 #include <string>
 
-namespace hpse
+namespace anvil
 {
 	class MaterialLoader
 	{

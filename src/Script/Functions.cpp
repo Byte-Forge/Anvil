@@ -1,9 +1,16 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Functions.cpp
+************************************
+*/
+
 #include <string>
 #include <iostream>
 #include "../Core.hpp"
 #include "../Graphics/IRenderer.hpp"
 
-using namespace hpse;
+using namespace anvil;
 
 #ifdef _MSC_VER 
 #define SCRIPT_FUNC __declspec(dllexport)

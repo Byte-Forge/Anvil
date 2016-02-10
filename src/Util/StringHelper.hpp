@@ -1,7 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* StringHelper.hpp
+************************************
+*/
+
 #pragma once
 #include <vector>
 #include <sstream>
-namespace hpse
+
+namespace anvil
 {
 	namespace StringHelper
 	{

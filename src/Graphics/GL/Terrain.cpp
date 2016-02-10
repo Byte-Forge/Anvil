@@ -1,6 +1,10 @@
-//
-// Created by stephan on 14.12.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Terrain.cpp
+************************************
+*/
+
 #include "Terrain.hpp"
 #include "flextGL.h"
 #include "../../Core.hpp"
@@ -13,7 +17,7 @@
 #include <ctime>
 #include <chrono>
 
-using namespace hpse;
+using namespace anvil;
 
 GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width,height)
 {

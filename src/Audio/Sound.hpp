@@ -1,11 +1,14 @@
-//
-// Created by stephan on 17.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Sound.hpp
+************************************
+*/
 
 #pragma once
 #include <AL/al.h>
 
-namespace hpse
+namespace anvil
 {
     class Sound
     {

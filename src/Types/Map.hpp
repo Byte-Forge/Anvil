@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Map.hpp
+************************************
+*/
+
 #pragma once
 #include "../Graphics/IRenderable.hpp"
 #include "../Graphics/GL/Terrain.hpp"
@@ -7,7 +14,7 @@
 #include <vector>
 #include <memory>
 
-namespace hpse
+namespace anvil
 {
 	////////////////////////////////////////////
 	//MAP

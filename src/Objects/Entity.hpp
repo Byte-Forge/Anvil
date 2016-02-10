@@ -1,6 +1,10 @@
-//
-// Created by michael on 19.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Entity.hpp
+************************************
+*/
+
 #pragma once
 #include <string>
 #include <vector>
@@ -11,7 +15,7 @@
 #include "../Graphics/IRenderable.hpp"
 
 
-namespace hpse
+namespace anvil
 {
     class Entity : public IResource, public IRenderable
     {

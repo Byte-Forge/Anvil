@@ -1,7 +1,14 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Buffer.cpp
+************************************
+*/
+
 #include "Buffer.hpp"
 #include "flextGL.h"
 
-using namespace hpse;
+using namespace anvil;
 
 GL::Buffer::Buffer(BufferType type)
 {

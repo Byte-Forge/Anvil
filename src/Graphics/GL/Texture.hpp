@@ -1,6 +1,10 @@
-//
-// Created by stephan on 27.10.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Texture.hpp
+************************************
+*/
+
 #pragma once
 #include <stdint.h>
 #include <string>
@@ -8,7 +12,7 @@
 #include "../ITexture.hpp"
 #include <GL/gl.h>
 
-namespace hpse
+namespace anvil
 {
     namespace GL
     {

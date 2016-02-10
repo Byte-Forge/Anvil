@@ -1,6 +1,9 @@
-//
-// Created by stephan on 14.12.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Terrain.hpp
+************************************
+*/
 
 #pragma once
 #include "../ITerrain.hpp"
@@ -12,7 +15,7 @@
 #include <memory>
 #include <glm/glm.hpp>
 
-namespace hpse
+namespace anvil
 {
     namespace GL
     {

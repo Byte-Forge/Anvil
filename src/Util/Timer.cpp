@@ -1,6 +1,14 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Timer.cpp
+************************************
+*/
+
 #include "Timer.hpp"
 #include <iostream>
-using namespace hpse;
+
+using namespace anvil;
 
 Util::Timer::Timer() : m_elapsed(1)
 {

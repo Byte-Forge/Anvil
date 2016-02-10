@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* main.cpp
+************************************
+*/
+
 #include "Core.hpp"
 #include "Environment.hpp"
 #include "Util/Platform.hpp"
@@ -14,12 +21,12 @@ int main(int argc, char** argv)
 
 	try
 	{
-	hpse::Core engine;
+	anvil::Core engine;
 	engine.Run();
 	}
-	catch(const HpseException& e)
+	catch(const AnvilException& e)
 	{
-		hpse::ShowError(e.what());
+		anvil::ShowError(e.what());
 		return -1;
 	}
 	

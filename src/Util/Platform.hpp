@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Platform.hpp
+************************************
+*/
+
 #pragma once 
 #include <string>
 #include <vector>
@@ -10,7 +17,7 @@
 #endif
 
 
-namespace hpse
+namespace anvil
 {
 	namespace IO
 	{

@@ -1,8 +1,16 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* SystemInterface.cpp
+************************************
+*/
+
 #include <Rocket/Core.h>
 #include "SystemInterface.hpp"
 #include <iostream>
 #include "../Exception.hpp"
-using namespace hpse;
+
+using namespace anvil;
 
 int SystemInterface::GetKeyModifiers(sf::Window *Window)
 {
@@ -291,7 +299,7 @@ bool SystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocket::Cor
 	if (type == Rocket::Core::Log::LT_ERROR)
 	{
 		std::string msg = "LibRocket Error: " + std::string(message.CString());
-		throw HpseException(msg, __FILE__, __LINE__);
+		throw AnvilException(msg, __FILE__, __LINE__);
 		return true;
 	}
 		

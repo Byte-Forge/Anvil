@@ -1,10 +1,14 @@
-//
-// Created by stephan on 24.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* SoundBuffer.cpp
+************************************
+*/
 
 #include "SoundBuffer.hpp"
 #include <AL/alc.h>
-using namespace hpse;
+
+using namespace anvil;
 
 SoundBuffer::SoundBuffer() : m_buffer(0)
 {

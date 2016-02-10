@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* SimplexNoise.hpp
+************************************
+*/
+
 /* Copyright (c) 2007-2012 Eliot Eshelman
 *
 * This program is free software: you can redistribute it and/or modify
@@ -16,7 +23,7 @@
 
 #pragma once
 
-namespace hpse
+namespace anvil
 {
 	class SimplexNoise
 	{

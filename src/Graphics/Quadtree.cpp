@@ -1,8 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Quadtree.cpp
+************************************
+*/
+
 #include "Quadtree.hpp"
 #include <iostream>
 #include "../Math/Collision.hpp"
 
-using namespace hpse;
+using namespace anvil;
 
 Quadtree::Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel, unsigned int level) :
 	m_maxLevel(maxLevel), m_level(level)

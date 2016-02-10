@@ -1,6 +1,10 @@
-//
-// Created by stephan on 11.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* ResourceHandler.hpp
+************************************
+*/
+
 #pragma once
 #include <string>
 #include <memory>
@@ -14,7 +18,7 @@
 #include "../Graphics/ITexture.hpp"
 #include "../Graphics/Material.hpp"
 
-namespace hpse
+namespace anvil
 {
     class ResourceHandler
     {

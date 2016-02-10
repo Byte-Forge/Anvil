@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Util.hpp
+************************************
+*/
+
 #pragma once
 #include <string>
 #include <algorithm>
@@ -5,7 +12,7 @@
 #include <fstream>
 #include <vector>
 
-namespace hpse
+namespace anvil
 {
 	inline long getFStreamSize(std::ifstream& file)
 	{

@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* GUI.cpp
+************************************
+*/
+
 #include "GUI.hpp"
 #include "Environment.hpp"
 #include "./Util/Platform.hpp"
@@ -9,7 +16,8 @@
 #include <functional>
 #include "Core.hpp"
 #include "Util/Platform.hpp"
-using namespace hpse;
+
+using namespace anvil;
 
 const int GUI::UPDATES_PER_SECOND = 30;
 
@@ -20,7 +28,7 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 
 	if (!Rocket::Core::Initialise())
 	{
-		throw HpseException("Failed to initialise librocket", __FILE__, __LINE__);
+		throw AnvilException("Failed to initialise librocket", __FILE__, __LINE__);
 	}
 
 	Rocket::Core::String font_names[4];
@@ -30,7 +38,7 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
 	{
 		if (!Rocket::Core::FontDatabase::LoadFontFace(Rocket::Core::String("ui/fonts/") + Rocket::Core::String(font.c_str())))
 		{
-			throw HpseException("Failed to load font: " + font, __FILE__, __LINE__);
+			throw AnvilException("Failed to load font: " + font, __FILE__, __LINE__);
 		}
 	}
 

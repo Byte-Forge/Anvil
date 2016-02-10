@@ -1,6 +1,13 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Math.cpp
+************************************
+*/
+
 #include "Math.hpp"
 
-using namespace hpse;
+using namespace anvil;
 
 glm::vec3  Math::ComputeNormal(glm::vec3& a, glm::vec3& b, glm::vec3& c)
 {

@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Skybox.hpp
+************************************
+*/
+
 #pragma once
 #include <glm/glm.hpp>
 #include <memory>
@@ -8,7 +15,7 @@
 #include "Buffer.hpp"
 
 
-namespace hpse
+namespace anvil
 {
 	namespace GL
 	{

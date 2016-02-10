@@ -1,6 +1,13 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* WorldBuilder.cpp
+************************************
+*/
+
 #include "WorldBuilder.hpp"
 
-using namespace hpse;
+using namespace anvil;
 
 WorldBuilder::WorldBuilder()
 {

@@ -1,10 +1,18 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* ITerrain.cpp
+************************************
+*/
+
 #include "ITerrain.hpp"
 #include "../Core.hpp"
 #include "../Math/SimplexNoise.hpp"
 #include "../Math/Collision.hpp"
 #include "../Math.hpp"
 #include <future>
-using namespace hpse;
+
+using namespace anvil;
 
 ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width), m_height(height)
 {

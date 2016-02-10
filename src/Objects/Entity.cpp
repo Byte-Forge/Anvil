@@ -1,9 +1,13 @@
-//
-// Created by michael on 23.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Entity.cpp
+************************************
+*/
+
 #include "Entity.hpp"
 
-using namespace hpse;
+using namespace anvil;
 
 Entity::Entity()
 {

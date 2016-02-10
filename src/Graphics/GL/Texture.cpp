@@ -1,12 +1,16 @@
-//
-// Created by stephan on 27.10.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Terrain.cpp
+************************************
+*/
 
 #include "flextGL.h"
 #include "Texture.hpp"
 #include <string>
 #include <iostream>
-using namespace hpse;
+
+using namespace anvil;
 
 gli::gl GL::Texture::GL;
 

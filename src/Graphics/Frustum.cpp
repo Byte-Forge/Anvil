@@ -1,7 +1,14 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Frustum.cpp
+************************************
+*/
+
 #include "Frustum.hpp"
 #include <iostream>
 
-using namespace hpse;
+using namespace anvil;
 
 void Frustum::Recalculate(glm::mat4 view, glm::mat4 proj)
 {

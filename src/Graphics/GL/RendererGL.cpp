@@ -1,4 +1,11 @@
-﻿#include "RendererGL.hpp"
+﻿/*
+************************************
+* Copyright (C) 2016 ByteForge
+* RendererGL.cpp
+************************************
+*/
+
+#include "RendererGL.hpp"
 #include "Texture.hpp"
 #include "Shader.hpp"
 #include "../Types.hpp"
@@ -8,7 +15,7 @@
 #include "../../Util/stb_image.h"
 #include <iostream>
 
-using namespace hpse;
+using namespace anvil;
 
 
 std::map<std::string, IRenderer::Vendor> vendorMap = 
@@ -107,7 +114,7 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 
 	if (type == GL_DEBUG_TYPE_ERROR_ARB)
 	{
-		throw HpseException("OpenGL Error, watch console for information", __FILE__, __LINE__);
+		throw AnvilException("OpenGL Error, watch console for information", __FILE__, __LINE__);
 	}
 }
 #endif
@@ -124,11 +131,11 @@ RendererGL::RendererGL()
 
 	//doesnt throw a exception on mac??
 	if(!FLEXT_ARB_texture_storage)
-		throw HpseException("ARB_texture_storage not supported!", __FILE__, __LINE__);
+		throw AnvilException("ARB_texture_storage not supported!", __FILE__, __LINE__);
 
 
 	if(!FLEXT_EXT_texture_compression_s3tc)
-		throw HpseException("S3TC texture compression not supported!", __FILE__, __LINE__);
+		throw AnvilException("S3TC texture compression not supported!", __FILE__, __LINE__);
 
 
 	m_guiShader = std::make_unique<GL::Shader>();

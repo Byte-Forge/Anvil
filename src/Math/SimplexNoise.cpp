@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* SimplexNoise.cpp
+************************************
+*/
+
 /* Copyright (c) 2007-2012 Eliot Eshelman
 *
 * This program is free software: you can redistribute it and/or modify
@@ -19,7 +26,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-using namespace hpse;
+using namespace anvil;
 
 // 2D Multi-octave Simplex noise.//
 // For each octave, a higher frequency/lower amplitude function will be added to the original.

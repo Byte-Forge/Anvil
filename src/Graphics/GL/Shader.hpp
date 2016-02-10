@@ -1,6 +1,9 @@
-//
-// Created by stephan on 28.10.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Shader.hpp
+************************************
+*/
 
 #pragma once
 #include "../IShader.hpp"
@@ -8,7 +11,7 @@
 #include <map>
 #include <GL/gl.h>
 
-namespace hpse
+namespace anvil
 {
     namespace GL
     {

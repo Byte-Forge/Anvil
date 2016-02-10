@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Environment.hpp
+************************************
+*/
+
 #pragma once
 #include <vector>
 #include <string>

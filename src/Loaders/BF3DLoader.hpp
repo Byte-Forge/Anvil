@@ -1,7 +1,14 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* BF3DLoader.hpp
+************************************
+*/
+
 #pragma once
 #include <string>
 
-namespace hpse
+namespace anvil
 {
 	class BF3DLoader
 	{

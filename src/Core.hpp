@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Core.hpp
+************************************
+*/
+
 #pragma once
 #include <SFML/Window.hpp>
 #include <glm/glm.hpp>
@@ -12,7 +19,7 @@
 #include "Util/Timer.hpp"
 #include "Util/FPS.hpp"
 
-namespace hpse
+namespace anvil
 {
 	class Core
 	{

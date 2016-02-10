@@ -1,10 +1,17 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Quadtree.hpp
+************************************
+*/
+
 #pragma once 
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>
 #include <array>
 
-namespace hpse
+namespace anvil
 {
 	class Quadtree
 	{

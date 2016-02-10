@@ -1,9 +1,16 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* RendererGL.hpp
+************************************
+*/
+
 #pragma once
 #include "../IRenderer.hpp"
 #include "flextGL.h"
 #include "../../Types/Map.hpp"
 
-namespace hpse
+namespace anvil
 {
 	class RendererGL : public IRenderer
 	{

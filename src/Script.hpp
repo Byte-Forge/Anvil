@@ -1,9 +1,16 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Script.hpp
+************************************
+*/
+
 #pragma once
 #include <memory>
 #include <string>
 #include <lua.hpp>
 
-namespace hpse
+namespace anvil
 {
 	class Script
 	{

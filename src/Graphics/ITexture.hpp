@@ -1,6 +1,10 @@
-//
-// Created by stephan on 27.10.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* ITexture.hpp
+************************************
+*/
+
 #pragma once
 #include <stdint.h>
 #include <memory>
@@ -9,7 +13,7 @@
 #include <vector>
 #include "../Core/IResource.hpp"
 
-namespace hpse
+namespace anvil
 {
     class ITexture : public IResource
     {

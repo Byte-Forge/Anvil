@@ -1,6 +1,10 @@
-//
-// Created by stephan on 11.11.15.
-//
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* ResourceHandler.cpp
+************************************
+*/
+
 #include "ResourceHandler.hpp"
 #include <iostream>
 #include "../Loaders/Util.hpp"
@@ -11,7 +15,7 @@
 #include "../Util/Platform.hpp"
 #include "../Exception.hpp"
 
-using namespace hpse;
+using namespace anvil;
 
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 {
@@ -132,6 +136,6 @@ int ResourceHandler::GetFilePath(std::string name, std::string* path)
 		*path = name;
 		return 1;
 	}
-	throw HpseException("No such file found: " + name, __FILE__, __LINE__);
+	throw AnvilException("No such file found: " + name, __FILE__, __LINE__);
 	return 0;
 }

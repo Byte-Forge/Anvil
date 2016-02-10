@@ -1,7 +1,14 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Timer.hpp
+************************************
+*/
+
 #pragma once
 #include <chrono>
 
-namespace hpse
+namespace anvil
 {
 	namespace Util
 	{
