@@ -93,6 +93,13 @@ namespace anvil
 		}
 
 	private:
+		enum KEYSTATE 
+		{
+			JUST_RELEASED = -1,
+			NOT_PRESSED = 0,
+			PRESSED = 1,
+		};
+
 		static Core* m_instance;
 		bool m_running;
 
@@ -107,7 +114,7 @@ namespace anvil
 		std::unique_ptr<Frustum> m_frustum;
 		Util::Timer m_timer;
 		Util::FPS m_fps;
-		std::map<int, int> m_keyInputs; // -1 just released, 0 not pressed, 1 pressed
-		std::map<int, int> m_mouseInputs; // -1 just released, 0 not pressed, 1 pressed
+		std::map<int, int> m_keyInputs; 
+		std::map<int, int> m_mouseInputs; 
 	};
 }

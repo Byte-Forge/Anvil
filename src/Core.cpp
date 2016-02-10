@@ -88,12 +88,12 @@ void Core::Run()
 
 			case sf::Event::MouseButtonPressed:
 				m_gui->MousePressed(event.mouseButton.button);
-				m_mouseInputs[event.mouseButton.button] = 1;
+				m_mouseInputs[event.mouseButton.button] = PRESSED;
 				break;
 
 			case sf::Event::MouseButtonReleased:
 				m_gui->MouseReleased(event.mouseButton.button);
-				m_mouseInputs[event.mouseButton.button] = -1; //set it to just released
+				m_mouseInputs[event.mouseButton.button] = JUST_RELEASED; 
 				break;
 
 			case sf::Event::MouseWheelMoved:
@@ -104,73 +104,73 @@ void Core::Run()
 			case sf::Event::KeyPressed:
 				if (event.key.code == sf::Keyboard::Escape)
 					Quit();
-				m_keyInputs[event.key.code] = 1;
+				m_keyInputs[event.key.code] = PRESSED;
 				m_gui->KeyDown(event.key);
 				break;
 
 			case sf::Event::KeyReleased:
-				m_keyInputs[event.key.code] = -1;
+				m_keyInputs[event.key.code] = JUST_RELEASED;
 				m_gui->KeyReleased(event.key);
 				break;
 			}
 		}
 
-		if (m_keyInputs[sf::Keyboard::W] == 1 || m_keyInputs[sf::Keyboard::Up] == 1)
+		if (m_keyInputs[sf::Keyboard::W] == PRESSED || m_keyInputs[sf::Keyboard::Up] == PRESSED)
 			m_camera->Move(FOREWARD);
-		if (m_keyInputs[sf::Keyboard::S] == 1 || m_keyInputs[sf::Keyboard::Down] == 1)
+		if (m_keyInputs[sf::Keyboard::S] == PRESSED || m_keyInputs[sf::Keyboard::Down] == PRESSED)
 			m_camera->Move(BACK);
-		if (m_keyInputs[sf::Keyboard::A] == 1 || m_keyInputs[sf::Keyboard::Left] == 1)
+		if (m_keyInputs[sf::Keyboard::A] == PRESSED || m_keyInputs[sf::Keyboard::Left] == PRESSED)
 			m_camera->Move(LEFT);
-		if (m_keyInputs[sf::Keyboard::D] == 1 || m_keyInputs[sf::Keyboard::Right] == 1)
+		if (m_keyInputs[sf::Keyboard::D] == PRESSED || m_keyInputs[sf::Keyboard::Right] == PRESSED)
 			m_camera->Move(RIGHT);
-		if (m_keyInputs[sf::Keyboard::PageUp] == 1 || ((m_mouseInputs[sf::Event::MouseWheelMoved] == 1) && delta_wheel < 0))
+		if (m_keyInputs[sf::Keyboard::PageUp] == PRESSED || ((m_mouseInputs[sf::Event::MouseWheelMoved] == PRESSED) && delta_wheel < 0))
 			m_camera->Zoom(ZOOM_OUT);
-		if (m_keyInputs[sf::Keyboard::PageDown] == 1 || ((m_mouseInputs[sf::Event::MouseWheelMoved] == 1) && delta_wheel > 0))
+		if (m_keyInputs[sf::Keyboard::PageDown] == PRESSED || ((m_mouseInputs[sf::Event::MouseWheelMoved] == PRESSED) && delta_wheel > 0))
 			m_camera->Zoom(ZOOM_IN);
-		if (m_keyInputs[sf::Keyboard::Q] == 1)
+		if (m_keyInputs[sf::Keyboard::Q] == PRESSED)
 			m_camera->Rotate(LEFT);
-		if (m_keyInputs[sf::Keyboard::E] == 1)
+		if (m_keyInputs[sf::Keyboard::E] == PRESSED)
 			m_camera->Rotate(RIGHT);
 
-		if (m_keyInputs[sf::Keyboard::F1] == -1)
+		if (m_keyInputs[sf::Keyboard::F1] == JUST_RELEASED)
 		{
 			this->GetGraphics()->GetRenderer()->ToggleWireframeMode();
-			m_keyInputs[sf::Keyboard::F1] = 0;
+			m_keyInputs[sf::Keyboard::F1] = NOT_PRESSED;
 		}
 
-		if (m_keyInputs[sf::Keyboard::F2] == -1)
+		if (m_keyInputs[sf::Keyboard::F2] == JUST_RELEASED)
 		{
 			this->GetGraphics()->GetRenderer()->ToggleNormalsMode();
-			m_keyInputs[sf::Keyboard::F2] = 0;
+			m_keyInputs[sf::Keyboard::F2] = NOT_PRESSED;
 		}
 
-		if (m_keyInputs[sf::Keyboard::F3] == -1)
+		if (m_keyInputs[sf::Keyboard::F3] == JUST_RELEASED)
 		{
 			this->GetGraphics()->GetRenderer()->IncreaseTessellation();
-			m_keyInputs[sf::Keyboard::F3] = 0;
+			m_keyInputs[sf::Keyboard::F3] = NOT_PRESSED;
 		}
 
-		if (m_keyInputs[sf::Keyboard::F4] == -1)
+		if (m_keyInputs[sf::Keyboard::F4] == JUST_RELEASED)
 		{
 			this->GetGraphics()->GetRenderer()->DecreaseTessellation();
-			m_keyInputs[sf::Keyboard::F4] = 0;
+			m_keyInputs[sf::Keyboard::F4] = NOT_PRESSED;
 		}
 
 		if (m_mouseInputs[sf::Event::MouseMoved] == 1)
 		{
-			if (m_mouseInputs[sf::Mouse::Right] == 1)
+			if (m_mouseInputs[sf::Mouse::Right] == PRESSED)
 			{
 				glm::vec3 dir = { delta_x / 4.0, 0.0, delta_y / 4.0 };
 				m_camera->Move(dir);
 			}
-			else if (m_mouseInputs[sf::Mouse::Middle] == 1)
+			else if (m_mouseInputs[sf::Mouse::Middle] == PRESSED)
 			{
-				m_camera->Rotate(delta_x / 100.0f);
+				m_camera->Rotate(delta_x);
 			}
 			m_mouseInputs[sf::Event::MouseMoved] = 0;
 		}
 
-		if (m_mouseInputs[sf::Mouse::Left] == -1)
+		if (m_mouseInputs[sf::Mouse::Left] == JUST_RELEASED)
 		{
 			glm::vec2 mousePos = { x_old, y_old };
 			glm::vec3 mouseWorld;
@@ -180,7 +180,7 @@ void Core::Run()
 				m_map->GetTerrain()->SetHeight(mouseWorld, 20.0f, 5.0f);
 				std::cout << "set material" << std::endl;
 			}
-			m_mouseInputs[sf::Mouse::Left] = 0;
+			m_mouseInputs[sf::Mouse::Left] = NOT_PRESSED;
 		}
 
 		m_mouseInputs[sf::Event::MouseWheelMoved] = 0;
