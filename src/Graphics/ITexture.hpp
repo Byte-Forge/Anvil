@@ -18,8 +18,9 @@ namespace anvil
     class ITexture : public IResource
     {
     public:
+		virtual void CreateArray(int size, int levels,int width, int height, const gli::format format) = 0;
+		virtual bool SetLevel(int level, const gli::texture& tex) = 0;
         virtual bool Load(const gli::texture& tex) = 0;
-		virtual bool Load(std::vector<gli::texture> textures) = 0;
         virtual void Bind() = 0;
     };
 }

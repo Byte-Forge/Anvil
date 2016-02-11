@@ -22,8 +22,9 @@ namespace anvil
             ~Texture();
 			Texture & operator=(const Texture&) = delete;
 
+			void CreateArray(int size, int levels,int width, int height, const gli::format format);
+			bool SetLevel(int level, const gli::texture& tex);
 			bool Load(const gli::texture& tex);
-			bool Load(std::vector<gli::texture> textures);
             void Bind();
         private:
 			GLuint CreateHandle(const gli::texture& tex);

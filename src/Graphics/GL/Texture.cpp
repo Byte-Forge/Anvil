@@ -14,58 +14,52 @@ using namespace anvil;
 
 gli::gl GL::Texture::GL;
 
-bool GL::Texture::Load(std::vector<gli::texture> textures)
+void anvil::GL::Texture::CreateArray(int size, int levels,int width, int height,const gli::format format)
 {
 	m_target = GL_TEXTURE_2D_ARRAY;
-	int max_size = 0;
-	gli::gl::format const Format = GL.translate(textures[0].format());
-
-	for (int i = 0; i < textures.size(); i++)
-	{
-		glm::tvec3<GLsizei> const Dimensions(textures[i].dimensions());
-		if (Dimensions.x > max_size)
-			max_size = Dimensions.x;
-	}
+	gli::gl::format const Format = GL.translate(format);
 
 	glGenTextures(1, &m_handle);
 	glBindTexture(m_target, m_handle);
 	glTexParameteri(m_target, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(m_target, GL_TEXTURE_MAX_LEVEL, static_cast<GLint>(textures[0].levels() - 1));
+	glTexParameteri(m_target, GL_TEXTURE_MAX_LEVEL, static_cast<GLint>(levels - 1));
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_R, Format.Swizzle[0]);
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_G, Format.Swizzle[1]);
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_B, Format.Swizzle[2]);
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_A, Format.Swizzle[3]);
 
-	glTexStorage3D(m_target, textures[0].levels(), Format.Internal, max_size, max_size, textures.size());
+	glTexStorage3D(m_target, levels, Format.Internal, width, height, size);
+}
 
-	for (int i = 0; i < textures.size(); i++)
+bool anvil::GL::Texture::SetLevel(int level, const gli::texture & tex)
+{
+	gli::gl::format const Format = GL.translate(tex.format());
+	for (std::size_t Layer = 0; Layer < tex.layers(); ++Layer)
 	{
-		for (std::size_t Layer = 0; Layer < textures[i].layers(); ++Layer)
+		for (std::size_t Face = 0; Face < tex.faces(); ++Face)
 		{
-			for (std::size_t Face = 0; Face < textures[i].faces(); ++Face)
+			for (std::size_t Level = 0; Level < tex.levels(); ++Level)
 			{
-				for (std::size_t Level = 0; Level < textures[i].levels(); ++Level)
-				{
-					glm::tvec3<GLsizei> Dimensions(textures[i].dimensions(Level));
+				glm::tvec3<GLsizei> Dimensions(tex.dimensions(Level));
 
-					if (gli::is_compressed(textures[i].format()))
-						glCompressedTexSubImage3D(m_target, static_cast<GLint>(Level),
-							0, 0, i,
-							Dimensions.x, Dimensions.y,
-							1,
-							Format.Internal, static_cast<GLsizei>(textures[i].size(Level)),
-							textures[i].data(Layer, Face, Level));
-					else
-						glTexSubImage3D(m_target, static_cast<GLint>(Level),
-							0, 0, i,
-							Dimensions.x, Dimensions.y,
-							1,
-							Format.External, Format.Type,
-							textures[i].data(Layer, Face, Level));
-				}
+				if (gli::is_compressed(tex.format()))
+					glCompressedTexSubImage3D(m_target, static_cast<GLint>(Level),
+						0, 0, level,
+						Dimensions.x, Dimensions.y,
+						1,
+						Format.Internal, static_cast<GLsizei>(tex.size(Level)),
+						tex.data(Layer, Face, Level));
+				else
+					glTexSubImage3D(m_target, static_cast<GLint>(Level),
+						0, 0, level,
+						Dimensions.x, Dimensions.y,
+						1,
+						Format.External, Format.Type,
+						tex.data(Layer, Face, Level));
 			}
 		}
 	}
+
 	return true;
 }
 

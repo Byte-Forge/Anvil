@@ -33,16 +33,22 @@ void TextureLoader::LoadTexture(const std::string& name, const std::string& path
 
 std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::string> paths)
 {
-	std::vector<gli::texture> textures;
+	auto tex = Core::GetCore()->GetGraphics()->GetTexture();
+
 	for (unsigned int i = 0; i < paths.size(); i++)
 	{
-		gli::texture Texture = gli::load(paths[i]);
-		if (Texture.empty())
+		gli::texture texture = gli::load(paths[i]);
+		if (texture.empty())
 			throw AnvilException("Failed to load empty texture" + paths[i], __FILE__, __LINE__);
-		textures.push_back(Texture);
+
+		if (i == 0)
+		{
+			tex->CreateArray(paths.size(), texture.levels(), texture.dimensions().x, texture.dimensions().y, texture.format());
+		}
+
+		if(!tex->SetLevel(i, texture))
+			throw AnvilException("Failed to load texture array: " + paths[i], __FILE__, __LINE__);
 	}
-	auto tex = Core::GetCore()->GetGraphics()->GetTexture();
-	if (!tex->Load(textures))
-		throw AnvilException("Failed to load texture array", __FILE__, __LINE__);
+		
 	return tex;
 }
