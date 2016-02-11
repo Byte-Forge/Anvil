@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
-#Name of this project is HPSE
-set(PROJ_NAME HPSE)
+#Name of this project is Anvil
+set(PROJ_NAME Anvil)
 project(${PROJ_NAME})
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
