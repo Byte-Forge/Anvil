@@ -16,10 +16,10 @@ namespace anvil
 	public:
 		float m_displacementFactor = 0.01f; //default
 
-		std::string m_diffuseTexture; //default
-		std::string m_normalTexture; //default
-		std::string m_specularTexture; //default
-		std::string m_displacementTexture; //default
-		std::string m_ambientOccTexture; //default
+		std::string m_diffuseTexture; //default texture
+		std::string m_normalTexture; //default texture 
+		std::string m_specularTexture; //default texture
+		std::string m_displacementTexture; //default texture
+		std::string m_ambientOccTexture; //default texture
 	};
 }
