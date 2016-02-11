@@ -76,10 +76,10 @@ void ITerrain::Generate()
 	Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
 
 	//m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
-	m_terrainMaterials.push_back("terrain/gravel_small.json");
-	m_terrainMaterials.push_back("terrain/sand_beach.json");
 	m_terrainMaterials.push_back("terrain/grass.json");
 	m_terrainMaterials.push_back("terrain/grass_2.json");
+	m_terrainMaterials.push_back("terrain/grass_3.json");
+	m_terrainMaterials.push_back("terrain/grass_4.json");
 	m_terrainMaterials.push_back("terrain/cliff_snowy.json");
 
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);

@@ -9,6 +9,8 @@
 #include "../Core.hpp"
 #include <iostream>
 
+#include "../Graphics/GL/flextGL.h"
+
 using namespace anvil;
 
 Camera::Camera()
@@ -122,12 +124,12 @@ void Camera::Update()
 void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction)
 {
 	glm::vec2 resolution = Core::GetCore()->GetResolution();
+	glm::vec4 viewport = glm::vec4(0, 0, resolution.x, resolution.y);
+	glm::vec3 screenPos = glm::vec3(mouse_pos.x, mouse_pos.y, 0.0f);
 
-	glm::vec4 ray_start((mouse_pos.x / resolution.x - 0.5f) * 2.0f, -(mouse_pos.y / resolution.y - 0.5f) * 2.0f, 0.0, 1.0);
+	out_origin = glm::unProject(screenPos, m_view, m_proj, viewport);
 
-	std::cout << ray_start.x << ", " << ray_start.y << std::endl;
-
-	glm::vec4 temp = (glm::inverse(m_proj * m_view)) * ray_start;
-	out_origin = glm::vec3(temp.x, temp.y, temp.z);
+	std::cout << "world_pos: " << out_origin.x << ", " << out_origin.y << ", " << out_origin.z << std::endl;
+	//std::cout << "direction: " << m_direction.x << ", " << m_direction.y << ", " << m_direction.z << std::endl;
 	out_direction = m_direction;
 }

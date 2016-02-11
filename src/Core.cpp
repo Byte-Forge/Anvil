@@ -174,6 +174,7 @@ void Core::Run()
 		{
 			glm::vec2 mousePos = { x_old, y_old };
 			glm::vec3 mouseWorld;
+
 			if (m_map->GetTerrain()->GetMousePositionInWorldSpace(mousePos, mouseWorld))
 			{
 				m_map->GetTerrain()->SetMaterial(mouseWorld, 20.0f, 0);
