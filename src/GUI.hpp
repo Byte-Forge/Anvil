@@ -37,6 +37,7 @@ namespace anvil
 		void KeyReleased(sf::Event::KeyEvent& key);
 	private:
 		int m_mouseX, m_mouseY;
+		int m_frameTick;
 		SystemInterface m_system;
 		ScriptInterface m_script;
 		Rocket::Core::Context* m_context;

@@ -21,7 +21,7 @@ using namespace anvil;
 
 const int GUI::UPDATES_PER_SECOND = 30;
 
-GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window)
+GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window), m_frameTick(1)
 {
 	Rocket::Core::SetSystemInterface(&m_system);
 	Rocket::Core::SetRenderInterface(Core::GetCore()->GetGraphics()->GetRenderer().get());
@@ -64,10 +64,11 @@ GUI::~GUI()
 void GUI::Update()
 {
 	m_context->Update();
+	Rocket::Core::Dictionary params;
 
 	std::function<void(Rocket::Core::Element*)> updateElement = [&] (Rocket::Core::Element* element)
 	{
-		element->DispatchEvent("update", Rocket::Core::Dictionary(), false);
+		element->DispatchEvent("update", params, false);
 		for (int i = 0;i < element->GetNumChildren();++i)
 		{
 			auto* child = element->GetChild(i);
@@ -81,9 +82,17 @@ void GUI::Update()
 
 	for (int i = 0;i < updates;++i)
 	{
+		params.Set<int>("frame", m_frameTick);
 		updateElement(root);	
 		m_accumulatedTime -= m_updateInterval;
+		++m_frameTick;
+		if (m_frameTick > 30)
+		{
+			m_frameTick -= 30;
+		}
 	}
+
+	
 }
 
 
