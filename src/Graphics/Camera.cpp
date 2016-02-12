@@ -101,13 +101,18 @@ void Camera::Zoom(Direction dir)
 	switch (dir)
 	{
 	case ZOOM_OUT:
-		m_currentPos -= m_direction * timePassed * 500.0f;
+		m_currentPos -= m_direction * timePassed * 200.0f;
 		break;
 	case ZOOM_IN:
 		if (m_currentPos.y > 3)
-			m_currentPos += m_direction * timePassed * 500.0f;
+			m_currentPos += m_direction * timePassed * 200.0f;
 		break;
 	}
+}
+
+void Camera::Zoom(int value)
+{
+	m_currentPos += m_direction * (value * m_currentPos.y/10.0f);
 }
 
 void Camera::Update()

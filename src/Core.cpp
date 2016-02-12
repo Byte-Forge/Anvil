@@ -123,9 +123,9 @@ void Core::Run()
 			m_camera->Move(LEFT);
 		if (m_keyInputs[sf::Keyboard::D] == PRESSED || m_keyInputs[sf::Keyboard::Right] == PRESSED)
 			m_camera->Move(RIGHT);
-		if (m_keyInputs[sf::Keyboard::PageUp] == PRESSED || ((m_mouseInputs[sf::Event::MouseWheelMoved] == PRESSED) && delta_wheel < 0))
+		if (m_keyInputs[sf::Keyboard::PageUp] == PRESSED)
 			m_camera->Zoom(ZOOM_OUT);
-		if (m_keyInputs[sf::Keyboard::PageDown] == PRESSED || ((m_mouseInputs[sf::Event::MouseWheelMoved] == PRESSED) && delta_wheel > 0))
+		if (m_keyInputs[sf::Keyboard::PageDown] == PRESSED)
 			m_camera->Zoom(ZOOM_IN);
 		if (m_keyInputs[sf::Keyboard::Q] == PRESSED)
 			m_camera->Rotate(LEFT);
@@ -155,6 +155,11 @@ void Core::Run()
 			this->GetGraphics()->GetRenderer()->DecreaseTessellation();
 			m_keyInputs[sf::Keyboard::F4] = NOT_PRESSED;
 		}
+
+		if ((m_mouseInputs[sf::Event::MouseWheelMoved] == PRESSED) && delta_wheel < 0)
+			m_camera->Zoom(delta_wheel);
+		if ((m_mouseInputs[sf::Event::MouseWheelMoved] == PRESSED) && delta_wheel > 0)
+			m_camera->Zoom(delta_wheel);
 
 		if (m_mouseInputs[sf::Event::MouseMoved] == 1)
 		{
