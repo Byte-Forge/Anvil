@@ -20,7 +20,7 @@ using namespace anvil;
 
 std::map<std::string, IRenderer::Vendor> vendorMap = 
 {	{"NVIDIA Corporation",IRenderer::NVIDIA},
-	{"AMD",IRenderer::AMD} };
+	{"ATI Technologies Inc.",IRenderer::AMD} };
 
 
 //NVIDIA
@@ -29,6 +29,11 @@ std::map<std::string, IRenderer::Vendor> vendorMap =
 #define GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX  0x9049
 #define GPU_MEMORY_INFO_EVICTION_COUNT_NVX            0x904A
 #define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX            0x904B
+
+//AMD
+#define VBO_FREE_MEMORY_ATI                     0x87FB
+#define TEXTURE_FREE_MEMORY_ATI                 0x87FC
+#define RENDERBUFFER_FREE_MEMORY_ATI            0x87FD
 
 class GLGeometry
 {
@@ -172,7 +177,11 @@ RendererGL::RendererGL()
 		m_totalVRAM /= 1024;
 	}	
 	else if (m_vendor == AMD)
-		m_totalVRAM = 0;
+	{
+		int vram[4];
+		glGetIntegerv(VBO_FREE_MEMORY_ATI, vram);
+		m_totalVRAM = vram[0] / 1024;
+	}
 	else
 		m_totalVRAM = 0;
 }
@@ -398,14 +407,20 @@ const std::string RendererGL::GetGPUName()
 
 int RendererGL::GetUsedVRAM()
 {
-	int vram = 0;
 	if (m_vendor == NVIDIA)
 	{
+		int vram = 0;
 		glGetIntegerv(GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &vram);
 		vram /= 1024;
-		vram = m_totalVRAM - vram;
+		return m_totalVRAM - vram;
 	}
-	return vram;
+	else if (m_vendor == AMD)
+	{
+		int vram[4];
+		glGetIntegerv(VBO_FREE_MEMORY_ATI, vram); //is the same for texture, vbo and renderbuffer
+		return m_totalVRAM - (vram[2] / 1024);
+	}
+	return 0;
 }
 
 int RendererGL::GetTotalVRAM()
