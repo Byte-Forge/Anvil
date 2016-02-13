@@ -14,6 +14,7 @@ addons:
       - libsfml-dev
       - libopenal-dev
       - libglm-dev
+      - libfreetype6-dev
 git:
   submodules: false
 
