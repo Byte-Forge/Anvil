@@ -22,7 +22,8 @@ install:
   - mkdir deps
   - cd deps
   - git clone https://github.com/g-truc/gli.git 
-  - cd gli && cmake . && make install && cd ..
+  - export GLI_ROOT_DIR=$(pwd)/gli
+  - git clone https://github.com/miloyip/rapidjson.git
 
 before_script:
   - mkdir build
