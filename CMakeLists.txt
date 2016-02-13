@@ -39,7 +39,7 @@ find_package(OpenGL REQUIRED)
 find_package(RapidJson REQUIRED)
 
 #Find Freetype
-find_package(FREETYPE REQUIRED)
+find_package(Freetype REQUIRED)
 
 #Find GLI
 find_package(GLI REQUIRED)
