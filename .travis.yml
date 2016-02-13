@@ -26,7 +26,8 @@ install:
   - git clone https://github.com/miloyip/rapidjson.git
   - export RAPIDJSON_ROOT_DIR=$(pwd)/rapidjson
   - git clone https://github.com/libRocket/libRocket.git
-  - cd libRocket && cd Build && cmake . && sudo make install && cd ...
+  - cd libRocket && cd Build && cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE && make install && cd ...
+  - export ROCKET_ROOT=$(pwd)/libRocket
   - cd ..
 
 before_script:
