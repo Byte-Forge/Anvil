@@ -25,6 +25,8 @@ install:
   - export GLI_ROOT_DIR=$(pwd)/gli
   - git clone https://github.com/miloyip/rapidjson.git
   - export RAPIDJSON_ROOT_DIR=$(pwd)/rapidjson
+  - git clone https://github.com/libRocket/libRocket.git
+  - cd libRocket && mkdir build && cd build && cmake .. && sudo make install && cd ...
   - cd ..
 
 before_script:
