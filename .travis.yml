@@ -18,6 +18,12 @@ addons:
 git:
   submodules: false
 
+install:
+  - mkdir deps
+  - cd deps
+  - git clone https://github.com/g-truc/gli.git 
+  - cd gli && cmake . && make install && cd ..
+
 before_script:
   - mkdir build
   - cd build
