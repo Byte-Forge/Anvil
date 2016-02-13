@@ -3,6 +3,9 @@ anguage: cpp
 compiler:
   - gcc
 
+git:
+  submodules: false
+
 before_script:
   - mkdir build
   - cd build
