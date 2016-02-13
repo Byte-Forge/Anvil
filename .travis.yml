@@ -11,7 +11,9 @@ addons:
       - cmake
       - cmake-data
       - libluajit-5.1-dev
-      
+      - libsfml-dev
+      - libopenal-dev
+      - libglm-dev
 git:
   submodules: false
 
