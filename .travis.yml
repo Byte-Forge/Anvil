@@ -24,6 +24,7 @@ install:
   - git clone https://github.com/g-truc/gli.git 
   - export GLI_ROOT_DIR=$(pwd)/gli
   - git clone https://github.com/miloyip/rapidjson.git
+  - export RAPIDJSON_ROOT_DIR=$(pwd)/rapidjson
   - cd ..
 
 before_script:
