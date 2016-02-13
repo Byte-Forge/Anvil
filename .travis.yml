@@ -10,6 +10,7 @@ addons:
     packages:
       - cmake
       - cmake-data
+      - libluajit-5.1-dev
       
 git:
   submodules: false
