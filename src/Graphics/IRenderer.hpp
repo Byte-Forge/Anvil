@@ -105,7 +105,7 @@ namespace anvil
 
 	protected:
 		int m_tessellationLevel = 32;
-		std::array<std::string, 3> m_shaderModes = { "DEFAULT", "WIREFRAME", "NORMALS" };
+		std::array<std::string, 3> m_shaderModes = {{ "DEFAULT", "WIREFRAME", "NORMALS" }};
 		Vendor m_vendor;
 
 		bool m_wireframeMode = false;
