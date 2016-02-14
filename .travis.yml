@@ -29,7 +29,7 @@ install:
   - git clone https://github.com/libRocket/libRocket.git
   - cd libRocket/Build 
   - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE 
-  - make install -j2 && cd ...
+  - make install -j2 && cd ../..
   - export ROCKET_ROOT=$(pwd)/libRocket
   - cd ..
 
