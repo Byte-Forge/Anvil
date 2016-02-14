@@ -6,6 +6,8 @@ compiler:
 
 addons:
   apt:
+    sources: 
+      - ubuntu-toolchain-r-test
     packages:
       - cmake
       - cmake-data
@@ -26,6 +28,7 @@ git:
   submodules: false
 
 install:
+  - cmake --version
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
   - mkdir deps
   - cd deps
