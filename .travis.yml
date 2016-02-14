@@ -1,13 +1,11 @@
 language: cpp
+dist: trusty
 
 compiler:
   - gcc
 
 addons:
   apt:
-    sources:
-      - george-edison55-precise-backports
-      - ubuntu-toolchain-r-test
     packages:
       - cmake
       - cmake-data
@@ -21,9 +19,7 @@ addons:
       - libxcb-randr0
       - libxcb-image0
       - libgl1-mesa-dev
-      - libudev0
-      - udev
-      - libudev-dev
+      - libudev1
       - gcc-4.9
       - g++-4.9
 git:
