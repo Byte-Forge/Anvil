@@ -11,6 +11,7 @@ addons:
       - cmake
       - cmake-data
       - libluajit-5.1-dev
+      - liblua5.1-0-dev
       - libsfml-dev
       - libopenal-dev
       - libglm-dev
