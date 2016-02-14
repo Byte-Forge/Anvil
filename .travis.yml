@@ -22,6 +22,7 @@ addons:
       - libxcb-image0
       - libgl1-mesa-dev
       - libudev0
+      - udev
       - libudev-dev
       - gcc-4.9
       - g++-4.9
