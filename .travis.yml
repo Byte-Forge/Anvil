@@ -15,13 +15,13 @@ addons:
       - liblua5.1-0-dev
       - libopenal-dev
       - libfreetype6-dev
-      - libx11-dev
-      - libxcb1-dev
-      - libx11-xcb-dev
-      - libxcb-randr0-dev
-      - libxcb-image0-dev
-      - libgl1-mesa-dev
-      - libudev-dev
+      - libx11
+      - libxcb1
+      - libx11-xcb
+      - libxcb-randr0
+      - libxcb-image0
+      - libgl1-mesa
+      - libudev0
       - gcc-4.9
       - g++-4.9
 git:
