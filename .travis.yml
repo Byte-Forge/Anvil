@@ -31,7 +31,7 @@ install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
   - mkdir deps
   - cd deps
-  - wget http://www.sfml-dev.org/files/SFML-2.3.2-linux-gcc-64-bit.tar.gz && tar -zxvf SFML-2.3.2-linux-gcc-64-bit.tar.gz
+  - wget --no-check-certificate http://www.sfml-dev.org/files/SFML-2.3.2-linux-gcc-64-bit.tar.gz && tar -zxvf SFML-2.3.2-linux-gcc-64-bit.tar.gz
   - export SFML_ROOT=$(pwd)/SFML-2.3.2
   - git clone https://github.com/g-truc/glm.git
   - export GLM_ROOT_DIR=$(pwd)/glm
