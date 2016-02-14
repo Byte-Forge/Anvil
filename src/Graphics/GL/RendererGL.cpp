@@ -355,7 +355,7 @@ bool RendererGL::LoadTexture(Rocket::Core::TextureHandle & texture_handle, Rocke
 {
 	Rocket::Core::FileInterface* file_interface = Rocket::Core::GetFileInterface();
 	Rocket::Core::FileHandle file_handle = file_interface->Open(source);
-	if (file_handle == NULL)
+	if (file_handle==0)
 		return false;
 
 	file_interface->Seek(file_handle, 0, SEEK_END);

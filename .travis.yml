@@ -15,6 +15,13 @@ addons:
       - liblua5.1-0-dev
       - libopenal-dev
       - libfreetype6-dev
+      - libx11-dev
+      - libxcb1-dev
+      - libx11-xcb-dev
+      - libxcb-randr0-dev
+      - libxcb-image0-dev
+      - libgl1-mesa-dev
+      - libudev-dev
       - gcc-4.9
       - g++-4.9
 git:
@@ -35,7 +42,8 @@ install:
   - git clone https://github.com/libRocket/libRocket.git
   - cd libRocket/Build 
   - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE 
-  - make install -j2 && cd ../..
+  - make install -j2 &> /dev/null :x && cd ../..
+  - echo "Built librocket"
   - export ROCKET_ROOT=$(pwd)/libRocket
   - cd ..
 
