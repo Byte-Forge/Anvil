@@ -7,6 +7,7 @@ addons:
   apt:
     sources:
       - george-edison55-precise-backports
+      - ubuntu-toolchain-r-test
     packages:
       - cmake
       - cmake-data
@@ -14,10 +15,13 @@ addons:
       - liblua5.1-0-dev
       - libopenal-dev
       - libfreetype6-dev
+      - gcc-4.8
+      - g++-4.8
 git:
   submodules: false
 
 install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - mkdir deps
   - cd deps
   - wget http://www.sfml-dev.org/files/SFML-2.3.2-linux-gcc-64-bit.tar.gz && tar -zxvf SFML-2.3.2-linux-gcc-64-bit.tar.gz
