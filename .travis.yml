@@ -13,7 +13,6 @@ addons:
       - libluajit-5.1-dev
       - liblua5.1-0-dev
       - libopenal-dev
-      - libglm-dev
       - libfreetype6-dev
 git:
   submodules: false
@@ -23,6 +22,8 @@ install:
   - cd deps
   - wget http://www.sfml-dev.org/files/SFML-2.3.2-linux-gcc-64-bit.tar.gz && tar -zxvf SFML-2.3.2-linux-gcc-64-bit.tar.gz
   - export SFML_ROOT=$(pwd)/SFML-2.3.2
+  - git clone https://github.com/g-truc/glm.git
+  - export GLM_ROOT_DIR=$(pwd)/glm
   - git clone https://github.com/g-truc/gli.git 
   - export GLI_ROOT_DIR=$(pwd)/gli
   - git clone https://github.com/miloyip/rapidjson.git
