@@ -1,51 +1,67 @@
 language: cpp
+dist: trusty
+sudo: false
 
 compiler:
+  - clang
   - gcc
+
+os:
+  - linux
 
 addons:
   apt:
-    sources:
+    sources: 
+      - llvm-toolchain-precise-3.7
       - george-edison55-precise-backports
       - ubuntu-toolchain-r-test
     packages:
+      - clang-3.7
+      - g++-5
+      - gcc-5
       - cmake
       - cmake-data
       - libluajit-5.1-dev
       - liblua5.1-0-dev
-      - libopenal-dev
-      - libfreetype6-dev
-      - libx11-dev
-      - libxcb1
-      - libx11-xcb-dev
-      - libxcb-randr0
-      - libxcb-image0
+      - libpthread-stubs0-dev
       - libgl1-mesa-dev
-      - libudev0
+      - libx11-dev
+      - libx11-xcb-dev
+      - libxcb-image0-dev
+      - libxrandr-dev
+      - libxcb-randr0-dev
       - libudev-dev
-      - gcc-4.9
-      - g++-4.9
+      - libfreetype6-dev
+      - libopenal-dev
+      - libvorbis-dev
+      - libogg-dev
+      - libflac-dev
 git:
   submodules: false
 
 install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
-  - mkdir deps
+  - cmake --version
+  - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - cd deps
-  - wget --no-check-certificate http://www.sfml-dev.org/files/SFML-2.3.2-linux-gcc-64-bit.tar.gz && tar -zxvf SFML-2.3.2-linux-gcc-64-bit.tar.gz
+  - ls
+  - if [ ! -f cache ]; then wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip; fi
+  - if [ ! -f cache ]; then unzip -q SFML-2.3.2-sources.zip; fi
+  - if [ ! -f cache ]; then cd SFML-2.3.2 && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=.. .. && make install -j2 && cd ../..; fi
   - export SFML_ROOT=$(pwd)/SFML-2.3.2
-  - git clone https://github.com/g-truc/glm.git
+  - if [ ! -f cache ]; then git clone https://github.com/g-truc/glm.git ; fi
   - export GLM_ROOT_DIR=$(pwd)/glm
-  - git clone https://github.com/g-truc/gli.git 
+  - if [ ! -f cache ]; then git clone https://github.com/g-truc/gli.git ; fi
   - export GLI_ROOT_DIR=$(pwd)/gli
-  - git clone https://github.com/miloyip/rapidjson.git
+  - if [ ! -f cache ]; then git clone https://github.com/miloyip/rapidjson.git ; fi
   - export RAPIDJSON_ROOT_DIR=$(pwd)/rapidjson
-  - git clone https://github.com/libRocket/libRocket.git
-  - cd libRocket/Build 
-  - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE 
-  - make install -j2 && cd ../..
-  - echo "Built librocket"
+  - if [ ! -f cache ]; then git clone https://github.com/libRocket/libRocket.git ; fi
+  - if [ ! -f cache ]; then cd libRocket/Build ; fi
+  - if [ ! -f cache ]; then cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE ; fi
+  - if [ ! -f cache ]; then make install -j2 && cd ../.. ; fi
+  - if [ ! -f cache ]; then echo "Built librocket" ; fi
   - export ROCKET_ROOT=$(pwd)/libRocket
+  - touch cache
   - cd ..
 
 before_script:
@@ -54,3 +70,7 @@ before_script:
   - cmake ..
 
 script: make
+cache:
+  apt: true
+  directories:
+  - deps
