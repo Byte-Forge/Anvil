@@ -41,9 +41,10 @@ git:
 
 install:
   - cmake --version
-  - if [ -d deps ]; then exit 0; done
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
+  - if [ -d deps ]; then exit 0; fi
+  - mkdir deps
   - cd deps
   - wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip
   - unzip -q SFML-2.3.2-sources.zip
