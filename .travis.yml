@@ -44,6 +44,7 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - cd deps
+  - ls
   - if [! -f cache ]; then wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip; fi
   - if [! -f cache ]; then unzip -q SFML-2.3.2-sources.zip; fi
   - if [! -f cache ]; then cd SFML-2.3.2 && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=.. .. && make install -j2 && cd ../..; fi
