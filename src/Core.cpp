@@ -112,6 +112,8 @@ void Core::Run()
 				m_keyInputs[event.key.code] = JUST_RELEASED;
 				m_gui->KeyReleased(event.key);
 				break;
+			default:
+				break;
 			}
 		}
 

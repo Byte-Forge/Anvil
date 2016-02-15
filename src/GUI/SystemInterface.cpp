@@ -284,6 +284,8 @@ Rocket::Core::Input::KeyIdentifier SystemInterface::TranslateKey(sf::Keyboard::K
 	case sf::Keyboard::Tab:
 		return Rocket::Core::Input::KI_TAB;
 		break;
+	default:
+		break;
 	};
 
 	return Rocket::Core::Input::KI_UNKNOWN;

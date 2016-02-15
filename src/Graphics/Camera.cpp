@@ -71,6 +71,8 @@ void Camera::Move(Direction dir)
 		m_currentPos -= offset;
 		m_lookat -= offset;
 		break;
+	default:
+		break;
 	}
 }
 
@@ -92,6 +94,8 @@ void Camera::Rotate(Direction dir)
 	case (RIGHT) :
 		Rotate(-angle);
 		break;
+	default:
+		break;
 	}
 }
 
@@ -106,6 +110,8 @@ void Camera::Zoom(Direction dir)
 	case ZOOM_IN:
 		if (m_currentPos.y > 3)
 			m_currentPos += m_direction * timePassed * 200.0f;
+		break;
+	default:
 		break;
 	}
 }
