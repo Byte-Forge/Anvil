@@ -1,6 +1,5 @@
 language: cpp
 dist: trusty
-sudo: true
 
 compiler:
   - clang
@@ -49,7 +48,7 @@ install:
   - cd deps
   - wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip
   - unzip -q SFML-2.3.2-sources.zip
-  - cd SFML-2.3.2 && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=.. .. && make install -j2 && cd ../..
+  - cd SFML-2.3.2 && mkdir build && cd build && cmake .. && make -j2 && make DESTDIR=$(pwd)/.. install && cd ../..
   - export SFML_ROOT=$(pwd)/SFML-2.3.2
   - git clone https://github.com/g-truc/glm.git
   - export GLM_ROOT_DIR=$(pwd)/glm
