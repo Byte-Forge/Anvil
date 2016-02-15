@@ -1,5 +1,6 @@
 language: cpp
 dist: trusty
+sudo: false
 
 compiler:
   - clang
@@ -70,3 +71,6 @@ before_script:
   - cmake ..
 
 script: make
+cache:
+  directories:
+  - deps
