@@ -23,15 +23,16 @@ addons:
       - cmake-data
       - libluajit-5.1-dev
       - liblua5.1-0-dev
-      - libopenal-dev
-      - libfreetype6-dev
-      - libx11-dev
-      - libxcb1
-      - libx11-xcb-dev
-      - libxcb-randr0
-      - libxcb-image0
+      - libpthread-stubs0-dev
       - libgl1-mesa-dev
-      - libudev1
+      - libx11-dev
+      - libx11-xcb-dev
+      - libxcb-image0-dev
+      - libxrandr-dev
+      - libxcb-randr0-dev
+      - libudev-dev
+      - libfreetype6-dev
+      - libopenal-dev
 git:
   submodules: false
 
