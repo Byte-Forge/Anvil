@@ -33,6 +33,9 @@ addons:
       - libudev-dev
       - libfreetype6-dev
       - libopenal-dev
+      - libvorbis-dev
+      - libogg-dev
+      - libflac-dev
 git:
   submodules: false
 
