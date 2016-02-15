@@ -45,21 +45,21 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - cd deps
   - ls
-  - if [! -f cache ]; then wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip; fi
-  - if [! -f cache ]; then unzip -q SFML-2.3.2-sources.zip; fi
-  - if [! -f cache ]; then cd SFML-2.3.2 && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=.. .. && make install -j2 && cd ../..; fi
+  - if [ ! -f cache ]; then wget http://www.sfml-dev.org/files/SFML-2.3.2-sources.zip; fi
+  - if [ ! -f cache ]; then unzip -q SFML-2.3.2-sources.zip; fi
+  - if [ ! -f cache ]; then cd SFML-2.3.2 && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=.. .. && make install -j2 && cd ../..; fi
   - export SFML_ROOT=$(pwd)/SFML-2.3.2
-  - if [! -f cache ]; then git clone https://github.com/g-truc/glm.git ; fi
+  - if [ ! -f cache ]; then git clone https://github.com/g-truc/glm.git ; fi
   - export GLM_ROOT_DIR=$(pwd)/glm
-  - if [! -f cache ]; then git clone https://github.com/g-truc/gli.git ; fi
+  - if [ ! -f cache ]; then git clone https://github.com/g-truc/gli.git ; fi
   - export GLI_ROOT_DIR=$(pwd)/gli
-  - if [! -f cache ]; then git clone https://github.com/miloyip/rapidjson.git ; fi
+  - if [ ! -f cache ]; then git clone https://github.com/miloyip/rapidjson.git ; fi
   - export RAPIDJSON_ROOT_DIR=$(pwd)/rapidjson
-  - if [! -f cache ]; then git clone https://github.com/libRocket/libRocket.git ; fi
-  - if [! -f cache ]; then cd libRocket/Build ; fi
-  - if [! -f cache ]; then cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE ; fi
-  - if [! -f cache ]; then make install -j2 && cd ../.. ; fi
-  - if [! -f cache ]; then echo "Built librocket" ; fi
+  - if [ ! -f cache ]; then git clone https://github.com/libRocket/libRocket.git ; fi
+  - if [ ! -f cache ]; then cd libRocket/Build ; fi
+  - if [ ! -f cache ]; then cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE ; fi
+  - if [ ! -f cache ]; then make install -j2 && cd ../.. ; fi
+  - if [ ! -f cache ]; then echo "Built librocket" ; fi
   - export ROCKET_ROOT=$(pwd)/libRocket
   - touch cache
   - cd ..
