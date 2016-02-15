@@ -88,7 +88,7 @@ bool GL::Texture::Load(const gli::texture &tex)
 		case gli::TARGET_1D_ARRAY:
 		case gli::TARGET_2D:
 		case gli::TARGET_CUBE:
-			glTexStorage2D(m_target, static_cast<GLint>(tex.levels()), Format.Internal, Dimensions.x, tex.target() == gli::TARGET_2D ? Dimensions.y : FaceTotal);
+			glTexStorage2D(m_target, static_cast<GLint>(tex.levels()), Format.Internal,	Dimensions.x, Dimensions.y);
 			break;
 		case gli::TARGET_2D_ARRAY:
 		case gli::TARGET_3D:

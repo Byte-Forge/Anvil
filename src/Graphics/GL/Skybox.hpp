@@ -35,14 +35,10 @@ namespace anvil
 			GLuint m_CameraPos;
 
 			std::vector<glm::vec3> m_vertices;
-			std::vector<glm::vec3> m_normals;
-			std::vector<glm::vec2> m_uvs;
 			std::vector<std::uint32_t> m_faces;
 
 			GLuint m_vao;
 			std::unique_ptr<Buffer> m_vbo;
-			std::unique_ptr<Buffer> m_uvbo;
-			std::unique_ptr<Buffer> m_nbo;
 			std::unique_ptr<Buffer> m_fbo;
 		};
 	}
