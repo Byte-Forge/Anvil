@@ -21,11 +21,11 @@ Core::Core()
 	m_window.create(sf::VideoMode(800, 600), "anvil engine", sf::Style::Default,
 		sf::ContextSettings(24, 8, 0, 4, 0, sf::ContextSettings::Core));
 
+	m_resources = std::make_unique<ResourceHandler>();
 	m_audio = std::make_unique<Audio>();
 	m_graphics = std::make_unique<Graphics>();
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
-	m_resources = std::make_unique<ResourceHandler>();
 	m_camera = std::make_unique<Camera>();
 
 	m_script->LoadFile("start.lua");

@@ -91,3 +91,37 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 
 	Core::GetCore()->GetResources()->AddResource(toUpper(name), ent);
 }
+
+void JsonLoader::LoadParticlesystem(const std::string & name, const std::string & path)
+{
+	std::shared_ptr<IParticleSystem> particleSys;
+
+	std::ifstream fin(path, std::ios::in);
+	if (fin.fail())
+		throw AnvilException("Failed to open particlesystem file: " + name, __FILE__, __LINE__);
+	IStreamWrapper isw(fin);
+	Document d;
+	d.ParseStream(isw);
+	if (d.HasMember("particlesystem"))
+	{
+		if (d["particlesystem"].IsObject())
+		{
+			if (d["particlesystem"].HasMember("lifetime"))
+			{
+				particleSys->SetLifetime(d["particlesystem"]["lifetime"].GetInt());
+			}
+			if (d["particlesystem"].HasMember("interval"))
+			{
+				particleSys->SetSpawnInterval(d["particlesystem"]["interval"].GetInt());
+			}
+			if (d["particlesystem"].HasMember("spawnrate"))
+			{
+				particleSys->SetSpawnRate(d["particlesystem"]["spawnrate"].GetInt());
+			}
+		}
+	}
+	else
+		throw AnvilException("Particlesystem file has no particlesystem object: " + path, __FILE__, __LINE__);
+
+	Core::GetCore()->GetResources()->AddResource(toUpper(name), particleSys);
+}
