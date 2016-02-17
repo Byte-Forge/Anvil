@@ -349,8 +349,8 @@ void RendererGL::EnableScissorRegion(bool enable)
 
 void RendererGL::SetScissorRegion(int x, int y, int width, int height)
 {
-	auto* window = Core::GetCore()->GetWindow();
-	glScissor(x, window->getSize().y - (y + height), width, height);
+	auto resolution = Core::GetCore()->GetResolution();
+	glScissor(x, resolution.y - (y + height), width, height);
 }
 
 bool RendererGL::LoadTexture(Rocket::Core::TextureHandle & texture_handle, Rocket::Core::Vector2i & texture_dimensions, const Rocket::Core::String & source)
