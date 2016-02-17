@@ -41,6 +41,13 @@ Core::Core()
 		throw AnvilException("Failed to initialize glfw!", __FILE__, __LINE__);
 
 	glfwSetErrorCallback(ErrorCallback);
+
+	#ifdef ANVIL_USE_VULKAN
+	if (glfwVulkanSupported())
+	{
+		std::cout << "Vulkan Driver available!" << std::endl;
+	}
+	#endif
 	m_window = glfwCreateWindow(800, 600, "anvil engine", NULL, NULL);
 	glfwMakeContextCurrent(m_window);
 	glfwSetKeyCallback(m_window, KeyCallback);

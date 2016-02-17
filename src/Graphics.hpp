@@ -19,7 +19,9 @@ namespace anvil
 		enum RenderBackend
 		{
 			OpenGL = 0,
+			#ifdef ANVIL_USE_VULKAN
 			Vulkan = 1
+			#endif
 		};
 
 		 Graphics(RenderBackend = OpenGL);
@@ -28,6 +30,12 @@ namespace anvil
 		void Clear();
 		void Render();
 		void Resize(int width, int height);
+		void SetRenderer(RenderBackend backend);
+
+		inline void AllowBackend(RenderBackend backend)
+		{
+			m_available.push_back(backend);
+		}
 
 		inline RenderBackend GetBackend()
 		{
@@ -46,6 +54,7 @@ namespace anvil
 		}
 	private: 
 		RenderBackend m_backend;
+		std::vector<RenderBackend> m_available;
 		glm::mat4 m_ortho;
 		std::shared_ptr<IRenderer> m_renderer;
 	};

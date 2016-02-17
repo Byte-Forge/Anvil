@@ -44,17 +44,23 @@ find_package(GLI REQUIRED)
 #Find GLI
 find_package(GLFW REQUIRED)
 
+#Find Vulkan
+find_package(Vulkan)
+if(VULKAN_FOUND)
+	add_definitions(-DANVIL_USE_VULKAN)
+endif()
+
 #Compile all files
 file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/[a-z,A-Z]*.[c,h,def]*)
 add_executable(${PROJ_NAME} ${SRC_FILES})
 
 #Include our dependencies
-target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
+target_include_directories(${PROJ_NAME} PUBLIC ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS} ${VULKAN_INCLUDE_DIR}
 						${ROCKET_INCLUDE_DIR} ${GLFW_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${RAPIDJSON_INCLUDE_DIR})
 
 #Link our dependencies
 target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${ROCKET_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES}
-						${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS})
+						${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${VULKAN_LIBRARY} ${CMAKE_DL_LIBS})
 
 
 set_target_properties(${PROJ_NAME} PROPERTIES COMPILE_DEFINITIONS ROCKET_STATIC_LIB)

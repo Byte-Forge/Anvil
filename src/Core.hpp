@@ -6,8 +6,11 @@
 */
 
 #pragma once
-#include <glm/glm.hpp>
+#ifdef ANVIL_USE_VULKAN
+#define GLFW_INCLUDE_VULKAN
+#endif
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 #include "Graphics.hpp"
 #include "Script.hpp"
 #include "GUI.hpp"
