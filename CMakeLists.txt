@@ -45,6 +45,8 @@ find_package(GLI REQUIRED)
 find_package(GLFW REQUIRED)
 
 #Find Vulkan
+set(VULKAN_LIBRARY)
+set(VULKAN_INCLUDE_DIR)
 find_package(Vulkan)
 if(VULKAN_FOUND)
 	add_definitions(-DANVIL_USE_VULKAN)
