@@ -168,10 +168,10 @@ namespace anvil
 	//#######################################################################################
 
 	// chunk 0
-	class BF3DModel : public IResource
+	struct BF3DModel : IResource
 	{
 	public:
-		std::string hieraName; // is empty
+		std::string hierarchyName; //is empty if no hierarchy is needed
 		std::vector<Mesh> meshes;
 		BoundingVolume volume;
 	};
