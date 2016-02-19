@@ -29,6 +29,19 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(name)]);
 }
 
+std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string & name)
+{
+	std::string path;
+	if (m_resources.count(toUpper(name)) == 0)
+	{
+		if (GetFilePath(m_particleDir + name, &path))
+		{
+			JsonLoader::LoadParticlesystem(name, path);
+		}
+	}
+	return std::dynamic_pointer_cast<IParticleSystem> (m_resources[toUpper(name)]);
+}
+
 std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 {
 	std::string path;

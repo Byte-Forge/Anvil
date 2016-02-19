@@ -16,6 +16,7 @@
 #include "../Objects/Entity.hpp"
 #include "../Types/BF3D.hpp"
 #include "../Graphics/ITexture.hpp"
+#include "../Graphics/IParticleSystem.hpp"
 #include "../Graphics/Material.hpp"
 
 namespace anvil
@@ -24,7 +25,7 @@ namespace anvil
     {
     public:
 		std::shared_ptr<Entity> GetEntity(const std::string &name);
-
+		std::shared_ptr<IParticleSystem> GetParticleSystem(const std::string &name);
 		std::shared_ptr<ITexture> GetTexture(const std::string &name);
 		std::shared_ptr<ITexture> GetTextureArray(std::vector<std::string> names);
 
@@ -52,6 +53,7 @@ namespace anvil
 		std::string m_bf3dDir = "bf3d/";
 		std::string m_uiDir = "ui/";
 		std::string m_entitiesDir = "entities/";
+		std::string m_particleDir = "particle/";
 		std::string m_modDir = "mods/";
 
 		std::vector<std::string> m_modDirs;

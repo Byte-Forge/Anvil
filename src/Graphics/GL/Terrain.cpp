@@ -138,7 +138,7 @@ void GL::Terrain::Update()
 	if (Core::GetCore()->GetCamera()->GetFrustum()->Updated() || faces_changed)
 	{
 		m_faces = m_quadtree->GetTriangles(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray());
-		if (!m_faces.size() == 0)
+		if (m_faces.size() > 0)
 		{
 			m_fbo->Bind();
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);

@@ -21,7 +21,7 @@ using namespace anvil;
 
 const int GUI::UPDATES_PER_SECOND = 30;
 
-GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window), m_frameTick(1)
+GUI::GUI(GLFWwindow* window) : m_context(nullptr), m_window(window), m_frameTick(1)
 {
 	Rocket::Core::SetSystemInterface(&m_system);
 	Rocket::Core::SetRenderInterface(Core::GetCore()->GetGraphics()->GetRenderer().get());
@@ -46,7 +46,9 @@ GUI::GUI(sf::Window& window) : m_context(nullptr), m_window(&window), m_frameTic
 	Rocket::Controls::Lua::RegisterTypes(Rocket::Core::Lua::Interpreter::GetLuaState());
 
 	m_script.Initialise(Rocket::Core::Lua::Interpreter::GetLuaState());
-	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(window.getSize().x, window.getSize().y));
+	int width, height;
+	glfwGetWindowSize(m_window, &width, &height);
+	m_context = Rocket::Core::CreateContext("default", Rocket::Core::Vector2i(width, height));
 	Rocket::Debugger::Initialise(m_context);
 
 	m_updateInterval = (1.0f / UPDATES_PER_SECOND)*1e6;
@@ -127,35 +129,33 @@ void GUI::Resize(int width, int height)
 	m_context->SetDimensions(Rocket::Core::Vector2i(width, height));
 }
 
-void GUI::MouseMove(int x, int y)
+void GUI::MouseMove(int x, int y, int mods)
 {
-	m_context->ProcessMouseMove(x, y, m_system.GetKeyModifiers(m_window));
+	m_context->ProcessMouseMove(x, y, m_system.GetKeyModifiers(mods));
 }
 
-void GUI::MousePressed(int key)
+void GUI::MousePressed(int key, int mods)
 {
-	m_context->ProcessMouseButtonDown(key, m_system.GetKeyModifiers(m_window));
+	m_context->ProcessMouseButtonDown(key, m_system.GetKeyModifiers(mods));
 }
 
-void GUI::MouseReleased(int key)
+void GUI::MouseReleased(int key, int mods)
 {
-	m_context->ProcessMouseButtonUp(key, m_system.GetKeyModifiers(m_window));
+	m_context->ProcessMouseButtonUp(key, m_system.GetKeyModifiers(mods));
 }
 
-void GUI::KeyDown(sf::Event::KeyEvent &key)
+void GUI::KeyDown(int key, int mods)
 {
-	m_context->ProcessKeyDown(m_system.TranslateKey(key.code),
-		m_system.GetKeyModifiers(m_window));
+	m_context->ProcessKeyDown(m_system.TranslateKey(key),m_system.GetKeyModifiers(mods));
 }
 
-void GUI::KeyReleased(sf::Event::KeyEvent & key)
+void GUI::KeyReleased(int key, int mods)
 {
-	if (key.code == sf::Keyboard::F11)
+	if (key == GLFW_KEY_F11)
 	{
 		Rocket::Debugger::SetVisible(!Rocket::Debugger::IsVisible());
 	};
 
-	m_context->ProcessKeyUp(m_system.TranslateKey(key.code),
-		m_system.GetKeyModifiers(m_window));
+	m_context->ProcessKeyUp(m_system.TranslateKey(key), m_system.GetKeyModifiers(mods));
 }
 

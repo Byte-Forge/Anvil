@@ -6,7 +6,10 @@
 */
 
 #pragma once
-#include <SFML/Window.hpp>
+#ifdef ANVIL_USE_VULKAN
+#define GLFW_INCLUDE_VULKAN
+#endif
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "Graphics.hpp"
 #include "Script.hpp"
@@ -62,19 +65,21 @@ namespace anvil
 		inline glm::vec2 GetResolution()
 		{
 			glm::vec2 res;
-			res.x = (float)m_window.getSize().x;
-			res.y = (float)m_window.getSize().y;
+			int width, height;
+			glfwGetWindowSize(m_window, &width, &height);
+			res.x = width;
+			res.y = height;
 			return res;
 		}
 
-		inline sf::Window* GetWindow()
+		inline GLFWwindow* GetWindow()
 		{
-			return &m_window;
+			return m_window;
 		}
 
 		inline void Quit()
 		{
-			m_running = false;
+			glfwSetWindowShouldClose(m_window, GL_TRUE);
 		}
 
 		static inline Core* GetCore()
@@ -101,9 +106,8 @@ namespace anvil
 		};
 
 		static Core* m_instance;
-		bool m_running;
 
-		sf::Window m_window;
+		GLFWwindow* m_window;
 		std::unique_ptr<ResourceHandler> m_resources;
 		std::unique_ptr<Graphics> m_graphics;
 		std::unique_ptr<GUI> m_gui;
@@ -116,5 +120,7 @@ namespace anvil
 		Util::FPS m_fps;
 		std::map<int, int> m_keyInputs; 
 		std::map<int, int> m_mouseInputs; 
+		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		static void ErrorCallback(int error, const char* description);
 	};
 }

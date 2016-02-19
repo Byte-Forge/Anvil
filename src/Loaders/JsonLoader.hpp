@@ -15,5 +15,6 @@ namespace anvil
 	public:
 		static void LoadMaterial(const std::string &name, const std::string &path);
 		static void LoadEntity(const std::string &name, const std::string &path);
+		static void LoadParticlesystem(const std::string &name, const std::string &path);
 	};
 }

@@ -11,7 +11,7 @@
 
 using namespace anvil;
 
-GL::Skybox::Skybox()
+GL::Skybox::Skybox() : m_diffID(0), m_CameraPos(0), m_matrixID(0)
 {
 	float size = 1.0f;
 
@@ -45,33 +45,9 @@ GL::Skybox::Skybox()
 	m_faces.resize(36);
 	std::iota(m_faces.begin(), m_faces.end(), 0);
 
-	//normals
-	m_normals.resize(36);
-	std::fill(m_normals.begin(),	m_normals.begin() + 6,	n_front);
-	std::fill(m_normals.begin()+6,	m_normals.begin() + 12, n_back);
-	std::fill(m_normals.begin()+12, m_normals.begin() + 18, n_left);
-	std::fill(m_normals.begin()+18, m_normals.begin() + 24, n_right);
-	std::fill(m_normals.begin()+24, m_normals.begin() + 30, n_top);
-	std::fill(m_normals.begin()+30, m_normals.end(),		n_bottom);
-	
-
-	std::vector<glm::vec2> uvs = {	{ 0.5,  0.66},{ 0.75, 0.66},{ 0.75, 0.33},//front
-									{ 0.5,  0.66},{ 0.75, 0.33},{ 0.5,  0.33},
-									{ 0.0,  0.66},{ 0.25, 0.66},{ 0.25, 0.33},//back
-									{ 0.0,  0.66},{ 0.25, 0.33},{ 0.0,  0.33},
-									{ 0.25, 0.66},{ 0.5,  0.66},{ 0.5,  0.33},//left
-									{ 0.25, 0.66},{ 0.5,  0.33},{ 0.25, 0.33},
-									{ 0.75, 0.66},{ 1.0,  0.66},{ 1.0,  0.33},//right
-									{ 0.75, 0.66},{ 1.0,  0.33},{ 0.75, 0.33},
-									{ 0.25, 0.33},{ 0.5,  0.33},{ 0.5,  0.0 },//top
-									{ 0.25, 0.33},{ 0.5,  0.0 },{ 0.25, 0.0 },
-									{ 0.25, 0.99},{ 0.5,  0.99},{ 0.5,  0.66},//bottom
-									{ 0.25, 0.99},{ 0.5,  0.66},{ 0.25, 0.66} };
-
-	m_uvs = uvs;
 
 	m_diff = Core::GetCore()->GetResources()->GetTexture("skybox/skybox.dds");
-	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("DiffuseTextureSampler");
+	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("skybox");
 
 	m_matrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("MVP");
 	m_CameraPos = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("CameraPosition");
@@ -85,21 +61,7 @@ GL::Skybox::Skybox()
 	glBindVertexArray(m_vao);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	m_uvbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
-	m_uvbo->Bind();
-	m_uvbo->Update(static_cast<unsigned int>(m_uvs.size() * sizeof(glm::vec2)), glm::value_ptr(m_uvs.front()));
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	m_nbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
-	m_nbo->Bind();
-	m_nbo->Update(static_cast<unsigned int>(m_normals.size() * sizeof(glm::vec3)), glm::value_ptr(m_normals.front()));
-
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
 	m_fbo->Bind();
