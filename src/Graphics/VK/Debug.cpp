@@ -1,3 +1,4 @@
+#ifdef ANVIL_USE_VULKAN
 #include "Debug.hpp"
 #include <cstring>
 #include <iostream>
@@ -90,3 +91,4 @@ namespace anvil
 		}
 	}
 }
+#endif
