@@ -32,8 +32,9 @@ void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, in
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
-	auto& cam = Core::GetCore()->GetCamera();
-	auto& renderer = Core::GetCore()->GetGraphics()->GetRenderer();
+	const auto& cam = Core::GetCore()->GetCamera();
+	const auto& renderer = Core::GetCore()->GetGraphics()->GetRenderer();
+
 	switch (key)
 	{
 	case GLFW_KEY_W:
