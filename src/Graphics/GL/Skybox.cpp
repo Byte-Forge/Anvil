@@ -49,8 +49,8 @@ GL::Skybox::Skybox() : m_diffID(0), m_CameraPos(0), m_matrixID(0)
 	m_diff = Core::GetCore()->GetResources()->GetTexture("skybox/skybox.dds");
 	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("skybox");
 
-	m_matrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("MVP");
-	m_CameraPos = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("CameraPosition");
+	m_matrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("mvp");
+	m_CameraPos = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("cameraPosition");
 
 
 	m_vbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);

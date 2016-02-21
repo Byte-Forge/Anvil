@@ -98,17 +98,17 @@ namespace anvil
 				m_tessellationLevel -= 1;
 		}
 
-		inline int GetTessellationLevel()
+		inline float GetTessellationLevel()
 		{
 			return m_tessellationLevel;
 		}
 
 	protected:
-		int m_tessellationLevel = 32;
+		float m_tessellationLevel = 0.01;
 		std::array<std::string, 3> m_shaderModes = {{ "DEFAULT", "WIREFRAME", "NORMALS" }};
 		Vendor m_vendor;
 
-		bool m_wireframeMode = false;
+		bool m_wireframeMode = true;
 		bool m_normalsMode = false;
 
 		std::unique_ptr<IShader> m_guiShader;

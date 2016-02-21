@@ -127,6 +127,8 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 RendererGL::RendererGL() 
 {
     flextInit();
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	#if 1
 	if (FLEXT_ARB_debug_output)
@@ -144,7 +146,7 @@ RendererGL::RendererGL()
 
 
 	m_guiShader = std::make_unique<GL::Shader>();
-	m_guiShader->Load("shader/gui.vert", "shader/gui.frag");
+	m_guiShader->Load("shader/gl/gui.vert", "shader/gl/gui.frag");
 	m_guiShader->Compile();
 
 	m_guiTranslID = static_cast<GLuint>(m_guiShader->GetUniformLocation("translation"));
@@ -153,7 +155,7 @@ RendererGL::RendererGL()
 	m_guiUseTexID = static_cast<GLuint>(m_guiShader->GetUniformLocation("useTex"));
 
 	m_skyboxShader = std::make_unique<GL::Shader>();
-	m_skyboxShader->Load("shader/skybox.vert", "shader/skybox.frag");
+	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
 	m_skyboxShader->Compile();
 
 
@@ -161,7 +163,7 @@ RendererGL::RendererGL()
 	{
 		m_terrainShaders.push_back(std::make_unique<GL::Shader>());
 		m_terrainShaders[i]->Define(m_shaderModes[i]);
-		m_terrainShaders[i]->Load("shader/terrain.vert", "shader/terrain.tesc", "shader/terrain.tese", "shader/terrain.geom", "shader/terrain.frag");
+		m_terrainShaders[i]->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
 		m_terrainShaders[i]->Compile();
 	}
 
