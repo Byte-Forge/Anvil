@@ -195,44 +195,44 @@ void ITerrain::UpdateBufferData()
 
 			if (heightmap_changed)
 			{
-				m_vertices.push_back(a);
+				m_vertices.push_back(a);				
+				m_vertices.push_back(c);
 				m_vertices.push_back(b);
-				m_vertices.push_back(c);
 
-				m_vertices.push_back(a);
-				m_vertices.push_back(c);
+				m_vertices.push_back(a);			
 				m_vertices.push_back(d);
+				m_vertices.push_back(c);
 
-				m_normals.push_back(normals[i][j]);
+				m_normals.push_back(normals[i][j]);			
+				m_normals.push_back(normals[i + 1][j + 1]);
 				m_normals.push_back(normals[i + 1][j]);
-				m_normals.push_back(normals[i + 1][j + 1]);
 
-				m_normals.push_back(normals[i][j]);
-				m_normals.push_back(normals[i + 1][j + 1]);
+				m_normals.push_back(normals[i][j]);			
 				m_normals.push_back(normals[i][j + 1]);
+				m_normals.push_back(normals[i + 1][j + 1]);
 			}
 
 			if (uvs_changed)
 			{
 				int val = 4;
-				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });
+				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });			
+				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
 				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });
-				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
 
-				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });
-				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
+				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });			
 				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
+				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
 			}
 
 			if (materials_changed)
 			{
-				m_materials.push_back(m_materialmap[i][j+1]);
+				m_materials.push_back(m_materialmap[i][j+1]);			
 				m_materials.push_back(m_materialmap[i+1][j+1]);
-				m_materials.push_back(m_materialmap[i+1][j+1]);
+				m_materials.push_back(m_materialmap[i + 1][j + 1]);
 
+				m_materials.push_back(m_materialmap[i][j+1]);				
 				m_materials.push_back(m_materialmap[i][j+1]);
-				m_materials.push_back(m_materialmap[i+1][j+1]);
-				m_materials.push_back(m_materialmap[i][j+1]);
+				m_materials.push_back(m_materialmap[i + 1][j + 1]);
 			}
 
 			if (faces_changed)
@@ -241,13 +241,13 @@ void ITerrain::UpdateBufferData()
 				m_faces.push_back(index++);
 				m_faces.push_back(index++);
 
-				m_quadtree->AddTriangle(&m_faces[index - 3], a, b, c);
+				m_quadtree->AddTriangle(&m_faces[index - 3], c, b, a);
 
 				m_faces.push_back(index++);
 				m_faces.push_back(index++);
 				m_faces.push_back(index++);
 
-				m_quadtree->AddTriangle(&m_faces[index - 3], a, c, d);
+				m_quadtree->AddTriangle(&m_faces[index - 3], d, c, a);
 			}
 		}
 	}

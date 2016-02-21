@@ -53,6 +53,15 @@ namespace anvil
 		/// Called by Rocket when a loaded texture is no longer required.
 		void ReleaseTexture(Rocket::Core::TextureHandle texture_handle);
 	private:
+		void CreateInstance();
+		void CreateDevice();
+
 		VkSurfaceKHR m_surface;
+		VkInstance m_instance;
+		VkDevice m_device;
+		VkPhysicalDevice m_physDevice;
+		VkPhysicalDeviceFeatures m_gpuFeatures;
+		VkPhysicalDeviceProperties m_gpuProperties;
+		VkPhysicalDeviceMemoryProperties m_gpuMem;
 	};
 }

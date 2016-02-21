@@ -86,29 +86,22 @@ namespace anvil
 			return m_shaderModes;
 		}
 
-		inline void IncreaseTessellation()
+		inline int GetTessfactor()
 		{
-			if (m_tessellationLevel < 64) //above nothing happens
-				m_tessellationLevel += 1;
+			return m_tessFactor;
 		}
 
-		inline void DecreaseTessellation()
+		inline int GetMaxTesselation()
 		{
-			if (m_tessellationLevel > 1) //should be at least 1
-				m_tessellationLevel -= 1;
+			return m_maxTesselation;
 		}
-
-		inline int GetTessellationLevel()
-		{
-			return m_tessellationLevel;
-		}
-
 	protected:
-		int m_tessellationLevel = 32;
+		int m_tessFactor = 32;
+		int m_maxTesselation = 64;
 		std::array<std::string, 3> m_shaderModes = {{ "DEFAULT", "WIREFRAME", "NORMALS" }};
 		Vendor m_vendor;
 
-		bool m_wireframeMode = false;
+		bool m_wireframeMode = true;
 		bool m_normalsMode = false;
 
 		std::unique_ptr<IShader> m_guiShader;

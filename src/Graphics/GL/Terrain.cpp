@@ -34,20 +34,22 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 
 	for (int i = 0; i < Core::GetCore()->GetGraphics()->GetRenderer()->GetShaderModes().size(); i++)
 	{
-		m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DiffuseTextureSampler", i));
-		m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("NormalTextureSampler", i));
-		m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("SpecularTextureSampler", i));
-		m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("DisplacementTextureSampler", i));
-		m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("AmbientTextureSampler", i));
+		m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("albedoSampler", i));
+		m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("normalSampler", i));
+		m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("specularSampler", i));
+		m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("displacementSampler", i));
+		m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("ambientSampler", i));
+		
+		m_maxFactorIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("max_factor", i));
+		m_tessFactorIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("tess_factor", i));
 
-		m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("M", i));
-		m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("V", i));
-		m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MV3x3", i));
-		m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("MVP", i));
+		m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("m", i));
+		m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("v", i));
+		m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("mv3x3", i));
+		m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("mvp", i));
 
 		m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", i));
 
-		m_tessLevelIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("maxTessellation", i));
 	}
 
 	glGenVertexArrays(1, &m_vao);
@@ -104,7 +106,8 @@ void GL::Terrain::Render(int mode)
 	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
 	glUniform3f(m_lightIDs[mode], lightPos.x, lightPos.y, lightPos.z);
 
-	glUniform1i(m_tessLevelIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessellationLevel());
+	glUniform1i(m_tessFactorIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor());
+	glUniform1i(m_maxFactorIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation());
 
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();

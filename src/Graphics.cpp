@@ -14,7 +14,7 @@
 #include <glm/gtx/transform.hpp>
 #define STB_IMAGE_IMPLEMENTATION
 #include "Util/stb_image.h"
-
+#include "Core.hpp"
 using namespace anvil;
 
 Graphics::Graphics(Graphics::RenderBackend backend) : m_backend(backend), m_available({OpenGL})
@@ -31,7 +31,8 @@ Graphics::Graphics(Graphics::RenderBackend backend) : m_backend(backend), m_avai
 	#endif
 	}
 
-	m_ortho = glm::ortho(0.0f, 800.0f, 600.0f, 000.0f);
+	auto resolution = Core::GetCore()->GetResolution();
+	m_ortho = glm::ortho(0.0f, resolution.x, resolution.y, 000.0f);
 }
 
 Graphics::~Graphics()
