@@ -29,7 +29,7 @@ namespace anvil
             void Update();
         private:
 			//rendering stuff
-			std::vector<GLuint> m_lightIDs, m_screenIDs, m_lodIDs;
+			std::vector<GLuint> m_lightIDs, m_maxFactorIDs, m_tessFactorIDs;
 
 			std::vector<GLuint> m_diffIDs, m_nrmIDs, m_specIDs, m_dispIDs, m_ambiIDs;
 			glm::mat4 m_mvp;

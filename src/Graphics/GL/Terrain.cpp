@@ -40,8 +40,8 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 		m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("displacementSampler", i));
 		m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("ambientSampler", i));
 		
-		m_screenIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("screen_size", i));
-		m_lodIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lod_factor", i));
+		m_maxFactorIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("max_factor", i));
+		m_tessFactorIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("tess_factor", i));
 
 		m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("m", i));
 		m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("v", i));
@@ -106,8 +106,8 @@ void GL::Terrain::Render(int mode)
 	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
 	glUniform3f(m_lightIDs[mode], lightPos.x, lightPos.y, lightPos.z);
 
-	glUniform1f(m_lodIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessellationLevel());
-	glUniform2fv(m_screenIDs[mode], 1, glm::value_ptr(Core::GetCore()->GetResolution()));
+	glUniform1i(m_tessFactorIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor());
+	glUniform1i(m_maxFactorIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation());
 
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();

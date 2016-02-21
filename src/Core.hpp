@@ -118,7 +118,9 @@ namespace anvil
 		std::map<int, int> m_mouseInputs; 
 		glm::vec2 m_resolution;
 		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		static void MouseCallback(GLFWwindow* window, int key, int action, int mods);
+		static void ScrollCallback(GLFWwindow* window, double x, double y);
 		static void ErrorCallback(int error, const char* description);
-		static void Resize(GLFWwindow* window, int width, int height);
+		static void ResizeCallback(GLFWwindow* window, int width, int height);
 	};
 }

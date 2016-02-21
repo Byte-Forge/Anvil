@@ -62,8 +62,7 @@ namespace anvil
 		}
 
 		void setupDebugging(VkInstance instance, VkDebugReportFlagsEXT flags, VkDebugReportCallbackEXT callBack)
-		{
-		
+		{	
 			CreateDebugReportCallback = (PFN_vkCreateDebugReportCallbackEXT)glfwGetInstanceProcAddress(instance, "vkCreateDebugReportCallbackEXT");
 			DestroyDebugReportCallback = (PFN_vkDestroyDebugReportCallbackEXT)glfwGetInstanceProcAddress(instance, "vkDestroyDebugReportCallbackEXT");
 			dbgBreakCallback = (PFN_vkDebugReportMessageEXT)glfwGetInstanceProcAddress(instance, "vkDebugReportMessageEXT");

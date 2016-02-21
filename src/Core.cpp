@@ -21,10 +21,20 @@ void Core::ErrorCallback(int error, const char* description)
 	std::cerr << description << std::endl;
 }
 
-void Core::Resize(GLFWwindow * window, int width, int height)
+void Core::ResizeCallback(GLFWwindow * window, int width, int height)
 {
 	Core::GetCore()->GetGraphics()->Resize(width, height);
 	Core::GetCore()->GetGUI()->Resize(width, height);
+}
+
+void Core::MouseCallback(GLFWwindow* window, int key, int x, int y)
+{
+
+}
+
+void Core::ScrollCallback(GLFWwindow* window, double x, double y)
+{
+	Core::GetCore()->GetCamera()->Zoom(y);
 }
 
 void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -97,7 +107,9 @@ Core::Core()
 
 	glfwMakeContextCurrent(m_window);
 	glfwSetKeyCallback(m_window, KeyCallback);
-	glfwSetWindowSizeCallback(m_window,Resize);
+	glfwSetWindowSizeCallback(m_window,ResizeCallback);
+	glfwSetMouseButtonCallback(m_window, MouseCallback);
+	glfwSetScrollCallback(m_window, ScrollCallback);
 	glfwSwapInterval(0);
 	m_resources = std::make_unique<ResourceHandler>();
 	m_audio = std::make_unique<Audio>();
