@@ -64,12 +64,8 @@ namespace anvil
 
 		inline glm::vec2 GetResolution()
 		{
-			glm::vec2 res;
-			int width, height;
-			glfwGetWindowSize(m_window, &width, &height);
-			res.x = width;
-			res.y = height;
-			return res;
+			
+			return m_resolution;
 		}
 
 		inline GLFWwindow* GetWindow()
@@ -120,7 +116,9 @@ namespace anvil
 		Util::FPS m_fps;
 		std::map<int, int> m_keyInputs; 
 		std::map<int, int> m_mouseInputs; 
+		glm::vec2 m_resolution;
 		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void ErrorCallback(int error, const char* description);
+		static void Resize(GLFWwindow* window, int width, int height);
 	};
 }
