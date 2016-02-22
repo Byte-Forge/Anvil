@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Debug.cpp
+************************************
+*/
+
 #ifdef ANVIL_USE_VULKAN
 #include "Debug.hpp"
 #include <cstring>

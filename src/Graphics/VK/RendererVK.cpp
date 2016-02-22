@@ -1,3 +1,9 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* RendererVK.cpp
+************************************
+*/
 #ifdef ANVIL_USE_VULKAN
 #include "RendererVK.hpp"
 #include <GLFW/glfw3.h>
@@ -23,7 +29,6 @@ RendererVK::RendererVK() : m_instance(nullptr), m_device(nullptr), m_physDevice(
 	VkResult err = glfwCreateWindowSurface(m_instance, window, NULL, &m_surface);
 }
 
-
 void RendererVK::CreateInstance()
 {
 	VkApplicationInfo app = {};
@@ -33,13 +38,16 @@ void RendererVK::CreateInstance()
 	app.apiVersion = VK_API_VERSION;
 
 	int extCount;
-	const char** extensions = glfwGetRequiredInstanceExtensions(&extCount);
-
+	const char** glfwExtension = glfwGetRequiredInstanceExtensions(&extCount);
+	std::vector<const char*> extensions(glfwExtension, glfwExtension+extCount);
+	#ifndef NDEBUG
+	extensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+	#endif
 	VkInstanceCreateInfo ici = {};
 	ici.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	ici.pApplicationInfo = &app;
-	ici.enabledExtensionCount = extCount;
-	ici.ppEnabledExtensionNames = extensions;
+	ici.enabledExtensionCount = extensions.size();
+	ici.ppEnabledExtensionNames = extensions.data();
 	#ifndef NDEBUG
 	ici.enabledLayerCount = vkDebug::validationLayerCount;
 	ici.ppEnabledLayerNames = vkDebug::validationLayerNames;
@@ -77,6 +85,7 @@ void RendererVK::CreateDevice()
 			{
 				m_physDevice = cDevice;
 				foundDevice = true;
+				break;
 			}
 		}
 
@@ -85,8 +94,9 @@ void RendererVK::CreateDevice()
 
 		dqci.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 		dqci.queueFamilyIndex = cQueue;
-		dqci.queueCount = 1;
+		dqci.queueCount = queueCount;
 		dqci.pQueuePriorities = queuePriorities.data();
+		break;
 	}
 
 	if (!m_physDevice)

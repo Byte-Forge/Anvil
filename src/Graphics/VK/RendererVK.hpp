@@ -1,10 +1,9 @@
 /*
 ************************************
 * Copyright (C) 2016 ByteForge
-* RendererGL.hpp
+* RendererVK.hpp
 ************************************
 */
-
 #pragma once
 #include "../IRenderer.hpp"
 #include "../../Types/Map.hpp"

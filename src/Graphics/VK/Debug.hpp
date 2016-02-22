@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Debug.hpp
+************************************
+*/
+
 #pragma once
 #include <vulkan/vulkan.h>
 

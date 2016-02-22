@@ -101,7 +101,7 @@ namespace anvil
 		std::array<std::string, 3> m_shaderModes = {{ "DEFAULT", "WIREFRAME", "NORMALS" }};
 		Vendor m_vendor;
 
-		bool m_wireframeMode = true;
+		bool m_wireframeMode = false;
 		bool m_normalsMode = false;
 
 		std::unique_ptr<IShader> m_guiShader;
