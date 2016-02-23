@@ -50,7 +50,7 @@ install:
   - export RAPIDJSON_ROOT_DIR=$(pwd)/rapidjson
   - if [ ! -f cache ]; then git clone https://github.com/libRocket/libRocket.git ; fi
   - if [ ! -f cache ]; then cd libRocket/Build ; fi
-  - if [ ! -f cache ]; then cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE ; fi
+  - if [ ! -f cache ]; then cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE -DBUILD_UNIVERSAL_BINARIES=OFF; fi
   - if [ ! -f cache ]; then make install -j2 && cd ../.. ; fi
   - if [ ! -f cache ]; then echo "Built librocket" ; fi
   - export ROCKET_ROOT=$(pwd)/libRocket
