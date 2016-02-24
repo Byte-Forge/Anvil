@@ -6,7 +6,12 @@
 */
 
 #pragma once
+#if __APPLE__
+#include <OpenAL/al.h>
+#else
 #include <AL/al.h>
+#endif
+
 #include "../Core/IResource.hpp"
 
 namespace anvil
