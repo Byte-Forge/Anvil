@@ -33,9 +33,7 @@ git:
   submodules: false
 
 before_install:
-  - cd glfw
-  - git pull
-  - cd ..
+  - cd glfw && git pull && cd ..
 
 install:
   - cmake --version
@@ -43,9 +41,7 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - cd deps
-  - ls
-  - if [ ! -f cache ]; then git clone https://github.com/glfw/glfw.git; fi
-  - if [ ! -f cache ]; then cd glfw && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=.. .. && make install -j2 && cd ../..; fi
+  - if [ ! -f cache ]; then git clone https://github.com/g-truc/glm.git ; fi
   - export GLM_ROOT_DIR=$(pwd)/glm
   - if [ ! -f cache ]; then git clone https://github.com/g-truc/gli.git ; fi
   - export GLI_ROOT_DIR=$(pwd)/gli
