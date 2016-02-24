@@ -1,5 +1,4 @@
 language: cpp
-dist: trusty
 sudo: false
 
 compiler:
@@ -33,7 +32,7 @@ git:
   submodules: false
 
 before_install:
-  - cd glfw && git pull && cd ..
+  - cd glfw && git pull && ls && cd ..
 
 install:
   - cmake --version
