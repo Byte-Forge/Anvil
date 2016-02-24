@@ -32,7 +32,7 @@ git:
   submodules: false
 
 before_install:
-  - cd glfw && git pull && ls && cd ..
+  - cd glfw && git submodule init && git submodule update && cd ..
 
 install:
   - cmake --version
