@@ -7,7 +7,7 @@
 
 #pragma once
 #if __APPLE__
-#include <OpenAL/alut.h>
+#include <OpenAL/al.h>
 #else
 #include <AL/al.h>
 #endif
