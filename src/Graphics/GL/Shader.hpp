@@ -9,7 +9,11 @@
 #include "../IShader.hpp"
 #include "flextGL.h"
 #include <map>
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 namespace anvil
 {
