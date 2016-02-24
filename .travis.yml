@@ -32,6 +32,11 @@ addons:
 git:
   submodules: false
 
+before_install:
+  - cd glfw
+  - git pull
+  - cd ..
+
 install:
   - cmake --version
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update ; brew install llvm freetype lua luajit openal-soft;brew outdated gcc || brew upgrade gcc ; brew outdated cmake || brew upgrade cmake ; fi
@@ -41,8 +46,6 @@ install:
   - ls
   - if [ ! -f cache ]; then git clone https://github.com/glfw/glfw.git; fi
   - if [ ! -f cache ]; then cd glfw && mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=.. .. && make install -j2 && cd ../..; fi
-  - export GLFW_LOCATION=$(pwd)/glfw
-  - if [ ! -f cache ]; then git clone https://github.com/g-truc/glm.git ; fi
   - export GLM_ROOT_DIR=$(pwd)/glm
   - if [ ! -f cache ]; then git clone https://github.com/g-truc/gli.git ; fi
   - export GLI_ROOT_DIR=$(pwd)/gli

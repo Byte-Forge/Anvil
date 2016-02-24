@@ -45,7 +45,10 @@ find_package(GLI REQUIRED)
 find_package(Vulkan)
 
 #Add GLFW
-add_subdirectory(GLFW REQUIRED)
+set(GLFW_BUILD_EXAMPLES CACHE BOOL OFF)
+set(GLFW_BUILD_TESTS CACHE BOOL OFF)
+set(GLFW_BUILD_DOCS CACHE BOOL OFF)
+add_subdirectory(glfw REQUIRED)
 
 #Compile all files
 file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/[a-z,A-Z]*.[c,h,def]*)
