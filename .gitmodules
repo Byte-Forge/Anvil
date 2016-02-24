@@ -1,3 +1,6 @@
 [submodule "data"]
 	path = data
 	url = https://github.com/feliwir/AnvilData.git
+[submodule "glfw"]
+	path = glfw
+	url = https://github.com/glfw/glfw.git
