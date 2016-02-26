@@ -72,7 +72,7 @@ Core::Core()
 		//backend = Graphics::Vulkan;
 	}
 	#endif
-	m_window = glfwCreateWindow(1500, 1000, "anvil engine", NULL, NULL);
+	m_window = glfwCreateWindow(800, 600, "anvil engine", NULL, NULL);
 
 	int width, height;
 	glfwGetWindowSize(m_window, &width, &height);

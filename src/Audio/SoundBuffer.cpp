@@ -6,7 +6,6 @@
 */
 
 #include "SoundBuffer.hpp"
-#include <AL/alc.h>
 
 using namespace anvil;
 
