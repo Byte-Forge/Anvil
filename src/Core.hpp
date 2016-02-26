@@ -21,6 +21,7 @@
 #include "Graphics/Frustum.hpp"
 #include "Util/Timer.hpp"
 #include "Util/FPS.hpp"
+#include "Input.hpp"
 
 namespace anvil
 {
@@ -62,6 +63,11 @@ namespace anvil
 			return m_camera;
 		} 
 
+		inline std::unique_ptr<Input>& GetInput()
+		{
+			return m_input;
+		}
+
 		inline glm::vec2 GetResolution()
 		{
 			
@@ -94,13 +100,6 @@ namespace anvil
 		}
 
 	private:
-		enum KEYSTATE 
-		{
-			JUST_RELEASED = -1,
-			NOT_PRESSED = 0,
-			PRESSED = 1,
-		};
-
 		static Core* m_instance;
 
 		GLFWwindow* m_window;
@@ -112,13 +111,14 @@ namespace anvil
 		std::unique_ptr<Map> m_map;
 		std::unique_ptr<Camera> m_camera;
 		std::unique_ptr<Frustum> m_frustum;
+		std::unique_ptr<Input> m_input;
 		Util::Timer m_timer;
 		Util::FPS m_fps;
-		std::map<int, int> m_keyInputs; 
-		std::map<int, int> m_mouseInputs; 
 		glm::vec2 m_resolution;
+
 		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void MouseCallback(GLFWwindow* window, int key, int action, int mods);
+		static void MousePosCallback(GLFWwindow* window, double xpos, double ypos);
 		static void ScrollCallback(GLFWwindow* window, double x, double y);
 		static void ErrorCallback(int error, const char* description);
 		static void ResizeCallback(GLFWwindow* window, int width, int height);

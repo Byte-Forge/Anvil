@@ -134,7 +134,7 @@ Mesh loadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 void loadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<BF3DModel> model =  std::make_shared<BF3DModel>();
-	model->hieraName = readString(file);
+	//model->hieraName = readString(file);
 
 	while (file.tellg() < chunkEnd)
 	{

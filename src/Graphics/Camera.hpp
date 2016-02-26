@@ -94,8 +94,7 @@ namespace anvil
 		}
 
     private:
-		//Movement per second
-		float m_speed = 500.0f;
+		float m_speed = 200.0f; //Movement per second
 		glm::vec3 m_position;
         glm::vec3 m_currentPos; 
 		glm::vec3 m_direction;
