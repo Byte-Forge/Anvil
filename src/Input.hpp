@@ -7,8 +7,8 @@
 #pragma once
 #include <map>
 #include <memory>
-#include "Graphics\Camera.hpp"
-#include "Graphics\IRenderer.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/IRenderer.hpp"
 
 namespace anvil
 {
