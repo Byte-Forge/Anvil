@@ -7,7 +7,7 @@
 
 #include "Input.hpp"
 #include <GLFW/glfw3.h>
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include <iostream>
 
 #define JUST_RELEASED -1
