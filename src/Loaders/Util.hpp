@@ -48,6 +48,7 @@ namespace anvil
 		result.resize(num_elements);
 
 		fin.read((char*)&result[0], sizeof(T)*num_elements);
+		return result;
 	}
 
 	inline std::string readString(std::ifstream& fin)

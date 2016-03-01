@@ -13,6 +13,10 @@
 #include "Util.hpp"        
 #include "../Core.hpp"
 #include "../Types/BF3D.hpp"
+#include "../Graphics/IMesh.hpp"
+#include "../Graphics/IModel.hpp"
+#include "../Graphics/GL/MeshGL.hpp"
+#include "../Graphics/GL/ModelGL.hpp"
 #include "../Core/ResourceHandler.hpp"
 #include <stdint.h>
 
@@ -42,14 +46,14 @@ HierarchyPivot loadHierarchyPivot(std::ifstream& file)
 	return pivot;
 }
 
-void loadHierarchy(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
+void BF3DLoader::LoadHierarchy(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<Hierarchy> hierarchy;
 	while (file.tellg() < chunkEnd)
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
+		size_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		switch (chunkType)
 		{
@@ -72,86 +76,74 @@ void loadHierarchy(std::string name, std::ifstream& file, std::uint32_t chunkEnd
 //# model
 //#######################################################################################
 
-MeshHeader loadMeshHeader(std::ifstream& file)
+void BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 {
-	MeshHeader header;
-	header.type = read<std::uint8_t>(file);
-	header.meshName = readString(file);
-	header.materialID = read<std::uint16_t>(file);
-	header.parentPivot = read<std::uint16_t>(file);
-	header.faceCount = read<std::uint32_t>(file);
-	header.vertCount = read<std::uint32_t>(file);
-	return header;
-}
+	/*
+	auto mesh = *Core::GetCore()->GetGraphics()->GetMesh();
 
-Mesh loadMesh(std::ifstream& file, std::uint32_t chunkEnd)
-{
-	Mesh mesh;
 	while (file.tellg() < chunkEnd)
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
-
+		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+		std::cout << chunkType << std::endl;
 		switch (chunkType)
 		{
 		case 2:
-			mesh.header = loadMeshHeader(file);
+			mesh.m_type = read<std::uint8_t>(file);
+			mesh.m_meshName = readString(file);
+			mesh.m_materialID = read<std::uint16_t>(file);
+			mesh.m_parentPivot = read<std::uint16_t>(file);
+			mesh.m_faceCount = read<std::uint32_t>(file);
+			mesh.m_vertCount = read<std::uint32_t>(file);
 			break;
 		case 3:
-			//read the at once?
-			while (file.tellg() < chunkEnd)
-				mesh.vertices.push_back(read<glm::f32vec3>(file));
+			mesh.m_vertices = readVector<glm::f32vec3>(file, chunkSize);
+			std::cout << mesh.m_vertices.size() << std::endl;
 			break;
 		case 4:
-			//read the at once?
-			while (file.tellg() < chunkEnd)
-				mesh.normals.push_back(read<glm::f32vec3>(file));
+			mesh.m_normals = readVector<glm::f32vec3>(file, chunkSize);
 			break;
 		case 5:
-			//read the at once?
-			while (file.tellg() < chunkEnd)
-				mesh.faces.push_back(read<glm::i32vec3>(file));
+			mesh.m_faces = readVector<glm::i32vec3>(file, chunkSize);
 			break;
 		case 6:
-			//read the at once?
-			while (file.tellg() < chunkEnd)
-				mesh.uvCoords.push_back(read<glm::f32vec2>(file));
+			mesh.m_uvCoords = readVector<glm::f32vec2>(file, chunkSize);
 			break;
 		case 7:
-			//read the at once?
-			while (file.tellg() < chunkEnd)
-				mesh.vertInfs.push_back(read<MeshVertexInfluences>(file));
+			mesh.m_vertInfs = readVector<IMesh::MeshVertexInfluences>(file, chunkSize);
 			break;
 		default:
 			std::cout << "unknown chunktype in mesh chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
-	return mesh;
+	mesh.Update();
+	return &mesh;
+	*/
 }
 
-void loadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
+void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
-	std::shared_ptr<BF3DModel> model =  std::make_shared<BF3DModel>();
-	//model->hieraName = readString(file);
+	std::shared_ptr<IModel> model = Core::GetCore()->GetGraphics()->GetModel();
+	model->m_hierarchyName = readString(file);
 
 	while (file.tellg() < chunkEnd)
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
-
+		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 		switch (chunkType)
 		{
 		case 1:
-			model->meshes.push_back(loadMesh(file, chunkEnd));
+			//model->m_meshes.push_back(LoadMesh(file, chunkEnd));
+			LoadMesh(file, chunkEnd);
 			break;
 		case 1024:
-			model->volume = read<Box>(file);
+			model->m_volume = read<IModel::Box>(file);
 			break;
 		case 1025:
-			model->volume = read<Sphere>(file);
+			model->m_volume = read<IModel::Sphere>(file);
 			break;
 		default:
 			std::cout << "unknown chunktype in model chunk: " << chunkType << std::endl;
@@ -170,15 +162,15 @@ void BF3DLoader::Load(const std::string& name, const std::string& path)
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t chunkEnd = (long)file.tellg() + chunkSize;
+		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		switch (chunkType)
 		{
 		case 0:
-			loadModel(name, file, chunkEnd);
+			LoadModel(name, file, chunkEnd);
 			break;
 		case 256:
-			loadHierarchy(name, file, chunkEnd);
+			LoadHierarchy(name, file, chunkEnd);
 			break;
 
 		default:

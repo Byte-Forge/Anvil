@@ -1,19 +1,8 @@
 /*
 ************************************
 * Copyright (C) 2016 ByteForge
-* IModel.cpp
+* IMesh.cpp
 ************************************
 */
 
-#include "IModel.hpp"
-
-using namespace anvil;
-
-IModel::IModel()
-{
-
-}
-
-IModel::~IModel() {
-
-}
+#include "IMesh.hpp"

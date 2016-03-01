@@ -112,7 +112,7 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	return materials;
 }
 
-std::shared_ptr<BF3DModel> ResourceHandler::GetModel(const std::string &name)
+std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
 {
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
@@ -122,7 +122,7 @@ std::shared_ptr<BF3DModel> ResourceHandler::GetModel(const std::string &name)
 			BF3DLoader::Load(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<BF3DModel> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(name)]);
 }
 
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)

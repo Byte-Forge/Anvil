@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "../Types/BF3D.hpp"
+#include "../Graphics/IModel.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Core/IResource.hpp"
 
@@ -22,7 +22,7 @@ namespace anvil
 		Entity(std::shared_ptr<Entity> parent);
 		~Entity();
 
-		std::shared_ptr<BF3DModel> m_model;
+		std::shared_ptr<IModel> m_model;
 		std::vector<std::shared_ptr<Material>> m_materials;
     };
 }
