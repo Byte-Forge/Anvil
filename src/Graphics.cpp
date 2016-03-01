@@ -106,14 +106,16 @@ std::shared_ptr<IModel> Graphics::GetModel()
 	return model;
 }
 
-IMesh* Graphics::GetMesh()
+std::shared_ptr<IMesh> Graphics::GetMesh()
 {
+	std::shared_ptr<IMesh> mesh = nullptr;
 	switch (m_backend)
 	{
 	case OpenGL:
-		return &GL::MeshGL();
+		mesh = std::make_shared<GL::MeshGL>();
 	default:
-		return &GL::MeshGL();
 		break;
 	}
+
+	return mesh;
 }

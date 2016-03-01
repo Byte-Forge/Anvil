@@ -51,7 +51,7 @@ namespace anvil
 
 		std::shared_ptr<ITexture> GetTexture();
 		std::shared_ptr<IModel> GetModel();
-		IMesh* GetMesh();
+		std::shared_ptr<IMesh> GetMesh();
 
 		inline glm::mat4& GetOrtho()
 		{

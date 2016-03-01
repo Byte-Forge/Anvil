@@ -17,7 +17,7 @@ RendererVK::RendererVK() : m_instance(nullptr), m_device(nullptr), m_physDevice(
 	auto* window = Core::GetCore()->GetWindow();
 	CreateInstance();
 	#ifndef NDEBUG
-	vkDebug::setupDebugging(m_instance, VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT, NULL);
+	vk::setupDebugging(m_instance, VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT, NULL);
 	#endif
 	CreateDevice();
 
@@ -51,8 +51,8 @@ void RendererVK::CreateInstance()
 	ici.enabledExtensionCount = extensions.size();
 	ici.ppEnabledExtensionNames = extensions.data();
 	#ifndef NDEBUG
-	ici.enabledLayerCount = vkDebug::validationLayerCount;
-	ici.ppEnabledLayerNames = vkDebug::validationLayerNames;
+	ici.enabledLayerCount = vk::validationLayerCount;
+	ici.ppEnabledLayerNames = vk::validationLayerNames;
 	#endif
 
 	result = vkCreateInstance(&ici, NULL, &m_instance);
@@ -109,8 +109,8 @@ void RendererVK::CreateDevice()
 	VkDeviceCreateInfo dci = {};
 	dci.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	#ifndef NDEBUG
-	dci.enabledLayerCount = vkDebug::validationLayerCount;
-	dci.ppEnabledLayerNames = vkDebug::validationLayerNames;
+	dci.enabledLayerCount = vk::validationLayerCount;
+	dci.ppEnabledLayerNames = vk::validationLayerNames;
 	#endif
 	dci.queueCreateInfoCount = 1;
 	dci.pQueueCreateInfos = &dqci;
@@ -122,7 +122,7 @@ void RendererVK::CreateDevice()
 RendererVK::~RendererVK()
 {
 	#ifndef NDEBUG
-	vkDebug::freeDebugCallback(m_instance);
+	vk::freeDebugCallback(m_instance);
 	#endif
 
 	if (m_surface)
