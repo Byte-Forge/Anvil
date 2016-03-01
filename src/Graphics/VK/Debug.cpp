@@ -55,7 +55,7 @@ namespace anvil
 				if (flags & VK_DEBUG_REPORT_WARNING_BIT_EXT)
 				{
 					// Uncomment to see warnings
-					//std::cout << "WARNING: " << "[" << pLayerPrefix << "] Code " << msgCode << " : " << pMsg << "\n";
+					std::cout << "WARNING: " << "[" << pLayerPrefix << "] Code " << msgCode << " : " << pMsg << "\n";
 				}
 				else
 				{
