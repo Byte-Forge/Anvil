@@ -42,7 +42,7 @@ namespace anvil
 		void Zoom(Direction dir);
 		void Zoom(int value);
 		void ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction);
-
+	public:
 		inline const glm::vec3 GetLookAt()
 		{
 			return m_lookat;

@@ -9,7 +9,7 @@
 
 using namespace anvil;
 
-Entity::Entity()
+Entity::Entity() 
 {
 
 }

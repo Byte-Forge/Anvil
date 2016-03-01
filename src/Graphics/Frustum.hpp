@@ -11,6 +11,7 @@
 
 namespace anvil
 {
+	//TODO: use glm for m_frustum
 	class Frustum
 	{
 	public:
@@ -28,7 +29,7 @@ namespace anvil
 	private:
 		glm::mat4 m_lastView;
 		glm::mat4 m_lastProjection;
-		glm::mat4 clip;
+		glm::mat4 m_clip;
 		bool m_updated;
 		std::array<std::array<float, 4>, 6> m_frustum; // 6 planes, each described by point and normal in this order: NEAR, FAR, TOP, BOTTOM, LEFT, RIGHT 
 	};

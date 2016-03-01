@@ -100,6 +100,13 @@ namespace anvil
 		}
 
 	private:
+		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		static void MouseCallback(GLFWwindow* window, int key, int action, int mods);
+		static void MousePosCallback(GLFWwindow* window, double xpos, double ypos);
+		static void ScrollCallback(GLFWwindow* window, double x, double y);
+		static void ErrorCallback(int error, const char* description);
+		static void ResizeCallback(GLFWwindow* window, int width, int height);
+	private:
 		static Core* m_instance;
 
 		GLFWwindow* m_window;
@@ -115,12 +122,5 @@ namespace anvil
 		Util::Timer m_timer;
 		Util::FPS m_fps;
 		glm::vec2 m_resolution;
-
-		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-		static void MouseCallback(GLFWwindow* window, int key, int action, int mods);
-		static void MousePosCallback(GLFWwindow* window, double xpos, double ypos);
-		static void ScrollCallback(GLFWwindow* window, double x, double y);
-		static void ErrorCallback(int error, const char* description);
-		static void ResizeCallback(GLFWwindow* window, int width, int height);
 	};
 }

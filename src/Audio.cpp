@@ -54,7 +54,8 @@ void Audio::EnumerateDevices(const ALCchar *devices)
     const ALCchar *device = devices, *next = devices + 1;
     size_t len = 0;
 
-    while (device && *device != '\0' && next && *next != '\0') {
+    while (device && *device != '\0' && next && *next != '\0') 
+	{
 		m_deviceList.push_back(device);
         len = strlen(device);
         device += (len + 1);

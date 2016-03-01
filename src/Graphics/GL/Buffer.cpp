@@ -10,16 +10,18 @@
 
 using namespace anvil;
 
-GL::Buffer::Buffer(BufferType type)
+GL::Buffer::Buffer(BufferType type) : m_type(type) , m_handle(0)
 {
 	glGenBuffers(1, &m_handle);
-	m_type = type;
 }
 
 GL::Buffer::~Buffer()
 {
-	glDeleteBuffers(1, &m_handle);
-	m_handle = 0;
+	if (m_handle)
+	{
+		glDeleteBuffers(1, &m_handle);
+		m_handle = 0;
+	}	
 }
 
 void GL::Buffer::Bind()

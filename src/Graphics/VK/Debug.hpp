@@ -10,7 +10,7 @@
 
 namespace anvil
 {
-	namespace vkDebug
+	namespace vk
 	{
 		extern int validationLayerCount;
 		extern const char *validationLayerNames[];

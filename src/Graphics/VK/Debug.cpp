@@ -12,7 +12,7 @@
 #include <GLFW/glfw3.h>
 namespace anvil
 {
-	namespace vkDebug
+	namespace vk
 	{
 		int validationLayerCount = 9;
 		const char *validationLayerNames[] =

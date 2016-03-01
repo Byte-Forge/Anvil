@@ -13,14 +13,11 @@
 
 using namespace anvil;
 
-Camera::Camera()
+Camera::Camera() : m_up(0.0, 1.0, 0.0), m_currentPos(-30.0, 30.0, -30.0), m_lookat(0.0, 0.0, 0.0),
+					m_fov(45.0), m_frustum(nullptr)
 {
-    m_up = glm::vec3(0.0, 1.0, 0.0);
-	m_currentPos = glm::vec3(-30.0, 30.0, -30.0);
-	m_lookat = glm::vec3(0.0, 0.0, 0.0);
-
-    m_fov = 45.0;
-    m_ratio = 800.0/600.0;
+	const auto& res = Core::GetCore()->GetResolution();
+	m_ratio = res.x / res.y;
 	m_proj = glm::perspective(m_fov, m_ratio, 0.1, 10000.0);
 
 	m_frustum = std::make_unique<Frustum>();
@@ -135,7 +132,7 @@ void Camera::Update()
 //out_origin starts at the near plane NOT the camera position
 void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction)
 {
-	glm::vec2 resolution = Core::GetCore()->GetResolution();
+	const glm::vec2& resolution = Core::GetCore()->GetResolution();
 	glm::vec4 viewport = glm::vec4(0, 0, resolution.x, resolution.y);
 	glm::vec3 screenPos = glm::vec3(mouse_pos.x, mouse_pos.y, 0.0f);
 
