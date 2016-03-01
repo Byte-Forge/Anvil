@@ -97,16 +97,9 @@ void GUI::Update()
 	
 }
 
-
 void GUI::Render()
 {
 	m_context->Render();
-}
-
-
-void GUI::LoadURL(const std::string& file)
-{
-	
 }
 
 void GUI::LoadFile(const std::string& file)

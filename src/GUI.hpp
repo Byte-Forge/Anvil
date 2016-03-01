@@ -25,7 +25,6 @@ namespace anvil
 
 		void Update();
 		void Render();
-		void LoadURL(const std::string& url);
 		void LoadFile(const std::string& file);
 		void Resize(int width, int height);
 

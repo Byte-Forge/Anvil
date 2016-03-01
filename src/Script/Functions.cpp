@@ -26,12 +26,6 @@ extern "C"
 		gui->LoadFile(name);
 	}
 
-	SCRIPT_FUNC void LoadGUIByURL(const char* name)
-	{
-		auto& gui = Core::GetCore()->GetGUI();
-		gui->LoadURL(name);
-	}
-
 	SCRIPT_FUNC void PrintRenderer()
 	{
 		auto renderer = Core::GetCore()->GetGraphics()->GetRenderer();
