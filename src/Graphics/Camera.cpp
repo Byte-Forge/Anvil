@@ -78,8 +78,9 @@ void Camera::Move(Direction dir)
 
 void Camera::Rotate(float angle)
 {
-	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
+	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6f;
 	glm::vec3 delta = m_currentPos - m_lookat;
+	std::cout << timePassed * angle << std::endl;
 	m_currentPos = m_lookat + glm::rotateY(delta, angle * timePassed);
 }
 
@@ -138,6 +139,7 @@ void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm
 	glm::vec4 viewport = glm::vec4(0, 0, resolution.x, resolution.y);
 	glm::vec3 screenPos = glm::vec3(mouse_pos.x, mouse_pos.y, 0.0f);
 
+	//out origin seems to work but intersection is still buggy
 	out_origin = glm::unProject(screenPos, m_view, m_proj, viewport);
 
 	std::cout << "world_pos: " << out_origin.x << ", " << out_origin.y << ", " << out_origin.z << std::endl;

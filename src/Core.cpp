@@ -15,7 +15,6 @@ using namespace anvil;
 
 Core* Core::m_instance = nullptr;
 
-
 void Core::ErrorCallback(int error, const char* description)
 {
 	std::cerr << description << std::endl;
@@ -27,14 +26,19 @@ void Core::ResizeCallback(GLFWwindow * window, int width, int height)
 	Core::GetCore()->GetGUI()->Resize(width, height);
 }
 
-void Core::MouseCallback(GLFWwindow* window, int key, int x, int y)
+void Core::MouseCallback(GLFWwindow* window, int key, int action, int mods)
 {
+	Core::GetCore()->GetInput()->SetMouseState(key, action, mods);
+}
 
+void Core::MousePosCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	Core::GetCore()->GetInput()->SetMousePosition(xpos, ypos);
 }
 
 void Core::ScrollCallback(GLFWwindow* window, double x, double y)
 {
-	Core::GetCore()->GetCamera()->Zoom(y);
+	Core::GetCore()->GetInput()->SetMouseWheelDelta(x, y);
 }
 
 void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -42,41 +46,11 @@ void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, in
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
-	const auto& cam = Core::GetCore()->GetCamera();
-	const auto& renderer = Core::GetCore()->GetGraphics()->GetRenderer();
-
-	switch (key)
-	{
-	case GLFW_KEY_W:
-		cam->Move(Direction::FOREWARD);
-		break;
-	case GLFW_KEY_S:
-		cam->Move(Direction::BACK);
-		break;
-	case GLFW_KEY_A:
-		cam->Move(Direction::LEFT);
-		break;
-	case GLFW_KEY_D:
-		cam->Move(Direction::RIGHT);
-		break;
-	case GLFW_KEY_Q:
-		cam->Rotate(Direction::LEFT);
-		break;
-	case GLFW_KEY_E:
-		cam->Rotate(Direction::RIGHT);
-		break;
-	case GLFW_KEY_F1:
-		renderer->ToggleWireframeMode();
-		break;
-	case GLFW_KEY_F2:
-		renderer->ToggleNormalsMode();
-		break;
-	}
+	Core::GetCore()->GetInput()->SetKeyState(key, action);
 	
-
 	auto& gui = Core::GetCore()->GetGUI();
 	if (action == GLFW_PRESS)
-		gui->KeyDown(key,mods);
+		gui->KeyDown(key, mods);
 	else if (action == GLFW_RELEASE)
 		gui->KeyReleased(key, mods);
 }
@@ -109,6 +83,7 @@ Core::Core()
 	glfwSetKeyCallback(m_window, KeyCallback);
 	glfwSetWindowSizeCallback(m_window,ResizeCallback);
 	glfwSetMouseButtonCallback(m_window, MouseCallback);
+	glfwSetCursorPosCallback(m_window, MousePosCallback);
 	glfwSetScrollCallback(m_window, ScrollCallback);
 	glfwSwapInterval(0);
 	m_resources = std::make_unique<ResourceHandler>();
@@ -117,6 +92,7 @@ Core::Core()
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
 	m_camera = std::make_unique<Camera>();
+	m_input = std::make_unique<Input>();
 
 	m_script->LoadFile("start.lua");
 
@@ -130,13 +106,6 @@ Core::~Core()
 
 void Core::Run()
 {
-	//mouse variables
-	int x_old = 0; 
-	int y_old = 0; 
-	int delta_x = 0;
-	int delta_y = 0;
-	int delta_wheel = 0;
-
 	while (!glfwWindowShouldClose(m_window))
 	{
 		m_timer.Update();
@@ -145,7 +114,8 @@ void Core::Run()
 		m_gui->Update();
 		m_script->Update();
 		m_camera->Update();
-		
+		m_input->Update(m_camera, m_graphics->GetRenderer());
+
 		m_graphics->Render();
 		m_gui->Render();
 		glfwSwapBuffers(m_window);

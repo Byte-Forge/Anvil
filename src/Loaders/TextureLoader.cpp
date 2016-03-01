@@ -43,7 +43,7 @@ std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::strin
 
 		if (i == 0)
 		{
-			tex->CreateArray(paths.size(), texture.levels(), texture.extent().x,texture.extent().y, texture.format(),texture.swizzles());
+			tex->CreateArray(paths.size(), texture.levels(), texture.extent().x, texture.extent().y, texture.format(), texture.swizzles());
 		}
 
 		if(!tex->SetLevel(i, texture))
