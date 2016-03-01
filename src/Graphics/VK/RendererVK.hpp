@@ -58,6 +58,7 @@ namespace anvil
 		VkSurfaceKHR m_surface;
 		VkInstance m_instance;
 		VkDevice m_device;
+		VkSwapchainKHR m_swapchain;
 		VkPhysicalDevice m_physDevice;
 		VkPhysicalDeviceFeatures m_gpuFeatures;
 		VkPhysicalDeviceProperties m_gpuProperties;

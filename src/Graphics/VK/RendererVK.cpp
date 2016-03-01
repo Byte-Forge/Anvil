@@ -26,18 +26,20 @@ RendererVK::RendererVK() : m_instance(nullptr), m_device(nullptr), m_physDevice(
 	// Gather physical device memory properties
 	vkGetPhysicalDeviceMemoryProperties(m_physDevice, &m_gpuMem);
 
-	VkResult err = glfwCreateWindowSurface(m_instance, window, NULL, &m_surface);
+	VkResult success = glfwCreateWindowSurface(m_instance, window, NULL, &m_surface);
+
 }
 
 void RendererVK::CreateInstance()
 {
+	VkResult result = VK_SUCCESS;
 	VkApplicationInfo app = {};
 	app.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	app.pApplicationName = "Anvil-test";
 	app.pEngineName = "Anvil";
 	app.apiVersion = VK_API_VERSION;
 
-	int extCount;
+	unsigned int extCount;
 	const char** glfwExtension = glfwGetRequiredInstanceExtensions(&extCount);
 	std::vector<const char*> extensions(glfwExtension, glfwExtension+extCount);
 	#ifndef NDEBUG
@@ -53,7 +55,9 @@ void RendererVK::CreateInstance()
 	ici.ppEnabledLayerNames = vkDebug::validationLayerNames;
 	#endif
 
-	vkCreateInstance(&ici, NULL, &m_instance);
+	result = vkCreateInstance(&ici, NULL, &m_instance);
+	if (result != VK_SUCCESS)
+		throw AnvilException("Failed to create vulkan instance!", __FILE__, __LINE__);
 }
 
 void RendererVK::CreateDevice()
@@ -137,6 +141,17 @@ void RendererVK::Clear()
 
 void RendererVK::Render(glm::mat4 & ortho)
 {
+	VkResult  err;
+	VkSemaphore presentCompleteSemaphore;
+	VkSemaphoreCreateInfo presentCompleteSemaphoreCreateInfo = {};
+	presentCompleteSemaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	presentCompleteSemaphoreCreateInfo.pNext = NULL;
+	presentCompleteSemaphoreCreateInfo.flags = 0;
+
+
+	err = vkCreateSemaphore(m_device, &presentCompleteSemaphoreCreateInfo,	NULL, &presentCompleteSemaphore);
+
+	
 }
 
 void RendererVK::Resize(int width, int height)
