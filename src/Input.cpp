@@ -52,7 +52,7 @@ void Input::SetMouseWheelDelta(double x, double y)
 	m_mouse_wheel_delta_y = y;
 }
 
-void Input::Update(std::unique_ptr<Camera>& cam, std::shared_ptr<IRenderer>& renderer)
+void Input::Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRenderer>& renderer)
 {
 	if (m_keyInputs[GLFW_KEY_W] == PRESSED)
 		cam->Move(Direction::FOREWARD);

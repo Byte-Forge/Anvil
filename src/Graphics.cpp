@@ -8,6 +8,8 @@
 #include "Graphics.hpp"
 #include "Graphics/GL/RendererGL.hpp"
 #include "Graphics/GL/Texture.hpp"
+#include "Graphics/GL/ModelGL.hpp"
+#include "Graphics/GL/MeshGL.hpp"
 #ifdef ANVIL_USE_VULKAN
 #include "Graphics/VK/RendererVK.hpp"
 #endif
@@ -15,6 +17,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Util/stb_image.h"
 #include "Core.hpp"
+
 using namespace anvil;
 
 Graphics::Graphics(Graphics::RenderBackend backend) : m_backend(backend), m_available({OpenGL})
@@ -74,7 +77,6 @@ void Graphics::SetRenderer(RenderBackend backend)
 	}
 }
 
-
 std::shared_ptr<ITexture> Graphics::GetTexture()
 {
 	std::shared_ptr<ITexture> tex = nullptr;
@@ -88,4 +90,30 @@ std::shared_ptr<ITexture> Graphics::GetTexture()
 	}
 
 	return tex;
+}
+
+std::shared_ptr<IModel> Graphics::GetModel()
+{
+	std::shared_ptr<IModel> model = nullptr;
+	switch (m_backend)
+	{
+	case OpenGL:
+		model = std::make_shared<GL::ModelGL>();
+		break;
+	default:
+		break;
+	}
+	return model;
+}
+
+IMesh* Graphics::GetMesh()
+{
+	switch (m_backend)
+	{
+	case OpenGL:
+		return &GL::MeshGL();
+	default:
+		return &GL::MeshGL();
+		break;
+	}
 }

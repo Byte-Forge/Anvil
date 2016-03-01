@@ -14,7 +14,7 @@
 #include <iostream>
 #include "IResource.hpp"
 #include "../Objects/Entity.hpp"
-#include "../Types/BF3D.hpp"
+#include "../Graphics/IModel.hpp"
 #include "../Graphics/ITexture.hpp"
 #include "../Graphics/IParticleSystem.hpp"
 #include "../Graphics/Material.hpp"
@@ -32,7 +32,7 @@ namespace anvil
 		std::shared_ptr<Material> GetMaterial(const std::string &name);
 		std::vector<std::string> GetTerrainMaterials();
 
-		std::shared_ptr<BF3DModel> GetModel(const std::string &name);
+		std::shared_ptr<IModel> GetModel(const std::string &name);
 
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 

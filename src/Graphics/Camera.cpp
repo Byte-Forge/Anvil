@@ -77,7 +77,6 @@ void Camera::Rotate(float angle)
 {
 	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6f;
 	glm::vec3 delta = m_currentPos - m_lookat;
-	std::cout << timePassed * angle << std::endl;
 	m_currentPos = m_lookat + glm::rotateY(delta, angle * timePassed);
 }
 

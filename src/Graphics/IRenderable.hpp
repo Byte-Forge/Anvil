@@ -6,7 +6,6 @@
 */
 
 #pragma once
-#include "IShader.hpp"
 
 namespace anvil
 {

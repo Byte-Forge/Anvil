@@ -8,6 +8,8 @@
 #pragma once
 #include <memory>
 #include "Graphics/IRenderer.hpp"
+#include "Graphics/IModel.hpp"
+#include "Graphics/IMesh.hpp"
 #include <stdint.h>
 #include <glm/glm.hpp>
 
@@ -46,7 +48,10 @@ namespace anvil
 		{
 			return m_renderer;
 		}
+
 		std::shared_ptr<ITexture> GetTexture();
+		std::shared_ptr<IModel> GetModel();
+		IMesh* GetMesh();
 
 		inline glm::mat4& GetOrtho()
 		{

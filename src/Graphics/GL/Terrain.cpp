@@ -49,7 +49,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 		m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("mvp", i));
 
 		m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", i));
-
 	}
 
 	glGenVertexArrays(1, &m_vao);
@@ -86,7 +85,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
 	m_fbo->Bind();
 	m_fbo->Update(static_cast<unsigned int>(m_faces.size() * sizeof(std::uint32_t)), &m_faces[0]);
-
 }
 
 GL::Terrain::~Terrain()

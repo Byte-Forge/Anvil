@@ -9,21 +9,38 @@
 #include "IRenderable.hpp"
 #include <string>
 #include <vector>
-#include "../Types/BF3D.hpp"
+#include <glm/glm.hpp>
+#include "../Graphics/IMesh.hpp"
+#include "../Core/IResource.hpp"
+#include "../Graphics/IRenderable.hpp"
 
 namespace anvil
 {
-	class IModel
+	class IModel : public IResource, public IRenderable
 	{
 	public:
+		struct BoundingVolume
+		{
+			glm::f32vec3 center;
+		};
+
+		struct Box : BoundingVolume
+		{
+			glm::f32vec3 extend;
+		};
+
+		struct Sphere : BoundingVolume
+		{
+			glm::float32 radius;
+		};
+
 		IModel();
 		~IModel();
 
-		virtual void Render(int mode);
-		virtual void Update();
+		std::string m_hierarchyName; //is empty if no hierarchy is needed
+		std::vector<IMesh> m_meshes;
+		BoundingVolume m_volume;
 	private:
-		std::string hierarchyName; //is empty if no hierarchy is needed
-		std::vector<Mesh> meshes;
-		BoundingVolume volume;
+	
 	};
 }

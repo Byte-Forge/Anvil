@@ -22,7 +22,7 @@ namespace anvil
 		void SetMouseState(int key, int x, int y);
 		void SetMousePosition(int x, int y);
 		void SetMouseWheelDelta(double x, double y);
-		void Update(std::unique_ptr<Camera>& cam, std::shared_ptr<IRenderer>& renderer);
+		void Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRenderer>& renderer);
 
 	private:
 		//mouse variables
