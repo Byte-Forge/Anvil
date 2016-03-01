@@ -29,7 +29,7 @@ void GL::Buffer::Bind()
 	glBindBuffer(m_type, m_handle);
 }
 
-void GL::Buffer::Update(unsigned int bufferSize, const void* data, DrawType draw)
+void GL::Buffer::Update(size_t bufferSize, const void* data, DrawType draw)
 {
 	glBufferData(m_type, bufferSize, data, draw);
 }

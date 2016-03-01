@@ -6,12 +6,12 @@
 */
 
 #include "Entity.hpp"
+#include "../Core.hpp"
 
 using namespace anvil;
 
 Entity::Entity() 
 {
-
 }
 
 Entity::Entity(std::shared_ptr<Entity> parent)

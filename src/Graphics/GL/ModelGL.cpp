@@ -27,5 +27,10 @@ void GL::ModelGL::Render(int mode)
 
 void GL::ModelGL::Update()
 {
-
+	/*
+	for (auto mesh : m_meshes)
+	{
+		//mesh.Update();
+	}
+	*/
 }

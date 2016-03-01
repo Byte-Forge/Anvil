@@ -142,7 +142,7 @@ void GL::Terrain::Update()
 		if (m_faces.size() > 0)
 		{
 			m_fbo->Bind();
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
+			m_fbo->Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
 			faces_changed = false;
 		}
 	}
@@ -150,22 +150,22 @@ void GL::Terrain::Update()
 	if (heightmap_changed)
 	{
 		m_vbo->Bind();
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_vertices.size(), &m_vertices[0], GL_STATIC_DRAW);
+		m_vbo->Update(sizeof(glm::vec3) * m_vertices.size(), &m_vertices[0]);
 
 		m_nbo->Bind();
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_normals.size(), &m_normals[0], GL_STATIC_DRAW);
+		m_nbo->Update(sizeof(glm::vec3) * m_normals.size(), &m_normals[0]);
 		heightmap_changed = false;
 	}
 	if (uvs_changed)
 	{
 		m_uvbo->Bind();
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_uvs.size(), &m_uvs[0], GL_STATIC_DRAW);
+		m_uvbo->Update(sizeof(glm::vec2) * m_uvs.size(), &m_uvs[0]);
 		uvs_changed = false;
 	}
 	if (materials_changed)
 	{
 		m_mbo->Bind();
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_materials.size(), &m_materials[0], GL_STATIC_DRAW);
+		m_mbo->Update(sizeof(glm::vec3) * m_materials.size(), &m_materials[0]);
 		materials_changed = false;
 	}
 }

@@ -22,6 +22,7 @@ namespace anvil
 			~MeshGL();
 
 			void Update();
+
 		private:
 			GLuint m_vao;
 			std::unique_ptr<Buffer> m_vbo, m_uvbo, m_nbo, m_fbo, m_mbo;

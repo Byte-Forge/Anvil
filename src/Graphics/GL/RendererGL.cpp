@@ -230,13 +230,12 @@ void RendererGL::Render(glm::mat4& ortho)
 		m_terrain->Render(2);
 	}
 
-	/*
-    for(auto& renderable : m_renderables)
-        renderable->Update();
-	
-    for(auto& renderable : m_renderables)
-        renderable->Render();
-	*/
+	for (auto& renderable : m_renderables)
+	{
+		renderable->Update();
+	}
+    //for(auto& renderable : m_renderables)
+    //   renderable->Render(0);
 
 	glDisable(GL_DEPTH_TEST);
 }

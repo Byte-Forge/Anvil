@@ -14,7 +14,7 @@ using namespace anvil;
 
 gli::gl GL::Texture::GL(gli::gl::PROFILE_GL33);
 
-void anvil::GL::Texture::CreateArray(int size, int levels,int width, int height,const gli::format format,const gli::swizzles swizzles)
+void anvil::GL::Texture::CreateArray(size_t size, size_t levels,int width, int height,const gli::format format,const gli::swizzles swizzles)
 {
 	m_target = GL_TEXTURE_2D_ARRAY;
 	gli::gl::format const Format = GL.translate(format, swizzles);
@@ -28,7 +28,7 @@ void anvil::GL::Texture::CreateArray(int size, int levels,int width, int height,
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_B, Format.Swizzles[2]);
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_A, Format.Swizzles[3]);
 
-	glTexStorage3D(m_target, levels, Format.Internal, width, height, size);
+	glTexStorage3D(m_target, static_cast<GLsizei>(levels), Format.Internal, width, height, static_cast<GLsizei>(size));
 }
 
 bool anvil::GL::Texture::SetLevel(int level, const gli::texture & tex)

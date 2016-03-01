@@ -6,3 +6,15 @@
 */
 
 #include "IMesh.hpp"
+
+using namespace anvil;
+
+IMesh::IMesh()
+{
+
+}
+
+IMesh::~IMesh()
+{
+
+}

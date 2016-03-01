@@ -34,7 +34,7 @@ namespace anvil
 			Buffer & operator=(const Buffer&) = delete;
 
 			void Bind();
-			void Update(unsigned int bufferSize, const void* data, DrawType draw = STATIC);
+			void Update(size_t bufferSize, const void* data, DrawType draw = STATIC);
 
 		private:
 			unsigned int m_handle;

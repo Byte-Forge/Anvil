@@ -26,7 +26,7 @@ namespace anvil
             ~Texture();
 			Texture & operator=(const Texture&) = delete;
 
-			void CreateArray(int size, int levels,int width, int height, const gli::format format, const gli::swizzles swizzles);
+			void CreateArray(size_t size, size_t levels,int width, int height, const gli::format format, const gli::swizzles swizzles);
 			bool SetLevel(int level, const gli::texture& tex);
 			bool Load(const gli::texture& tex);
             void Bind();

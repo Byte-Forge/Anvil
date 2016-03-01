@@ -45,15 +45,16 @@ GL::MeshGL::~MeshGL()
 
 void GL::MeshGL::Update()
 {
+	std::cout << "update" << std::endl;
 	m_vbo->Bind();
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_vertices.size(), &m_vertices[0], GL_STATIC_DRAW);
+	m_vbo->Update(sizeof(glm::vec3) * m_vertices.size(), &m_vertices[0]);
 
 	m_nbo->Bind();
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_normals.size(), &m_normals[0], GL_STATIC_DRAW);
+	m_nbo->Update(sizeof(glm::vec3) * m_normals.size(), &m_normals[0]);
 
 	m_uvbo->Bind();
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_uvCoords.size(), &m_uvCoords[0], GL_STATIC_DRAW);
+	m_uvbo->Update(sizeof(glm::vec2) * m_uvCoords.size(), &m_uvCoords[0]);
 
 	m_fbo->Bind();
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_faces.size() * sizeof(std::uint32_t), &m_faces[0], GL_STATIC_DRAW);
+	m_fbo->Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
 }

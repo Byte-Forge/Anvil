@@ -21,6 +21,9 @@ namespace anvil
 			std::uint16_t boneInf;
 		};
 
+		IMesh();
+		~IMesh();
+		
 		std::uint8_t m_type;
 		// 0->normal mesh
 		// 1->normal mesh - two sided
@@ -39,7 +42,5 @@ namespace anvil
 		std::vector<glm::f32vec2> m_uvCoords;
 		std::vector<glm::i32vec3> m_faces;
 		std::vector<MeshVertexInfluences> m_vertInfs;
-
-		virtual void Update() = 0;
 	};
 }

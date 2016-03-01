@@ -18,6 +18,8 @@
 #include "Util/stb_image.h"
 #include "Core.hpp"
 
+#include <iostream>
+
 using namespace anvil;
 
 Graphics::Graphics(Graphics::RenderBackend backend) : m_backend(backend), m_available({OpenGL})
@@ -116,6 +118,8 @@ std::shared_ptr<IMesh> Graphics::GetMesh()
 	default:
 		break;
 	}
+	if (mesh == nullptr)
+		std::cout << "ERROR!!!!" << std::endl;
 
 	return mesh;
 }
