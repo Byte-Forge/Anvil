@@ -9,6 +9,11 @@
 #include <vector>
 #include <string>
 
+/**
+ * @class	Environment
+ *
+ * @brief	Handles the command line parameters.
+ */
 class Environment
 {
 public:

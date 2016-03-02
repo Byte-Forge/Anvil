@@ -90,7 +90,6 @@ std::shared_ptr<ITexture> Graphics::GetTexture()
 		default:
 			break;
 	}
-
 	return tex;
 }
 
@@ -118,8 +117,5 @@ std::shared_ptr<IMesh> Graphics::GetMesh()
 	default:
 		break;
 	}
-	if (mesh == nullptr)
-		std::cout << "ERROR!!!!" << std::endl;
-
 	return mesh;
 }
