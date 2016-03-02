@@ -26,7 +26,7 @@ int ITerrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
 	glm::vec3 point;
 	for (unsigned int i = 0; i < m_faces.size(); i += 3)
 	{
-		if (Collision::Ray_Tri_Intersect(m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]], origin, direction, &point))
+		if (Collision::Ray_Tri_Intersect(m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]], origin, direction, point))
 		{
 			pos = point;
 			return 1;
