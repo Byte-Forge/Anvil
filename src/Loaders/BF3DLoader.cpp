@@ -77,7 +77,7 @@ void BF3DLoader::LoadHierarchy(std::string name, std::ifstream& file, std::uint3
 
 std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 {
-	auto& mesh = Core::GetCore()->GetGraphics()->GetMesh();
+	auto mesh = Core::GetCore()->GetGraphics()->GetMesh();
 
 	while (file.tellg() < chunkEnd)
 	{
@@ -119,7 +119,7 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 
 void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
-	std::shared_ptr<IModel> model = Core::GetCore()->GetGraphics()->GetModel();
+	auto model = Core::GetCore()->GetGraphics()->GetModel();
 	model->m_hierarchyName = readString(file);
 
 	while (file.tellg() < chunkEnd)

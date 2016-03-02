@@ -28,9 +28,26 @@ namespace anvil
 	class Core
 	{
 	public: 
+
+		/**
+		 * @fn	Core::Core();
+		 *
+		 * @brief	Initialize all subsystems of the engine
+		 */
 		Core();
+
+		/**
+		 * @fn	Core::~Core();
+		 *
+		 * @brief	Delete all subsystems
+		 */
 		~Core();
 
+		/**
+		 * @fn	void Core::Run();
+		 *
+		 * @brief	Runs the engine
+		 */
 		void Run();
 
 		inline std::unique_ptr<GUI>& GetGUI()

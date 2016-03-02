@@ -18,29 +18,75 @@ namespace anvil
 	class Collision
 	{
 	public:
-		/*
-		tests if a vertex is within a box described by center and size
-		returns true if the vertex is within the box
-		*/
-		static bool Contains2D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size);
-		static bool Contains3D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size);
 
-		/*
-		tests if a cube is inside the frustum
-		returns true if yes, false else
-		*/
-		static bool CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec3& center, glm::vec3& size);
+		/**
+		 * @fn	static bool Collision::Contains2D(const glm::vec3& vertex, const glm::vec3& center, const glm::vec3& size);
+		 *
+		 * @brief	Check if 2-dimensional vertex is in a rectangle
+		 *
+		 * @param	vertex	The vertex.
+		 * @param	center	The center.
+		 * @param	size  	The size.
+		 *
+		 * @return	true if it succeeds, false if it fails.
+		 */
+		static bool Contains2D(const glm::vec3& vertex, const glm::vec3& center, const glm::vec3& size);
 
-		/*
-		tests if a sphere collides with the frustum
-		returns 0 if it doesnt collide, 1 if it collides and 2 if sphere is fully within frustum
-		*/
-		static int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec3& center, float radius);
+		/**
+		 * @fn	static bool Collision::Contains3D(const glm::vec3& vertex, const glm::vec3& center, const glm::vec3& size);
+		 *
+		 * @brief	Check if 3-dimensional vertex is in a box
+		 *
+		 * @param	vertex	The vertex.
+		 * @param	center	The center.
+		 * @param	size  	The size.
+		 *
+		 * @return	true if it succeeds, false if it fails.
+		 */
+		static bool Contains3D(const glm::vec3& vertex, const glm::vec3& center, const glm::vec3& size);
 
-		/*
-		tests if a ray intersects with a tri, returns 0 if not, 
-		else it returns 1 and stores the intersection point in point
-		*/
-		static int Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 o, glm::vec3 d, glm::vec3 *point);
+		/**
+		 * @fn	static bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, const glm::vec3& size);
+		 *
+		 * @brief	Check if a cube is inside the frustum
+		 *
+		 * @param	frustum	The frustum.
+		 * @param	center 	The center.
+		 * @param	size   	The size.
+		 *
+		 * @return	true if it succeeds, false if it fails.
+		 */
+		static bool CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, const glm::vec3& size);
+
+		/**
+		 * @fn	static int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, const float radius);
+		 *
+		 * @brief	Check if a sphere is inside the frustum
+		 *
+		 * @param	frustum	The frustum.
+		 * @param	center 	The center.
+		 * @param	radius 	The radius.
+		 *
+		 * @return	An int.
+		 */
+		static int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, const float radius);
+
+
+		/**
+		 * @fn	static int Collision::Ray_Tri_Intersect(const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, const glm::vec3& o, const glm::vec3& d, glm::vec3& point);
+		 *
+		 * @brief	Check if a ray intersects with a triangle
+		 *
+		 * @param	v1			 	The first vector of the triangle
+		 * @param	v2			 	The second vector of the triangle
+		 * @param	v3			 	The third vector of the triangle
+		 * @param	o			 	The ray origin
+		 * @param	d			 	The ray direction
+		 * @param [in,out]	point	The point where the intersection happens.
+		 *
+		 * @return	An int.
+		 */
+		static int Ray_Tri_Intersect(const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, 
+									const glm::vec3& o, const glm::vec3& d, glm::vec3& point);
 	};
 }

@@ -11,7 +11,7 @@
 
 using namespace anvil;
 
-bool Collision::Contains2D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size)
+bool Collision::Contains2D(const glm::vec3& vertex, const glm::vec3& center, const glm::vec3& size)
 {
 	return (vertex.x >= center.x - size.x
 		&& vertex.x <= center.x + size.x
@@ -19,7 +19,7 @@ bool Collision::Contains2D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size
 		&& vertex.z <= center.z + size.z);
 }
 
-bool Collision::Contains3D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size)
+bool Collision::Contains3D(const glm::vec3& vertex, const glm::vec3& center, const glm::vec3& size)
 {
 	return (vertex.x >= center.x - size.x
 		&& vertex.x <= center.x + size.x
@@ -29,7 +29,7 @@ bool Collision::Contains3D(glm::vec3& vertex, glm::vec3& center, glm::vec3& size
 		&& vertex.z <= center.z + size.z);
 }
 
-bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec3& center, glm::vec3& size)
+bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, const glm::vec3& size)
 {
 	for (int p = 0; p < 6; p++)
 	{
@@ -54,7 +54,7 @@ bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum
 	return true;
 }
 
-int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, glm::vec3& center, float radius)
+int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, float radius)
 {
 	int p;
 	int c = 0;
@@ -69,6 +69,52 @@ int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustu
 			c++;
 	}
 	return (c == 6) ? 2 : 1;
+}
+
+int Collision::Ray_Tri_Intersect(const glm::vec3 & v1, const glm::vec3 & v2, const glm::vec3 & v3, const glm::vec3 & o, const glm::vec3 & d, glm::vec3 & point)
+{
+	glm::vec3 e1, e2;  //Edge1, Edge2
+	glm::vec3 P, Q, T;
+	float det, inv_det, u, v;
+	float t;
+
+	//Find vectors for two edges sharing v1
+	e1 = v2 - v1;
+	e2 = v3 - v1;
+	//Begin calculating determinant - also used to calculate u parameter
+	P = glm::cross(d, e2);
+	//if determinant is near zero, ray lies in plane of triangle
+	det = glm::dot(e1, P);
+	//NOT CULLING
+	if (det > -EPSILON && det < EPSILON) return 0;
+	inv_det = 1.f / det;
+
+	//calculate distance from v1 to ray origin
+	T = o - v1;
+
+	//Calculate u parameter and test bound
+	u = glm::dot(T, P) * inv_det;
+	//The intersection lies outside of the triangle
+	if (u < 0.f || u > 1.f) return 0;
+
+	//Prepare to test v parameter
+	Q = glm::cross(T, e1);
+
+	//Calculate v parameter and test bound
+	v = glm::dot(d, Q) * inv_det;
+	//The intersection lies outside of the triangle
+	if (v < 0.f || u + v  > 1.f) return 0;
+
+	t = glm::dot(e2, Q) * inv_det;
+
+	//the point of the collision is t * d
+	if (t > EPSILON) { //ray intersection
+		point = t * d;
+		return 1;
+	}
+
+	// No hit, no win
+	return 0;
 }
 
 //
@@ -190,50 +236,3 @@ bool TestRayOBBIntersection(
 	return true;
 }
 
-
-//Möller Trumbor algorithm
-int Collision::Ray_Tri_Intersect(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 o,  glm::vec3 d, glm::vec3 *point)
-{
-	glm::vec3 e1, e2;  //Edge1, Edge2
-	glm::vec3 P, Q, T;
-	float det, inv_det, u, v;
-	float t;
-
-	//Find vectors for two edges sharing v1
-	e1 = v2 - v1;
-	e2 = v3 - v1;
-	//Begin calculating determinant - also used to calculate u parameter
-	P = glm::cross(d, e2);
-	//if determinant is near zero, ray lies in plane of triangle
-	det = glm::dot(e1, P);
-	//NOT CULLING
-	if (det > -EPSILON && det < EPSILON) return 0;
-	inv_det = 1.f / det;
-
-	//calculate distance from v1 to ray origin
-	T = o - v1;
-
-	//Calculate u parameter and test bound
-	u = glm::dot(T, P) * inv_det; 
-	//The intersection lies outside of the triangle
-	if (u < 0.f || u > 1.f) return 0;
-
-	//Prepare to test v parameter
-	Q = glm::cross(T, e1);
-
-	//Calculate v parameter and test bound
-	v = glm::dot(d, Q) * inv_det;
-	//The intersection lies outside of the triangle
-	if (v < 0.f || u + v  > 1.f) return 0;
-
-	t = glm::dot(e2, Q) * inv_det;
-
-	//the point of the collision is t * d
-	if (t > EPSILON) { //ray intersection
-		*point = t * d;
-		return 1;
-	}
-
-	// No hit, no win
-	return 0;
-}
