@@ -17,9 +17,20 @@
 
 namespace anvil
 {
+	/**
+	 * @class	IRenderer
+	 *
+	 * @brief	A renderer.
+	 */
 	class IRenderer : public Rocket::Core::RenderInterface
 	{
 	public:
+
+		/**
+		 * @enum	Vendor
+		 *
+		 * @brief	Values that represent vendors.
+		 */
 		enum Vendor
 		{
 			NVIDIA	= 0,
@@ -27,42 +38,71 @@ namespace anvil
 			OTHER	= 2,
 		};
 
+		/**
+		 * @fn	virtual void IRenderer::Clear() = 0;
+		 *
+		 * @brief	Clears this object to its blank/initial state.
+		 */
 		virtual void Clear() = 0;
+
+		/**
+		 * @fn	virtual void IRenderer::Render(glm::mat4& ortho) = 0;
+		 *
+		 * @brief	Renders the given ortho.
+		 *
+		 * @param [in,out]	ortho	The ortho.
+		 */
 		virtual void Render(glm::mat4& ortho) = 0;
 
+		/**
+		 * @fn	virtual void IRenderer::Resize(int width,int height) = 0;
+		 *
+		 * @brief	Resizes.
+		 *
+		 * @param	width 	The width.
+		 * @param	height	The height.
+		 */
 		virtual void Resize(int width,int height) = 0;
+
+		/**
+		 * @fn	virtual void IRenderer::PrintInfo() = 0;
+		 *
+		 * @brief	Print information.
+		 */
 		virtual void PrintInfo() = 0;
 
-		//GPU info functions
+		/**
+		 * @fn	virtual int IRenderer::GetTotalVRAM() = 0;
+		 *
+		 * @brief	Gets total VRAM.
+		 *
+		 * @return	The total VRAM.
+		 */
 		virtual int GetTotalVRAM() = 0;
+
+		/**
+		 * @fn	virtual int IRenderer::GetUsedVRAM() = 0;
+		 *
+		 * @brief	Gets used VRAM.
+		 *
+		 * @return	The used VRAM.
+		 */
 		virtual int GetUsedVRAM() = 0;
+
+		/**
+		 * @fn	virtual const std::string IRenderer::GetGPUName() = 0;
+		 *
+		 * @brief	Gets GPU name.
+		 *
+		 * @return	The GPU name.
+		 */
 		virtual const std::string GetGPUName() = 0;
-		
 
-		inline std::uint32_t GetSkyboxUniformLocation(const std::string& id)
-		{
-			return m_skyboxShader->GetUniformLocation(id);
-		}
-
-		inline std::uint32_t GetTerrainUniformLocation(const std::string& id, int mode)
-		{
-			return m_terrainShaders[mode]->GetUniformLocation(id);
-		}
-
-		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox)
-		{
-			m_skybox = skybox;
-		}
-
-		inline void RegisterTerrain(std::shared_ptr<IRenderable> terrain)
-		{
-			m_terrain = terrain;
-		}
-
-		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable)
-		{
-			m_renderables.push_back(renderable);
-		}
+		inline std::uint32_t GetSkyboxUniformLocation(const std::string& id) { return m_skyboxShader->GetUniformLocation(id); }
+		inline std::uint32_t GetTerrainUniformLocation(const std::string& id, int mode) { return m_terrainShaders[mode]->GetUniformLocation(id); }
+		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox) { m_skybox = skybox; }
+		inline void RegisterTerrain(std::shared_ptr<IRenderable> terrain) { m_terrain = terrain; }
+		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable) { m_renderables.push_back(renderable); }
 
 		inline void ToggleWireframeMode()
 		{
@@ -81,20 +121,10 @@ namespace anvil
 		}
 
 		//why do we have to use the 3 here?
-		inline std::array<std::string, 3> GetShaderModes()
-		{
-			return m_shaderModes;
-		}
+		inline std::array<std::string, 3> GetShaderModes() { return m_shaderModes; }
+		inline int GetTessfactor() { return m_tessFactor; } 
+		inline int GetMaxTesselation() { return m_maxTesselation; }
 
-		inline int GetTessfactor()
-		{
-			return m_tessFactor;
-		}
-
-		inline int GetMaxTesselation()
-		{
-			return m_maxTesselation;
-		}
 	protected:
 		int m_tessFactor = 32;
 		int m_maxTesselation = 64;

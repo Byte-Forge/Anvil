@@ -10,6 +10,11 @@
 
 namespace anvil
 {
+    /**
+     * @class	IShader
+     *
+     * @brief	Interface for OpenGL and Vulcan shaders.
+     */
     class IShader
     {
     public:

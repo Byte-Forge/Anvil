@@ -234,6 +234,8 @@ void RendererGL::Render(glm::mat4& ortho)
 	{
 		renderable->Update();
 	}
+
+	//apply entity shader here
     //for(auto& renderable : m_renderables)
     //   renderable->Render(0);
 

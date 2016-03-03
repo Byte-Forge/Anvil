@@ -84,7 +84,6 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
 		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
-
 		switch (chunkType)
 		{
 		case 2:
@@ -114,7 +113,6 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 			std::cout << "unknown chunktype in mesh chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
 		}
-		file.seekg(chunkEnd, std::ios::beg);
 	}
 	return mesh;
 }
@@ -132,8 +130,7 @@ void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t 
 		switch (chunkType)
 		{
 		case 1:
-			//model->AddMesh(LoadMesh(file, chunkEnd));
-			LoadMesh(file, chunkEnd);
+			model->AddMesh(LoadMesh(file, chunkEnd));
 			break;
 		case 1024:
 			model->SetBoundingVolume(read<IModel::Box>(file));

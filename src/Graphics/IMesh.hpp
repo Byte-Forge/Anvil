@@ -39,6 +39,15 @@ namespace anvil
 		 */
 		virtual void Update() = 0;
 
+		/**
+		 * @fn	virtual void IMesh::Render(int mode) = 0;
+		 *
+		 * @brief	Renders the given mode.
+		 *
+		 * @param	mode	The mode.
+		 */
+		virtual void Render(int mode) = 0;
+
 		inline void SetType(std::uint8_t type) { m_type = type; }
 		inline void SetMeshName(const std::string& meshName) { m_meshName = meshName; }
 		inline void SetMaterialID(std::uint16_t materialID) { m_materialID = materialID; }

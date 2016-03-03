@@ -28,8 +28,8 @@ void GL::ModelGL::Render(int mode)
 
 void GL::ModelGL::Update()
 {
-	//for (IMesh mesh : m_meshes)
-	//{
-	//	mesh->Update(); 
-	//}
+	for (std::shared_ptr<IMesh> mesh : m_meshes)
+	{
+		mesh->Update(); 
+	}
 }

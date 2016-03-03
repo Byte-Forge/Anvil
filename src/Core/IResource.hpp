@@ -10,19 +10,25 @@
 
 namespace anvil
 {
+    /**
+     * @class	IResource
+     *
+     * @brief	A resource.
+     */
     class IResource
     {
 	public:
-		virtual ~IResource() {};
-        inline bool KeepLoaded()
-        {
-            return m_keepLoaded;
-        }
 
-        inline bool IsInstanceable()
-        {
-           return m_instanceable;
-        }
+		/**
+		 * @fn	virtual IResource::~IResource()
+		 *
+		 * @brief	Destructor.
+		 */
+		virtual ~IResource() {};
+
+        inline bool KeepLoaded() { return m_keepLoaded; }
+        inline bool IsInstanceable() { return m_instanceable; }
+
     protected:
         bool m_keepLoaded;
         bool m_instanceable;

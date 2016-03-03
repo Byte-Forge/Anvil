@@ -57,12 +57,12 @@ namespace anvil
 		};
 
 		inline void SetHierarchyName(const std::string& hierarchyName) { m_hierarchyName = hierarchyName; }
-		//inline void AddMesh(IMesh* mesh) { m_meshes.push_back(*mesh); } // this sux
+		inline void AddMesh(std::shared_ptr<IMesh> mesh) { m_meshes.push_back(mesh); } // this sux
 		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }
 
 	protected:
 		std::string m_hierarchyName; //is empty if no hierarchy is needed
-		std::vector<IMesh> m_meshes;
+		std::vector<std::shared_ptr<IMesh>> m_meshes;
 		BoundingVolume m_volume;
 	};
 }
