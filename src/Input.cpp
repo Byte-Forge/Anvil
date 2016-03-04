@@ -26,19 +26,19 @@ Input::~Input()
 
 }
 
-void Input::SetKeyState(int key, int action)
+void Input::SetKeyState(const int key, int action)
 {
 	action = TranslateState(action);
 	m_keyInputs[key] = action;
 }
 
-void Input::SetMouseState(int key, int action, int mods)
+void Input::SetMouseState(const int key, int action, const int mods)
 {
 	action = TranslateState(action);
 	m_mouseInputs[key] = action;
 }
 
-void Input::SetMousePosition(int x, int y)
+void Input::SetMousePosition(const int x, const int y)
 {
 	m_mouse_x_delta = x - m_mouse_x;
 	m_mouse_y_delta = y - m_mouse_y;
@@ -46,7 +46,7 @@ void Input::SetMousePosition(int x, int y)
 	m_mouse_y = y;
 }
 
-void Input::SetMouseWheelDelta(double x, double y)
+void Input::SetMouseWheelDelta(const double x, const double y)
 {
 	m_mouse_wheel_delta_x = x;
 	m_mouse_wheel_delta_y = y;

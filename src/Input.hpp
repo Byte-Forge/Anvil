@@ -18,10 +18,10 @@ namespace anvil
 		Input();
 		~Input();
 
-		void SetKeyState(int key, int action);
-		void SetMouseState(int key, int x, int y);
-		void SetMousePosition(int x, int y);
-		void SetMouseWheelDelta(double x, double y);
+		void SetKeyState(const int key, int action);
+		void SetMouseState(const int key, int action, const int mods);
+		void SetMousePosition(const int x, const int y);
+		void SetMouseWheelDelta(const double x, const double y);
 		void Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRenderer>& renderer);
 
 	private:
