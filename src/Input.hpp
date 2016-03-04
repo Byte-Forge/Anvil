@@ -30,17 +30,17 @@ namespace anvil
 		~Input();
 
 		/**
-		 * @fn	void Input::SetKeyState(int key, int action);
+		 * @fn	void Input::SetKeyState(const int key, int action);
 		 *
 		 * @brief	Sets key state.
-
+		 *
 		 * @param	key   	The key.
 		 * @param	action	The action.
 		 */
-		void SetKeyState(int key, int action);
+		void SetKeyState(const int key, int action);
 
 		/**
-		 * @fn	void Input::SetMouseState(int key, int action, int mods);
+		 * @fn	void Input::SetMouseState(const int key, int action, const int mods);
 		 *
 		 * @brief	Sets mouse key states.
 		 *
@@ -48,27 +48,27 @@ namespace anvil
 		 * @param	action	The action.
 		 * @param	mods  	The mods.
 		 */
-		void SetMouseState(int key, int action, int mods);
+		void SetMouseState(const int key, int action, const int mods);
 
 		/**
-		 * @fn	void Input::SetMousePosition(int x, int y);
+		 * @fn	void Input::SetMousePosition(const int x, const int y);
 		 *
 		 * @brief	Sets mouse position.
 		 *
 		 * @param	x	The x coordinate.
 		 * @param	y	The y coordinate.
 		 */
-		void SetMousePosition(int x, int y);
+		void SetMousePosition(const int x, const int y);
 
 		/**
-		 * @fn	void Input::SetMouseWheelDelta(double x, double y);
+		 * @fn	void Input::SetMouseWheelDelta(const double x, const double y);
 		 *
 		 * @brief	Sets mouse wheel delta (how much it moved x and y direction).
 		 *
 		 * @param	x	The x coordinate.
 		 * @param	y	The y coordinate.
 		 */
-		void SetMouseWheelDelta(double x, double y);
+		void SetMouseWheelDelta(const double x, const double y);
 
 		/**
 		 * @fn	void Input::Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRenderer>& renderer);
