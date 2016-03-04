@@ -50,7 +50,7 @@ std::vector<std::string> IO::ListFiles(const std::string & dir, const std::strin
 	while ((dirp = readdir(dp)) != NULL)
 	{
 		std::string name = dirp->d_name;
-		std::string fileExt = StringHelper::split(name, '.').back();
+		std::string fileExt = split(name, '.').back();
 
 		if (fileExt == ext || ext.size() == 0)
 			files.push_back(name);
