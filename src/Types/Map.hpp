@@ -16,30 +16,24 @@
 
 namespace anvil
 {
-	////////////////////////////////////////////
-	//MAP
-	////////////////////////////////////////////
-
-	// chunk 0x80000001
-	struct MapHeader 
-	{
-		std::uint32_t width;
-		std::uint32_t height;
-		float playerPositions[1][2];
-		std::string textures[1];
-	};
-
-
+	/**
+	 * @class	Map
+	 *
+	 * @brief	A map.
+	 */
 	class Map
 	{
 	public:
+
+		/**
+		 * @fn	Map::Map();
+		 *
+		 * @brief	Default constructor.
+		 */
 		Map();
 		~Map();
 
-		inline std::shared_ptr<GL::Terrain>& GetTerrain()
-		{
-			return m_terrain;
-		}
+		inline std::shared_ptr<GL::Terrain>& GetTerrain() { return m_terrain; }
 
 	private:
 		std::shared_ptr<GL::Skybox> m_skybox;

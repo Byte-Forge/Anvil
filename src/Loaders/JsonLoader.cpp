@@ -32,17 +32,17 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 	{
 		mat = std::make_shared<Material>();
 		if (d["material"].HasMember("displacement_factor"))
-			mat->m_displacementFactor = d["material"]["displacement_factor"].GetDouble();
+			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
 		if (d["material"].HasMember("diffuse"))
-			mat->m_diffuseTexture = d["material"]["diffuse"].GetString();
+			mat->SetDiffuseTexture(d["material"]["diffuse"].GetString());
 		if (d["material"].HasMember("normal"))
-			mat->m_normalTexture = d["material"]["normal"].GetString();
+			mat->SetNormalTexture(d["material"]["normal"].GetString());
 		if (d["material"].HasMember("specular"))
-			mat->m_specularTexture = d["material"]["specular"].GetString();
+			mat->SetSpecularTexture(d["material"]["specular"].GetString());
 		if (d["material"].HasMember("displacement"))
-			mat->m_displacementTexture = d["material"]["displacement"].GetString();
+			mat->SetDisplacementTexture(d["material"]["displacement"].GetString());
 		if (d["material"].HasMember("ambient_occ"))
-			mat->m_ambientOccTexture = d["material"]["ambient_occ"].GetString();
+			mat->SetAmbientOcclusionTexture(d["material"]["ambient_occ"].GetString());
 	}
 	else
 		throw AnvilException("Material file has no material object", __FILE__, __LINE__);

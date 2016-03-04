@@ -71,10 +71,42 @@ namespace anvil
 		inline int GetPolycount() { return static_cast<int>(m_faces.size() / 3); }
 
 	protected:
+
+		/**
+		 * @fn	void ITerrain::Generate();
+		 *
+		 * @brief	Generates this object.
+		 */
 		void Generate();
+
+		/**
+		 * @fn	void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals);
+		 *
+		 * @brief	Calculates the normals.
+		 *
+		 * @param [in,out]	normals	The normals.
+		 */
 		void ComputeNormals(std::vector<std::vector<glm::vec3>> &normals);
+
+		/**
+		 * @fn	void ITerrain::CreateHeightmap();
+		 *
+		 * @brief	Creates the heightmap.
+		 */
 		void CreateHeightmap();
+
+		/**
+		 * @fn	void ITerrain::UpdateBufferData();
+		 *
+		 * @brief	Updates the buffer data.
+		 */
 		void UpdateBufferData();
+
+		/**
+		 * @fn	void ITerrain::UpdateTextures();
+		 *
+		 * @brief	Updates the textures.
+		 */
 		void UpdateTextures();
 
 	protected:
