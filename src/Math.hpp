@@ -10,9 +10,26 @@
 
 namespace anvil
 {
+	/**
+	 * @class	Math
+	 *
+	 * @brief	A mathematics.
+	 */
 	class Math
 	{
 	public:
-		static glm::vec3  ComputeNormal(glm::vec3& a, glm::vec3& b, glm::vec3& c);
+
+		/**
+		 * @fn	static glm::vec3 Math::ComputeNormal(glm::vec3& a, glm::vec3& b, glm::vec3& c);
+		 *
+		 * @brief	Calculates the normal.
+		 * 			
+		 * @param [in,out]	a	The glm::vec3 to process.
+		 * @param [in,out]	b	The glm::vec3 to process.
+		 * @param [in,out]	c	The glm::vec3 to process.
+		 *
+		 * @return	The calculated normal.
+		 */
+		static glm::vec3 ComputeNormal(glm::vec3& a, glm::vec3& b, glm::vec3& c);
 	};
 }

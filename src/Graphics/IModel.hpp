@@ -56,6 +56,22 @@ namespace anvil
 			glm::float32 radius;
 		};
 
+		/**
+		 * @fn	virtual void IModel::Update() = 0;
+		 *
+		 * @brief	Updates this object.
+		 */
+		virtual void Update() = 0;
+
+		/**
+		 * @fn	virtual void IModel::Render(IShader& shader) = 0;
+		 *
+		 * @brief	Renders the given shader.
+		 *
+		 * @param [in,out]	shader	The shader.
+		 */
+		virtual void Render(IShader& shader) = 0;
+
 		inline void SetHierarchyName(const std::string& hierarchyName) { m_hierarchyName = hierarchyName; }
 		inline void AddMesh(std::shared_ptr<IMesh> mesh) { m_meshes.push_back(mesh); } // this sux
 		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }

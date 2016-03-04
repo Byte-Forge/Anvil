@@ -14,11 +14,29 @@
 
 namespace anvil
 {
+    /**
+     * @class	Sound
+     *
+     * @brief	A sound.
+     */
     class Sound
     {
     public:
+
+        /**
+         * @fn	Sound::Sound();
+         *
+         * @brief	Default constructor.
+         */
         Sound();
+
+        /**
+         * @fn	Sound::~Sound();
+         *
+         * @brief	Destructor.
+         */
         ~Sound();
+
     private:
         ALuint  m_source;
     };

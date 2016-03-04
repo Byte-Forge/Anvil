@@ -13,14 +13,57 @@
 
 namespace anvil
 {
+	/**
+	 * @class	Quadtree
+	 *
+	 * @brief	A quadtree.
+	 */
 	class Quadtree
 	{
 	public:
+
+		/**
+		 * @fn	Quadtree::Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel = 4, unsigned int level = 0);
+		 *
+		 * @brief	Constructor.
+		 *
+		 * @param	pos			The position.
+		 * @param	size		The size.
+		 * @param	maxLevel	The maximum level.
+		 * @param	level   	The level.
+		 */
 		Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel = 4, unsigned int level = 0);
 
-		void AddTriangle(uint32_t indices[3], glm::vec3& _v1, glm::vec3& _v2, glm::vec3& _v3); // Add a single triangle to Quadtree
-		std::vector<uint32_t> GetTriangles(const std::array<std::array<float, 4>, 6>& frustum); // Returns all objects to be drawn within specified area.
+		/**
+		 * @fn	void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& _v1, glm::vec3& _v2, glm::vec3& _v3);
+		 *
+		 * @brief	Add a single triangle to Quadtree
+		 *
+		 * @param	indices	   	The indices.
+		 * @param [in,out]	_v1	The first v.
+		 * @param [in,out]	_v2	The second v.
+		 * @param [in,out]	_v3	The third v.
+		 */
+		void AddTriangle(uint32_t indices[3], glm::vec3& _v1, glm::vec3& _v2, glm::vec3& _v3); 
+
+		/**
+		 * @fn	std::vector<uint32_t> Quadtree::GetTriangles(const std::array<std::array<float, 4>, 6>& frustum);
+		 *
+		 * @brief	Gets the triangles.
+		 *
+		 * @param	frustum	The frustum.
+		 *
+		 * @return	Returns all triangles to be drawn within specified area.
+		 */
+		std::vector<uint32_t> GetTriangles(const std::array<std::array<float, 4>, 6>& frustum); 
 	
+	private:
+		bool contains(glm::vec3& vertex);
+		int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
+		bool CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
+		std::vector<uint32_t> getAllTriangles(); // Returns all triangles without AABBvsFrustum check.
+		void update(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3);
+
 	private:
 		glm::vec3 m_pos; 
 		glm::vec3 m_size;
@@ -35,11 +78,5 @@ namespace anvil
 		std::unique_ptr<Quadtree> m_NE;
 		std::unique_ptr<Quadtree> m_SW;
 		std::unique_ptr<Quadtree> m_SE;
-
-		bool contains(glm::vec3& vertex);
-		int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
-		bool CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
-		std::vector<uint32_t> getAllTriangles(); // Returns all triangles without AABBvsFrustum check.
-		void update(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3);
 	};
 }

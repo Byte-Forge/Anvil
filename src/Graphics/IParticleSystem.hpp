@@ -66,13 +66,13 @@ namespace anvil
 		void Start();
 
 		/**
-		 * @fn	virtual void IParticleSystem::Render(int mode) = 0;
+		 * @fn	virtual void IParticleSystem::Render(IShader& shader) = 0;
 		 *
-		 * @brief	Renders the given mode.
+		 * @brief	Renders the given shader.
 		 *
-		 * @param	mode	The mode.
+		 * @param [in,out]	shader	The shader.
 		 */
-		virtual void Render(int mode) = 0;
+		virtual void Render(IShader& shader) = 0;
 
 		/**
 		 * @fn	virtual void IParticleSystem::Update();

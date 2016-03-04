@@ -21,6 +21,13 @@ namespace anvil
 {
 	namespace IO
 	{
+		/**
+		 * @fn	inline const std::string GetCwd()
+		 *
+		 * @brief	Gets the cwd.
+		 *
+		 * @return	The cwd.
+		 */
 		inline const std::string GetCwd()
 		{
 			char buffer[1024];
@@ -28,8 +35,25 @@ namespace anvil
 			return buffer;
 		}
 
+		/**
+		 * @fn	std::vector<std::string> ListFiles(const std::string& dir, const std::string& ext = "");
+		 *
+		 * @brief	List files.
+		 *
+		 * @param	dir	The dir.
+		 * @param	ext	The extent.
+		 *
+		 * @return	A std::vector&lt;std::string&gt;
+		 */
 		std::vector<std::string> ListFiles(const std::string& dir, const std::string& ext = "");		
 	}
 
+	/**
+	 * @fn	void ShowError(const std::string& msg);
+	 *
+	 * @brief	Shows the error.
+	 *
+	 * @param	msg	The message.
+	 */
 	void ShowError(const std::string& msg);
 }

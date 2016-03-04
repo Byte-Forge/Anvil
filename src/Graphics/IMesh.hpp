@@ -40,11 +40,11 @@ namespace anvil
 		virtual void Update() = 0;
 
 		/**
-		 * @fn	virtual void IMesh::Render(int mode) = 0;
+		 * @fn	virtual void IMesh::Render(IShader& shader) = 0;
 		 *
-		 * @brief	Renders the given mode.
+		 * @brief	Renders the given shader.
 		 *
-		 * @param	mode	The mode.
+		 * @param [in,out]	shader	The shader.
 		 */
 		virtual void Render(IShader& shader) = 0;
 

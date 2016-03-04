@@ -15,6 +15,15 @@
 
 namespace anvil
 {
+	/**
+	 * @fn	inline long getFStreamSize(std::ifstream& file)
+	 *
+	 * @brief	Gets f stream size.
+	 *
+	 * @param [in,out]	file	The file.
+	 *
+	 * @return	The f stream size.
+	 */
 	inline long getFStreamSize(std::ifstream& file)
 	{
 		file.seekg(0, std::ios::end);
@@ -23,6 +32,16 @@ namespace anvil
 		return size;
 	}
 
+	/**
+	 * @fn	template<class T> inline T read(std::ifstream& fin)
+	 *
+	 * @brief	Reads the given fin.
+	 *
+	 * @tparam	T	Generic type parameter.
+	 * @param [in,out]	fin	The fin.
+	 *
+	 * @return	A T.
+	 */
 	template<class T>
 	inline T read(std::ifstream& fin)
 	{
@@ -31,7 +50,16 @@ namespace anvil
 		return result;
 	}
 
-	//Read an array of a type 
+	/**
+	 * @fn	template<typename T> inline void readArray(std::ifstream& fin, const unsigned int chunksize, T*& arr)
+	 *
+	 * @brief	Reads an array.
+	 *
+	 * @tparam	T	Generic type parameter.
+	 * @param [in,out]	fin	The fin.
+	 * @param	chunksize  	The chunksize.
+	 * @param [in,out]	arr	[in,out] If non-null, the array.
+	 */
 	template<typename T>
 	inline void readArray(std::ifstream& fin, const unsigned int chunksize, T*& arr)
 	{
@@ -41,6 +69,17 @@ namespace anvil
 		fin.read((char*)arr, sizeof(T)*num_elements);
 	}
 
+	/**
+	 * @fn	template<typename T> inline std::vector<T> readVector(std::ifstream& fin, const unsigned int chunksize)
+	 *
+	 * @brief	Reads a vector.
+	 *
+	 * @tparam	T	Generic type parameter.
+	 * @param [in,out]	fin	The fin.
+	 * @param	chunksize  	The chunksize.
+	 *
+	 * @return	The vector.
+	 */
 	template<typename T>
 	inline std::vector<T> readVector(std::ifstream& fin, const unsigned int chunksize)
 	{
@@ -52,6 +91,15 @@ namespace anvil
 		return result;
 	}
 
+	/**
+	 * @fn	inline std::string readString(std::ifstream& fin)
+	 *
+	 * @brief	Reads a string.
+	 *
+	 * @param [in,out]	fin	The fin.
+	 *
+	 * @return	The string.
+	 */
 	inline std::string readString(std::ifstream& fin)
 	{
 		std::string result;
@@ -61,6 +109,15 @@ namespace anvil
 		return result;
 	}
 
+	/**
+	 * @fn	inline std::string toUpper(const std::string& str)
+	 *
+	 * @brief	Converts a str to an upper.
+	 *
+	 * @param	str	The string.
+	 *
+	 * @return	str as a std::string.
+	 */
 	inline std::string toUpper(const std::string& str)
 	{
 		std::string upper = str;
@@ -68,6 +125,17 @@ namespace anvil
 		return upper;
 	}
 
+	/**
+	 * @fn	inline std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems)
+	 *
+	 * @brief	Splits.
+	 *
+	 * @param	s			 	The std::string to process.
+	 * @param	delim		 	The delimiter.
+	 * @param [in,out]	elems	The elements.
+	 *
+	 * @return	A std::vector&lt;std::string&gt;&amp;
+	 */
 	inline std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems)
 	{
 		std::stringstream ss(s);
@@ -79,6 +147,16 @@ namespace anvil
 		return elems;
 	}
 
+	/**
+	 * @fn	inline std::vector<std::string> split(const std::string &s, char delim)
+	 *
+	 * @brief	Splits.
+	 *
+	 * @param	s	 	The std::string to process.
+	 * @param	delim	The delimiter.
+	 *
+	 * @return	A std::vector&lt;std::string&gt;
+	 */
 	inline std::vector<std::string> split(const std::string &s, char delim)
 	{
 		std::vector<std::string> elems;
@@ -86,6 +164,15 @@ namespace anvil
 		return elems;
 	}
 
+	/**
+	 * @fn	inline bool fileExists(const std::string& str)
+	 *
+	 * @brief	Queries if a given file exists.
+	 *
+	 * @param	str	The string.
+	 *
+	 * @return	true if it succeeds, false if it fails.
+	 */
 	inline bool fileExists(const std::string& str)
 	{
 		std::fstream fin(str);

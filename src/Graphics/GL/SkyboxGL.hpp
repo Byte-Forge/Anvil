@@ -19,14 +19,45 @@ namespace anvil
 {
 	namespace GL
 	{
+		/**
+		 * @class	Skybox
+		 *
+		 * @brief	A skybox.
+		 */
 		class Skybox : public IRenderable
 		{
 		public:
+
+			/**
+			 * @fn	Skybox::Skybox();
+			 *
+			 * @brief	Default constructor.
+			 */
 			Skybox();
+
+			/**
+			 * @fn	Skybox::~Skybox();
+			 *
+			 * @brief	Destructor.
+			 */
 			~Skybox();
 
+			/**
+			 * @fn	void Skybox::Render(IShader& shader);
+			 *
+			 * @brief	Renders the given shader.
+			 *
+			 * @param [in,out]	shader	The shader.
+			 */
 			void Render(IShader& shader);
+
+			/**
+			 * @fn	void Skybox::Update();
+			 *
+			 * @brief	Updates this object.
+			 */
 			void Update();
+
 		private:
 			std::shared_ptr<ITexture> m_diff;
 

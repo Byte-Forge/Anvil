@@ -16,11 +16,29 @@
 
 namespace anvil
 {
+    /**
+     * @class	SoundBuffer
+     *
+     * @brief	Buffer for sound.
+     */
     class SoundBuffer : public IResource
     {
     public:
+
+        /**
+         * @fn	SoundBuffer::SoundBuffer();
+         *
+         * @brief	Default constructor.
+         */
         SoundBuffer();
+
+        /**
+         * @fn	SoundBuffer::~SoundBuffer();
+         *
+         * @brief	Destructor.
+         */
         ~SoundBuffer();
+
     private:
         ALuint m_buffer;
     };

@@ -19,14 +19,48 @@ namespace anvil
 {
     namespace GL
     {
+        /**
+         * @class	Terrain
+         *
+         * @brief	A terrain.
+         */
         class Terrain : public ITerrain
         {
         public:
+
+            /**
+             * @fn	Terrain::Terrain(std::uint32_t width, std::uint32_t height);
+             *
+             * @brief	Constructor.
+             *
+             * @param	width 	The width.
+             * @param	height	The height.
+             */
             Terrain(std::uint32_t width, std::uint32_t height);
+
+			/**
+			 * @fn	Terrain::~Terrain();
+			 *
+			 * @brief	Destructor.
+			 */
 			~Terrain();
-			
+
+            /**
+             * @fn	void Terrain::Render(IShader& shader);
+             *
+             * @brief	Renders the given shader.
+             *
+             * @param [in,out]	shader	The shader.
+             */
             void Render(IShader& shader);
+
+            /**
+             * @fn	void Terrain::Update();
+             *
+             * @brief	Updates this object.
+             */
             void Update();
+
         private:
 			//rendering stuff
 			glm::mat4 m_mvp;
