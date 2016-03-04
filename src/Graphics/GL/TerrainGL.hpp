@@ -9,7 +9,7 @@
 #include "../ITerrain.hpp"
 #include "../Quadtree.hpp"
 #include "../Material.hpp"
-#include "Buffer.hpp"
+#include "BufferGL.hpp"
 #include "flextGL.h"
 #include <vector>
 #include <memory>

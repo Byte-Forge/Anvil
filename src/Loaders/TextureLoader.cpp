@@ -14,7 +14,7 @@
 #include "../Core/ResourceHandler.hpp"
 #include "../Core.hpp"
 #include "../Exception.hpp"
-#include "../Loaders/Util.hpp"
+#include "../Util.hpp"
 
 using namespace anvil;
 

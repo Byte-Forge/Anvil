@@ -7,7 +7,7 @@
 
 #include "Graphics.hpp"
 #include "Graphics/GL/RendererGL.hpp"
-#include "Graphics/GL/Texture.hpp"
+#include "Graphics/GL/TextureGL.hpp"
 #include "Graphics/GL/ModelGL.hpp"
 #include "Graphics/GL/MeshGL.hpp"
 #ifdef ANVIL_USE_VULKAN

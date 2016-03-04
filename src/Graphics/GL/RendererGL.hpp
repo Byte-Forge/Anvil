@@ -19,7 +19,7 @@ namespace anvil
 		~RendererGL();
 
 		void Clear();
-		void Render(glm::mat4& ortho);
+		void Render(const glm::mat4& ortho);
 		void Resize(int width, int height);
 		void PrintInfo();
 		int GetTotalVRAM();

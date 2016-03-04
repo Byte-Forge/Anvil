@@ -5,7 +5,7 @@
 ************************************
 */
 
-#include "Buffer.hpp"
+#include "BufferGL.hpp"
 #include "flextGL.h"
 
 using namespace anvil;

@@ -20,6 +20,7 @@ namespace anvil
 
 		void AddTriangle(uint32_t indices[3], glm::vec3& _v1, glm::vec3& _v2, glm::vec3& _v3); // Add a single triangle to Quadtree
 		std::vector<uint32_t> GetTriangles(const std::array<std::array<float, 4>, 6>& frustum); // Returns all objects to be drawn within specified area.
+	
 	private:
 		glm::vec3 m_pos; 
 		glm::vec3 m_size;

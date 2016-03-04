@@ -18,7 +18,7 @@ namespace anvil
 		~RendererVK();
 
 		void Clear();
-		void Render(glm::mat4& ortho);
+		void Render(const glm::mat4& ortho);
 
 		void Resize(int width, int height);
 		void PrintInfo();
@@ -51,6 +51,7 @@ namespace anvil
 		bool GenerateTexture(Rocket::Core::TextureHandle& texture_handle, const Rocket::Core::byte* source, const Rocket::Core::Vector2i& source_dimensions);
 		/// Called by Rocket when a loaded texture is no longer required.
 		void ReleaseTexture(Rocket::Core::TextureHandle texture_handle);
+
 	private:
 		void CreateInstance();
 		void CreateDevice();

@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <glm/glm.hpp>
-#include "Util.hpp"        
+#include "../Util.hpp"        
 #include "../Core.hpp"
 #include "../Types/BF3D.hpp"
 #include "../Graphics/IMesh.hpp"
