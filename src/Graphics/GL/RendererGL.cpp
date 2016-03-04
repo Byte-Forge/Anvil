@@ -8,7 +8,6 @@
 #include "RendererGL.hpp"
 #include "Texture.hpp"
 #include "Shader.hpp"
-#include "../Types.hpp"
 #include "../../Core.hpp"
 #include "../IRenderable.hpp"
 #include "../../Exception.hpp"

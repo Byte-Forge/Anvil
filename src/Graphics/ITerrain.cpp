@@ -255,8 +255,6 @@ void ITerrain::UpdateBufferData()
 
 void ITerrain::UpdateTextures()
 {
-
-
 	std::vector<std::string> diffuseTextures;
 	std::vector<std::string> normTextures;
 	std::vector<std::string> specTextures;

@@ -37,26 +37,15 @@ void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& v1, glm::vec3& v2, gl
 	}
 
 	if (m_NW->contains(v1) && m_NW->contains(v2) && m_NW->contains(v3))
-	{
 		m_NW->AddTriangle(indices, v1, v2, v3);
-		return;
-	}
 	else if (m_NE->contains(v1) && m_NE->contains(v2) && m_NE->contains(v3))
-	{
 		m_NE->AddTriangle(indices, v1, v2, v3);
-		return;
-	}
 	else if (m_SW->contains(v1) && m_SW->contains(v2) && m_SW->contains(v3))
-	{
 		m_SW->AddTriangle(indices, v1, v2, v3);
-		return;
-	}
 	else if (m_SE->contains(v1) && m_SE->contains(v2) && m_SE->contains(v3))
-	{
 		m_SE->AddTriangle(indices, v1, v2, v3);
-		return;
-	}
-	m_triangles.insert(m_triangles.end(), indices, indices + 3);
+	else
+		m_triangles.insert(m_triangles.end(), indices, indices + 3);
 }
 
 std::vector<uint32_t> Quadtree::GetTriangles(const std::array<std::array<float, 4>, 6>& frustum)

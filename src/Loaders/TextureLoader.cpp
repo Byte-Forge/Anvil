@@ -31,7 +31,7 @@ void TextureLoader::LoadTexture(const std::string& name, const std::string& path
 	Core::GetCore()->GetResources()->AddResource(toUpper(name), tex);
 }
 
-std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(std::vector<std::string> paths)
+std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(const std::vector<std::string>& paths)
 {
 	auto tex = Core::GetCore()->GetGraphics()->GetTexture();
 

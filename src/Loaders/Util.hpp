@@ -32,7 +32,7 @@ namespace anvil
 
 	//Read an array of a type 
 	template<typename T>
-	inline void readArray(std::ifstream& fin, unsigned int chunksize, T*& arr)
+	inline void readArray(std::ifstream& fin, const unsigned int chunksize, T*& arr)
 	{
 		auto num_elements = chunksize / sizeof(T);
 		arr = new T[num_elements];
@@ -41,7 +41,7 @@ namespace anvil
 	}
 
 	template<typename T>
-	inline std::vector<T> readVector(std::ifstream& fin, unsigned int chunksize)
+	inline std::vector<T> readVector(std::ifstream& fin, const unsigned int chunksize)
 	{
 		std::vector<T> result;
 		auto num_elements = chunksize / sizeof(T);
