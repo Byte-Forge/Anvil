@@ -98,8 +98,6 @@ namespace anvil
 		 */
 		virtual const std::string GetGPUName() = 0;
 
-		inline std::uint32_t GetSkyboxUniformLocation(const std::string& id) { return m_skyboxShader->GetUniformLocation(id); }
-		inline std::uint32_t GetTerrainUniformLocation(const std::string& id, int mode) { return m_terrainShaders[mode]->GetUniformLocation(id); }
 		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox) { m_skybox = skybox; }
 		inline void RegisterTerrain(std::shared_ptr<IRenderable> terrain) { m_terrain = terrain; }
 		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable) { m_renderables.push_back(renderable); }

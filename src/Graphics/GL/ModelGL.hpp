@@ -18,7 +18,7 @@ namespace anvil
 			ModelGL();
 			~ModelGL();
 
-			void Render(int mode);
+			void Render(int mode,IShader& shader);
 			void Update();
 		};
 	}

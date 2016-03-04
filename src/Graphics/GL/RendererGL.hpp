@@ -50,7 +50,6 @@ namespace anvil
 		/// Called by Rocket when a loaded texture is no longer required.
 		void ReleaseTexture(Rocket::Core::TextureHandle texture_handle);
 	private:
-		GLuint m_guiOrthoID, m_guiTranslID, m_guiSamplerID, m_guiUseTexID;
 		int m_totalVRAM;
 		std::string m_deviceName;
 	};

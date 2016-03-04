@@ -118,6 +118,11 @@ void GL::Shader::Use()
     glUseProgram(m_program);
 }
 
+void GL::Shader::AddUniform(const std::string & name)
+{
+	m_uniforms[name] = glGetUniformLocation(m_program, name.c_str());
+}
+
 void GL::Shader::Compile()
 {
 	GLint success = 0;
@@ -156,3 +161,4 @@ void GL::Shader::Compile()
 		glDetachShader(m_program, p.second);
 	}
 }
+

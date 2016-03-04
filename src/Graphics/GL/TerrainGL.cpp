@@ -32,24 +32,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin);
 	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;
 
-	for (int i = 0; i < Core::GetCore()->GetGraphics()->GetRenderer()->GetShaderModes().size(); i++)
-	{
-		m_diffIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("albedoSampler", i));
-		m_nrmIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("normalSampler", i));
-		m_specIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("specularSampler", i));
-		m_dispIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("displacementSampler", i));
-		m_ambiIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("ambientSampler", i));
-		
-		m_maxFactorIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("max_factor", i));
-		m_tessFactorIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("tess_factor", i));
-
-		m_modelMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("m", i));
-		m_viewMatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("v", i));
-		m_modelView3x3MatrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("mv3x3", i));
-		m_matrixIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("mvp", i));
-
-		m_lightIDs.push_back(Core::GetCore()->GetGraphics()->GetRenderer()->GetTerrainUniformLocation("lightPos", i));
-	}
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -93,39 +75,39 @@ GL::Terrain::~Terrain()
 	m_vao = 0;
 }
 
-void GL::Terrain::Render(int mode)
+void GL::Terrain::Render(int mode,IShader& shader)
 {
 	glBindVertexArray(m_vao);
-	glUniformMatrix4fv(m_modelMatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(m_mod));
-	glUniformMatrix4fv(m_viewMatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewMatrix()));
-	glUniformMatrix3fv(m_modelView3x3MatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)));
-	glUniformMatrix4fv(m_matrixIDs[mode], 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod));
+	glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(m_mod));
+	glUniformMatrix4fv(shader.GetUniform("v"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewMatrix()));
+	glUniformMatrix3fv(shader.GetUniform("mv3x3"), 1, GL_FALSE, glm::value_ptr(glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)));
+	glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod));
 
 	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
-	glUniform3f(m_lightIDs[mode], lightPos.x, lightPos.y, lightPos.z);
+	glUniform3f(shader.GetUniform("lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
-	glUniform1i(m_tessFactorIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor());
-	glUniform1i(m_maxFactorIDs[mode], Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation());
+	glUniform1i(shader.GetUniform("tess_factor"), Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor());
+	glUniform1i(shader.GetUniform("max_factor"), Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation());
 
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();
-	glUniform1i(m_diffIDs[mode], 0);
+	glUniform1i(shader.GetUniform("albedoSampler"), 0);
 
 	glActiveTexture(GL_TEXTURE1); //normal textures
 	m_nrm->Bind();
-	glUniform1i(m_nrmIDs[mode], 1);
+	glUniform1i(shader.GetUniform("normalSampler"), 1);
 
 	glActiveTexture(GL_TEXTURE2); //spec textures
 	m_spec->Bind();
-	glUniform1i(m_specIDs[mode], 2);
+	glUniform1i(shader.GetUniform("specularSampler"), 2);
 
 	glActiveTexture(GL_TEXTURE3); //disp textures
 	m_disp->Bind();
-	glUniform1i(m_dispIDs[mode], 3);
+	glUniform1i(shader.GetUniform("displacementSampler"), 3);
 
 	glActiveTexture(GL_TEXTURE4); //ambi textures
 	m_ambi->Bind();
-	glUniform1i(m_ambiIDs[mode], 4);
+	glUniform1i(shader.GetUniform("ambientSampler"), 4);
 
 	//used for tesselation
 	glPatchParameteri(GL_PATCH_VERTICES, 3);

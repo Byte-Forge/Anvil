@@ -21,7 +21,7 @@ GL::ModelGL::~ModelGL()
 
 }
 
-void GL::ModelGL::Render(int mode)
+void GL::ModelGL::Render(int mode,IShader& shader)
 {
 
 }

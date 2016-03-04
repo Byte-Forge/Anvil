@@ -147,15 +147,18 @@ RendererGL::RendererGL()
 	m_guiShader->Load("shader/gl/gui.vert", "shader/gl/gui.frag");
 	m_guiShader->Compile();
 
-	m_guiTranslID = static_cast<GLuint>(m_guiShader->GetUniformLocation("translation"));
-	m_guiOrthoID = static_cast<GLuint>(m_guiShader->GetUniformLocation("ortho"));
-	m_guiSamplerID = static_cast<GLuint>(m_guiShader->GetUniformLocation("tex"));
-	m_guiUseTexID = static_cast<GLuint>(m_guiShader->GetUniformLocation("useTex"));
+	m_guiShader->AddUniform("translation");
+	m_guiShader->AddUniform("ortho");
+	m_guiShader->AddUniform("tex");
+	m_guiShader->AddUniform("useTex");
 
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
 	m_skyboxShader->Compile();
 
+	m_skyboxShader->AddUniform("skybox");
+	m_skyboxShader->AddUniform("mvp");
+	m_skyboxShader->AddUniform("cameraPosition");
 
 	for (unsigned int i = 0; i < m_shaderModes.size(); i++)
 	{
@@ -163,6 +166,22 @@ RendererGL::RendererGL()
 		m_terrainShaders[i]->Define(m_shaderModes[i]);
 		m_terrainShaders[i]->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
 		m_terrainShaders[i]->Compile();
+
+		m_terrainShaders[i]->AddUniform("albedoSampler");
+		m_terrainShaders[i]->AddUniform("normalSampler");
+		m_terrainShaders[i]->AddUniform("specularSampler");
+		m_terrainShaders[i]->AddUniform("displacementSampler");
+		m_terrainShaders[i]->AddUniform("ambientSampler");
+		
+		m_terrainShaders[i]->AddUniform("max_factor");
+		m_terrainShaders[i]->AddUniform("tess_factor");
+
+		m_terrainShaders[i]->AddUniform("m");
+		m_terrainShaders[i]->AddUniform("v");
+		m_terrainShaders[i]->AddUniform("mv3x3");
+		m_terrainShaders[i]->AddUniform("mvp");
+
+		m_terrainShaders[i]->AddUniform("lightPos");
 	}
 
 	m_vendor = OTHER;
@@ -205,27 +224,26 @@ void RendererGL::Render(const glm::mat4& ortho)
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	m_skyboxShader->Use();
 	m_skybox->Update();
-	m_skybox->Render(0);
+	m_skybox->Render(0, *m_skyboxShader);
 
 	glEnable(GL_DEPTH_TEST);
 
+	m_terrain->Update();
+
 	if (m_wireframeMode)
 	{
-		m_terrainShaders[1]->Use();
-		m_terrain->Update();
-		m_terrain->Render(1);
+		m_terrainShaders[1]->Use();		
+		m_terrain->Render(1,*m_terrainShaders[1]);
 	}
 	else
 	{
 		m_terrainShaders[0]->Use();
-		m_terrain->Update();
-		m_terrain->Render(0);
+		m_terrain->Render(0, *m_terrainShaders[0]);
 	}
 	if (m_normalsMode)
 	{
 		m_terrainShaders[2]->Use();
-		m_terrain->Update();
-		m_terrain->Render(2);
+		m_terrain->Render(2,*m_terrainShaders[2]);
 	}
 
 	for (auto& renderable : m_renderables)
@@ -317,16 +335,17 @@ void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle han
 	glBindVertexArray(geometry->m_vao);
 	glBindTexture(GL_TEXTURE_2D, geometry->m_texture);
 	
-	if (geometry->m_texture)
-		glUniform1i(m_guiUseTexID, 1);
-	else
-		glUniform1i(m_guiUseTexID, 0);
-
-	glUniform1i(m_guiSamplerID, 0);
 	
-	glUniform2f(m_guiTranslID, translation.x, translation.y);
+	if (geometry->m_texture)
+		glUniform1i(m_guiShader->GetUniform("useTex"), 1);
+	else
+		glUniform1i(m_guiShader->GetUniform("useTex"), 0);
+
+	glUniform1i(m_guiShader->GetUniform("tex"), 0);
+	
+	glUniform2f(m_guiShader->GetUniform("translation"), translation.x, translation.y);
 	auto* mat = glm::value_ptr(Core::GetCore()->GetGraphics()->GetOrtho());
-	glUniformMatrix4fv(m_guiOrthoID, 1, GL_FALSE, mat);
+	glUniformMatrix4fv(m_guiShader->GetUniform("ortho"), 1, GL_FALSE, mat);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
