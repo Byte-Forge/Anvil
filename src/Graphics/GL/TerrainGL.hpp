@@ -25,7 +25,7 @@ namespace anvil
             Terrain(std::uint32_t width, std::uint32_t height);
 			~Terrain();
 			
-            void Render(int mode,IShader& shader);
+            void Render(IShader& shader);
             void Update();
         private:
 			//rendering stuff

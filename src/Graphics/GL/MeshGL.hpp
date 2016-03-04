@@ -22,7 +22,7 @@ namespace anvil
 			~MeshGL();
 
 			void Update();
-			void Render(int mode);
+			void Render(IShader& shader);
 
 		private:
 			GLuint m_vao;

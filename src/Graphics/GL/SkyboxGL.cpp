@@ -77,7 +77,7 @@ void GL::Skybox::Update()
 
 }
 
-void GL::Skybox::Render(int mode, IShader& shader)
+void GL::Skybox::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
 	glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));

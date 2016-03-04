@@ -7,7 +7,7 @@
 
 #include "MeshGL.hpp"
 #include <iostream>
-
+#include "../IShader.hpp"
 using namespace anvil;
 
 GL::MeshGL::MeshGL()
@@ -59,7 +59,7 @@ void GL::MeshGL::Update()
 	m_fbo->Update(sizeof(std::uint32_t) * m_faces.size(), &m_faces[0]);
 }
 
-void GL::MeshGL::Render(int mode)
+void GL::MeshGL::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
 	//glUniformMatrix4fv(m_modelMatrixIDs[mode], 1, GL_FALSE, glm::value_ptr(m_mod));

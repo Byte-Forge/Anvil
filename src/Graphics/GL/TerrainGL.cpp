@@ -32,7 +32,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin);
 	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;
 
-
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
@@ -75,7 +74,7 @@ GL::Terrain::~Terrain()
 	m_vao = 0;
 }
 
-void GL::Terrain::Render(int mode,IShader& shader)
+void GL::Terrain::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
 	glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(m_mod));

@@ -27,7 +27,7 @@ namespace anvil
 		 * @param	mode  	The mode.
 		 * @param	shader	The shader.
 		 */
-		virtual void Render(int mode, IShader& shader) = 0;
+		virtual void Render(IShader& shader) = 0;
 
 		/**
 		 * @fn	virtual void IRenderable::Update() = 0;

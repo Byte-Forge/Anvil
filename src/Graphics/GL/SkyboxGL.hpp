@@ -25,7 +25,7 @@ namespace anvil
 			Skybox();
 			~Skybox();
 
-			void Render(int mode,IShader& shader);
+			void Render(IShader& shader);
 			void Update();
 		private:
 			std::shared_ptr<ITexture> m_diff;

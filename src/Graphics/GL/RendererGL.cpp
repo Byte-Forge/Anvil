@@ -224,7 +224,7 @@ void RendererGL::Render(const glm::mat4& ortho)
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	m_skyboxShader->Use();
 	m_skybox->Update();
-	m_skybox->Render(0, *m_skyboxShader);
+	m_skybox->Render(*m_skyboxShader);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -233,17 +233,17 @@ void RendererGL::Render(const glm::mat4& ortho)
 	if (m_wireframeMode)
 	{
 		m_terrainShaders[1]->Use();		
-		m_terrain->Render(1,*m_terrainShaders[1]);
+		m_terrain->Render(*m_terrainShaders[1]);
 	}
 	else
 	{
 		m_terrainShaders[0]->Use();
-		m_terrain->Render(0, *m_terrainShaders[0]);
+		m_terrain->Render(*m_terrainShaders[0]);
 	}
 	if (m_normalsMode)
 	{
 		m_terrainShaders[2]->Use();
-		m_terrain->Render(2,*m_terrainShaders[2]);
+		m_terrain->Render(*m_terrainShaders[2]);
 	}
 
 	for (auto& renderable : m_renderables)

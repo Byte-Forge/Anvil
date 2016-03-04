@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 #include <glm/glm.hpp>
-
+#include "IShader.hpp"
 namespace anvil
 {
 	/**
@@ -46,7 +46,7 @@ namespace anvil
 		 *
 		 * @param	mode	The mode.
 		 */
-		virtual void Render(int mode) = 0;
+		virtual void Render(IShader& shader) = 0;
 
 		inline void SetType(std::uint8_t type) { m_type = type; }
 		inline void SetMeshName(const std::string& meshName) { m_meshName = meshName; }
