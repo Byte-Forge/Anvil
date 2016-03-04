@@ -6,7 +6,7 @@
 */
 
 #include "flextGL.h"
-#include "Texture.hpp"
+#include "TextureGL.hpp"
 #include <string>
 #include <iostream>
 
@@ -179,7 +179,3 @@ void GL::Texture::Bind()
 {
     glBindTexture(m_target, m_handle);
 }
-
-
-
-

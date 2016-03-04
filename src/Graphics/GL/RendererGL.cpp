@@ -6,8 +6,8 @@
 */
 
 #include "RendererGL.hpp"
-#include "Texture.hpp"
-#include "Shader.hpp"
+#include "TextureGL.hpp"
+#include "ShaderGL.hpp"
 #include "../../Core.hpp"
 #include "../IRenderable.hpp"
 #include "../../Exception.hpp"
@@ -20,7 +20,6 @@ using namespace anvil;
 std::map<std::string, IRenderer::Vendor> vendorMap = 
 {	{"NVIDIA Corporation",IRenderer::NVIDIA},
 	{"ATI Technologies Inc.",IRenderer::AMD} };
-
 
 //NVIDIA
 #define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX          0x9047
@@ -220,7 +219,7 @@ void RendererGL::Clear()
             GL_DEPTH_BUFFER_BIT);
 }
 
-void RendererGL::Render(glm::mat4& ortho)
+void RendererGL::Render(const glm::mat4& ortho)
 {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	m_skyboxShader->Use();

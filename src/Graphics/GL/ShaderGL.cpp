@@ -5,7 +5,7 @@
 ************************************
 */
 
-#include "Shader.hpp"
+#include "ShaderGL.hpp"
 #include "flextGL.h"
 #include <fstream>
 #include <iostream>
@@ -79,7 +79,6 @@ void GL::Shader::LoadShader(const std::string& file, GLenum type)
     if(fin.fail())
 		throw AnvilException("Failed to load shader " + file, __FILE__, __LINE__);
 
-    
 	int* size = new int[2];
     char** buffer = new char*[2];
 

@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 namespace anvil
 {
@@ -65,6 +66,24 @@ namespace anvil
 		std::string upper = str;
 		std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
 		return upper;
+	}
+
+	inline std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems)
+	{
+		std::stringstream ss(s);
+		std::string item;
+		while (std::getline(ss, item, delim))
+		{
+			elems.push_back(item);
+		}
+		return elems;
+	}
+
+	inline std::vector<std::string> split(const std::string &s, char delim)
+	{
+		std::vector<std::string> elems;
+		split(s, delim, elems);
+		return elems;
 	}
 
 	inline bool fileExists(const std::string& str)

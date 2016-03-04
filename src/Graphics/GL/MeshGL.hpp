@@ -8,7 +8,7 @@
 #pragma once
 #include "../IMesh.hpp"
 #include "flextGL.h"
-#include "Buffer.hpp"
+#include "BufferGL.hpp"
 #include <memory>
 
 namespace anvil

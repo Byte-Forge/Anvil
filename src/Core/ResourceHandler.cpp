@@ -7,7 +7,7 @@
 
 #include "ResourceHandler.hpp"
 #include <iostream>
-#include "../Loaders/Util.hpp"
+#include "../Util.hpp"
 #include "../Loaders/TextureLoader.hpp"
 #include "../Loaders/JsonLoader.hpp"
 #include "../Loaders/BF3DLoader.hpp"

@@ -7,8 +7,8 @@
 
 #pragma once
 #include "../Graphics/IRenderable.hpp"
-#include "../Graphics/GL/Terrain.hpp"
-#include "../Graphics/GL/Skybox.hpp"
+#include "../Graphics/GL/TerrainGL.hpp"
+#include "../Graphics/GL/SkyboxGL.hpp"
 #include <stdint.h>
 #include <string>
 #include <vector>

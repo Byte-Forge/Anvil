@@ -12,7 +12,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #endif
-#include "StringHelper.hpp"
+#include "../Util.hpp"
 
 using namespace anvil;
 
@@ -31,7 +31,7 @@ std::vector<std::string> IO::ListFiles(const std::string & dir, const std::strin
 			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) 
 			{
 				std::string name = fd.cFileName;
-				std::string fileExt = StringHelper::split(name, '.').back();
+				std::string fileExt = split(name, '.').back();
 				
 				if(fileExt==ext||ext.size()==0)
 					files.push_back(name);

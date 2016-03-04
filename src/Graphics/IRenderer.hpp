@@ -46,13 +46,13 @@ namespace anvil
 		virtual void Clear() = 0;
 
 		/**
-		 * @fn	virtual void IRenderer::Render(glm::mat4& ortho) = 0;
+		 * @fn	virtual void IRenderer::Render(const glm::mat4& ortho) = 0;
 		 *
 		 * @brief	Renders the given ortho.
 		 *
-		 * @param [in,out]	ortho	The ortho.
+		 * @param	ortho	The ortho.
 		 */
-		virtual void Render(glm::mat4& ortho) = 0;
+		virtual void Render(const glm::mat4& ortho) = 0;
 
 		/**
 		 * @fn	virtual void IRenderer::Resize(int width,int height) = 0;
@@ -105,7 +105,6 @@ namespace anvil
 		inline void ToggleWireframeMode() {	m_wireframeMode = !m_wireframeMode;	}
 		inline void ToggleNormalsMode()	{ m_normalsMode = !m_normalsMode; }
 
-		///why do we have to use the 3 here? where is this called?
 		inline std::array<std::string, 3> GetShaderModes() { return m_shaderModes; }
 		inline int GetTessfactor() { return m_tessFactor; } 
 		inline int GetMaxTesselation() { return m_maxTesselation; }

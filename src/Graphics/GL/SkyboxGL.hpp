@@ -12,7 +12,7 @@
 #include "../ITexture.hpp"
 #include "flextGL.h"
 #include "../IRenderable.hpp"
-#include "Buffer.hpp"
+#include "BufferGL.hpp"
 
 
 namespace anvil

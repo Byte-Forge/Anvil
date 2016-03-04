@@ -139,7 +139,7 @@ void RendererVK::Clear()
 
 }
 
-void RendererVK::Render(glm::mat4 & ortho)
+void RendererVK::Render(const glm::mat4 & ortho)
 {
 	VkResult  err;
 	VkSemaphore presentCompleteSemaphore;

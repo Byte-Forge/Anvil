@@ -5,7 +5,7 @@
 ************************************
 */
 
-#include "Skybox.hpp"
+#include "SkyboxGL.hpp"
 #include "../../Core.hpp"
 #include <numeric>
 

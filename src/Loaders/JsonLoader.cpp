@@ -8,7 +8,7 @@
 #include "JsonLoader.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Core.hpp"
-#include "../Loaders/Util.hpp"
+#include "../Util.hpp"
 #include "../Exception.hpp"
 #include <iostream>
 #include <rapidjson/document.h>

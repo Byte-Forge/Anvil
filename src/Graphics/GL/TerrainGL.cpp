@@ -5,7 +5,7 @@
 ************************************
 */
 
-#include "Terrain.hpp"
+#include "TerrainGL.hpp"
 #include "flextGL.h"
 #include "../../Core.hpp"
 #include "../../Math.hpp"
