@@ -6,6 +6,7 @@
 */
 
 #pragma once
+#include "IShader.hpp"
 
 namespace anvil
 {
@@ -19,13 +20,14 @@ namespace anvil
 	public:
 
 		/**
-		 * @fn	virtual void IRenderable::Render(int mode) = 0;
+		 * @fn	virtual void IRenderable::Render(int mode,const IShader& shader) = 0;
 		 *
 		 * @brief	Renders the given mode.
 		 *
-		 * @param	mode	The mode.
+		 * @param	mode  	The mode.
+		 * @param	shader	The shader.
 		 */
-		virtual void Render(int mode) = 0;
+		virtual void Render(int mode, IShader& shader) = 0;
 
 		/**
 		 * @fn	virtual void IRenderable::Update() = 0;

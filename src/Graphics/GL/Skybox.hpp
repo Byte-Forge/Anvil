@@ -25,14 +25,10 @@ namespace anvil
 			Skybox();
 			~Skybox();
 
-			void Render(int mode);
+			void Render(int mode,IShader& shader);
 			void Update();
 		private:
 			std::shared_ptr<ITexture> m_diff;
-			GLuint m_diffID;
-
-			GLuint m_matrixID;
-			GLuint m_CameraPos;
 
 			std::vector<glm::vec3> m_vertices;
 			std::vector<std::uint32_t> m_faces;

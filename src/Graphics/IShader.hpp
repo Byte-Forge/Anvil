@@ -7,7 +7,7 @@
 
 #pragma once
 #include <string>
-
+#include <map>
 namespace anvil
 {
     /**
@@ -98,16 +98,14 @@ namespace anvil
          */
         virtual void Use() = 0;
 
-		/**
-		 * @fn	virtual std::uint32_t IShader::GetUniformLocation(const std::string& id) = 0;
-		 *
-		 * @brief	Gets uniform location.
-		 * 			
-		 * @param	id	The identifier.
-		 *
-		 * @return	The uniform location.
-		 */
-		virtual std::uint32_t GetUniformLocation(const std::string& id) = 0;
+		virtual void AddUniform(const std::string& id) = 0;
+		
+		int GetUniform (const std::string& id) 
+		{
+			return m_uniforms[id];
+		}
+	protected:
+		std::map<std::string, int> m_uniforms;
     };
 }
 

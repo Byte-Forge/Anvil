@@ -11,7 +11,7 @@
 
 using namespace anvil;
 
-GL::Skybox::Skybox() : m_diffID(0), m_CameraPos(0), m_matrixID(0)
+GL::Skybox::Skybox()
 {
 	float size = 1.0f;
 
@@ -47,12 +47,7 @@ GL::Skybox::Skybox() : m_diffID(0), m_CameraPos(0), m_matrixID(0)
 
 
 	m_diff = Core::GetCore()->GetResources()->GetTexture("skybox/skybox.dds");
-	m_diffID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("skybox");
-
-	m_matrixID = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("mvp");
-	m_CameraPos = Core::GetCore()->GetGraphics()->GetRenderer()->GetSkyboxUniformLocation("cameraPosition");
-
-
+	
 	m_vbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
 	m_vbo->Bind();
 	m_vbo->Update(static_cast<unsigned int>(m_vertices.size() * sizeof(glm::vec3)), &m_vertices[0]);
@@ -82,16 +77,16 @@ void GL::Skybox::Update()
 
 }
 
-void GL::Skybox::Render(int mode)
+void GL::Skybox::Render(int mode, IShader& shader)
 {
 	glBindVertexArray(m_vao);
-	glUniformMatrix4fv(m_matrixID, 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
+	glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
 	glm::vec3 pos = Core::GetCore()->GetCamera()->GetPosition();
-	glUniform3f(m_CameraPos, pos.x, pos.y, pos.z);
+	glUniform3f(shader.GetUniform("cameraPosition"), pos.x, pos.y, pos.z);
 
 	glActiveTexture(GL_TEXTURE0); //diffuse texture
 	m_diff->Bind();
-	glUniform1i(m_diffID, 0);
+	glUniform1i(shader.GetUniform("skybox"), 0);
 
 	m_fbo->Bind();
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_faces.size()), GL_UNSIGNED_INT,nullptr);
