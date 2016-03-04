@@ -120,7 +120,7 @@ namespace anvil
 				m_normalsMode = true;
 		}
 
-		//why do we have to use the 3 here?
+		///why do we have to use the 3 here? where is this called?
 		inline std::array<std::string, 3> GetShaderModes() { return m_shaderModes; }
 		inline int GetTessfactor() { return m_tessFactor; } 
 		inline int GetMaxTesselation() { return m_maxTesselation; }
