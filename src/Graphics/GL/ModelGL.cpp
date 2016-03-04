@@ -6,6 +6,7 @@
 */
 
 #include "ModelGL.hpp"
+#include "MeshGL.hpp"
 #include <iostream>
 
 using namespace anvil;
@@ -27,10 +28,8 @@ void GL::ModelGL::Render(int mode)
 
 void GL::ModelGL::Update()
 {
-	/*
-	for (auto mesh : m_meshes)
+	for (std::shared_ptr<IMesh> mesh : m_meshes)
 	{
-		//mesh.Update();
+		mesh->Update(); 
 	}
-	*/
 }

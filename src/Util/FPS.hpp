@@ -13,10 +13,29 @@ namespace anvil
 {
 	namespace Util
 	{
+		/**
+		 * @class	FPS
+		 *
+		 * @brief	Is used to display the FPS in debug mode.
+		 */
 		class FPS
 		{
 		public:
+
+			/**
+			 * @fn	double FPS::GetFPS();
+			 *
+			 * @brief	Gets the FPS.
+			 *
+			 * @return	The current FPS.
+			 */
 			double GetFPS();
+
+			/**
+			 * @fn	void FPS::Update();
+			 *
+			 * @brief	Updates this object.
+			 */
 			void Update();
 
 		private:

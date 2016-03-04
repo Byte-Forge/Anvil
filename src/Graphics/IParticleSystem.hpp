@@ -12,9 +12,20 @@
 
 namespace anvil
 {
+	/**
+	 * @class	IParticleSystem
+	 *
+	 * @brief	A particle system.
+	 */
 	class IParticleSystem : public IRenderable, public IResource
 	{
 	protected:
+
+		/**
+		 * @struct	Particle
+		 *
+		 * @brief	A particle.
+		 */
 		struct Particle
 		{
 			glm::vec3 pos,directory;
@@ -23,29 +34,57 @@ namespace anvil
 			int lifetime; //in ms
 			float cameradistance;
 
+			/**
+			 * @fn	bool operator<(Particle& that)
+			 *
+			 * @brief	Sort in reverse order : far particles drawn first.
+			 * 			
+			 * @param [in,out]	that	The that.
+			 *
+			 * @return	true if the first parameter is less than the second.
+			 */
 			bool operator<(Particle& that) 
 			{
-			// Sort in reverse order : far particles drawn first.
-			return this->cameradistance > that.cameradistance;
+				return this->cameradistance > that.cameradistance;
 			}
 		};
+		 
 	public:
+
+		/**
+		 * @fn	IParticleSystem::IParticleSystem();
+		 *
+		 * @brief	Default constructor.
+		 */
 		IParticleSystem();
+
+		/**
+		 * @fn	void IParticleSystem::Start();
+		 *
+		 * @brief	Starts this object.
+		 */
 		void Start();
+
+		/**
+		 * @fn	virtual void IParticleSystem::Render(int mode) = 0;
+		 *
+		 * @brief	Renders the given mode.
+		 *
+		 * @param	mode	The mode.
+		 */
 		virtual void Render(int mode) = 0;
+
+		/**
+		 * @fn	virtual void IParticleSystem::Update();
+		 *
+		 * @brief	Updates this object.
+		 */
 		virtual void Update();
-		inline void SetLifetime(int lifetime)
-		{
-			m_lifetime = lifetime;
-		}
-		inline void SetSpawnRate(int rate)
-		{
-			m_spawnRate = rate;
-		}
-		inline void SetSpawnInterval(int interval)
-		{
-			m_spawnInterval = interval;
-		}
+
+		inline void SetLifetime(int lifetime) { m_lifetime = lifetime; }
+		inline void SetSpawnRate(int rate) { m_spawnRate = rate; }
+		inline void SetSpawnInterval(int interval) { m_spawnInterval = interval; }
+
 	protected:
 		int m_maxParticles;
 		int m_spawnRate;

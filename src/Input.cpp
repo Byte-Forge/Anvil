@@ -96,7 +96,6 @@ void Input::Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRe
 
 int Input::TranslateState(int action)
 {
-	//change the stupid key states of glfw to our custom states
 	if (action > 0)
 		action = PRESSED;
 	else
