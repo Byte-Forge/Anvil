@@ -104,21 +104,8 @@ namespace anvil
 		inline void RegisterTerrain(std::shared_ptr<IRenderable> terrain) { m_terrain = terrain; }
 		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable) { m_renderables.push_back(renderable); }
 
-		inline void ToggleWireframeMode()
-		{
-			if (m_wireframeMode)
-				m_wireframeMode = false;
-			else
-				m_wireframeMode = true;
-		}
-
-		inline void ToggleNormalsMode()
-		{
-			if (m_normalsMode)
-				m_normalsMode = false;
-			else
-				m_normalsMode = true;
-		}
+		inline void ToggleWireframeMode() {	m_wireframeMode = !m_wireframeMode;	}
+		inline void ToggleNormalsMode()	{ m_normalsMode = !m_normalsMode; }
 
 		inline std::array<std::string, 3> GetShaderModes() { return m_shaderModes; }
 		inline int GetTessfactor() { return m_tessFactor; } 

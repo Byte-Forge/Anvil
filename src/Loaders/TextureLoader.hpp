@@ -18,6 +18,6 @@ namespace anvil
 	{
 	public:
 		static void LoadTexture(const std::string& name, const std::string& path);
-		static std::shared_ptr<ITexture> LoadTextureArray(std::vector<std::string> paths);
+		static std::shared_ptr<ITexture> LoadTextureArray(const std::vector<std::string>& paths);
 	};
 }

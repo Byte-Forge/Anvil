@@ -123,5 +123,7 @@ void JsonLoader::LoadParticlesystem(const std::string & name, const std::string 
 	else
 		throw AnvilException("Particlesystem file has no particlesystem object: " + path, __FILE__, __LINE__);
 
+	fin.close();
+
 	Core::GetCore()->GetResources()->AddResource(toUpper(name), particleSys);
 }

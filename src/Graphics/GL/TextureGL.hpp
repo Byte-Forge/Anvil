@@ -31,7 +31,6 @@ namespace anvil
 			bool Load(const gli::texture& tex);
             void Bind();
         private:
-			GLuint CreateHandle(const gli::texture& tex);
             GLuint m_handle;
 			GLenum m_target;
 

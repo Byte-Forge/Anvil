@@ -67,7 +67,7 @@ namespace anvil
 		 * @param	height	   	The height.
 		 */
 		void SetHeight(glm::vec3 &pos, float radius, float height);
-
+		
 		inline int GetPolycount() { return static_cast<int>(m_faces.size() / 3); }
 
 	protected:
