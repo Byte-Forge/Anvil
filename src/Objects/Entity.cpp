@@ -17,9 +17,10 @@ Entity::Entity()
 Entity::Entity(std::shared_ptr<Entity> parent)
 {
 	m_model = parent->m_model;
+	m_model->AddEntity(this);
 }
 
 Entity::~Entity()
 {
-
+	//m_model->RemoveEntity(this);
 }

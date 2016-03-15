@@ -9,14 +9,18 @@
 #include "IRenderable.hpp"
 #include <string>
 #include <vector>
+#include <set>
 #include <memory>
 #include <glm/glm.hpp>
 #include "../Graphics/IMesh.hpp"
 #include "../Core/IResource.hpp"
 #include "../Graphics/IRenderable.hpp"
 
+
 namespace anvil
 {
+	class Entity;
+
 	/**
 	 * @class	IModel
 	 *
@@ -73,12 +77,15 @@ namespace anvil
 		virtual void Render(IShader& shader) = 0;
 
 		inline void SetHierarchyName(const std::string& hierarchyName) { m_hierarchyName = hierarchyName; }
-		inline void AddMesh(std::shared_ptr<IMesh> mesh) { m_meshes.push_back(mesh); } // this sux
+		inline void AddMesh(std::shared_ptr<IMesh> mesh) { m_meshes.push_back(mesh); } 
 		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }
+		inline void AddEntity(Entity* entity) { return; /* m_entities.insert(entity);*/ }
+		inline void RemoveEntity(Entity* entity) { m_entities.erase(entity); }
 
 	protected:
 		std::string m_hierarchyName; //is empty if no hierarchy is needed
 		std::vector<std::shared_ptr<IMesh>> m_meshes;
 		BoundingVolume m_volume;
+		std::set<Entity*> m_entities;
 	};
 }

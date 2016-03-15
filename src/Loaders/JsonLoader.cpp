@@ -73,13 +73,13 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 				ent = std::make_shared<Entity>();
 
 			if (d["entity"].HasMember("model"))
-				ent->m_model = Core::GetCore()->GetResources()->GetModel(d["entity"]["model"].GetString());
+				ent->SetModel(Core::GetCore()->GetResources()->GetModel(d["entity"]["model"].GetString()));
 
 			if (d["entity"].HasMember("materials") && d["entity"]["materials"].IsArray())
 			{
 				for (int i = 0; i < d["entity"]["materials"].Size(); i++)
 				{
-					ent->m_materials.push_back(Core::GetCore()->GetResources()->GetMaterial(d["entity"]["materials"][i].GetString()));
+					ent->AddMaterial(Core::GetCore()->GetResources()->GetMaterial(d["entity"]["materials"][i].GetString()));
 				}
 			}
 		}

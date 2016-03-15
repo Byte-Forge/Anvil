@@ -235,4 +235,3 @@ bool TestRayOBBIntersection(
 	intersection_distance = tMin;
 	return true;
 }
-

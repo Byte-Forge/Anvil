@@ -40,13 +40,20 @@ namespace anvil
 		 * @param	parent	The parent entity of this entity
 		 */
 		Entity(std::shared_ptr<Entity> parent);
+
+		/**
+		 * @fn	Entity::~Entity();
+		 *
+		 * @brief	Destructor.
+		 */
 		~Entity();
 
+		inline void SetModel(std::shared_ptr<IModel> model) { m_model = model; }
+		inline std::shared_ptr<IModel> GetModel() { return m_model; }
+		inline void AddMaterial(std::shared_ptr<Material> material) { m_materials.push_back(material); }
 
-		/** @brief	The model (visual part of the entity). */
+	private:
 		std::shared_ptr<IModel> m_model;
-
-		/** @brief	The materials used by the model */
 		std::vector<std::shared_ptr<Material>> m_materials;
     };
 }
