@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #endif
+#include <iostream>
 #include "../Util.hpp"
 
 using namespace anvil;
@@ -64,5 +65,8 @@ void anvil::ShowError(const std::string & msg)
 {
 	#ifdef _WIN32
 	MessageBox(NULL, msg.c_str(), "Error", MB_OK | MB_ICONERROR);
-	#endif
+    #else
+	std::cout << msg << std::endl;
+    #endif
+
 }
