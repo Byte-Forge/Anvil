@@ -14,6 +14,7 @@
 #include <array>
 #include <Rocket/Core/RenderInterface.h>
 #include "../Types/Map.hpp"
+#include "../Core/Options.hpp"
 
 namespace anvil
 {
@@ -106,11 +107,11 @@ namespace anvil
 		inline void ToggleNormalsMode()	{ m_normalsMode = !m_normalsMode; }
 
 		inline std::array<std::string, 3> GetShaderModes() { return m_shaderModes; }
-		inline int GetTessfactor() { return m_tessFactor; } 
+		inline int GetTessfactor() { return Options::GetTessfactor(); } 
 		inline int GetMaxTesselation() { return m_maxTesselation; }
 
 	protected:
-		int m_tessFactor = 32;
+		
 		int m_maxTesselation = 64;
 		std::array<std::string, 3> m_shaderModes = {{ "DEFAULT", "WIREFRAME", "NORMALS" }};
 		Vendor m_vendor;

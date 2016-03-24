@@ -6,9 +6,9 @@
 */
 
 #include "Core.hpp" 
-#include "Math/Collision.hpp"
 #include "Util/FPS.hpp"
 #include "Exception.hpp"
+#include "Core/Options.hpp"
 #include <iostream>
 
 using namespace anvil;
@@ -58,7 +58,9 @@ void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, in
 Core::Core()
 {
 	m_instance = this;
-	
+	if (!Options::Load("options.json"))
+		Options::Save("options.json");
+
 	if (!glfwInit())
 		throw AnvilException("Failed to initialize glfw!", __FILE__, __LINE__);
 
@@ -72,7 +74,9 @@ Core::Core()
 		//backend = Graphics::Vulkan;
 	}
 	#endif
-	m_window = glfwCreateWindow(800, 600, "anvil engine", NULL, NULL);
+	 
+	m_window = glfwCreateWindow(Options::GetWidth(), Options::GetHeight(), "anvil engine", 
+								Options::GetFullscreen() ? glfwGetPrimaryMonitor() : nullptr ,nullptr);
 
 	int width, height;
 	glfwGetWindowSize(m_window, &width, &height);
