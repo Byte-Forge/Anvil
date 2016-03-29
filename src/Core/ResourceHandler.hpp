@@ -132,7 +132,7 @@ namespace anvil
 		}
 
 	private:
-		int GetFilePath(std::string name, std::string* path);
+		int GetFilePath(std::string name, std::string& path);
 
     private:
 		std::string m_texturesDir = "textures/";
@@ -143,7 +143,7 @@ namespace anvil
 		std::string m_entitiesDir = "entities/";
 		std::string m_particleDir = "particle/";
 		std::string m_modDir = "mods/";
-
+		std::string m_soundDir = "sound/";
 		std::vector<std::string> m_modDirs;
 
         std::map<const std::string, std::shared_ptr<IResource>> m_resources;

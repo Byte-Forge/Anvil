@@ -39,8 +39,22 @@ namespace anvil
          */
         ~SoundBuffer();
 
+		/**
+		 * @fn	bool SoundBuffer::Load(const std::string& path);
+		 *
+		 * @brief	Loads the given .wav file and stores it in this SoundBufffer.
+		 *
+		 * @param	path	The path of a .wav file to load.
+		 *
+		 * @return	true if it succeeds, false if it fails.
+		 */
+		bool Load(const std::string& path);
     private:
         ALuint m_buffer;
+		ALsizei m_size;
+		ALsizei m_frequency;
+		ALenum m_format;
+
     };
 }
 

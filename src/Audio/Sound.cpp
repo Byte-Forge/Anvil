@@ -8,7 +8,7 @@
 #include "Sound.hpp"
 using namespace anvil;
 
-Sound::Sound() : m_source(0)
+Sound::Sound(SoundBuffer buffer) : m_source(0)
 {
     alGenSources(1,&m_source);
 }

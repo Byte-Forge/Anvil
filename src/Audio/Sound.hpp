@@ -11,6 +11,7 @@
 #else
 #include <AL/al.h>
 #endif
+#include "SoundBuffer.hpp"
 
 namespace anvil
 {
@@ -24,11 +25,13 @@ namespace anvil
     public:
 
         /**
-         * @fn	Sound::Sound();
+         * @fn	Sound::Sound(SoundBuffer buffer);
          *
          * @brief	Default constructor.
+         *
+         * @param	buffer	The soundbuffer that should be played.
          */
-        Sound();
+        Sound(SoundBuffer buffer);
 
         /**
          * @fn	Sound::~Sound();
