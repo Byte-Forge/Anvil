@@ -63,7 +63,6 @@ void GL::MeshGL::Update()
 void GL::MeshGL::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
-
 	m_fbo->Bind();
 	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, (void*)0);
 }

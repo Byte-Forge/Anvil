@@ -38,8 +38,8 @@ void Entity::SetModel(std::shared_ptr<IModel> model)
 
 void Entity::AddInstance(glm::vec3 position)
 {
-	Instance* i = new Instance();
-	i->position = glm::vec4(position, 1.0);
+	//Instance* i = new Instance();
+	//i->position = glm::vec4(position, 1.0);
 	//m_instances.insert(*i);
 }
 

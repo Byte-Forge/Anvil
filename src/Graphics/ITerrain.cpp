@@ -15,6 +15,7 @@
 #include "Camera.hpp"
 #include "../Core/ResourceHandler.hpp"
 #include "Material.hpp"
+#include "../Objects/Entity.hpp"
 
 #include <future>
 
