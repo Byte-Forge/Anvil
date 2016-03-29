@@ -41,6 +41,9 @@ namespace anvil
          * @brief	Destructor.
          */
         ~Audio();
+
+		void PlaySound(const std::string& name);
+		void PlayMusic(const std::string& name);
     private:
 
         /**

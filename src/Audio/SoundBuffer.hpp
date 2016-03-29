@@ -49,6 +49,11 @@ namespace anvil
 		 * @return	true if it succeeds, false if it fails.
 		 */
 		bool Load(const std::string& path);
+
+		inline ALuint GetBufferId()
+		{
+			return m_buffer;
+		}
     private:
         ALuint m_buffer;
 		ALsizei m_size;

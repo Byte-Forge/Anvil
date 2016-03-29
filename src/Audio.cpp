@@ -8,6 +8,7 @@
 #include "Audio.hpp"
 #include "Core.hpp"
 #include "Core/ResourceHandler.hpp"
+#include "Audio/Sound.hpp"
 #include <iostream>
 #include <cstring>
 
@@ -39,7 +40,7 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
         std::cout << "Failed to create OpenAL context" << std::endl;
     }
 
-	Core::GetCore()->GetResources()->GetSound("roll_over_01.wav");
+	
 }
 
 Audio::~Audio()
@@ -51,6 +52,17 @@ Audio::~Audio()
 
     if(m_device)
         alcCloseDevice(m_device);
+}
+
+void Audio::PlaySound(const std::string & name)
+{
+	auto buffer = Core::GetCore()->GetResources()->GetSound(name);
+	Sound sound(buffer);
+	sound.Play();
+}
+
+void Audio::PlayMusic(const std::string & name)
+{
 }
 
 void Audio::EnumerateDevices(const ALCchar *devices)

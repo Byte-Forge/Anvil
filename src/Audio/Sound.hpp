@@ -12,6 +12,7 @@
 #include <AL/al.h>
 #endif
 #include "SoundBuffer.hpp"
+#include <memory>
 
 namespace anvil
 {
@@ -31,7 +32,7 @@ namespace anvil
          *
          * @param	buffer	The soundbuffer that should be played.
          */
-        Sound(SoundBuffer buffer);
+        Sound(std::shared_ptr<SoundBuffer> buffer);
 
         /**
          * @fn	Sound::~Sound();
@@ -40,6 +41,7 @@ namespace anvil
          */
         ~Sound();
 
+		void Play();
     private:
         ALuint  m_source;
     };

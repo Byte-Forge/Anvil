@@ -111,6 +111,7 @@ Core::Core()
 
 	m_map = std::make_unique<Map>();
 	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
+	m_audio->PlaySound("roll_over_01.wav");
 }
 
 Core::~Core()
