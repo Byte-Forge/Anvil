@@ -12,15 +12,40 @@ using namespace anvil;
 
 Entity::Entity() 
 {
+
 }
 
 Entity::Entity(std::shared_ptr<Entity> parent)
 {
-	m_model = parent->m_model;
-	m_model->AddEntity(this);
+	SetModel(parent->m_model);
 }
 
 Entity::~Entity()
 {
-	//m_model->RemoveEntity(this);
+	m_model->RemoveEntity(this);
 }
+
+void Entity::Update()
+{
+
+}
+
+void Entity::SetModel(std::shared_ptr<IModel> model)
+{
+	m_model = model;
+	m_model->AddEntity(this);
+}
+
+void Entity::AddInstance(glm::vec3 position)
+{
+	Instance* i = new Instance();
+	i->position = glm::vec4(position, 1.0);
+	//m_instances.insert(*i);
+}
+
+/*
+std::set<Entity::Instance> Entity::GetInstances()
+{
+	return m_instances;
+}
+*/

@@ -121,6 +121,7 @@ namespace anvil
 		std::unique_ptr<IShader> m_guiShader;
 		std::unique_ptr<IShader> m_skyboxShader;
 		std::vector<std::unique_ptr<IShader>> m_terrainShaders;
+		std::vector<std::shared_ptr<IShader>> m_modelShaders;
 
 		std::shared_ptr<IRenderable> m_skybox;
 		std::shared_ptr<IRenderable> m_terrain;

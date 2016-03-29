@@ -10,6 +10,8 @@
 #include "../Math/SimplexNoise.hpp"
 #include "../Math/Collision.hpp"
 #include "../Math.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtx/intersect.hpp"
 #include <future>
 
 using namespace anvil;
@@ -26,7 +28,7 @@ int ITerrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
 	glm::vec3 point;
 	for (unsigned int i = 0; i < m_faces.size(); i += 3)
 	{
-		if (Collision::Ray_Tri_Intersect(m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]], origin, direction, point))
+		if (glm::intersectRayTriangle(origin, direction, m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]], point))
 		{
 			pos = point;
 			return 1;
@@ -73,8 +75,6 @@ void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 
 void ITerrain::Generate()
 {
-	Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
-
 	//m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
 	m_terrainMaterials.push_back("terrain/grass.json");
 	m_terrainMaterials.push_back("terrain/grass_2.json");
@@ -128,6 +128,8 @@ void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals)
 
 void ITerrain::CreateHeightmap()
 {
+	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
+
 	for (unsigned int i = 0; i <= m_width; i++)
 	{
 		std::vector<float> v;
@@ -148,6 +150,8 @@ void ITerrain::CreateHeightmap()
 			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01f, 0.1f, 0.0f, 2.0f, i, j); //for flat terrain
 
 			m_heightmap[i].push_back(value);
+
+			tree->AddInstance(glm::vec3(i, value, j));
 
 			int mat1 = 0;
 			int mat2 = -1;

@@ -160,6 +160,12 @@ RendererGL::RendererGL()
 	m_skyboxShader->AddUniform("mvp");
 	m_skyboxShader->AddUniform("cameraPosition");
 
+	m_modelShaders.push_back(std::make_unique<GL::Shader>());
+	m_modelShaders[0]->Load("shader/gl/model.vert", "shader/gl/model.frag");
+	m_modelShaders[0]->Compile();
+
+	m_modelShaders[0]->AddUniform("mvp");
+
 	for (unsigned int i = 0; i < m_shaderModes.size(); i++)
 	{
 		m_terrainShaders.push_back(std::make_unique<GL::Shader>());
@@ -246,14 +252,15 @@ void RendererGL::Render(const glm::mat4& ortho)
 		m_terrain->Render(*m_terrainShaders[2]);
 	}
 
-	for (auto& renderable : m_renderables)
-	{
-		renderable->Update();
-	}
+	m_modelShaders[0]->Use();
 
-	//apply entity shader here
-    //for(auto& renderable : m_renderables)
-    //   renderable->Render(0);
+	for (auto& renderable : m_renderables)
+		renderable->Update();
+
+	glDisable(GL_CULL_FACE); //we should not need this
+    for(auto& renderable : m_renderables)
+       renderable->Render(*m_modelShaders[0]);
+	glEnable(GL_CULL_FACE);
 
 	glDisable(GL_DEPTH_TEST);
 }

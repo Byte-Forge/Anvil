@@ -77,8 +77,9 @@ void Input::Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRe
 		m_keyInputs[GLFW_KEY_F2] = RELEASED;
 	}
 
-	//if (m_mouseInputs[GLFW_MOUSE_BUTTON_1] == PRESSED)
-	//	std::cout << "left" << std::endl;
+	if (m_mouseInputs[GLFW_MOUSE_BUTTON_1] == PRESSED)
+		//Core::GetCore()->Get
+		std::cout << "left" << std::endl;
 
 	if (m_mouseInputs[GLFW_MOUSE_BUTTON_2] == PRESSED)
 	{
