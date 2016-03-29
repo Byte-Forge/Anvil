@@ -16,7 +16,7 @@
 #include <functional>
 #include "Core.hpp"
 #include "Util/Platform.hpp"
-
+#include "Graphics.hpp"
 using namespace anvil;
 
 const int GUI::UPDATES_PER_SECOND = 30;

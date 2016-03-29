@@ -8,8 +8,11 @@
 #include "JsonLoader.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Core.hpp"
+#include "../Core/ResourceHandler.hpp"
 #include "../Util.hpp"
 #include "../Exception.hpp"
+#include "../Objects/Entity.hpp"
+#include "../Graphics/IParticleSystem.hpp"
 #include <iostream>
 #include <rapidjson/document.h>
 #include <rapidjson/istreamwrapper.h>

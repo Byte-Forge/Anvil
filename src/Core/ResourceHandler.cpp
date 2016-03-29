@@ -13,7 +13,12 @@
 #include "../Loaders/BF3DLoader.hpp"
 #include "../Util/Platform.hpp"
 #include "../Exception.hpp"
-
+#include "../Objects/Entity.hpp"
+#include "../Graphics/IModel.hpp"
+#include "../Graphics/ITexture.hpp"
+#include "../Graphics/IParticleSystem.hpp"
+#include "../Graphics/Material.hpp"
+#include "../Audio/SoundBuffer.hpp"
 using namespace anvil;
 
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)

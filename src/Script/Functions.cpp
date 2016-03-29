@@ -8,6 +8,9 @@
 #include <string>
 #include <iostream>
 #include "../Core.hpp"
+#include "../Core/ResourceHandler.hpp"
+#include "../Graphics.hpp"
+#include "../GUI.hpp"
 #include "../Graphics/IRenderer.hpp"
 
 using namespace anvil;

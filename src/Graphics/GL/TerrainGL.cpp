@@ -10,11 +10,12 @@
 #include "../../Core.hpp"
 #include "../../Math.hpp"
 #include "../../Math/SimplexNoise.hpp"
+#include "../Camera.hpp"
+#include "../IRenderer.hpp"
+#include "../../Graphics.hpp"
 #include <iostream>
 #include <vector>
-
-//just for testing
-#include <ctime>
+#include <glm/gtc/type_ptr.hpp>
 #include <chrono>
 
 using namespace anvil;

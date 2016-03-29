@@ -13,14 +13,17 @@
 #include <algorithm>
 #include <iostream>
 #include "IResource.hpp"
-#include "../Objects/Entity.hpp"
-#include "../Graphics/IModel.hpp"
-#include "../Graphics/ITexture.hpp"
-#include "../Graphics/IParticleSystem.hpp"
-#include "../Graphics/Material.hpp"
+
 
 namespace anvil
 {
+	class Entity;
+	class IParticleSystem;
+	class ITexture;
+	class Material;
+	class IModel;
+	class SoundBuffer;
+
     /**
      * @class	ResourceHandler
      *
@@ -105,6 +108,9 @@ namespace anvil
 		 */
 		std::shared_ptr<IModel> GetModel(const std::string &name);
 
+
+		std::shared_ptr<SoundBuffer> GetSound(const std::string &name);
+		
 		/**
 		 * @fn	void ResourceHandler::AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 		 *

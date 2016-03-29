@@ -10,6 +10,15 @@
 #include "Exception.hpp"
 #include "Core/Options.hpp"
 #include <iostream>
+#include "Graphics.hpp"
+#include "Script.hpp"
+#include "GUI.hpp"
+#include "Audio.hpp"
+#include "Types/Map.hpp"
+#include "Core/ResourceHandler.hpp"
+#include "Graphics/Camera.hpp"
+#include "Graphics/Frustum.hpp"
+#include "Input.hpp"
 
 using namespace anvil;
 

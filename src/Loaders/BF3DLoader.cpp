@@ -12,6 +12,7 @@
 #include "../Util.hpp"        
 #include "../Core.hpp"
 #include "../Types/BF3D.hpp"
+#include "../Graphics.hpp"
 #include "../Graphics/IMesh.hpp"
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/GL/MeshGL.hpp"

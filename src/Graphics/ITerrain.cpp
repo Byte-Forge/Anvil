@@ -10,6 +10,9 @@
 #include "../Math/SimplexNoise.hpp"
 #include "../Math/Collision.hpp"
 #include "../Math.hpp"
+#include "Camera.hpp"
+#include "../Core/ResourceHandler.hpp"
+#include "Material.hpp"
 #include <future>
 
 using namespace anvil;

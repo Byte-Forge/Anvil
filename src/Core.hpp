@@ -11,20 +11,22 @@
 #endif
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include "Graphics.hpp"
-#include "Script.hpp"
-#include "GUI.hpp"
-#include "Audio.hpp"
-#include "Types/Map.hpp"
-#include "Core/ResourceHandler.hpp"
-#include "Graphics/Camera.hpp"
-#include "Graphics/Frustum.hpp"
+#include <memory>
 #include "Util/Timer.hpp"
 #include "Util/FPS.hpp"
-#include "Input.hpp"
 
 namespace anvil
 {
+	class ResourceHandler;
+	class Map;
+	class Camera;
+	class GUI;
+	class Input;
+	class Script;
+	class Graphics;
+	class Audio;
+	class Frustum;
+
 	class Core
 	{
 	public: 
@@ -98,7 +100,7 @@ namespace anvil
 
 		inline void Quit()
 		{
-			glfwSetWindowShouldClose(m_window, GL_TRUE);
+			glfwSetWindowShouldClose(m_window, true);
 		}
 
 		static inline Core* GetCore()
