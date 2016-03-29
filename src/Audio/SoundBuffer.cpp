@@ -75,11 +75,21 @@ bool SoundBuffer::Load(const std::string & path)
 		
 
 	fin.read(reinterpret_cast<char*>(&riff_header), sizeof(RIFF_Header));
-	if (std::string(riff_header.chunkID) != "RIFF"&&std::string(riff_header.format) != "WAVE")
+	if ((riff_header.chunkID[0] != 'R' ||
+		 riff_header.chunkID[1] != 'I' ||
+		 riff_header.chunkID[2] != 'F' ||
+		 riff_header.chunkID[3] != 'F') ||
+		 (riff_header.format[0] != 'W' ||
+	      riff_header.format[1] != 'A' ||
+		  riff_header.format[2] != 'V' ||
+		  riff_header.format[3] != 'E'))
 		throw AnvilException("Invalid .wav file header: " + path, __FILE__, __LINE__);
 
 	fin.read(reinterpret_cast<char*>(&wave_format), sizeof(WAVE_Format));
-	if(std::string(wave_format.subChunkID)!="fmt ")
+	if (wave_format.subChunkID[0] != 'f' ||
+		wave_format.subChunkID[1] != 'm' ||
+		wave_format.subChunkID[2] != 't' ||
+		wave_format.subChunkID[3] != ' ')
 		throw AnvilException("Invalid .wav file format chunk: " + path, __FILE__, __LINE__);
 
 	if (wave_format.subChunkSize > 16)
@@ -88,7 +98,10 @@ bool SoundBuffer::Load(const std::string & path)
 	//Read in the the last byte of data before the sound file
 	fin.read(reinterpret_cast<char*>(&wave_data), sizeof(WAVE_Data));
 	//check for data tag in memory
-	if (std::string(wave_data.subChunkID) != "data");
+	if (wave_data.subChunkID[0] != 'd' ||
+		wave_data.subChunkID[1] != 'a' ||
+		wave_data.subChunkID[2] != 't' ||
+		wave_data.subChunkID[3] != 'a')
 		throw AnvilException("Invalid .wav file data chunk: " + path, __FILE__, __LINE__);
 
 	//Allocate memory for data
