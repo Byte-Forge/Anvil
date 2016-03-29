@@ -66,7 +66,7 @@ script: make -j2
 cache:
   apt: true
   directories:
-  - deps
+  - $HOME/deps
 
 notifications:
   slack: byteforge-team:kisF1nc1JVGxnVtGQ4notBAG
