@@ -62,12 +62,12 @@ namespace anvil
 
 		inline std::shared_ptr<IModel> GetModel() { return m_model; }
 		inline void AddMaterial(std::shared_ptr<Material> material) { m_materials.push_back(material); }
-		//std::set<Instance> GetInstances();
+		std::vector<Instance> GetInstances();
 
 	private:
 		std::shared_ptr<IModel> m_model;
 		std::vector<std::shared_ptr<Material>> m_materials;
-		//std::set<Instance> m_instances;
+		std::vector<Instance> m_instances;
     };
 }
 
