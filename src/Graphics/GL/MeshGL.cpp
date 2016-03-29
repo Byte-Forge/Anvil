@@ -11,7 +11,7 @@
 
 using namespace anvil;
 
-GL::MeshGL::MeshGL()
+GL::MeshGL::MeshGL() : m_vao(0)
 {
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -40,24 +40,28 @@ GL::MeshGL::MeshGL()
 
 GL::MeshGL::~MeshGL()
 {
-	glDeleteVertexArrays(1, &m_vao);
-	m_vao = 0;
+	if (m_vao)
+	{
+		glDeleteVertexArrays(1, &m_vao);
+		m_vao = 0;
+	}
+	
 }
 
 void GL::MeshGL::Update()
 {
 	//do this only once? but has to be after the constructor
 	m_vbo->Bind();
-	m_vbo->Update(sizeof(glm::f32vec3) * m_vertices.size(), &m_vertices[0]);
+	m_vbo->Update(sizeof(glm::f32vec3) * m_vertices.size(), m_vertices.data());
 
 	m_nbo->Bind();
-	m_nbo->Update(sizeof(glm::f32vec3) * m_normals.size(), &m_normals[0]);
+	m_nbo->Update(sizeof(glm::f32vec3) * m_normals.size(), m_normals.data());
 
 	m_uvbo->Bind();
-	m_uvbo->Update(sizeof(glm::f32vec2) * m_uvCoords.size(), &m_uvCoords[0]);
+	m_uvbo->Update(sizeof(glm::f32vec2) * m_uvCoords.size(), m_uvCoords.data());
 
 	m_fbo->Bind();
-	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), &m_faces[0]);
+	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), m_faces.data());
 }
 
 void GL::MeshGL::Render(IShader& shader)

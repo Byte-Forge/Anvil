@@ -133,7 +133,6 @@ void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals)
 
 void ITerrain::CreateHeightmap()
 {
-	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
 
 	for (unsigned int i = 0; i <= m_width; i++)
 	{

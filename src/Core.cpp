@@ -110,6 +110,7 @@ Core::Core()
 	m_script->LoadFile("start.lua");
 
 	m_map = std::make_unique<Map>();
+	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
 }
 
 Core::~Core()
