@@ -39,8 +39,14 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
     {
         std::cout << "Failed to create OpenAL context" << std::endl;
     }
-
 	
+	ALfloat listenerOri[] = { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f };
+
+	alListener3f(AL_POSITION, 0, 0, 1.0f);
+	// check for errors
+	alListener3f(AL_VELOCITY, 0, 0, 0);
+	// check for errors
+	alListenerfv(AL_ORIENTATION, listenerOri);
 }
 
 Audio::~Audio()

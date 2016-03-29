@@ -133,6 +133,9 @@ bool SoundBuffer::Load(const std::string & path)
 	}
 
 	alBufferData(m_buffer, m_format, data, m_size, m_frequency);
+	ALenum error = alGetError();
+	if (error != AL_NO_ERROR)
+		throw AnvilException("Error in OpenAL!", __FILE__, __LINE__);
 	fin.close();
 	return true;
 }
