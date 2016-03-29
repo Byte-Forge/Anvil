@@ -13,7 +13,12 @@
 #include "../Loaders/BF3DLoader.hpp"
 #include "../Util/Platform.hpp"
 #include "../Exception.hpp"
-
+#include "../Objects/Entity.hpp"
+#include "../Graphics/IModel.hpp"
+#include "../Graphics/ITexture.hpp"
+#include "../Graphics/IParticleSystem.hpp"
+#include "../Graphics/Material.hpp"
+#include "../Audio/SoundBuffer.hpp"
 using namespace anvil;
 
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
@@ -21,7 +26,7 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(m_entitiesDir + name, &path))
+		if (GetFilePath(m_entitiesDir + name, path))
 		{
 			JsonLoader::LoadEntity(name, path);
 		}
@@ -34,7 +39,7 @@ std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::s
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(m_particleDir + name, &path))
+		if (GetFilePath(m_particleDir + name, path))
 		{
 			JsonLoader::LoadParticlesystem(name, path);
 		}
@@ -47,7 +52,7 @@ std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(m_texturesDir + name, &path))
+		if (GetFilePath(m_texturesDir + name, path))
 		{
 			TextureLoader::LoadTexture(name, path);
 		}
@@ -62,7 +67,7 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 	{
 		std::string path;
 		name = m_texturesDir + name;
-		if (GetFilePath(name, &path))
+		if (GetFilePath(name, path))
 		{
 			paths.push_back(path);
 		}
@@ -75,7 +80,7 @@ std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(m_materialsDir + name, &path))
+		if (GetFilePath(m_materialsDir + name, path))
 		{
 			JsonLoader::LoadMaterial(name, path);
 		}
@@ -117,7 +122,7 @@ std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(m_bf3dDir + name, &path))
+		if (GetFilePath(m_bf3dDir + name, path))
 		{
 			BF3DLoader::Load(name, path);
 		}
@@ -125,12 +130,27 @@ std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
 	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(name)]);
 }
 
+std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
+{
+	std::string path;
+	if (m_resources.count(toUpper(name)) == 0)
+	{
+		if (GetFilePath(m_soundDir + name, path))
+		{
+			std::shared_ptr<SoundBuffer> sound = std::make_shared<SoundBuffer>();
+			sound->Load(path);
+			AddResource(name, sound);
+		}
+	}
+	return std::dynamic_pointer_cast<SoundBuffer> (m_resources[toUpper(name)]);
+}
+
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 {
 	m_resources.insert({ toUpper(name), resource });
 }
 
-int ResourceHandler::GetFilePath(std::string name, std::string* path)
+int ResourceHandler::GetFilePath(std::string name, std::string& path)
 {
 	//test if the file is in one of the mod folders, starting with the last added mod folder
 	for (size_t i = m_modDirs.size(); i > 0; i--)
@@ -138,15 +158,16 @@ int ResourceHandler::GetFilePath(std::string name, std::string* path)
 		const auto& dir = m_modDirs[i];
 		if (fileExists(dir + "/" + name))
 		{
-			*path = dir + "/" + name;
+			path = dir + "/" + name;
 			return 1;
 		}
 	}
 	if (fileExists(name)) //file in engine folder
 	{
-		*path = name;
+		path = name;
 		return 1;
 	}
-	throw AnvilException("No such file found: " + name, __FILE__, __LINE__);
+	else
+		throw AnvilException("No such file found: " + name, __FILE__, __LINE__);
 	return 0;
 }

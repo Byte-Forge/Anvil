@@ -6,6 +6,8 @@
 */
 
 #include "Audio.hpp"
+#include "Core.hpp"
+#include "Core/ResourceHandler.hpp"
 #include <iostream>
 #include <cstring>
 
@@ -36,6 +38,8 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
     {
         std::cout << "Failed to create OpenAL context" << std::endl;
     }
+
+	Core::GetCore()->GetResources()->GetSound("roll_over_01.wav");
 }
 
 Audio::~Audio()

@@ -7,6 +7,8 @@
 
 #include "SkyboxGL.hpp"
 #include "../../Core.hpp"
+#include "../../Core/ResourceHandler.hpp"
+#include "../Camera.hpp"
 #include <numeric>
 
 using namespace anvil;

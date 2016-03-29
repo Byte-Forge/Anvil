@@ -9,11 +9,14 @@
 #include "TextureGL.hpp"
 #include "ShaderGL.hpp"
 #include "../../Core.hpp"
+#include "../../Core/ResourceHandler.hpp"
 #include "../IRenderable.hpp"
 #include "../../Exception.hpp"
 #include "../../Util/stb_image.h"
+#include "../../Graphics.hpp"
 #include <iostream>
-
+#include <glm/gtc/type_ptr.hpp>
+#include <Rocket/Core.h>
 using namespace anvil;
 
 

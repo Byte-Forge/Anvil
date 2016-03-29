@@ -13,14 +13,17 @@
 #include <algorithm>
 #include <iostream>
 #include "IResource.hpp"
-#include "../Objects/Entity.hpp"
-#include "../Graphics/IModel.hpp"
-#include "../Graphics/ITexture.hpp"
-#include "../Graphics/IParticleSystem.hpp"
-#include "../Graphics/Material.hpp"
+
 
 namespace anvil
 {
+	class Entity;
+	class IParticleSystem;
+	class ITexture;
+	class Material;
+	class IModel;
+	class SoundBuffer;
+
     /**
      * @class	ResourceHandler
      *
@@ -105,6 +108,9 @@ namespace anvil
 		 */
 		std::shared_ptr<IModel> GetModel(const std::string &name);
 
+
+		std::shared_ptr<SoundBuffer> GetSound(const std::string &name);
+		
 		/**
 		 * @fn	void ResourceHandler::AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 		 *
@@ -126,7 +132,7 @@ namespace anvil
 		}
 
 	private:
-		int GetFilePath(std::string name, std::string* path);
+		int GetFilePath(std::string name, std::string& path);
 
     private:
 		std::string m_texturesDir = "textures/";
@@ -137,7 +143,7 @@ namespace anvil
 		std::string m_entitiesDir = "entities/";
 		std::string m_particleDir = "particle/";
 		std::string m_modDir = "mods/";
-
+		std::string m_soundDir = "sound/";
 		std::vector<std::string> m_modDirs;
 
         std::map<const std::string, std::shared_ptr<IResource>> m_resources;

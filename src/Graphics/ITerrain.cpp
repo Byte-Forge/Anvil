@@ -12,6 +12,10 @@
 #include "../Math.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtx/intersect.hpp"
+#include "Camera.hpp"
+#include "../Core/ResourceHandler.hpp"
+#include "Material.hpp"
+
 #include <future>
 
 using namespace anvil;
@@ -151,7 +155,7 @@ void ITerrain::CreateHeightmap()
 
 			m_heightmap[i].push_back(value);
 
-			tree->AddInstance(glm::vec3(i, value, j));
+			//tree->AddInstance(glm::vec3(i, value, j));
 
 			int mat1 = 0;
 			int mat2 = -1;
