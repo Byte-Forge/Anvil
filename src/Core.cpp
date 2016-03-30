@@ -18,6 +18,7 @@
 #include "Core/ResourceHandler.hpp"
 #include "Graphics/Camera.hpp"
 #include "Graphics/Frustum.hpp"
+#include "Objects/Entity.hpp"
 #include "Input.hpp"
 
 using namespace anvil;
@@ -111,6 +112,11 @@ Core::Core()
 
 	m_map = std::make_unique<Map>();
 	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("terrain/tree.json");
+	tree->AddInstance(glm::vec3(0.0, 0.0, 0.0));
+	tree->AddInstance(glm::vec3(10.0, 0.0, 10.0));
+	tree->AddInstance(glm::vec3(50.0, 0.0, 10.0));
+	tree->AddInstance(glm::vec3(10.0, 0.0, 50.0));
+
 	m_audio->PlaySound("roll_over_01.wav");
 }
 
