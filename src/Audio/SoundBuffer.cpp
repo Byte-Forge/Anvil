@@ -65,14 +65,13 @@ bool SoundBuffer::Load(const std::string & path)
 	WAVE_Format wave_format;
 	RIFF_Header riff_header;
 	WAVE_Data wave_data;
-	uint8_t* data;
+	char* data;
 
 	fin.open(path, std::ios::binary);
 	if (fin.fail())
 	{
 		return false;
-	}
-		
+	}		
 
 	fin.read(reinterpret_cast<char*>(&riff_header), sizeof(RIFF_Header));
 	if ((riff_header.chunkID[0] != 'R' ||
@@ -105,10 +104,10 @@ bool SoundBuffer::Load(const std::string & path)
 		throw AnvilException("Invalid .wav file data chunk: " + path, __FILE__, __LINE__);
 
 	//Allocate memory for data
-	data = new uint8_t[wave_data.subChunk2Size];
+	data = new char[wave_data.subChunk2Size];
 
 	// Read in the sound data into the soundData variable
-	if (!fin.read(reinterpret_cast<char*>(data), wave_data.subChunk2Size))
+	if (!fin.read(data, wave_data.subChunk2Size))
 		throw AnvilException("Error loading wave data into chunk: " + path, __FILE__, __LINE__);
 
 	//Now we set the variables that we passed in with the

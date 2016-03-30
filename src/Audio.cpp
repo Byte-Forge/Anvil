@@ -11,35 +11,23 @@
 #include "Audio/Sound.hpp"
 #include <iostream>
 #include <cstring>
-
+#include "Exception.hpp"
 using namespace anvil;
 
 Audio::Audio() : m_device(nullptr), m_context(nullptr)
 {
     m_device = alcOpenDevice(NULL);
     if(!m_device)
-    {
-        std::cout << "Failed to open audio device" << std::endl;
-    }
-
-    ALboolean enumeration;
-
-    enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
-    if (enumeration == AL_TRUE)
-    {
-        EnumerateDevices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
-    }
-    else
-    {
-        std::cout << "Can not enumerate audio devices" << std::endl;
-    }
+		throw AnvilException("Failed to open audio device", __FILE__, __LINE__);
 
     m_context = alcCreateContext(m_device,NULL);
     if(!alcMakeContextCurrent(m_context))
-    {
-        std::cout << "Failed to create OpenAL context" << std::endl;
-    }
-	
+		throw AnvilException("Failed to create OpenAL context", __FILE__, __LINE__);
+    
+	ALCenum errorAlc = alcGetError(m_device);
+	if (errorAlc != AL_NO_ERROR)
+		throw AnvilException("Error in OpenAL!", __FILE__, __LINE__);
+
 	ALfloat listenerOri[] = { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f };
 
 	alListener3f(AL_POSITION, 0, 0, 1.0f);
@@ -47,6 +35,12 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
 	alListener3f(AL_VELOCITY, 0, 0, 0);
 	// check for errors
 	alListenerfv(AL_ORIENTATION, listenerOri);
+
+	ALenum error = alGetError();
+	if (error != AL_NO_ERROR)
+		throw AnvilException("Error in OpenAL!", __FILE__, __LINE__);
+
+	
 }
 
 Audio::~Audio()
