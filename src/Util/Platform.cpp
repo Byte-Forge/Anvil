@@ -11,6 +11,7 @@
 #else
 #include <sys/types.h>
 #include <dirent.h>
+#include <sys/stat.h>
 #endif
 #include <iostream>
 #include "../Util.hpp"
@@ -50,11 +51,14 @@ std::vector<std::string> IO::ListFiles(const std::string & dir, const std::strin
 
 	while ((dirp = readdir(dp)) != NULL)
 	{
-		std::string name = dirp->d_name;
-		std::string fileExt = split(name, '.').back();
+		if (S_ISREG(dirp->d_type))
+		{
+			std::string name = dirp->d_name;
+			std::string fileExt = split(name, '.').back();
 
-		if (fileExt == ext || ext.size() == 0)
-			files.push_back(name);
+			if (fileExt == ext || ext.size() == 0)
+				files.push_back(name);
+		}
 	}
 	closedir(dp);
 	#endif

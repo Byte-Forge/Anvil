@@ -8,6 +8,7 @@
 #include "SoundBuffer.hpp"
 #include "../Exception.hpp"
 #include <fstream>
+#include <stdint.h>
 using namespace anvil;
 
 //WAV FILE FORMAT
@@ -19,7 +20,7 @@ using namespace anvil;
 struct RIFF_Header 
 {
 	char chunkID[4];
-	long chunkSize;//size not including chunkSize or chunkID
+	uint32_t chunkSize;//size not including chunkSize or chunkID
 	char format[4];
 };
 
@@ -29,13 +30,13 @@ struct RIFF_Header
 struct WAVE_Format 
 {
 	char subChunkID[4];
-	long subChunkSize;
-	short audioFormat;
-	short numChannels;
-	long sampleRate;
-	long byteRate;
-	short blockAlign;
-	short bitsPerSample;
+	uint32_t subChunkSize;
+	uint16_t audioFormat;
+	uint16_t numChannels;
+	uint32_t sampleRate;
+	uint32_t byteRate;
+	uint16_t blockAlign;
+	uint16_t bitsPerSample;
 };
 
 /**
@@ -43,7 +44,7 @@ struct WAVE_Format
  */
 struct WAVE_Data {
 	char subChunkID[4]; //should contain the word data
-	long subChunk2Size; //Stores the size of the data block
+	uint32_t subChunk2Size; //Stores the size of the data block
 };
 //END WAV FILE FORMAT
 

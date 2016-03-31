@@ -39,11 +39,17 @@ void Core::ResizeCallback(GLFWwindow * window, int width, int height)
 void Core::MouseCallback(GLFWwindow* window, int key, int action, int mods)
 {
 	Core::GetCore()->GetInput()->SetMouseState(key, action, mods);
+	auto& gui = Core::GetCore()->GetGUI();
+	if(action==GLFW_PRESS)
+		gui->MousePressed(key,mods);
+	else if(action==GLFW_RELEASE)
+		gui->MouseReleased(key,mods);
 }
 
 void Core::MousePosCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	Core::GetCore()->GetInput()->SetMousePosition(xpos, ypos);
+	Core::GetCore()->GetGUI()->MouseMove(xpos,ypos,0);
 }
 
 void Core::ScrollCallback(GLFWwindow* window, double x, double y)
