@@ -32,6 +32,8 @@ void Entity::Update()
 
 void Entity::SetModel(std::shared_ptr<IModel> model)
 {
+	if (m_model != nullptr)
+		m_model->RemoveEntity(this);
 	m_model = model;
 	m_model->AddEntity(this);
 }

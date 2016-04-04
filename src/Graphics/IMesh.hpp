@@ -49,7 +49,8 @@ namespace anvil
 		virtual void Render(IShader& shader) = 0;
 
 		inline void SetType(std::uint8_t type) { m_type = type; }
-		inline void SetMeshName(const std::string& meshName) { m_meshName = meshName; }
+		inline void SetName(const std::string& meshName) { m_meshName = meshName; }
+		inline std::string GetName() { return m_meshName; }
 		inline void SetMaterialID(std::uint16_t materialID) { m_materialID = materialID; }
 		inline void SetParentPivot(std::uint16_t parentPivot) { m_parentPivot = parentPivot; }
 		inline void SetFaceCount(glm::uint32 faceCount) { m_faceCount = faceCount; }

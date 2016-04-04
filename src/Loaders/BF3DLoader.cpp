@@ -89,7 +89,7 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 		{
 		case 2:
 			mesh->SetType(read<std::uint8_t>(file));
-			mesh->SetMeshName(readString(file));
+			mesh->SetName(readString(file));
 			mesh->SetMaterialID(read<std::uint16_t>(file));
 			mesh->SetParentPivot(read<std::uint16_t>(file));
 			mesh->SetFaceCount(read<std::uint32_t>(file));
@@ -128,10 +128,13 @@ void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t 
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
 		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+
+		std::shared_ptr<IMesh> mesh;
 		switch (chunkType)
 		{
 		case 1:
-			model->AddMesh(LoadMesh(file, chunkEnd));
+			mesh = LoadMesh(file, chunkEnd);
+			model->AddMesh(mesh->GetName(), mesh);
 			break;
 		case 1024:
 			model->SetBoundingVolume(read<IModel::Box>(file));

@@ -29,7 +29,10 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 		throw AnvilException("Failed to open material file: " + name, __FILE__, __LINE__);
 	IStreamWrapper isw(fin);
 	Document d;
-	d.ParseStream(isw);
+	ParseResult ok = d.ParseStream(isw);
+	if (!ok) {
+		throw AnvilException("Failed to parse file: " + path, __FILE__, __LINE__);
+	}
 	
 	if (d.HasMember("material"))
 	{
@@ -37,7 +40,7 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 		if (d["material"].HasMember("displacement_factor"))
 			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
 		if (d["material"].HasMember("diffuse"))
-			mat->SetDiffuseTexture(d["material"]["diffuse"].GetString());
+			mat->SetAlbedoTexture(d["material"]["diffuse"].GetString());
 		if (d["material"].HasMember("normal"))
 			mat->SetNormalTexture(d["material"]["normal"].GetString());
 		if (d["material"].HasMember("specular"))
@@ -64,7 +67,12 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 		throw AnvilException("Failed to open entity file: " + name, __FILE__, __LINE__);
 	IStreamWrapper isw(fin);
 	Document d;
-	d.ParseStream(isw);
+
+	ParseResult ok = d.ParseStream(isw);
+	if (!ok) {
+		throw AnvilException("Failed to parse file: " + path, __FILE__, __LINE__);
+	}
+
 
 	if (d.HasMember("entity"))
 	{
@@ -82,7 +90,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			{
 				for (int i = 0; i < d["entity"]["materials"].Size(); i++)
 				{
-					ent->AddMaterial(Core::GetCore()->GetResources()->GetMaterial(d["entity"]["materials"][i].GetString()));
+					ent->AddMaterial(d["entity"]["materials"][i]["mesh"].GetString(), Core::GetCore()->GetResources()->GetMaterial(d["entity"]["materials"][i]["material"].GetString()));
 				}
 			}
 		}
@@ -104,7 +112,11 @@ void JsonLoader::LoadParticlesystem(const std::string & name, const std::string 
 		throw AnvilException("Failed to open particlesystem file: " + name, __FILE__, __LINE__);
 	IStreamWrapper isw(fin);
 	Document d;
-	d.ParseStream(isw);
+	ParseResult ok = d.ParseStream(isw);
+	if (!ok) {
+		throw AnvilException("Failed to parse file: " + path, __FILE__, __LINE__);
+	}
+
 	if (d.HasMember("particlesystem"))
 	{
 		if (d["particlesystem"].IsObject())

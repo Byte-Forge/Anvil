@@ -272,11 +272,11 @@ void ITerrain::UpdateTextures()
 	for (auto& mat: m_terrainMaterials)
 	{
 		std::shared_ptr<Material> m = Core::GetCore()->GetResources()->GetMaterial(mat);
-		diffuseTextures.push_back(m->GetDiffuseTexture());
-		normTextures.push_back(m->GetNormalTexture());
-		specTextures.push_back(m->GetSpecularTexture());
-		dispTextures.push_back(m->GetDisplacementTexture());
-		aoTextures.push_back(m->GetAmbientOcclusionTexture());
+		diffuseTextures.push_back(m->GetAlbedoTextureString());
+		normTextures.push_back(m->GetNormalTextureString());
+		specTextures.push_back(m->GetSpecularTextureString());
+		dispTextures.push_back(m->GetDisplacementTextureString());
+		aoTextures.push_back(m->GetAmbientOcclusionTextureString());
 	}
 
 	m_diff = Core::GetCore()->GetResources()->GetTextureArray(diffuseTextures);

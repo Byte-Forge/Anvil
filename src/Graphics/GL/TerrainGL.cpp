@@ -67,7 +67,6 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
 	m_fbo->Bind();
 	m_fbo->Update(static_cast<unsigned int>(m_faces.size() * sizeof(std::uint32_t)), m_faces.data());
-
 }
 
 GL::Terrain::~Terrain()
