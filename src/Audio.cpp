@@ -40,7 +40,6 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
 	if (error != AL_NO_ERROR)
 		throw AnvilException("Error in OpenAL!", __FILE__, __LINE__);
 
-	
 }
 
 Audio::~Audio()

@@ -71,5 +71,3 @@ namespace anvil
 		std::vector<Instance> m_instances;
     };
 }
-
-
