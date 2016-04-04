@@ -76,6 +76,8 @@ bool GL::Texture::Load(const gli::texture &tex)
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_G, Format.Swizzles[1]);
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_B, Format.Swizzles[2]);
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_A, Format.Swizzles[3]);
+	glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glm::tvec3<GLsizei> const Dimensions(tex.extent());
 	GLsizei const FaceTotal = static_cast<GLsizei>(tex.layers() * tex.faces());
