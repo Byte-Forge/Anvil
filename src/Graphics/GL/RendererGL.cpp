@@ -262,10 +262,13 @@ void RendererGL::Render(const glm::mat4& ortho)
 	for (auto& renderable : m_renderables)
 		renderable->Update();
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this
     for(auto& renderable : m_renderables)
        renderable->Render(*m_modelShaders[0]);
 	glEnable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
 
 	glDisable(GL_DEPTH_TEST);
 }

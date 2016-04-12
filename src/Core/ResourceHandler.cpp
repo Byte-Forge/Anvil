@@ -150,8 +150,9 @@ void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IReso
 	m_resources.insert({ toUpper(name), resource });
 }
 
-int ResourceHandler::GetFilePath(std::string name, std::string& path)
+bool ResourceHandler::GetFilePath(std::string name, std::string& path)
 {
+	/*
 	//test if the file is in one of the mod folders, starting with the last added mod folder
 	for (size_t i = m_modDirs.size(); i > 0; i--)
 	{
@@ -159,15 +160,16 @@ int ResourceHandler::GetFilePath(std::string name, std::string& path)
 		if (fileExists(dir + "/" + name))
 		{
 			path = dir + "/" + name;
-			return 1;
+			return true;
 		}
 	}
+	*/
 	if (fileExists(name)) //file in engine folder
 	{
 		path = name;
-		return 1;
+		return true;
 	}
 	else
 		throw AnvilException("No such file found: " + name, __FILE__, __LINE__);
-	return 0;
+	return false;
 }

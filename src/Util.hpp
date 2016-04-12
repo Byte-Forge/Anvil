@@ -175,7 +175,8 @@ namespace anvil
 	 */
 	inline bool fileExists(const std::string& str)
 	{
-		std::fstream fin(str);
-		return !fin.fail();
+		bool exists = false;
+		std::ifstream fin(str);
+		return fin.good(); //fin.close() is called by the destructor
 	}
 }
