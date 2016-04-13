@@ -16,6 +16,7 @@
 #include "../Core/ResourceHandler.hpp"
 #include "Material.hpp"
 #include "../Objects/Entity.hpp"
+#include <chrono>
 
 #include <future>
 
@@ -80,6 +81,8 @@ void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 
 void ITerrain::Generate()
 {
+	auto begin = std::chrono::system_clock::now();
+
 	//m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
 	m_terrainMaterials.push_back("terrain/grass.json");
 	m_terrainMaterials.push_back("terrain/grass_2.json");
@@ -89,8 +92,22 @@ void ITerrain::Generate()
 
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
+
+	std::shared_ptr<Entity> rhodo = Core::GetCore()->GetResources()->GetEntity("terrain/misc/rhododendron.json");
+
 	//wait until heightmap creation is done
 	hand.get();
+	for (int i = 0; i < m_heightmap[0].size()-1; i+=10)
+	{
+		for (int j = 0; j < m_heightmap[0].size()-1; j+=10)
+		{
+			rhodo->AddInstance(glm::vec3(i, m_heightmap[i][j], j));
+		}
+	}
+
+	auto end = std::chrono::system_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;
 }
 
 void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals)
@@ -133,7 +150,6 @@ void ITerrain::ComputeNormals(std::vector<std::vector<glm::vec3>> &normals)
 
 void ITerrain::CreateHeightmap()
 {
-
 	for (unsigned int i = 0; i <= m_width; i++)
 	{
 		std::vector<float> v;
@@ -154,8 +170,6 @@ void ITerrain::CreateHeightmap()
 			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01f, 0.1f, 0.0f, 2.0f, i, j); //for flat terrain
 
 			m_heightmap[i].push_back(value);
-
-			//tree->AddInstance(glm::vec3(i, value, j));
 
 			int mat1 = 0;
 			int mat2 = -1;

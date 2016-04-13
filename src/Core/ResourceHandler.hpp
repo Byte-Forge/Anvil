@@ -12,8 +12,8 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <mutex>
 #include "IResource.hpp"
-
 
 namespace anvil
 {
@@ -144,9 +144,11 @@ namespace anvil
 		std::string m_particleDir = "./particle/";
 		std::string m_modDir = "./mods/";
 		std::string m_soundDir = "./sound/";
+
 		std::vector<std::string> m_modDirs;
 
         std::map<const std::string, std::shared_ptr<IResource>> m_resources;
+		std::mutex m_resources_mutex;
     };
 }
 

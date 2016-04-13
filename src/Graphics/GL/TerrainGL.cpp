@@ -16,7 +16,6 @@
 #include <iostream>
 #include <vector>
 #include <glm/gtc/type_ptr.hpp>
-#include <chrono>
 
 using namespace anvil;
 
@@ -24,14 +23,8 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 {
 	m_quadtree = std::make_shared<Quadtree>(glm::vec2(m_width / 2.f, m_height / 2.f), glm::vec2(m_width / 2.f, m_height / 2.f));
 
-	auto begin = std::chrono::system_clock::now();
-
 	Generate();
 	UpdateBufferData();
-
-	auto end = std::chrono::system_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end-begin);
-	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
