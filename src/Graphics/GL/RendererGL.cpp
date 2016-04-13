@@ -14,6 +14,7 @@
 #include "../../Exception.hpp"
 #include "../../Util/stb_image.h"
 #include "../../Graphics.hpp"
+#include "flextGL.h"
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 #include <Rocket/Core.h>

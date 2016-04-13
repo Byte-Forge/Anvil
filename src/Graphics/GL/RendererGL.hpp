@@ -7,7 +7,6 @@
 
 #pragma once
 #include "../IRenderer.hpp"
-#include "flextGL.h"
 #include "../../Types/Map.hpp"
 
 namespace anvil

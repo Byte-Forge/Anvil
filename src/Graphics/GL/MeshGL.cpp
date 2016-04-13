@@ -20,19 +20,19 @@ GL::MeshGL::MeshGL() : m_vao(0)
 	m_vbo->Bind();
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	m_uvbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
 	m_uvbo->Bind();
 	
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	m_nbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
 	m_nbo->Bind();
 
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
 	m_fbo->Bind();
@@ -68,5 +68,5 @@ void GL::MeshGL::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
 	m_fbo->Bind();
-	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, (void*)0);
+	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
 }
