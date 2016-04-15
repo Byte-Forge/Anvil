@@ -11,6 +11,7 @@
 #include <memory>
 #include <set>
 #include <glm/glm.hpp>
+#include "../Util.hpp"
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Core/IResource.hpp"
@@ -74,8 +75,8 @@ namespace anvil
 		void AddInstance(glm::vec3 position);
 
 		inline std::shared_ptr<IModel> GetModel() { return m_model; }
-		inline void AddMaterial(std::string meshName, std::shared_ptr<Material> material) { m_materials.insert({ meshName, material }); }
-		inline std::shared_ptr<Material> GetMaterial(std::string meshName) { return m_materials[meshName]; }
+		inline void AddMaterial(std::string meshName, std::shared_ptr<Material> material) { m_materials.insert({ toUpper(meshName), material }); }
+		std::shared_ptr<Material> GetMaterial(std::string meshName);
 		std::deque<std::shared_ptr<Instance>> GetInstances();
 
 	private:

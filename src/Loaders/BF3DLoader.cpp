@@ -85,6 +85,7 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
 		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+
 		switch (chunkType)
 		{
 		case 2:
@@ -122,7 +123,12 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<IModel> model = Core::GetCore()->GetGraphics()->GetModel();
-	model->SetHierarchyName(readString(file));
+	std::cout << name << std::endl;
+	std::string hierarchyName = readString(file);
+	if (hierarchyName != "")
+		model->SetHierarchy(Core::GetCore()->GetResources()->GetHierarchy("units/mucavtroll_skl.bf3d"));
+	else
+		model->SetHierarchy(nullptr);
 
 	while (file.tellg() < chunkEnd)
 	{

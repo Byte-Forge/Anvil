@@ -12,6 +12,7 @@
 #include <set>
 #include <memory>
 #include <glm/glm.hpp>
+#include "../Types/BF3D.hpp"
 #include "../Graphics/IMesh.hpp"
 #include "../Core/IResource.hpp"
 #include "../Graphics/IRenderable.hpp"
@@ -76,14 +77,14 @@ namespace anvil
 		 */
 		virtual void Render(IShader& shader) = 0;
 
-		inline void SetHierarchyName(const std::string& hierarchyName) { m_hierarchyName = hierarchyName; }
+		inline void SetHierarchy(std::shared_ptr<Hierarchy> hierarchy) { m_hierarchy = hierarchy; }
 		inline void AddMesh(std::string name, std::shared_ptr<IMesh> mesh) { m_meshes.insert({ name, mesh }); }
 		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }
 		void AddEntity(Entity* entity);
 		void RemoveEntity(Entity* entity);
 
 	protected:
-		std::string m_hierarchyName; //is empty if no hierarchy is needed
+		std::shared_ptr<Hierarchy> m_hierarchy; //nullpointer if no hierarchy is needed
 		std::map<std::string, std::shared_ptr<IMesh>> m_meshes;
 		BoundingVolume m_volume;
 		std::set<Entity*> m_entities;

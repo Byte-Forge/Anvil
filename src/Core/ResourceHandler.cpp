@@ -135,6 +135,20 @@ std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
 	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(n)]);
 }
 
+std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name)
+{
+	std::string path;
+	std::string n = m_bf3dDir + name;
+	if (m_resources.count(toUpper(n)) == 0)
+	{
+		if (GetFilePath(n, path))
+		{
+			BF3DLoader::Load(n, path);
+		}
+	}
+	return std::dynamic_pointer_cast<Hierarchy> (m_resources[toUpper(n)]);
+}
+
 std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
 {
 	std::string path;

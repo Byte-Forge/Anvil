@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <iostream>
 #include <mutex>
+#include "../Types/BF3D.hpp"
 #include "IResource.hpp"
 
 namespace anvil
@@ -109,6 +110,27 @@ namespace anvil
 		std::shared_ptr<IModel> GetModel(const std::string &name);
 
 
+		/**
+		* @fn	std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name);
+		*
+		* @brief	Gets a hierarchy.
+		*
+		* @param	name	The name.
+		*
+		* @return	The hierarchy.
+		*/
+		std::shared_ptr<Hierarchy> GetHierarchy(const std::string &name);
+
+
+		/**
+		* @fn	std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string &name);
+		*
+		* @brief	Gets a sound.
+		*
+		* @param	name	The name.
+		*
+		* @return	The sound.
+		*/
 		std::shared_ptr<SoundBuffer> GetSound(const std::string &name);
 		
 		/**

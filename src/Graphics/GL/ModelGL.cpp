@@ -40,8 +40,7 @@ void GL::ModelGL::Render(IShader& shader)
 				glUniform4fv(shader.GetUniform("position"), 1, glm::value_ptr(glm::vec4(i->position, 1.0)));
 
 				for (std::map<std::string, std::shared_ptr<IMesh>>::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
-				{
-					glActiveTexture(GL_TEXTURE0); //albedo textures
+				{					glActiveTexture(GL_TEXTURE0); //albedo textures
 					e->GetMaterial(it->second->GetName())->GetAlbedoTexture()->Bind();
 					glUniform1i(shader.GetUniform("albedoTex"), 0);
 

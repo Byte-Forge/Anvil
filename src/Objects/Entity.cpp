@@ -7,6 +7,7 @@
 
 #include "Entity.hpp"
 #include "../Core.hpp"
+#include "../Exception.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -39,7 +40,7 @@ void Entity::Update()
 		//m_instances[i]->health -= 1;
 		float x = (std::rand() % 10 - 5) / 10.0;
 		float y = (std::rand() % 10 - 5) / 10.0;
-		m_instances[i]->position += glm::vec3(x, 0.0, y);
+		//m_instances[i]->position += glm::vec3(x, 0.0, y);
 
 		if (m_instances[i]->position.x > 400 
 			|| m_instances[i]->position.z > 400
@@ -77,6 +78,14 @@ void Entity::AddInstance(glm::vec3 position)
 	i->position = position;
 
 	m_instances.push_back(i);
+}
+
+std::shared_ptr<Material> Entity::GetMaterial(std::string meshName)
+{
+	if (m_materials.count(toUpper(meshName)) > 0)
+		return m_materials[toUpper(meshName)];
+	else
+		throw AnvilException("No material defined for mesh: " + meshName, __FILE__, __LINE__);
 }
 
 std::deque<std::shared_ptr<Entity::Instance>> Entity::GetInstances()
