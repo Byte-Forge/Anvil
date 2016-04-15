@@ -7,7 +7,7 @@
 
 #pragma once
 #include <string>
-#include <vector>
+#include <deque>
 #include <memory>
 #include <set>
 #include <glm/glm.hpp>
@@ -27,9 +27,22 @@ namespace anvil
     {
 	public:
 
+		/*
+		struct KindOf
+		{
+			bool SHRUBBERY = false;
+			bool TREE = false;
+			bool IMMOBILE = false;
+			bool SELECTABLE = false;
+			bool INFANTRY = false;
+			bool PORTER = false;
+		};
+		*/
+
 		struct Instance
 		{
-			glm::vec4 position = glm::vec4(0.0, 0.0, 0.0, 1.0);
+			int health;
+			glm::vec3 position = glm::vec3(0.0, 0.0, 0.0);
 		};
 
 		/**
@@ -57,17 +70,20 @@ namespace anvil
 
 		void Update();
 
-		void SetModel(std::shared_ptr<IModel> model);
+		void SetModel(std::string model);
 		void AddInstance(glm::vec3 position);
 
 		inline std::shared_ptr<IModel> GetModel() { return m_model; }
 		inline void AddMaterial(std::string meshName, std::shared_ptr<Material> material) { m_materials.insert({ meshName, material }); }
 		inline std::shared_ptr<Material> GetMaterial(std::string meshName) { return m_materials[meshName]; }
-		std::vector<Instance> GetInstances();
+		std::deque<std::shared_ptr<Instance>> GetInstances();
 
 	private:
+		int m_health = 1000;
+
+		std::string m_model_string;
 		std::shared_ptr<IModel> m_model;
 		std::map<std::string, std::shared_ptr<Material>> m_materials;
-		std::vector<Instance> m_instances;
+		std::deque<std::shared_ptr<Instance>> m_instances;
     };
 }

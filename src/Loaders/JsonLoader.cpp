@@ -26,21 +26,22 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 
 	std::ifstream fin(path, std::ios::in);
 	if (fin.fail())
-		throw AnvilException("Failed to open material file: " + name, __FILE__, __LINE__);
+		throw AnvilException("Failed to open material file: " + path, __FILE__, __LINE__);
 	IStreamWrapper isw(fin);
 	Document d;
 	ParseResult ok = d.ParseStream(isw);
-	if (!ok) {
+	if (!ok) 
 		throw AnvilException("Failed to parse file: " + path, __FILE__, __LINE__);
-	}
 	
 	if (d.HasMember("material"))
 	{
 		mat = std::make_shared<Material>();
 		if (d["material"].HasMember("displacement_factor"))
 			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
-		if (d["material"].HasMember("diffuse"))
-			mat->SetAlbedoTexture(d["material"]["diffuse"].GetString());
+		if (d["material"].HasMember("albedo"))
+			mat->SetAlbedoTexture(d["material"]["albedo"].GetString());
+		else
+			throw AnvilException("Material file has no albedo texture: " + path, __FILE__, __LINE__);
 		if (d["material"].HasMember("normal"))
 			mat->SetNormalTexture(d["material"]["normal"].GetString());
 		if (d["material"].HasMember("specular"))
@@ -51,7 +52,7 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 			mat->SetAmbientOcclusionTexture(d["material"]["ambient_occ"].GetString());
 	}
 	else
-		throw AnvilException("Material file has no material object", __FILE__, __LINE__);
+		throw AnvilException("Material file has no material object: " + path, __FILE__, __LINE__);
 
 	fin.close();
 
@@ -64,15 +65,13 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 
 	std::ifstream fin(path, std::ios::in);
 	if (fin.fail())
-		throw AnvilException("Failed to open entity file: " + name, __FILE__, __LINE__);
+		throw AnvilException("Failed to open entity file: " + path, __FILE__, __LINE__);
 	IStreamWrapper isw(fin);
 	Document d;
 
 	ParseResult ok = d.ParseStream(isw);
-	if (!ok) {
+	if (!ok) 
 		throw AnvilException("Failed to parse file: " + path, __FILE__, __LINE__);
-	}
-
 
 	if (d.HasMember("entity"))
 	{
@@ -84,7 +83,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 				ent = std::make_shared<Entity>();
 
 			if (d["entity"].HasMember("model"))
-				ent->SetModel(Core::GetCore()->GetResources()->GetModel(d["entity"]["model"].GetString()));
+				ent->SetModel(d["entity"]["model"].GetString());
 
 			if (d["entity"].HasMember("materials") && d["entity"]["materials"].IsArray())
 			{
@@ -109,13 +108,12 @@ void JsonLoader::LoadParticlesystem(const std::string & name, const std::string 
 
 	std::ifstream fin(path, std::ios::in);
 	if (fin.fail())
-		throw AnvilException("Failed to open particlesystem file: " + name, __FILE__, __LINE__);
+		throw AnvilException("Failed to open particlesystem file: " + path, __FILE__, __LINE__);
 	IStreamWrapper isw(fin);
 	Document d;
 	ParseResult ok = d.ParseStream(isw);
-	if (!ok) {
+	if (!ok) 
 		throw AnvilException("Failed to parse file: " + path, __FILE__, __LINE__);
-	}
 
 	if (d.HasMember("particlesystem"))
 	{

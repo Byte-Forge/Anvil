@@ -33,13 +33,6 @@ namespace anvil
 		};
 
 		/**
-		 * @fn	virtual void IMesh::Update() = 0;
-		 *
-		 * @brief	Updates this mesh (used to create buffers).
-		 */
-		virtual void Update() = 0;
-
-		/**
 		 * @fn	virtual void IMesh::Render(IShader& shader) = 0;
 		 *
 		 * @brief	Renders the given shader.
@@ -47,6 +40,14 @@ namespace anvil
 		 * @param [in,out]	shader	The shader.
 		 */
 		virtual void Render(IShader& shader) = 0;
+
+
+		/**
+		* @fn	virtual void IMesh::Init() = 0;
+		*
+		* @brief	Initializes the Mesh for rendering.
+		*/
+		virtual void Init() = 0;
 
 		inline void SetType(std::uint8_t type) { m_type = type; }
 		inline void SetName(const std::string& meshName) { m_meshName = meshName; }

@@ -30,15 +30,13 @@ int main(int argc, char** argv)
 
 	try
 	{
-	anvil::Core engine;
-	engine.Run();
+		anvil::Core engine;
+		engine.Run();
 	}
 	catch(const AnvilException& e)
 	{
 		anvil::ShowError(e.what());
 		return -1;
 	}
-	
-
 	return 0;
 }

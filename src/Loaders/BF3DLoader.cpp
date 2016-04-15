@@ -115,6 +115,7 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 			file.seekg(chunkEnd, std::ios::beg);
 		}
 	}
+	mesh->Init();
 	return mesh;
 }
 

@@ -45,12 +45,17 @@ GL::MeshGL::~MeshGL()
 		glDeleteVertexArrays(1, &m_vao);
 		m_vao = 0;
 	}
-	
 }
 
-void GL::MeshGL::Update()
+void GL::MeshGL::Render(IShader& shader)
 {
-	//do this only once? but has to be after the constructor
+	glBindVertexArray(m_vao);
+	m_fbo->Bind();
+	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
+}
+
+void GL::MeshGL::Init()
+{
 	m_vbo->Bind();
 	m_vbo->Update(sizeof(glm::f32vec3) * m_vertices.size(), m_vertices.data());
 
@@ -62,11 +67,4 @@ void GL::MeshGL::Update()
 
 	m_fbo->Bind();
 	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), m_faces.data());
-}
-
-void GL::MeshGL::Render(IShader& shader)
-{
-	glBindVertexArray(m_vao);
-	m_fbo->Bind();
-	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
 }

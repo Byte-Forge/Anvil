@@ -33,13 +33,6 @@ namespace anvil
 			~MeshGL();
 
 			/**
-			 * @fn	void MeshGL::Update();
-			 *
-			 * @brief	Updates this object.
-			 */
-			void Update();
-
-			/**
 			 * @fn	void MeshGL::Render(IShader& shader);
 			 *
 			 * @brief	Renders the given shader.
@@ -47,6 +40,13 @@ namespace anvil
 			 * @param [in,out]	shader	The shader.
 			 */
 			void Render(IShader& shader);
+
+			/**
+			* @fn	virtual void IMesh::Init() = 0;
+			*
+			* @brief	Initializes the Mesh for rendering.
+			*/
+			void Init();
 
 		private:
 			GLuint m_vao;

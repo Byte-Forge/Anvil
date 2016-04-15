@@ -34,10 +34,10 @@ void GL::ModelGL::Render(IShader& shader)
 	{
 		if (e->GetInstances().size() > 0)
 		{
-			for (Entity::Instance i : e->GetInstances())
+			for (std::shared_ptr<Entity::Instance> i : e->GetInstances())
 			{
 				glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
-				glUniform4fv(shader.GetUniform("position"), 1, glm::value_ptr(i.position));
+				glUniform4fv(shader.GetUniform("position"), 1, glm::value_ptr(glm::vec4(i->position, 1.0)));
 
 				for (std::map<std::string, std::shared_ptr<IMesh>>::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
 				{
@@ -54,8 +54,8 @@ void GL::ModelGL::Render(IShader& shader)
 
 void GL::ModelGL::Update()
 {
-	for (std::map<std::string, std::shared_ptr<IMesh>>::iterator mesh = m_meshes.begin(); mesh != m_meshes.end(); ++mesh)
+	for (Entity* e : m_entities)
 	{
-		mesh->second->Update();
+		e->Update();
 	}
 }

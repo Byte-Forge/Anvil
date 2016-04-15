@@ -1,5 +1,13 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Options.hpp
+************************************
+*/
+
 #pragma once
 #include <string>
+
 namespace anvil
 {
 	class Options

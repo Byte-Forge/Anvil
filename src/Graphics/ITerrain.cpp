@@ -94,16 +94,31 @@ void ITerrain::Generate()
 	UpdateTextures();
 
 	std::shared_ptr<Entity> rhodo = Core::GetCore()->GetResources()->GetEntity("terrain/misc/rhododendron.json");
+	std::shared_ptr<Entity> dougla = Core::GetCore()->GetResources()->GetEntity("terrain/misc/douglas_fir.json");
+	std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("terrain/misc/oak.json");
+	//std::shared_ptr<Entity> birch = Core::GetCore()->GetResources()->GetEntity("terrain/misc/birch.json");
 
 	//wait until heightmap creation is done
 	hand.get();
-	for (int i = 0; i < m_heightmap[0].size()-1; i+=10)
+
+	for (int i = 0; i < m_heightmap[0].size()-1; i+=50)
 	{
-		for (int j = 0; j < m_heightmap[0].size()-1; j+=10)
+		for (int j = 0; j < m_heightmap[0].size()-1; j+=50)
 		{
-			rhodo->AddInstance(glm::vec3(i, m_heightmap[i][j], j));
+			rhodo->AddInstance(glm::vec3(i + 50, m_heightmap[i][j], j+50));
+			dougla->AddInstance(glm::vec3(i+60, m_heightmap[i][j], j+ 50));
+			oak->AddInstance(glm::vec3(i + 70, m_heightmap[i][j], j+50));
+			//birch->AddInstance(glm::vec3(i + 30, m_heightmap[i][j], j));
 		}
 	}
+
+	//dougla->AddInstance(glm::vec3(30, 0, 0));
+	//dougla->AddInstance(glm::vec3(40, 0, 0));
+	//dougla->AddInstance(glm::vec3(50, 0, 0));
+
+	//rhodo->AddInstance(glm::vec3(200, 5, 200));
+	//rhodo->AddInstance(glm::vec3(10, 5, 10));
+	//rhodo->AddInstance(glm::vec3(100, 5, 100));
 
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
