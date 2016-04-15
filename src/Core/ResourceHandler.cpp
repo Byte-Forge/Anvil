@@ -24,40 +24,43 @@ using namespace anvil;
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	std::string n = m_entitiesDir + name;
+	if (m_resources.count(toUpper(n)) == 0)
 	{
-		if (GetFilePath(m_entitiesDir + name, path))
+		if (GetFilePath(n, path))
 		{
-			JsonLoader::LoadEntity(name, path);
+			JsonLoader::LoadEntity(n, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(n)]);
 }
 
 std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string & name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	std::string n = m_particleDir + name;
+	if (m_resources.count(toUpper(n)) == 0)
 	{
-		if (GetFilePath(m_particleDir + name, path))
+		if (GetFilePath(n, path))
 		{
-			JsonLoader::LoadParticlesystem(name, path);
+			JsonLoader::LoadParticlesystem(n, path);
 		}
 	}
-	return std::dynamic_pointer_cast<IParticleSystem> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<IParticleSystem> (m_resources[toUpper(n)]);
 }
 
 std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	std::string n = m_texturesDir + name;
+	if (m_resources.count(toUpper(n)) == 0)
 	{
-		if (GetFilePath(m_texturesDir + name, path))
+		if (GetFilePath(n, path))
 		{
-			TextureLoader::LoadTexture(name, path);
+			TextureLoader::LoadTexture(n, path);
 		}
 	}			
-	return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(n)]);
 }
 
 std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::string> names)
@@ -78,14 +81,15 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	std::string n = m_materialsDir + name;
+	if (m_resources.count(toUpper(n)) == 0)
 	{
-		if (GetFilePath(m_materialsDir + name, path))
+		if (GetFilePath(n, path))
 		{
-			JsonLoader::LoadMaterial(name, path);
+			JsonLoader::LoadMaterial(n, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(n)]);
 }
 
 
@@ -120,29 +124,31 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	std::string n = m_bf3dDir + name;
+	if (m_resources.count(toUpper(n)) == 0)
 	{
-		if (GetFilePath(m_bf3dDir + name, path))
+		if (GetFilePath(n, path))
 		{
-			BF3DLoader::Load(name, path);
+			BF3DLoader::Load(n, path);
 		}
 	}
-	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(n)]);
 }
 
 std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	std::string n = m_soundDir + name;
+	if (m_resources.count(toUpper(n)) == 0)
 	{
-		if (GetFilePath(m_soundDir + name, path))
+		if (GetFilePath(n, path))
 		{
 			std::shared_ptr<SoundBuffer> sound = std::make_shared<SoundBuffer>();
 			sound->Load(path);
-			AddResource(name, sound);
+			AddResource(n, sound);
 		}
 	}
-	return std::dynamic_pointer_cast<SoundBuffer> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<SoundBuffer> (m_resources[toUpper(n)]);
 }
 
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
@@ -152,7 +158,7 @@ void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IReso
 	m_resources_mutex.unlock();
 }
 
-bool ResourceHandler::GetFilePath(std::string name, std::string& path)
+bool ResourceHandler::GetFilePath(const std::string name, std::string& path)
 {
 	/*
 	//test if the file is in one of the mod folders, starting with the last added mod folder

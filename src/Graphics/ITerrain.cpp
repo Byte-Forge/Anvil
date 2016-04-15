@@ -96,7 +96,7 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> rhodo = Core::GetCore()->GetResources()->GetEntity("terrain/misc/rhododendron.json");
 	std::shared_ptr<Entity> dougla = Core::GetCore()->GetResources()->GetEntity("terrain/misc/douglas_fir.json");
 	std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("terrain/misc/oak.json");
-	//std::shared_ptr<Entity> birch = Core::GetCore()->GetResources()->GetEntity("terrain/misc/birch.json");
+	std::shared_ptr<Entity> birch = Core::GetCore()->GetResources()->GetEntity("terrain/misc/birch.json");
 
 	//wait until heightmap creation is done
 	hand.get();
@@ -108,7 +108,7 @@ void ITerrain::Generate()
 			rhodo->AddInstance(glm::vec3(i + 50, m_heightmap[i][j], j+50));
 			dougla->AddInstance(glm::vec3(i+60, m_heightmap[i][j], j+ 50));
 			oak->AddInstance(glm::vec3(i + 70, m_heightmap[i][j], j+50));
-			//birch->AddInstance(glm::vec3(i + 30, m_heightmap[i][j], j));
+			birch->AddInstance(glm::vec3(i + 80, m_heightmap[i][j], j+50));
 		}
 	}
 

@@ -132,7 +132,7 @@ namespace anvil
 		}
 
 	private:
-		bool GetFilePath(std::string name, std::string& path);
+		bool GetFilePath(const std::string name, std::string& path);
 
     private:
 		std::string m_texturesDir = "./textures/";

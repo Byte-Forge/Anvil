@@ -64,7 +64,7 @@ void Entity::SetModel(std::string model)
 	m_model_string = model;
 }
 
-void Entity::AddInstance(glm::vec3 position)
+void Entity::AddInstance(glm::vec3 position) 
 {
 	if (m_instances.size() == 0)
 	{
