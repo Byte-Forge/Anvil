@@ -51,7 +51,7 @@ std::vector<std::string> IO::ListFiles(const std::string & dir, const std::strin
 
 	while ((dirp = readdir(dp)) != NULL)
 	{
-		if (S_ISREG(dirp->d_type))
+		if (dirp->d_type == DT_REG)
 		{
 			std::string name = dirp->d_name;
 			std::string fileExt = split(name, '.').back();
