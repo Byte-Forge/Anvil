@@ -99,12 +99,7 @@ Core::Core()
 	m_resolution.y = height;
 
 	glfwMakeContextCurrent(m_window);
-	glfwSetKeyCallback(m_window, KeyCallback);
-	glfwSetWindowSizeCallback(m_window,ResizeCallback);
-	glfwSetMouseButtonCallback(m_window, MouseCallback);
-	glfwSetCursorPosCallback(m_window, MousePosCallback);
-	glfwSetScrollCallback(m_window, ScrollCallback);
-	glfwSwapInterval(0);
+	
 	m_resources = std::make_unique<ResourceHandler>();
 	m_audio = std::make_unique<Audio>();
 	m_graphics = std::make_unique<Graphics>(backend);
@@ -112,12 +107,16 @@ Core::Core()
 	m_gui = std::make_unique<GUI>(m_window);
 	m_camera = std::make_unique<Camera>();
 	m_input = std::make_unique<Input>();
-
 	m_script->LoadFile("start.lua");
-
 	m_map = std::make_unique<Map>();
-
 	m_audio->PlaySound("roll_over_01.wav");
+
+	glfwSetKeyCallback(m_window, KeyCallback);
+	glfwSetWindowSizeCallback(m_window, ResizeCallback);
+	glfwSetMouseButtonCallback(m_window, MouseCallback);
+	glfwSetCursorPosCallback(m_window, MousePosCallback);
+	glfwSetScrollCallback(m_window, ScrollCallback);
+	glfwSwapInterval(0);
 }
 
 Core::~Core()
