@@ -168,7 +168,7 @@ std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 {
 	m_resources_mutex.lock();
-	m_resources.insert({ toUpper(name), resource });
+	m_resources.emplace(toUpper(name),resource);
 	m_resources_mutex.unlock();
 }
 

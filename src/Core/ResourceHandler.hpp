@@ -8,7 +8,7 @@
 #pragma once
 #include <string>
 #include <memory>
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -169,7 +169,7 @@ namespace anvil
 
 		std::vector<std::string> m_modDirs;
 
-        std::map<const std::string, std::shared_ptr<IResource>> m_resources;
+        std::unordered_map<std::string, std::shared_ptr<IResource>> m_resources;
 		std::mutex m_resources_mutex;
     };
 }
