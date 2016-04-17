@@ -21,6 +21,7 @@
 #include "../Audio/SoundBuffer.hpp"
 using namespace anvil;
 
+/*
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 {
 	std::string path;
@@ -34,6 +35,7 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 	}
 	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(n)]);
 }
+*/
 
 std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string & name)
 {
@@ -121,6 +123,7 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	return materials;
 }
 
+/*
 std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
 {
 	std::string path;
@@ -134,7 +137,9 @@ std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
 	}
 	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(n)]);
 }
+*/
 
+/*
 std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name)
 {
 	std::string path;
@@ -148,6 +153,7 @@ std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name
 	}
 	return std::dynamic_pointer_cast<Hierarchy> (m_resources[toUpper(n)]);
 }
+*/
 
 std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
 {

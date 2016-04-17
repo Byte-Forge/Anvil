@@ -5,6 +5,7 @@
 ************************************
 */
 
+/*
 #include "ModelGL.hpp"
 #include "MeshGL.hpp"
 #include "../../Objects/Entity.hpp"
@@ -58,3 +59,4 @@ void GL::ModelGL::Update()
 		e->Update();
 	}
 }
+*/

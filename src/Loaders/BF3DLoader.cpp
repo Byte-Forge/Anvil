@@ -13,10 +13,9 @@
 #include "../Core.hpp"
 #include "../Types/BF3D.hpp"
 #include "../Graphics.hpp"
-#include "../Graphics/IMesh.hpp"
-#include "../Graphics/IModel.hpp"
-#include "../Graphics/GL/MeshGL.hpp"
-#include "../Graphics/GL/ModelGL.hpp"
+//#include "../Graphics/IModel.hpp"
+//#include "../Graphics/GL/MeshGL.hpp"
+//#include "../Graphics/GL/ModelGL.hpp"
 #include "../Core/ResourceHandler.hpp"
 #include <stdint.h>
 
@@ -75,7 +74,7 @@ void BF3DLoader::LoadHierarchy(std::string name, std::ifstream& file, std::uint3
 //#######################################################################################
 //# model
 //#######################################################################################
-
+/*
 std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<IMesh> mesh = Core::GetCore()->GetGraphics()->GetMesh();
@@ -119,7 +118,9 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 	mesh->Init();
 	return mesh;
 }
+*/
 
+/*
 void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<IModel> model = Core::GetCore()->GetGraphics()->GetModel();
@@ -157,7 +158,9 @@ void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t 
 	Core::GetCore()->GetResources()->AddResource(name, model);
 	Core::GetCore()->GetGraphics()->GetRenderer()->RegisterRenderable(model);
 }
+*/
 
+/*
 void BF3DLoader::Load(const std::string& name, const std::string& path)
 {
 	std::ifstream file(path, std::ios::binary);
@@ -184,3 +187,4 @@ void BF3DLoader::Load(const std::string& name, const std::string& path)
 		}
 	}
 }
+*/

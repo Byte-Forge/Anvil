@@ -43,7 +43,7 @@ namespace anvil
 		 *
 		 * @return	The entity.
 		 */
-		std::shared_ptr<Entity> GetEntity(const std::string &name);
+		//std::shared_ptr<Entity> GetEntity(const std::string &name);
 
 		/**
 		 * @fn	std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string &name);
@@ -107,7 +107,7 @@ namespace anvil
 		 *
 		 * @return	The model.
 		 */
-		std::shared_ptr<IModel> GetModel(const std::string &name);
+		//std::shared_ptr<IModel> GetModel(const std::string &name);
 
 
 		/**
