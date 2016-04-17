@@ -4,7 +4,7 @@
 * IModel.cpp
 ************************************
 */
-
+/*
 #include "IModel.hpp"
 
 using namespace anvil;
@@ -18,3 +18,4 @@ void IModel::RemoveEntity(Entity* entity)
 {
 	m_entities.erase(entity);
 }
+*/

@@ -93,6 +93,7 @@ std::shared_ptr<ITexture> Graphics::GetTexture()
 	return tex;
 }
 
+/*
 std::shared_ptr<IModel> Graphics::GetModel()
 {
 	std::shared_ptr<IModel> model = nullptr;
@@ -119,3 +120,4 @@ std::shared_ptr<IMesh> Graphics::GetMesh()
 	}
 	return mesh;
 }
+*/
