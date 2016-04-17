@@ -8,7 +8,6 @@
 #pragma once
 #include <Rocket/Core/SystemInterface.h>
 #include <Rocket/Core/Input.h>
-#include <GLFW/glfw3.h>
 
 namespace anvil
 {

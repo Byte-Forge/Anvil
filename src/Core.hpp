@@ -6,14 +6,12 @@
 */
 
 #pragma once
-#ifdef ANVIL_USE_VULKAN
-#define GLFW_INCLUDE_VULKAN
-#endif
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <memory>
 #include "Util/Timer.hpp"
 #include "Util/FPS.hpp"
+
+struct GLFWwindow;
 
 namespace anvil
 {
@@ -98,10 +96,7 @@ namespace anvil
 			return m_window;
 		}
 
-		inline void Quit()
-		{
-			glfwSetWindowShouldClose(m_window, true);
-		}
+		void Quit();
 
 		static inline Core* GetCore()
 		{

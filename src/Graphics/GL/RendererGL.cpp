@@ -6,6 +6,7 @@
 */
 
 #include "RendererGL.hpp"
+#include "flextGL.h"
 #include "TextureGL.hpp"
 #include "ShaderGL.hpp"
 #include "../../Core.hpp"
@@ -14,7 +15,6 @@
 #include "../../Exception.hpp"
 #include "../../Util/stb_image.h"
 #include "../../Graphics.hpp"
-#include "flextGL.h"
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 #include <Rocket/Core.h>
