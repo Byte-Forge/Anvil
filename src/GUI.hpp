@@ -9,10 +9,11 @@
 #include <memory>
 #include <string>
 #include <Rocket/Core.h>
-#include <GLFW/glfw3.h>
 #include <chrono>
 #include "./GUI/SystemInterface.hpp"
 #include "./GUI/ScriptInterface.hpp"
+
+struct GLFWwindow;
 
 namespace anvil
 {

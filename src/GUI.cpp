@@ -17,6 +17,8 @@
 #include "Core.hpp"
 #include "Util/Platform.hpp"
 #include "Graphics.hpp"
+#include <GLFW/glfw3.h>
+
 using namespace anvil;
 
 const int GUI::UPDATES_PER_SECOND = 30;

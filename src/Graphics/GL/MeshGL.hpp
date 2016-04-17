@@ -7,14 +7,6 @@
 //
 //#pragma once
 //#include "../IMesh.hpp"
-///*
-//#if __APPLE__
-//#include <OpenGL/gl.h>
-//#else
-//#include <windows.h>
-//#include <gl/GL.h>
-//#endif
-//*/
 //#include "flextGL.h"
 //#include "BufferGL.hpp"
 //#include <memory>

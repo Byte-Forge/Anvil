@@ -6,6 +6,10 @@
 */
 
 #include "Core.hpp" 
+#ifdef ANVIL_USE_VULKAN
+#define GLFW_INCLUDE_VULKAN
+#endif
+#include <GLFW/glfw3.h>
 #include "Util/FPS.hpp"
 #include "Exception.hpp"
 #include "Core/Options.hpp"
@@ -19,6 +23,7 @@
 #include "Graphics/Camera.hpp"
 #include "Graphics/Frustum.hpp"
 #include "Input.hpp"
+
 
 using namespace anvil;
 
@@ -54,6 +59,11 @@ void Core::MousePosCallback(GLFWwindow* window, double xpos, double ypos)
 void Core::ScrollCallback(GLFWwindow* window, double x, double y)
 {
 	Core::GetCore()->GetInput()->SetMouseWheelDelta(x, y);
+}
+
+void Core::Quit()
+{
+	glfwSetWindowShouldClose(m_window, true);
 }
 
 void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)

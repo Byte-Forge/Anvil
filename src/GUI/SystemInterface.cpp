@@ -8,6 +8,8 @@
 #include <Rocket/Core.h>
 #include "SystemInterface.hpp"
 #include <iostream>
+#define GLW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 #include "../Exception.hpp"
 #include "../Core.hpp"
 using namespace anvil;
