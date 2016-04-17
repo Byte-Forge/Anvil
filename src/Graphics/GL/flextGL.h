@@ -1,9 +1,7 @@
 /* WARNING: This file was automatically generated */
 /* Do not edit. */
 
-#ifndef __gl_h_
-#define __gl_h_
-
+#pragma once
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -2259,5 +2257,3 @@ int flextInit(void);
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* _gl_h_ */
