@@ -8,7 +8,7 @@
 #pragma once
 #include <string>
 #include <memory> 
-//#include "../Graphics/IMesh.hpp"
+#include "../Graphics/IMesh.hpp"
 
 namespace anvil
 {
@@ -30,9 +30,10 @@ namespace anvil
 		 * @param	path	The basepath of our model
 		 */
 		static void Load(const std::string& name, const std::string& path);
+
 	private:
 		static void LoadHierarchy(std::string name, std::ifstream& file, std::uint32_t chunkEnd);
-		//static void LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd);
-		//static std::shared_ptr<IMesh> LoadMesh(std::ifstream& file, std::uint32_t chunkEnd);
+		static void LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd);
+		static std::shared_ptr<IMesh> LoadMesh(std::ifstream& file, std::uint32_t chunkEnd);
 	};
 }

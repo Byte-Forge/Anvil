@@ -4,7 +4,7 @@
 * Entity.cpp
 ************************************
 */
-/*
+
 #include "Entity.hpp"
 #include "../Core.hpp"
 #include "../Exception.hpp"
@@ -92,4 +92,3 @@ std::deque<std::shared_ptr<Entity::Instance>> Entity::GetInstances()
 {
 	return m_instances;
 }
-*/

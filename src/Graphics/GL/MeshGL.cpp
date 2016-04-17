@@ -5,7 +5,6 @@
 ************************************
 */
 
-/*
 #include "MeshGL.hpp"
 #include <iostream>
 #include "../IShader.hpp"
@@ -69,4 +68,3 @@ void GL::MeshGL::Init()
 	m_fbo->Bind();
 	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), m_faces.data());
 }
-*/

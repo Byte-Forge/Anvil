@@ -8,8 +8,8 @@
 #pragma once
 #include <memory>
 #include "Graphics/IRenderer.hpp"
-//#include "Graphics/IModel.hpp"
-//#include "Graphics/IMesh.hpp"
+#include "Graphics/IModel.hpp"
+#include "Graphics/IMesh.hpp"
 #include <stdint.h>
 #include <glm/glm.hpp>
 
@@ -105,7 +105,7 @@ namespace anvil
 		 *
 		 * @return	A model object dependand on the render backend.
 		 */
-		//std::shared_ptr<IModel> GetModel();
+		std::shared_ptr<IModel> GetModel();
 
 		/**
 		 * @fn	std::shared_ptr<IMesh> Graphics::GetMesh();
@@ -114,7 +114,7 @@ namespace anvil
 		 *
 		 * @return	A mesh object dependend on the render backend.
 		 */
-		//std::shared_ptr<IMesh> GetMesh();
+		std::shared_ptr<IMesh> GetMesh();
 
 		inline void AllowBackend(RenderBackend backend) { m_available.push_back(backend); }
 		inline RenderBackend GetBackend() { return m_backend; }

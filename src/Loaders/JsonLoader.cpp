@@ -59,7 +59,6 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 	Core::GetCore()->GetResources()->AddResource(toUpper(name), mat);
 }
 
-/*
 void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 {
 	std::shared_ptr<Entity> ent;
@@ -102,7 +101,6 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 
 	Core::GetCore()->GetResources()->AddResource(toUpper(name), ent);
 }
-*/
 
 void JsonLoader::LoadParticlesystem(const std::string & name, const std::string & path)
 {
