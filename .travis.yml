@@ -62,6 +62,9 @@ before_script:
 script: make -j2
 cache:
   apt: true
+  
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 notifications:
   slack: byteforge-team:kisF1nc1JVGxnVtGQ4notBAG
