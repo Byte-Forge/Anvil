@@ -1,6 +1,12 @@
 language: cpp
 sudo: false
 
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "Zk8SGHLAe/4+LLZpuSvCanF/X0vO+FOV0DV4FkgPSx37E5ObKGkw/9E4oU1Cd2BPswm2Bs7btjCs8+qe9fwHqMGTS3wnaIKx8edI4vX4GsbFomxBMhm402IsYkOBjrR1wMB0hhpea8E7PK29z8SSjMpsI0vxDEUbuS81uWRpcykv5oGAv0o0ftYTGlunqstNGozStnyjuEpDcN6YXv2mDvXZnHGH1x3yvpy7L+YwQ3eT0ypDLf4Zguw+AIdvahvwjmzVB4nA9zAXdRAVfKI4osd37NTW2rxv5hh58diqy7r5JuPYVvwKXj2MDSj0qoN++h4qsMRVrZh52q8ovOFfqzKHZ52Fr6egiF7Ycme7dMYz7s9pIjXI0edCiqIPj2+mW3t3OY+QMWJ8zdoi8YhBVc5sDYMqKpBKWezEKwHXUvzpXy/Mp6CrbzfwBcGApUJE439JROQ4Bgetb5h5AHyp5GlmtXO66CvaopAIg3Lw5HQHaBJyxhJ5kR54qG1g0YjNFEojutF8SsORaT/1dJSBOScG5/hQjrOjx2hBFk6OTibmmY0UFSgZHIwUfM3DdRgghLKEyzZPh8fMBLIjeRHpeI54l5L8cue4/HTMSVNPi7s6oAbLdftmZ1JQcwXxSLDn/QKkG9EcLiqJrNLQZXWTWuZliviPoKSQ1UaHY0Qyqwo="
+
 compiler:
   - clang
   - gcc
@@ -10,6 +16,14 @@ os:
   - osx
 
 addons:
+  coverity_scan:
+      project:
+        name: "feliwir/Anvil"
+        description: "Build submitted via Travis CI"
+      notification_email: stephan.vedder@gmail.com
+      build_command_prepend: "<Your build preprocessing command here>"
+      build_command:   make -j2
+      branch_pattern: master
   apt:
     sources: 
       - llvm-toolchain-precise-3.7
