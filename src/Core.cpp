@@ -119,7 +119,7 @@ Core::Core()
 	m_input = std::make_unique<Input>();
 	m_script->LoadFile("start.lua");
 	m_map = std::make_unique<Map>();
-	m_audio->PlaySound("roll_over_01.wav");
+	m_audio->PlaySound("sound/roll_over_01.wav");
 
 	glfwSetKeyCallback(m_window, KeyCallback);
 	glfwSetWindowSizeCallback(m_window, ResizeCallback);

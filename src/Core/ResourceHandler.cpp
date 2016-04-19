@@ -25,43 +25,40 @@ using namespace anvil;
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 {
 	std::string path;
-	std::string n = m_entitiesDir + name;
-	if (m_resources.count(toUpper(n)) == 0)
+	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(n, path))
+		if (GetFilePath(name, path))
 		{
-			JsonLoader::LoadEntity(n, path);
+			JsonLoader::LoadEntity(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(n)]);
+	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(name)]);
 }
 
 std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string & name)
 {
 	std::string path;
-	std::string n = m_particleDir + name;
-	if (m_resources.count(toUpper(n)) == 0)
+	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(n, path))
+		if (GetFilePath(name, path))
 		{
-			JsonLoader::LoadParticlesystem(n, path);
+			JsonLoader::LoadParticlesystem(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<IParticleSystem> (m_resources[toUpper(n)]);
+	return std::dynamic_pointer_cast<IParticleSystem> (m_resources[toUpper(name)]);
 }
 
 std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 {
 	std::string path;
-	std::string n = m_texturesDir + name;
-	if (m_resources.count(toUpper(n)) == 0)
+	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(n, path))
+		if (GetFilePath(name, path))
 		{
-			TextureLoader::LoadTexture(n, path);
+			TextureLoader::LoadTexture(name, path);
 		}
 	}			
-	return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(n)]);
+	return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(name)]);
 }
 
 std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::string> names)
@@ -70,7 +67,6 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 	for (auto& name : names)
 	{
 		std::string path;
-		name = m_texturesDir + name;
 		if (GetFilePath(name, path))
 		{
 			paths.push_back(path);
@@ -82,15 +78,14 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 {
 	std::string path;
-	std::string n = m_materialsDir + name;
-	if (m_resources.count(toUpper(n)) == 0)
+	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(n, path))
+		if (GetFilePath(name, path))
 		{
-			JsonLoader::LoadMaterial(n, path);
+			JsonLoader::LoadMaterial(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(n)]);
+	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(name)]);
 }
 
 
@@ -99,23 +94,23 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	std::vector<std::string> materials;
 	
 	std::vector<std::string> temp;
-	temp = IO::ListFiles(m_materialsDir + "terrain/", "json");
+	temp = IO::ListFiles("materials/terrain/", "json");
 	for (int i = 0; i < temp.size(); i++)
 	{
 		if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
 		{
-			materials.push_back("terrain/" + temp[i]);
+			materials.push_back("materials/terrain/" + temp[i]);
 		}
 	}
 
 	for (int i = 0; i < m_modDirs.size(); i++)
 	{
-		temp = IO::ListFiles(m_modDirs[i] + m_materialsDir + "terrain/", "json");
+		temp = IO::ListFiles(m_modDirs[i] + "materials/terrain/", "json");
 		for (int i = 0; i < temp.size(); i++)
 		{
 			if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
 			{
-				materials.push_back("terrain/" + temp[i]);
+				materials.push_back("materials/terrain/" + temp[i]);
 			}
 		}
 	}
@@ -125,45 +120,42 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
 {
 	std::string path;
-	std::string n = m_bf3dDir + name;
-	if (m_resources.count(toUpper(n)) == 0)
+	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(n, path))
+		if (GetFilePath(name, path))
 		{
-			BF3DLoader::Load(n, path);
+			BF3DLoader::Load(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(n)]);
+	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(name)]);
 }
 
 std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name)
 {
 	std::string path;
-	std::string n = m_bf3dDir + name;
-	if (m_resources.count(toUpper(n)) == 0)
+	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(n, path))
+		if (GetFilePath(name, path))
 		{
-			BF3DLoader::Load(n, path);
+			BF3DLoader::Load(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Hierarchy> (m_resources[toUpper(n)]);
+	return std::dynamic_pointer_cast<Hierarchy> (m_resources[toUpper(name)]);
 }
 
 std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
 {
 	std::string path;
-	std::string n = m_soundDir + name;
-	if (m_resources.count(toUpper(n)) == 0)
+	if (m_resources.count(toUpper(name)) == 0)
 	{
-		if (GetFilePath(n, path))
+		if (GetFilePath(name, path))
 		{
 			std::shared_ptr<SoundBuffer> sound = std::make_shared<SoundBuffer>();
 			sound->Load(path);
-			AddResource(n, sound);
+			AddResource(name, sound);
 		}
 	}
-	return std::dynamic_pointer_cast<SoundBuffer> (m_resources[toUpper(n)]);
+	return std::dynamic_pointer_cast<SoundBuffer> (m_resources[toUpper(name)]);
 }
 
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)

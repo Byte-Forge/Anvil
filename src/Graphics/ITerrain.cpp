@@ -84,21 +84,21 @@ void ITerrain::Generate()
 	auto begin = std::chrono::system_clock::now();
 
 	//m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
-	m_terrainMaterials.push_back("terrain/grass.json");
-	m_terrainMaterials.push_back("terrain/grass_2.json");
-	m_terrainMaterials.push_back("terrain/grass_3.json");
-	m_terrainMaterials.push_back("terrain/grass_4.json");
-	m_terrainMaterials.push_back("terrain/cliff_snowy.json");
+	m_terrainMaterials.push_back("materials/terrain/grass.json");
+	m_terrainMaterials.push_back("materials/terrain/grass_2.json");
+	m_terrainMaterials.push_back("materials/terrain/grass_3.json");
+	m_terrainMaterials.push_back("materials/terrain/grass_4.json");
+	m_terrainMaterials.push_back("materials/terrain/cliff_snowy.json");
 
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
 
-	std::shared_ptr<Entity> rhodo = Core::GetCore()->GetResources()->GetEntity("terrain/misc/rhododendron.json");
-	std::shared_ptr<Entity> dougla = Core::GetCore()->GetResources()->GetEntity("terrain/misc/douglas_fir.json");
-	std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("terrain/misc/oak.json");
-	std::shared_ptr<Entity> birch = Core::GetCore()->GetResources()->GetEntity("terrain/misc/birch.json");
+	std::shared_ptr<Entity> rhodo = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/rhododendron.json");
+	std::shared_ptr<Entity> dougla = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/douglas_fir.json");
+	std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
+	std::shared_ptr<Entity> birch = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/birch.json");
 
-	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("units/cavetroll.json");
+	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/cavetroll.json");
 
 	troll->AddInstance(glm::vec3(0, 10, 0));
 

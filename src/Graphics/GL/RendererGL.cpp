@@ -216,7 +216,7 @@ RendererGL::RendererGL()
 	else
 		m_totalVRAM = 0;
 
-	Core::GetCore()->GetResources()->GetParticleSystem("test.json");
+	Core::GetCore()->GetResources()->GetParticleSystem("particle/test.json");
 }
 
 RendererGL::~RendererGL()
