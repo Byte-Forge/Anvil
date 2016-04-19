@@ -50,7 +50,7 @@ namespace anvil
 
 		private:
 			GLuint m_vao;
-			std::unique_ptr<Buffer> m_vbo, m_uvbo, m_nbo, m_fbo, m_mbo;
+			std::unique_ptr<Buffer> m_vbo, m_uvbo, m_nbo, m_infbo, m_fbo;
 		};
 	}
 }

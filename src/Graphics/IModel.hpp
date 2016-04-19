@@ -12,7 +12,7 @@
 #include <set>
 #include <memory>
 #include <glm/glm.hpp>
-#include "../Types/BF3D.hpp"
+#include "../Graphics/Hierarchy.hpp"
 #include "../Graphics/IMesh.hpp"
 #include "../Core/IResource.hpp"
 #include "../Graphics/IRenderable.hpp"

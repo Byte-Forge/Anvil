@@ -14,6 +14,7 @@
 #include "../Util/Platform.hpp"
 #include "../Exception.hpp"
 #include "../Objects/Entity.hpp"
+#include "../Graphics/Hierarchy.hpp"
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/ITexture.hpp"
 #include "../Graphics/IParticleSystem.hpp"

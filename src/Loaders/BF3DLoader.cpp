@@ -11,8 +11,8 @@
 #include <glm/glm.hpp>
 #include "../Util.hpp"        
 #include "../Core.hpp"
-#include "../Types/BF3D.hpp"
 #include "../Graphics.hpp"
+#include "../Graphics/Hierarchy.hpp"
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/GL/MeshGL.hpp"
 #include "../Graphics/GL/ModelGL.hpp"
@@ -25,26 +25,6 @@ using namespace anvil;
 //# hierarchy
 //#######################################################################################
 
-HierarchyHeader loadHierarchyHeader(std::ifstream& file)
-{
-	HierarchyHeader header;
-	header.name = readString(file);
-	header.pivotCount = read<std::uint32_t>(file);
-	header.centerPos = read<glm::f32vec3>(file);
-	return header;
-}
-
-HierarchyPivot loadHierarchyPivot(std::ifstream& file)
-{
-	HierarchyPivot pivot;
-	pivot.name =  readString(file);
-	pivot.parentID = read<std::uint16_t>(file);
-	pivot.isBone = read<std::uint8_t>(file);
-	pivot.position = read<glm::f32vec3>(file);
-	pivot.rotation =  read<glm::f32vec4>(file);
-	return pivot;
-}
-
 void BF3DLoader::LoadHierarchy(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<Hierarchy> hierarchy;
@@ -52,20 +32,27 @@ void BF3DLoader::LoadHierarchy(std::string name, std::ifstream& file, std::uint3
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		size_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		switch (chunkType)
 		{
 		case 257:
 			hierarchy = std::make_shared<Hierarchy>();
-			hierarchy->header = loadHierarchyHeader(file);
+			hierarchy->SetName(readString(file));
+			hierarchy->SetPivotCount(read<std::uint32_t>(file));
+			hierarchy->SetCenterPos(read<glm::f32vec3>(file));
 			break;
 		case 258:
-			hierarchy->pivots.push_back(loadHierarchyPivot(file));
+			while (file.tellg() < subChunkEnd)
+			{
+				readString(file); //the name of the pivot (not used in the engine)
+				read<std::uint8_t>(file); //if the pivot is a bone (not used in the engine)
+				hierarchy->AddPivot(read<glm::f32mat2x4>(file));
+			}
 			break;
 		default:
 			std::cout << "unknown chunktype in hierarchy chunk: " << chunkType << std::endl;
-			file.seekg(chunkEnd, std::ios::beg);
+			file.seekg(subChunkEnd, std::ios::beg);
 		}
 	}
 	Core::GetCore()->GetResources()->AddResource(name, hierarchy);
@@ -83,7 +70,7 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		switch (chunkType)
 		{
@@ -108,11 +95,11 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 			mesh->SetUVCoords(readVector<glm::f32vec2>(file, chunkSize));
 			break;
 		case 7:
-			mesh->SetVertInfs(readVector<IMesh::MeshVertexInfluences>(file, chunkSize));
+			mesh->SetVertInfs(readVector<glm::i16vec2>(file, chunkSize));
 			break;
 		default:
 			std::cout << "unknown chunktype in mesh chunk: " << chunkType << std::endl;
-			file.seekg(chunkEnd, std::ios::beg);
+			file.seekg(subChunkEnd, std::ios::beg);
 		}
 	}
 	mesh->Init();
@@ -122,7 +109,6 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<IModel> model = Core::GetCore()->GetGraphics()->GetModel();
-	std::cout << name << std::endl;
 	std::string hierarchyName = readString(file);
 	if (hierarchyName != "")
 		model->SetHierarchy(Core::GetCore()->GetResources()->GetHierarchy("units/mucavtroll_skl.bf3d"));
@@ -133,13 +119,13 @@ void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t 
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		std::shared_ptr<IMesh> mesh;
 		switch (chunkType)
 		{
 		case 1:
-			mesh = LoadMesh(file, chunkEnd);
+			mesh = LoadMesh(file, subChunkEnd);
 			model->AddMesh(mesh->GetName(), mesh);
 			break;
 		case 1024:
@@ -166,20 +152,20 @@ void BF3DLoader::Load(const std::string& name, const std::string& path)
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t chunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		switch (chunkType)
 		{
 		case 0:
-			LoadModel(name, file, chunkEnd);
+			LoadModel(name, file, subChunkEnd);
 			break;
 		case 256:
-			LoadHierarchy(name, file, chunkEnd);
+			LoadHierarchy(name, file, subChunkEnd);
 			break;
 
 		default:
 			std::cout << "unknown chunktype in file: " << chunkType << std::endl;
-			file.seekg(chunkEnd, std::ios::beg);
+			file.seekg(subChunkEnd, std::ios::beg);
 		}
 	}
 }

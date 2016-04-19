@@ -32,7 +32,13 @@ GL::MeshGL::MeshGL() : m_vao(0)
 	m_nbo->Bind();
 
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+	m_infbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+	m_infbo->Bind();
+
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 2, GL_INT, GL_FALSE, 0, nullptr);
 
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
 	m_fbo->Bind();
@@ -49,6 +55,11 @@ GL::MeshGL::~MeshGL()
 
 void GL::MeshGL::Render(IShader& shader)
 {
+	int use_skinning = 0;
+	if (m_type >= 128)
+		use_skinning = 1;
+	glUniform1i(shader.GetUniform("use_skinning"), use_skinning);
+
 	glBindVertexArray(m_vao);
 	m_fbo->Bind();
 	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
@@ -64,6 +75,9 @@ void GL::MeshGL::Init()
 
 	m_uvbo->Bind();
 	m_uvbo->Update(sizeof(glm::f32vec2) * m_uvCoords.size(), m_uvCoords.data());
+
+	m_infbo->Bind();
+	m_infbo->Update(sizeof(glm::i16vec2) * m_vertInfs.size(), m_vertInfs.data());
 
 	m_fbo->Bind();
 	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), m_faces.data());

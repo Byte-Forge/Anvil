@@ -39,8 +39,15 @@ void GL::ModelGL::Render(IShader& shader)
 				glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
 				glUniform4fv(shader.GetUniform("position"), 1, glm::value_ptr(glm::vec4(i->position, 1.0)));
 
+				if (m_hierarchy != nullptr)
+				{
+					glUniformMatrix2x4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, &m_hierarchy->GetPivots().data()[0][0].x);
+					glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));
+				}
+
 				for (std::map<std::string, std::shared_ptr<IMesh>>::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
-				{					glActiveTexture(GL_TEXTURE0); //albedo textures
+				{					
+					glActiveTexture(GL_TEXTURE0); //albedo textures
 					e->GetMaterial(it->second->GetName())->GetAlbedoTexture()->Bind();
 					glUniform1i(shader.GetUniform("albedoTex"), 0);
 

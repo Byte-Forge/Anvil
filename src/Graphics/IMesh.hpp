@@ -22,17 +22,6 @@ namespace anvil
 	public:
 
 		/**
-		 * @struct	MeshVertexInfluences
-		 *
-		 * @brief	How the vertices are influenced by the bone.
-		 */
-		struct MeshVertexInfluences
-		{
-			std::uint16_t boneIdx;
-			std::uint16_t boneInf;
-		};
-
-		/**
 		 * @fn	virtual void IMesh::Render(IShader& shader) = 0;
 		 *
 		 * @brief	Renders the given shader.
@@ -60,7 +49,7 @@ namespace anvil
 		inline void SetNormals(std::vector<glm::f32vec3> normals) { normals = m_normals; }
 		inline void SetUVCoords(std::vector<glm::f32vec2> uvCoords) { m_uvCoords = uvCoords; }
 		inline void SetFaces(std::vector<glm::i32vec3> faces) { m_faces = faces; }
-		inline void SetVertInfs(std::vector<MeshVertexInfluences> vertInfs) { m_vertInfs = vertInfs; }
+		inline void SetVertInfs(std::vector<glm::i16vec2> vertInfs) { m_vertInfs = vertInfs; }
 
 	protected:
 		std::uint8_t m_type;
@@ -80,6 +69,6 @@ namespace anvil
 		std::vector<glm::f32vec3> m_normals;
 		std::vector<glm::f32vec2> m_uvCoords;
 		std::vector<glm::i32vec3> m_faces;
-		std::vector<MeshVertexInfluences> m_vertInfs;
+		std::vector<glm::i16vec2> m_vertInfs;
 	};
 }

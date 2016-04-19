@@ -13,12 +13,12 @@
 #include <algorithm>
 #include <iostream>
 #include <mutex>
-#include "../Types/BF3D.hpp"
 #include "IResource.hpp"
 
 namespace anvil
 {
 	class Entity;
+	class Hierarchy;
 	class IParticleSystem;
 	class ITexture;
 	class Material;
