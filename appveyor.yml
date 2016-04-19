@@ -26,7 +26,7 @@ install:
   - set ROCKET_ROOT=%CD%/libRocket
   - cd ..
 
- matrix:
+matrix:
   fast_finish: true
 
 notifications:
