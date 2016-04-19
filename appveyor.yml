@@ -1,0 +1,38 @@
+environment:
+  matrix:
+     - GENERATOR: "Visual Studio 14"
+       CONFIG: Debug
+     - GENERATOR: "Visual Studio 14"
+       CONFIG: Release
+
+platform:
+    - Win32
+    - x64
+
+install:
+  - cmake --version
+  - md deps
+  - cd deps
+  - git clone https://github.com/g-truc/glm.git
+  - set GLM_ROOT_DIR=%CD%/glm
+  - git clone https://github.com/g-truc/gli.git
+  - set GLI_ROOT_DIR=%CD%/gli
+  - git clone https://github.com/miloyip/rapidjson.git
+  - set RAPIDJSON_ROOT_DIR=%CD%/rapidjson
+  - git clone https://github.com/libRocket/libRocket.git
+  - cd libRocket/Build 
+  - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE -DBUILD_UNIVERSAL_BINARIES=OFF
+  - make install -j2 && cd ../..
+  - set ROCKET_ROOT=%CD%/libRocket
+  - cd ..
+
+ matrix:
+  fast_finish: true
+
+notifications:
+- provider: Slack
+  incoming_webhook: https://hooks.slack.com/services/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
+  channel: '#general'
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true
