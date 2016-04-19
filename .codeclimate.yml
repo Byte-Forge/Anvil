@@ -1,0 +1,12 @@
+engines:
+  cppcheck:
+    enabled: true
+    exclude_paths:
+      - data
+      - tools
+    config:
+      check: all
+      inconclusive: false
+      stds:
+        - c++11
+        - posix
