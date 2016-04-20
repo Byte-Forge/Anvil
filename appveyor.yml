@@ -6,6 +6,12 @@ configuration:
   - Debug
   - Release
 
+init:
+- ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+on_finish:
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
   - cmake --version
   - md deps
@@ -16,7 +22,7 @@ install:
   - set GLI_ROOT_DIR=%CD%/gli
   - git clone https://github.com/miloyip/rapidjson.git
   - set RAPIDJSON_ROOT_DIR=%CD%/rapidjson
-  - curl http://download.savannah.gnu.org/releases/freetype/ft263.zip
+  - curl -O http://download.savannah.gnu.org/releases/freetype/ft263.zip
   - 7z e ft263.zip
   - cd ./freetype-2.6.3/
   - md Build
