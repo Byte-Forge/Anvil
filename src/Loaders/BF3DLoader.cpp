@@ -111,7 +111,7 @@ void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t 
 	std::shared_ptr<IModel> model = Core::GetCore()->GetGraphics()->GetModel();
 	std::string hierarchyName = readString(file);
 	if (hierarchyName != "")
-		model->SetHierarchy(Core::GetCore()->GetResources()->GetHierarchy("units/mucavtroll_skl.bf3d"));
+		model->SetHierarchy(Core::GetCore()->GetResources()->GetHierarchy("bf3d/units/mucavtroll_skl.bf3d"));
 	else
 		model->SetHierarchy(nullptr);
 

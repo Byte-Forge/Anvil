@@ -48,7 +48,7 @@ GL::Skybox::Skybox()
 	std::iota(m_faces.begin(), m_faces.end(), 0);
 
 
-	m_diff = Core::GetCore()->GetResources()->GetTexture("skybox/skybox.dds");
+	m_diff = Core::GetCore()->GetResources()->GetTexture("textures/skybox/skybox.dds");
 	
 	m_vbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
 	m_vbo->Bind();

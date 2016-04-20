@@ -157,16 +157,6 @@ namespace anvil
 		bool GetFilePath(const std::string name, std::string& path);
 
     private:
-		std::string m_texturesDir = "./textures/";
-		std::string m_shadersDir = "./shader/";
-		std::string m_materialsDir = "./materials/";
-		std::string m_bf3dDir = "./bf3d/";
-		std::string m_uiDir = "./ui/";
-		std::string m_entitiesDir = "./entities/";
-		std::string m_particleDir = "./particle/";
-		std::string m_modDir = "./mods/";
-		std::string m_soundDir = "./sound/";
-
 		std::vector<std::string> m_modDirs;
 
         std::unordered_map<std::string, std::shared_ptr<IResource>> m_resources;
