@@ -1,13 +1,10 @@
-environment:
-  matrix:
-     - GENERATOR: "Visual Studio 14"
-       CONFIG: Debug
-     - GENERATOR: "Visual Studio 14"
-       CONFIG: Release
-
 platform:
     - Win32
     - x64
+
+configuration:
+  - Debug
+  - Release
 
 install:
   - cmake --version
@@ -19,6 +16,14 @@ install:
   - set GLI_ROOT_DIR=%CD%/gli
   - git clone https://github.com/miloyip/rapidjson.git
   - set RAPIDJSON_ROOT_DIR=%CD%/rapidjson
+  - curl http://download.savannah.gnu.org/releases/freetype/ft263.zip
+  - 7z e ft263.zip
+  - cd ./freetype-2.6.3/
+  - md Build
+  - cd Build
+  - cmake ..
+  - msbuild ALL_BUILD.vcxproj
+  - cd ../../
   - git clone https://github.com/libRocket/libRocket.git
   - cd libRocket/Build 
   - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE -DBUILD_UNIVERSAL_BINARIES=OFF
@@ -35,4 +40,3 @@ notifications:
   channel: '#general'
   on_build_success: true
   on_build_failure: true
-  on_build_status_changed: true
