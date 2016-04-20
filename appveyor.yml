@@ -22,7 +22,7 @@ install:
   - set GLI_ROOT_DIR=%CD%/gli
   - git clone https://github.com/miloyip/rapidjson.git
   - set RAPIDJSON_ROOT_DIR=%CD%/rapidjson
-  - curl -OutFile freetype.tar.bz2 http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2
+  - curl -L -o freetype.tar.bz2 http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2
   - tar xvfj ./freetype.tar.bz2
   - cd ./freetype-2.6.3/
   - md Build
