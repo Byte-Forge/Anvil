@@ -30,10 +30,11 @@ install:
   - cmake .. -DCMAKE_INSTALL_PREFIX=..
   - msbuild INSTALL.vcxproj /property:Configuration=Release
   - cd ../../
+  - git clone https://github.com/Byte-Forge/luajit.git
   - git clone https://github.com/libRocket/libRocket.git
   - cd libRocket/Build 
-  - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE -DBUILD_UNIVERSAL_BINARIES=OFF -DFREETYPE_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype-2.6.3/lib/freetype.lib"  -DFREETYPE_INCLUDE_DIRS="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype-2.6.3/include"
-  - make install -j2 && cd ../..
+  - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE -DLUA_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../luajit/lib/$ENV{PLATFORM}/lua51.lib" -DLUA_INCLUDE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../luajit/include" -DBUILD_UNIVERSAL_BINARIES=OFF -DFREETYPE_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype-2.6.3/lib/freetype.lib"  -DFREETYPE_INCLUDE_DIRS="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype-2.6.3/include"
+  - msbuild INSTALL.vcxproj /property:Configuration=Release
   - set ROCKET_ROOT=%CD%/libRocket
   - cd ..
 
@@ -46,3 +47,4 @@ notifications:
   channel: '#general'
   on_build_success: true
   on_build_failure: true
+  on_status_changed: true
