@@ -27,14 +27,14 @@ install:
   - cd ./freetype-2.6.3/
   - md Build
   - cd Build
-  - cmake .. -DCMAKE_INSTALL_PREFIX=..
-  - msbuild INSTALL.vcxproj /property:Configuration=Release
+  - cmake .. -DCMAKE_INSTALL_PREFIX=../../freetype/
+  - msbuild INSTALL.vcxproj /property:Configuration=Release /mp
   - cd ../../
   - git clone https://github.com/Byte-Forge/luajit.git
   - git clone https://github.com/libRocket/libRocket.git
   - cd libRocket/Build 
-  - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE -DLUA_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../luajit/lib/$ENV{PLATFORM}/lua51.lib" -DLUA_INCLUDE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../luajit/include" -DBUILD_UNIVERSAL_BINARIES=OFF -DFREETYPE_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype-2.6.3/lib/freetype.lib"  -DFREETYPE_INCLUDE_DIRS="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype-2.6.3/include"
-  - msbuild INSTALL.vcxproj /property:Configuration=Release
+  - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE -DLUA_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../luajit/lib/%PLATFORM%/lua51.lib" -DLUA_INCLUDE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../luajit/include" -DBUILD_UNIVERSAL_BINARIES=OFF -DFREETYPE_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype/lib/freetype.lib"  -DFREETYPE_INCLUDE_DIRS="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype/include"
+  - msbuild INSTALL.vcxproj /property:Configuration=Release /mp
   - set ROCKET_ROOT=%CD%/libRocket
   - cd ..
 
