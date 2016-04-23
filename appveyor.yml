@@ -39,7 +39,7 @@ install:
     -DBUILD_LUA_BINDINGS=TRUE -DLUA_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../luajit/lib/%PLATFORM%/lua51.lib" 
     -DLUA_INCLUDE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../../luajit/include" 
     -DFREETYPE_LIBRARY="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype/lib/freetype.lib"  
-    -DFREETYPE_INCLUDE_DIRS="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype/include"
+    -DFREETYPE_INCLUDE_DIRS="${CMAKE_CURRENT_SOURCE_DIR}/../../freetype/include/freetype2"
   - msbuild INSTALL.vcxproj /property:Configuration=Release 
   - set ROCKET_ROOT=%CD%/libRocket
   - cd ..
