@@ -42,14 +42,14 @@ namespace anvil
 		inline void SetName(const std::string& meshName) { m_meshName = meshName; }
 		inline std::string GetName() { return m_meshName; }
 		inline void SetMaterialID(std::uint16_t materialID) { m_materialID = materialID; }
-		inline void SetParentPivot(std::uint16_t parentPivot) { m_parentPivot = parentPivot; }
+		inline void SetParentPivot(std::uint32_t parentPivot) { m_parentPivot = parentPivot; }
 		inline void SetFaceCount(glm::uint32 faceCount) { m_faceCount = faceCount; }
 		inline void SetVerticesCount(glm::uint32 vertCount) { m_vertCount = vertCount; }
 		inline void SetVertices(std::vector<glm::f32vec3> vertices) { m_vertices = vertices; }
 		inline void SetNormals(std::vector<glm::f32vec3> normals) { normals = m_normals; }
 		inline void SetUVCoords(std::vector<glm::f32vec2> uvCoords) { m_uvCoords = uvCoords; }
 		inline void SetFaces(std::vector<glm::i32vec3> faces) { m_faces = faces; }
-		inline void SetVertInfs(std::vector<glm::i16vec2> vertInfs) { m_vertInfs = vertInfs; }
+		inline void SetVertInfs(std::vector<glm::i32vec2> vertInfs) { m_vertInfs = vertInfs; }
 
 	protected:
 		std::uint8_t m_type;
@@ -60,8 +60,8 @@ namespace anvil
 		// 129->skin - two sided
 
 		std::string m_meshName;
-		std::uint16_t m_materialID;
-		std::uint16_t m_parentPivot;
+		std::uint32_t m_materialID;
+		std::uint32_t m_parentPivot;
 		glm::uint32 m_faceCount;
 		glm::uint32 m_vertCount;
 
@@ -69,6 +69,6 @@ namespace anvil
 		std::vector<glm::f32vec3> m_normals;
 		std::vector<glm::f32vec2> m_uvCoords;
 		std::vector<glm::i32vec3> m_faces;
-		std::vector<glm::i16vec2> m_vertInfs;
+		std::vector<glm::i32vec2> m_vertInfs;
 	};
 }

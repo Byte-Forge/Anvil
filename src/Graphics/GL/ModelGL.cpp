@@ -42,11 +42,9 @@ void GL::ModelGL::Render(IShader& shader)
 
 				if (m_hierarchy != nullptr)
 				{
-					//glUniform1iv(shader.GetUniform("parentIDs"), sizeof(std::int16_t) *  m_hierarchy->GetParentIDs().size(), reinterpret_cast<GLint *>(m_hierarchy->GetParentIDs().data()));
-					glUniformMatrix4fv(shader.GetUniform("pivots"), sizeof(glm::f32mat4x4) * m_hierarchy->GetPivots().size(), GL_FALSE, reinterpret_cast<GLfloat *>(m_hierarchy->GetPivots().data()));
+					glUniform1iv(shader.GetUniform("parentIDs"), m_hierarchy->GetParentIDs().size(), reinterpret_cast<GLint*>(m_hierarchy->GetParentIDs().data()));	
+					glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
 					//glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));
-					//printMat(m_hierarchy->GetPivots().data()[0]);
-					std::cout << sizeof(glm::f32mat4x4) << std::endl;
 				}
 
 				for (std::map<std::string, std::shared_ptr<IMesh>>::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)

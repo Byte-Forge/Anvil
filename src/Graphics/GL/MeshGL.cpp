@@ -77,7 +77,7 @@ void GL::MeshGL::Init()
 	m_uvbo->Update(sizeof(glm::f32vec2) * m_uvCoords.size(), m_uvCoords.data());
 
 	m_infbo->Bind();
-	m_infbo->Update(sizeof(glm::i16vec2) * m_vertInfs.size(), m_vertInfs.data());
+	m_infbo->Update(sizeof(glm::i32vec2) * m_vertInfs.size(), m_vertInfs.data());
 
 	m_fbo->Bind();
 	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), m_faces.data());

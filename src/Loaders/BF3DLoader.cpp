@@ -46,11 +46,9 @@ void BF3DLoader::LoadHierarchy(std::string name, std::ifstream& file, std::uint3
 			while (file.tellg() < subChunkEnd)
 			{
 				readString(file); //the name of the pivot (not used in the engine)
-				hierarchy->AddParentID(read<std::int16_t>(file)); //parent pivot of the bone
+				hierarchy->AddParentID(read<std::int32_t>(file)); //parent pivot of the bone
 				read<std::uint8_t>(file); //if the pivot is a bone (not used in the engine)
-				glm::f32mat4x4 m = read<glm::f32mat4x4>(file);
-				//printMat(m);
-				hierarchy->AddPivot(m);
+				hierarchy->AddPivot(read<glm::f32mat4x4>(file));
 			}
 			break;
 		default:
@@ -71,8 +69,8 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 
 	while (file.tellg() < chunkEnd)
 	{
-		std::uint32_t chunkType = read<std::uint32_t>(file);
-		std::uint32_t chunkSize = read<std::uint32_t>(file);
+		std::uint32_t chunkType = read<std::int32_t>(file);
+		std::uint32_t chunkSize = read<std::int32_t>(file);
 		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		switch (chunkType)
@@ -80,10 +78,10 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 		case 2:
 			mesh->SetType(read<std::uint8_t>(file));
 			mesh->SetName(readString(file));
-			mesh->SetMaterialID(read<std::uint16_t>(file));
-			mesh->SetParentPivot(read<std::uint16_t>(file));
-			mesh->SetFaceCount(read<std::uint32_t>(file));
-			mesh->SetVerticesCount(read<std::uint32_t>(file));
+			mesh->SetMaterialID(read<std::int32_t>(file));
+			mesh->SetParentPivot(read<std::int32_t>(file));
+			mesh->SetFaceCount(read<std::int32_t>(file));
+			mesh->SetVerticesCount(read<std::int32_t>(file));
 			break;
 		case 3:
 			mesh->SetVertices(readVector<glm::f32vec3>(file, chunkSize));
@@ -98,7 +96,7 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 			mesh->SetUVCoords(readVector<glm::f32vec2>(file, chunkSize));
 			break;
 		case 7:
-			mesh->SetVertInfs(readVector<glm::i16vec2>(file, chunkSize));
+			mesh->SetVertInfs(readVector<glm::i32vec2>(file, chunkSize));
 			break;
 		default:
 			std::cout << "unknown chunktype in mesh chunk: " << chunkType << std::endl;
@@ -120,9 +118,9 @@ void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t 
 
 	while (file.tellg() < chunkEnd)
 	{
-		std::uint32_t chunkType = read<std::uint32_t>(file);
-		std::uint32_t chunkSize = read<std::uint32_t>(file);
-		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+		std::int32_t chunkType = read<std::int32_t>(file);
+		std::int32_t chunkSize = read<std::int32_t>(file);
+		std::int32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		std::shared_ptr<IMesh> mesh;
 		switch (chunkType)

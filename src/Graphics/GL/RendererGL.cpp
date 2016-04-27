@@ -171,6 +171,8 @@ RendererGL::RendererGL()
 
 	m_modelShaders[0]->AddUniform("mvp");
 	m_modelShaders[0]->AddUniform("position");
+	m_modelShaders[0]->AddUniform("pivots");
+	m_modelShaders[0]->AddUniform("parentIDs");
 
 	for (unsigned int i = 0; i < m_shaderModes.size(); i++)
 	{
