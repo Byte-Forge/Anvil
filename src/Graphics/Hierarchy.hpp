@@ -37,13 +37,16 @@ namespace anvil
 		inline int GetPivotCount() { return m_pivotCount; }
 		inline void SetCenterPos(glm::vec3 centerPos) { m_centerPos = centerPos; }
 		inline glm::vec3 GetCenterPos() { return m_centerPos; }
-		inline void AddPivot(glm::f32mat2x4 pivot) { m_pivots.push_back(pivot); }
-		inline std::vector<glm::f32mat2x4> GetPivots() { return m_pivots; }
+		inline void AddParentID(std::uint16_t ID) { m_parentIDs.push_back(ID); }
+		inline std::vector<std::int16_t> GetParentIDs() { return m_parentIDs; }
+		inline void AddPivot(glm::f32mat4x4 pivot) { m_pivots.push_back(pivot); };
+		inline std::vector<glm::f32mat4x4> GetPivots() { return m_pivots; }
 
 	private:
 		std::string m_name;
 		int m_pivotCount;
 		glm::vec3 m_centerPos;
-		std::vector<glm::f32mat2x4> m_pivots;
+		std::vector<std::int16_t> m_parentIDs;
+		std::vector<glm::f32mat4x4> m_pivots;
 	};
 }

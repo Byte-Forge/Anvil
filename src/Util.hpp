@@ -9,6 +9,7 @@
 #include <string>
 #include <algorithm>
 #include <glm/glm.hpp>
+#include <iostream>
 #include <fstream>
 #include <vector>
 #include <sstream>
@@ -178,5 +179,18 @@ namespace anvil
 		bool exists = false;
 		std::ifstream fin(str);
 		return fin.good(); //fin.close() is called by the destructor
+	}
+
+	inline void printVec(glm::vec4 vec)
+	{
+		std::cout << vec[0] << ", " << vec[1] << ", " << vec[2] << ", " << vec[3] << std::endl;
+	}
+
+	inline void printMat(glm::mat4x4 mat)
+	{
+		std::cout << mat[0][0] << ", " << mat[0][1] << ", " << mat[0][2] << ", " << mat[0][3] << std::endl;
+		std::cout << mat[1][0] << ", " << mat[1][1] << ", " << mat[1][2] << ", " << mat[1][3] << std::endl;
+		std::cout << mat[2][0] << ", " << mat[2][1] << ", " << mat[2][2] << ", " << mat[2][3] << std::endl;
+		std::cout << mat[3][0] << ", " << mat[3][1] << ", " << mat[3][2] << ", " << mat[3][3] << std::endl;
 	}
 }

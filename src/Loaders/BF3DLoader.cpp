@@ -46,8 +46,11 @@ void BF3DLoader::LoadHierarchy(std::string name, std::ifstream& file, std::uint3
 			while (file.tellg() < subChunkEnd)
 			{
 				readString(file); //the name of the pivot (not used in the engine)
+				hierarchy->AddParentID(read<std::int16_t>(file)); //parent pivot of the bone
 				read<std::uint8_t>(file); //if the pivot is a bone (not used in the engine)
-				hierarchy->AddPivot(read<glm::f32mat2x4>(file));
+				glm::f32mat4x4 m = read<glm::f32mat4x4>(file);
+				//printMat(m);
+				hierarchy->AddPivot(m);
 			}
 			break;
 		default:
