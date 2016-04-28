@@ -47,13 +47,13 @@ void GL::ModelGL::Render(IShader& shader)
 					//glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));
 				}
 
-				for (std::map<std::string, std::shared_ptr<IMesh>>::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
-				{					
+				for(const auto& it : m_meshes)
+				{								
 					glActiveTexture(GL_TEXTURE0); //albedo textures
-					e->GetMaterial(it->second->GetName())->GetAlbedoTexture()->Bind();
+					e->GetMaterial(it.second->GetName())->GetAlbedoTexture()->Bind();
 					glUniform1i(shader.GetUniform("albedoTex"), 0);
 
-					it->second->Render(shader);
+					it.second->Render(shader);
 				}
 			}
 		}
