@@ -34,11 +34,6 @@ GL::MeshGL::MeshGL() : m_vao(0)
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-	m_infbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
-	m_infbo->Bind();
-
-	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 2, GL_INT, GL_FALSE, 0, nullptr);
 
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
 	m_fbo->Bind();
@@ -76,8 +71,18 @@ void GL::MeshGL::Init()
 	m_uvbo->Bind();
 	m_uvbo->Update(sizeof(glm::f32vec2) * m_uvCoords.size(), m_uvCoords.data());
 
-	m_infbo->Bind();
-	m_infbo->Update(sizeof(glm::i32vec2) * m_vertInfs.size(), m_vertInfs.data());
+	if (m_vertInfs.size() > 0)
+	{
+		m_infbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
+		m_infbo->Bind();
+
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 2, GL_INT, GL_FALSE, 0, nullptr);
+
+
+		m_infbo->Bind();
+		m_infbo->Update(sizeof(glm::i32vec2) * m_vertInfs.size(), m_vertInfs.data());
+	}
 
 	m_fbo->Bind();
 	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), m_faces.data());
