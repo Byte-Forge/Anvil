@@ -71,9 +71,26 @@ namespace anvil
 
 		void Update();
 
-		void SetModel(std::string model);
+		/**
+		* @fn	void Entity::SetModel(const std::string model);
+		*
+		* @brief	Sets the model string of an Entity.
+		*
+		* @param	name	The name of the Model.
+		*/
+		void SetModel(const std::string model);
+
+
+		/**
+		* @fn	void Entity::AddInstance(glm::vec3 position);
+		*
+		* @brief	Adds an Instance to this Entity.
+		*
+		* @param	position	The position of the Entity.
+		*/
 		void AddInstance(glm::vec3 position);
 
+		inline void SetSklPath(std::string skl_path) { m_skl_path = skl_path; }
 		inline std::shared_ptr<IModel> GetModel() { return m_model; }
 		inline void AddMaterial(std::string meshName, std::shared_ptr<Material> material) { m_materials.insert({ toUpper(meshName), material }); }
 		std::shared_ptr<Material> GetMaterial(std::string meshName);
@@ -83,6 +100,7 @@ namespace anvil
 		int m_health = 1000;
 
 		std::string m_model_string;
+		std::string m_skl_path;
 		std::shared_ptr<IModel> m_model;
 		std::map<std::string, std::shared_ptr<Material>> m_materials;
 		std::deque<std::shared_ptr<Instance>> m_instances;

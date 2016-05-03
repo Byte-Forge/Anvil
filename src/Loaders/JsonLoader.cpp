@@ -85,6 +85,9 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			if (d["entity"].HasMember("model"))
 				ent->SetModel(d["entity"]["model"].GetString());
 
+			if (d["entity"].HasMember("skl_path"))
+				ent->SetSklPath(d["entity"]["skl_path"].GetString());
+
 			if (d["entity"].HasMember("materials") && d["entity"]["materials"].IsArray())
 			{
 				for (int i = 0; i < d["entity"]["materials"].Size(); i++)

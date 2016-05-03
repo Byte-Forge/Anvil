@@ -117,14 +117,14 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	return materials;
 }
 
-std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name)
+std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name, const std::string &skl_path)
 {
 	std::string path;
 	if (m_resources.count(toUpper(name)) == 0)
 	{
 		if (GetFilePath(name, path))
 		{
-			BF3DLoader::Load(name, path);
+			BF3DLoader::Load(name, path, skl_path);
 		}
 	}
 	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(name)]);

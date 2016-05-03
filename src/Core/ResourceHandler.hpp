@@ -107,7 +107,7 @@ namespace anvil
 		 *
 		 * @return	The model.
 		 */
-		std::shared_ptr<IModel> GetModel(const std::string &name);
+		std::shared_ptr<IModel> GetModel(const std::string &name, const std::string &skl_path = "");
 
 
 		/**

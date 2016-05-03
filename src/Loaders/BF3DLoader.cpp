@@ -25,7 +25,7 @@ using namespace anvil;
 //# hierarchy
 //#######################################################################################
 
-void BF3DLoader::LoadHierarchy(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
+void BF3DLoader::LoadHierarchy(const std::string &name, std::ifstream& file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<Hierarchy> hierarchy;
 	while (file.tellg() < chunkEnd)
@@ -107,12 +107,12 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 	return mesh;
 }
 
-void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd)
+void BF3DLoader::LoadModel(const std::string &name, std::ifstream& file, std::uint32_t chunkEnd, const std::string &skl_path)
 {
 	std::shared_ptr<IModel> model = Core::GetCore()->GetGraphics()->GetModel();
 	std::string hierarchyName = readString(file);
 	if (hierarchyName != "")
-		model->SetHierarchy(Core::GetCore()->GetResources()->GetHierarchy("bf3d/units/mucavtroll_skl.bf3d"));
+		model->SetHierarchy(Core::GetCore()->GetResources()->GetHierarchy(skl_path + hierarchyName + ".bf3d"));
 	else
 		model->SetHierarchy(nullptr);
 
@@ -144,7 +144,7 @@ void BF3DLoader::LoadModel(std::string name, std::ifstream& file, std::uint32_t 
 	Core::GetCore()->GetGraphics()->GetRenderer()->RegisterRenderable(model);
 }
 
-void BF3DLoader::Load(const std::string& name, const std::string& path)
+void BF3DLoader::Load(const std::string& name, const std::string& path, const std::string& skl_path)
 {
 	std::ifstream file(path, std::ios::binary);
 	long size = getFStreamSize(file);
@@ -158,7 +158,7 @@ void BF3DLoader::Load(const std::string& name, const std::string& path)
 		switch (chunkType)
 		{
 		case 0:
-			LoadModel(name, file, subChunkEnd);
+			LoadModel(name, file, subChunkEnd, skl_path);
 			break;
 		case 256:
 			LoadHierarchy(name, file, subChunkEnd);

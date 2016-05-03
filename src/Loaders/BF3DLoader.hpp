@@ -29,11 +29,11 @@ namespace anvil
 		 * @param	name	The name of the model that should be loaded
 		 * @param	path	The basepath of our model
 		 */
-		static void Load(const std::string& name, const std::string& path);
+		static void Load(const std::string& name, const std::string& path, const std::string& skl_path = "");
 
 	private:
-		static void LoadHierarchy(std::string name, std::ifstream& file, std::uint32_t chunkEnd);
-		static void LoadModel(std::string name, std::ifstream& file, std::uint32_t chunkEnd);
+		static void LoadHierarchy(const std::string &name, std::ifstream& file, std::uint32_t chunkEnd);
+		static void LoadModel(const std::string &name, std::ifstream& file, std::uint32_t chunkEnd, const std::string &skl_path);
 		static std::shared_ptr<IMesh> LoadMesh(std::ifstream& file, std::uint32_t chunkEnd);
 	};
 }

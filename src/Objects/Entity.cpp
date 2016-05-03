@@ -42,6 +42,7 @@ void Entity::Update()
 		float y = (std::rand() % 10 - 5) / 10.0;
 		//m_instances[i]->position += glm::vec3(x, 0.0, y);
 
+		/*
 		if (m_instances[i]->position.x > 400 
 			|| m_instances[i]->position.z > 400
 			|| m_instances[i]->position.x < 0
@@ -52,10 +53,12 @@ void Entity::Update()
 		}
 		else
 			i++;
+		*/
+		i++;
 	}
 }
 
-void Entity::SetModel(std::string model)
+void Entity::SetModel(const std::string model)
 {
 	if (m_model != nullptr)
 	{
@@ -69,7 +72,7 @@ void Entity::AddInstance(glm::vec3 position)
 {
 	if (m_instances.size() == 0)
 	{
-		m_model = Core::GetCore()->GetResources()->GetModel(m_model_string);
+		m_model = Core::GetCore()->GetResources()->GetModel(m_model_string, m_skl_path);
 		m_model->AddEntity(this);
 	}
 	std::shared_ptr<Instance> i = std::make_shared<Instance>();
