@@ -117,14 +117,16 @@ namespace anvil
             void Use();
 
 			/**
-			 * @fn	void Shader::AddUniform(const std::string& name);
-			 *
-			 * @brief	Adds an uniform.
-			 *
-			 * @param	name	The name.
-			 */
-			void AddUniform(const std::string& name);
-			
+			* @fn	int ShaderGL::GetUniform(const std::string& id);
+			*
+			* @brief	Get handle to an uniform in shader.
+			*
+			* @param	id	The identifier.
+			*
+			* @return	The handle to the uniform.
+			*/
+			int GetUniform(const std::string& id);
+
         private:
             void LoadShader(const std::string& file,GLenum type);
 

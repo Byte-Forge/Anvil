@@ -152,29 +152,13 @@ RendererGL::RendererGL()
 	m_guiShader->Load("shader/gl/gui.vert", "shader/gl/gui.frag");
 	m_guiShader->Compile();
 
-	m_guiShader->AddUniform("translation");
-	m_guiShader->AddUniform("ortho");
-	m_guiShader->AddUniform("tex");
-	m_guiShader->AddUniform("useTex");
-
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
 	m_skyboxShader->Compile();
 
-	m_skyboxShader->AddUniform("skybox");
-	m_skyboxShader->AddUniform("mvp");
-	m_skyboxShader->AddUniform("cameraPosition");
-
 	m_modelShaders.push_back(std::make_unique<GL::Shader>());
 	m_modelShaders[0]->Load("shader/gl/model.vert", "shader/gl/model.frag");
 	m_modelShaders[0]->Compile();
-
-	m_modelShaders[0]->AddUniform("mvp");
-	m_modelShaders[0]->AddUniform("position");
-	m_modelShaders[0]->AddUniform("pivots");
-	m_modelShaders[0]->AddUniform("parentIDs");
-	m_modelShaders[0]->AddUniform("meshType");
-	m_modelShaders[0]->AddUniform("parentPivot");
 
 	for (unsigned int i = 0; i < m_shaderModes.size(); i++)
 	{
@@ -182,22 +166,6 @@ RendererGL::RendererGL()
 		m_terrainShaders[i]->Define(m_shaderModes[i]);
 		m_terrainShaders[i]->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
 		m_terrainShaders[i]->Compile();
-
-		m_terrainShaders[i]->AddUniform("albedoSampler");
-		m_terrainShaders[i]->AddUniform("normalSampler");
-		m_terrainShaders[i]->AddUniform("specularSampler");
-		m_terrainShaders[i]->AddUniform("displacementSampler");
-		m_terrainShaders[i]->AddUniform("ambientSampler");
-		
-		m_terrainShaders[i]->AddUniform("max_factor");
-		m_terrainShaders[i]->AddUniform("tess_factor");
-
-		m_terrainShaders[i]->AddUniform("m");
-		m_terrainShaders[i]->AddUniform("v");
-		m_terrainShaders[i]->AddUniform("mv3x3");
-		m_terrainShaders[i]->AddUniform("mvp");
-
-		m_terrainShaders[i]->AddUniform("lightPos");
 	}
 
 	m_vendor = OTHER;

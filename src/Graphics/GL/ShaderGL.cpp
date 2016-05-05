@@ -118,9 +118,11 @@ void GL::Shader::Use()
     glUseProgram(m_program);
 }
 
-void GL::Shader::AddUniform(const std::string & name)
+int GL::Shader::GetUniform(const std::string &name)
 {
-	m_uniforms[name] = glGetUniformLocation(m_program, name.c_str());
+	if (m_uniforms.count(name) == 0)
+		m_uniforms[name] = glGetUniformLocation(m_program, name.c_str());
+	return m_uniforms[name];
 }
 
 void GL::Shader::Compile()

@@ -99,15 +99,15 @@ namespace anvil
         virtual void Use() = 0;
 
 		/**
-		 * @fn	virtual void IShader::AddUniform(const std::string& id) = 0;
+		 * @fn	virtual void IShader::GetUniform(const std::string& id) = 0;
 		 *
-		 * @brief	Adds an uniform.
+		 * @brief	Get handle to an uniform in shader.
 		 *
 		 * @param	id	The identifier.
+		 * 				
+		 * @return	The handle to the uniform.
 		 */
-		virtual void AddUniform(const std::string& id) = 0;
-		
-		inline int GetUniform (const std::string& id) { return m_uniforms[id]; }
+		virtual int GetUniform(const std::string& id) = 0;
 
 	protected:
 		std::map<std::string, int> m_uniforms;
