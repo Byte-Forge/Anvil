@@ -28,17 +28,13 @@ namespace anvil
     {
 	public:
 
-		/*
 		struct KindOf
 		{
+			bool MISC = false;
 			bool SHRUBBERY = false;
-			bool TREE = false;
-			bool IMMOBILE = false;
-			bool SELECTABLE = false;
-			bool INFANTRY = false;
-			bool PORTER = false;
+			bool UNIT = false;
+			bool BUILDING = false;
 		};
-		*/
 
 		struct Instance
 		{

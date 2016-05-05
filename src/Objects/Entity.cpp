@@ -31,6 +31,8 @@ Entity::~Entity()
 
 void Entity::Update()
 {
+	m_model->GetHierarchy()->Update();
+
 	std::srand(std::time(0));
 	int count = m_instances.size();
 

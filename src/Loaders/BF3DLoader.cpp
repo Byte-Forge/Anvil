@@ -17,7 +17,6 @@
 #include "../Graphics/GL/MeshGL.hpp"
 #include "../Graphics/GL/ModelGL.hpp"
 #include "../Core/ResourceHandler.hpp"
-#include <stdint.h>
 
 using namespace anvil;
 

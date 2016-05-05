@@ -78,6 +78,7 @@ namespace anvil
 		virtual void Render(IShader& shader) = 0;
 
 		inline void SetHierarchy(std::shared_ptr<Hierarchy> hierarchy) { m_hierarchy = hierarchy; }
+		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }
 		inline void AddMesh(std::string name, std::shared_ptr<IMesh> mesh) { m_meshes.insert({ name, mesh }); }
 		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }
 		void AddEntity(Entity* entity);
