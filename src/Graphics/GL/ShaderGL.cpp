@@ -120,9 +120,15 @@ void GL::Shader::Use()
 
 int GL::Shader::GetUniform(const std::string &name)
 {
-	if (m_uniforms.count(name) == 0)
-		m_uniforms[name] = glGetUniformLocation(m_program, name.c_str());
-	return m_uniforms[name];
+	const auto& it = m_uniforms.find(name);
+	if (it == m_uniforms.end())
+	{
+		GLuint loc = glGetUniformLocation(m_program, name.c_str());
+		m_uniforms[name] = loc;
+		return loc;
+	}
+		
+	return it->second;
 }
 
 void GL::Shader::Compile()
