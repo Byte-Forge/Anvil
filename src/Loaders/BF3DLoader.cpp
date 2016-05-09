@@ -13,6 +13,7 @@
 #include "../Core.hpp"
 #include "../Graphics.hpp"
 #include "../Graphics/Hierarchy.hpp"
+#include "../Graphics/Animation.hpp"
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/GL/MeshGL.hpp"
 #include "../Graphics/GL/ModelGL.hpp"
@@ -56,6 +57,50 @@ void BF3DLoader::LoadHierarchy(const std::string &name, std::ifstream& file, std
 		}
 	}
 	Core::GetCore()->GetResources()->AddResource(name, hierarchy);
+}
+
+//#######################################################################################
+//# animation
+//#######################################################################################
+
+void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std::uint32_t chunkEnd)
+{
+	std::shared_ptr<Animation> animation;
+	while (file.tellg() < chunkEnd)
+	{
+		std::uint32_t chunkType = read<std::uint32_t>(file);
+		std::uint32_t chunkSize = read<std::uint32_t>(file);
+		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
+
+		std::int32_t pivot;
+		std::int32_t extrapolation;
+		std::int32_t type;
+
+		switch (chunkType)
+		{
+		case 513:
+			animation = std::make_shared<Animation>();
+			animation->SetName(readString(file));
+			animation->SetHierarchyName(readString(file));
+			break;
+		case 514:
+			pivot = read<std::int32_t>(file);
+			extrapolation = read<std::int32_t>(file);
+			type = read<std::int32_t>(file);
+
+			while (file.tellg() < subChunkEnd)
+			{
+				std::int32_t frame = read<std::int32_t>(file);
+				glm::f32 value = read<glm::f32>(file);
+				//animation->InsertKey(pivot, type, frame, value);
+			}
+			break;
+		default:
+			std::cout << "unknown chunktype in animation chunk: " << chunkType << std::endl;
+			file.seekg(subChunkEnd, std::ios::beg);
+		}
+	}
+	Core::GetCore()->GetResources()->AddResource(name, animation);
 }
 
 //#######################################################################################
@@ -161,6 +206,9 @@ void BF3DLoader::Load(const std::string& name, const std::string& path, const st
 			break;
 		case 256:
 			LoadHierarchy(name, file, subChunkEnd);
+			break;
+		case 512:
+			LoadAnimation(name, file, subChunkEnd);
 			break;
 
 		default:

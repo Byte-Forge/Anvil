@@ -19,6 +19,7 @@ namespace anvil
 {
 	class Entity;
 	class Hierarchy;
+	class Animation;
 	class IParticleSystem;
 	class ITexture;
 	class Material;
@@ -121,6 +122,16 @@ namespace anvil
 		*/
 		std::shared_ptr<Hierarchy> GetHierarchy(const std::string &name);
 
+		/**
+		* @fn	std::shared_ptr<Animation> ResourceHandler::GetAnimation(const std::string &name);
+		*
+		* @brief	Gets a animation.
+		*
+		* @param	name	The name.
+		*
+		* @return	The animation.
+		*/
+		std::shared_ptr<Animation> GetAnimation(const std::string &name);
 
 		/**
 		* @fn	std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string &name);

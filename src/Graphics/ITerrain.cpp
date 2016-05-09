@@ -102,6 +102,8 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/soldier.json");
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/onager.json");
 
+	Core::GetCore()->GetResources()->GetAnimation("bf3d/units/onager_atk.bf3d");
+
 	troll->AddInstance(glm::vec3(0, 10, -50));
 	for (int i = 0; i < 800; i += 20)
 		for (int j = 0; j < 800; j += 20)

@@ -15,6 +15,7 @@
 #include "../Exception.hpp"
 #include "../Objects/Entity.hpp"
 #include "../Graphics/Hierarchy.hpp"
+#include "../Graphics/Animation.hpp"
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/ITexture.hpp"
 #include "../Graphics/IParticleSystem.hpp"
@@ -141,6 +142,19 @@ std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name
 		}
 	}
 	return std::dynamic_pointer_cast<Hierarchy> (m_resources[toUpper(name)]);
+}
+
+std::shared_ptr<Animation> ResourceHandler::GetAnimation(const std::string &name)
+{
+	std::string path;
+	if (m_resources.count(toUpper(name)) == 0)
+	{
+		if (GetFilePath(name, path))
+		{
+			BF3DLoader::Load(name, path);
+		}
+	}
+	return std::dynamic_pointer_cast<Animation> (m_resources[toUpper(name)]);
 }
 
 std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
