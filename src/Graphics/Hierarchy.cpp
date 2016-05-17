@@ -15,11 +15,15 @@ Hierarchy::~Hierarchy()
 
 }
 
-void Hierarchy::Update()
+void Hierarchy::Update(std::shared_ptr<Animation> ani)
 {
 	//additionally apply the frame offsets here
 	for (int i = 0; i < m_pivotCount; i++)
 	{
+		if (ani != nullptr)
+		{
+
+		}
 		std::int32_t parentID = m_parentIDs[i];
 		m_frame_pivots[i] = m_pivots[i];
 		while (parentID >= 0)

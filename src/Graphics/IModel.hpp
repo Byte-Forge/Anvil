@@ -20,8 +20,8 @@
 
 namespace anvil
 {
+	class Instance;
 	class Entity;
-
 	/**
 	 * @class	IModel
 	 *
@@ -76,6 +76,7 @@ namespace anvil
 		 * @param [in,out]	shader	The shader.
 		 */
 		virtual void Render(IShader& shader) = 0;
+		virtual void Render(IShader& shader, std::shared_ptr<Instance> i) = 0;
 
 		inline void SetHierarchy(std::shared_ptr<Hierarchy> hierarchy) { m_hierarchy = hierarchy; }
 		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }

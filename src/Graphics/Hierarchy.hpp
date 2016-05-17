@@ -8,8 +8,10 @@
 #pragma once
 #include "../Core/IResource.hpp"
 #include <string>
+#include <memory>
 #include <vector>
 #include <glm/glm.hpp>
+#include "Animation.hpp"
 
 
 namespace anvil
@@ -37,7 +39,7 @@ namespace anvil
 		*
 		* @brief	Updates the Hierarchy to the current animation Frame.
 		*/
-		void Update();
+		void Update(std::shared_ptr<Animation> ani = nullptr);
 
 		inline void SetName(std::string name) { m_name = name; }
 		inline std::string GetName() { return m_name; }

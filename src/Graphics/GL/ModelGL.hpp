@@ -43,6 +43,7 @@ namespace anvil
 			 * @param [in,out]	shader	The shader.
 			 */
 			void Render(IShader& shader);
+			void Render(IShader& shader, std::shared_ptr<Instance> i);
 
 			/**
 			 * @fn	void ModelGL::Update();

@@ -26,7 +26,8 @@ using namespace anvil;
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	const auto& it = m_resources.find(toUpper(name));
+	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
 		{
@@ -39,7 +40,8 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string & name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	const auto& it = m_resources.find(toUpper(name));
+	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
 		{
@@ -52,7 +54,8 @@ std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::s
 std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	const auto& it = m_resources.find(toUpper(name));
+	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
 		{
@@ -79,7 +82,8 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	const auto& it = m_resources.find(toUpper(name));
+	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
 		{
@@ -121,7 +125,8 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name, const std::string &skl_path)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	const auto& it = m_resources.find(toUpper(name));
+	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
 		{
@@ -134,7 +139,8 @@ std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name, const
 std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	const auto& it = m_resources.find(toUpper(name));
+	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
 		{
@@ -147,7 +153,8 @@ std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name
 std::shared_ptr<Animation> ResourceHandler::GetAnimation(const std::string &name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	const auto& it = m_resources.find(toUpper(name));
+	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
 		{
@@ -160,7 +167,8 @@ std::shared_ptr<Animation> ResourceHandler::GetAnimation(const std::string &name
 std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
 {
 	std::string path;
-	if (m_resources.count(toUpper(name)) == 0)
+	const auto& it = m_resources.find(toUpper(name));
+	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
 		{

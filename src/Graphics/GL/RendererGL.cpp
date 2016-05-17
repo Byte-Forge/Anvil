@@ -230,16 +230,28 @@ void RendererGL::Render(const glm::mat4& ortho)
 		m_terrain->Render(*m_terrainShaders[2]);
 	}
 
-	m_modelShaders[0]->Use();
-
 	for (auto& renderable : m_renderables)
 		renderable->Update();
+
+	//the second is about 25% slower!!!
+
+	//for (auto& entity : m_entities)
+	//	entity->Update();
+
+	m_modelShaders[0]->Use();
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this
+
     for(auto& renderable : m_renderables)
        renderable->Render(*m_modelShaders[0]);
+	
+	//this is drastically slower!!!
+
+	//for (auto& entity : m_entities)
+	//	entity->Render(*m_modelShaders[0]);
+
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
 
