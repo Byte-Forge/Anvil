@@ -1,3 +1,10 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Hierarchy.cpp
+************************************
+*/
+
 #include "Hierarchy.hpp"
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>

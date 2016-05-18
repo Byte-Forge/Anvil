@@ -16,9 +16,7 @@ using namespace anvil;
 
 Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position) : m_entity(entity), m_position(position)
 {
-	SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
-	//SetAnimationState(m_entity->GetAnimationState("IDLE"));
-	SetHealth(m_entity->GetHealth());
+
 }
 
 Instance::~Instance()
@@ -26,15 +24,15 @@ Instance::~Instance()
 
 }
 
-void Instance::Render(IShader& shader, std::shared_ptr<Instance> i)
+void Instance::Init()
 {
-	m_modelConditionState->model->Render(shader, i);
+	SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
+	//SetAnimationState(m_entity->GetAnimationState("IDLE"));
+	SetHealth(m_entity->GetHealth());
 }
 
 bool Instance::Update()
 {
-	m_modelConditionState->model->GetHierarchy()->Update();
-
 	return true;
 }
 
@@ -42,7 +40,11 @@ void Instance::SetModelConditionState(std::shared_ptr<Entity::ModelConditionStat
 {
 	if (state == nullptr)
 		return;
+	if (m_model != nullptr)
+		m_model->RemoveInstance(shared_from_this());
 	m_modelConditionState = state;
+	m_model = m_modelConditionState->model;
+	m_model->AddInstance(shared_from_this());
 }
 
 void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state)

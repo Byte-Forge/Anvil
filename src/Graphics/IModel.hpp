@@ -21,7 +21,6 @@
 namespace anvil
 {
 	class Instance;
-	class Entity;
 	/**
 	 * @class	IModel
 	 *
@@ -76,19 +75,18 @@ namespace anvil
 		 * @param [in,out]	shader	The shader.
 		 */
 		virtual void Render(IShader& shader) = 0;
-		virtual void Render(IShader& shader, std::shared_ptr<Instance> i) = 0;
 
 		inline void SetHierarchy(std::shared_ptr<Hierarchy> hierarchy) { m_hierarchy = hierarchy; }
 		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }
 		inline void AddMesh(std::string name, std::shared_ptr<IMesh> mesh) { m_meshes.insert({ name, mesh }); }
 		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }
-		void AddEntity(Entity* entity);
-		void RemoveEntity(Entity* entity);
+		void AddInstance(std::shared_ptr<Instance> i);
+		void RemoveInstance(std::shared_ptr<Instance> i);
 
 	protected:
 		std::shared_ptr<Hierarchy> m_hierarchy; //nullpointer if no hierarchy is needed
 		std::map<std::string, std::shared_ptr<IMesh>> m_meshes;
 		BoundingVolume m_volume;
-		std::set<Entity*> m_entities;
+		std::set<std::shared_ptr<Instance>> m_instances;
 	};
 }

@@ -9,12 +9,12 @@
 
 using namespace anvil;
 
-void IModel::AddEntity(Entity* entity) 
+void IModel::AddInstance(std::shared_ptr<Instance> i) 
 { 
-	m_entities.insert(entity);
+	m_instances.insert(i);
 }
 
-void IModel::RemoveEntity(Entity* entity) 
+void IModel::RemoveInstance(std::shared_ptr<Instance> i) 
 {
-	m_entities.erase(entity);
+	m_instances.erase(i);
 }

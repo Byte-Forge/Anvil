@@ -15,14 +15,14 @@
 
 namespace anvil
 {
-	class Instance
+	class Instance : public std::enable_shared_from_this<Instance>
 	{
 	public:
 		Instance(std::shared_ptr<Entity> entity, glm::vec3 &position);
 
 		~Instance();
 
-		void Render(IShader& shader, std::shared_ptr<Instance> i);
+		void Init();
 
 		/**
 		* @fn	bool Instance::Update();
@@ -45,7 +45,7 @@ namespace anvil
 
 	private:
 		std::shared_ptr<Entity> m_entity;
-		std::weak_ptr<IModel> m_model;
+		std::shared_ptr<IModel> m_model;
 		int m_health;
 		glm::vec3 m_position;
 		std::shared_ptr<Entity::ModelConditionState> m_modelConditionState;

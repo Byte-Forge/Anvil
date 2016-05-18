@@ -41,7 +41,18 @@ namespace anvil
     class Camera
     {
     public:
+		/**
+		* @fn	Camera::Camera();
+		*
+		* @brief	Default constructor.
+		*/
         Camera();
+
+		/**
+		* @fn	Camera::Camera();
+		*
+		* @brief	Destructor.
+		*/
         ~Camera();
 
         /**
@@ -115,56 +126,17 @@ namespace anvil
 		 * @param [in,out]	out_direction	The out direction.
 		 */
 		void ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction);
-	public:
-		inline const glm::vec3 GetLookAt()
-		{
-			return m_lookat;
-		}
 
-		inline const glm::vec3& GetPosition()
-		{
-			return m_position;
-		}
-
-		inline const glm::mat4& GetProjectionMatrix()
-		{
-			return m_proj;
-		}
-
-		inline const glm::mat4& GetViewMatrix()
-		{
-			return m_view;
-		}
-
-        inline const glm::mat4& GetViewProjectionMatrix()
-        {
-            return m_vp;
-        }
-
-        inline void SetFOV(double fov)
-        {
-            m_fov = fov;
-        }
-
-        inline void SetRatio(double ratio)
-        {
-            m_ratio = ratio;
-        }
-
-        inline void SetPosition(glm::vec3 pos)
-        {
-			m_position = pos;
-        }
-
-		inline std::unique_ptr<Frustum>& GetFrustum()
-		{
-			return m_frustum;
-		}
-
-		inline glm::vec3 &GetDirection()
-		{
-			return m_direction;
-		}
+		inline const glm::vec3 GetLookAt() { return m_lookat; }
+		inline const glm::vec3& GetPosition() { return m_position; }
+		inline const glm::mat4& GetProjectionMatrix() { return m_proj; }
+		inline const glm::mat4& GetViewMatrix() { return m_view; }
+		inline const glm::mat4& GetViewProjectionMatrix() { return m_vp; }
+		inline void SetFOV(double fov) { m_fov = fov; }
+        inline void SetRatio(double ratio) { m_ratio = ratio; }
+        inline void SetPosition(glm::vec3 pos) { m_position = pos; }
+		inline std::unique_ptr<Frustum>& GetFrustum() { return m_frustum; }
+		inline glm::vec3 &GetDirection() { return m_direction; }
 
     private:
 		float m_speed = 200.0f; //Movement per second

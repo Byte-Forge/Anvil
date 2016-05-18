@@ -105,11 +105,10 @@ void ITerrain::Generate()
 	//Core::GetCore()->GetResources()->GetAnimation("bf3d/units/onager_atk.bf3d");
 
 	//troll->AddInstance(glm::vec3(0, 10, -50));
-	for (int i = 0; i < 400; i += 20)
-		for (int j = 0; j < 400; j += 20)
+	for (int i = 0; i < 800; i += 20)
+		for (int j = 0; j < 800; j += 20)
 		{
-			soldier->AddInstance(glm::vec3(i, 10, j));
-			soldier->AddInstance(soldier, glm::vec3(i, 20, j));
+			soldier->AddInstance(glm::vec3(i, 20, j));
 		}
 
 	//onager->AddInstance(glm::vec3(100, 0, -50));

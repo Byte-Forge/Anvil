@@ -18,8 +18,8 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 #include <Rocket/Core.h>
-using namespace anvil;
 
+using namespace anvil;
 
 std::map<std::string, IRenderer::Vendor> vendorMap = 
 {	{"NVIDIA Corporation",IRenderer::NVIDIA},
@@ -230,13 +230,8 @@ void RendererGL::Render(const glm::mat4& ortho)
 		m_terrain->Render(*m_terrainShaders[2]);
 	}
 
-	for (auto& renderable : m_renderables)
-		renderable->Update();
-
-	//the second is about 25% slower!!!
-
-	//for (auto& entity : m_entities)
-	//	entity->Update();
+	for (auto& entity : m_entities)
+		entity->Update();
 
 	m_modelShaders[0]->Use();
 
@@ -246,11 +241,6 @@ void RendererGL::Render(const glm::mat4& ortho)
 
     for(auto& renderable : m_renderables)
        renderable->Render(*m_modelShaders[0]);
-	
-	//this is drastically slower!!!
-
-	//for (auto& entity : m_entities)
-	//	entity->Render(*m_modelShaders[0]);
 
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);

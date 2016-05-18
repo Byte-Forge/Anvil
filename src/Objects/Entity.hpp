@@ -27,7 +27,7 @@ namespace anvil
      *
      * @brief	An entity is a object with visual parts to render and stats etc.
      */
-    class Entity : public IResource
+	class Entity : public IResource, public std::enable_shared_from_this<Entity>
     {
 	public:
 
@@ -37,12 +37,6 @@ namespace anvil
 			bool SHRUBBERY = false;
 			bool UNIT = false;
 			bool BUILDING = false;
-		};
-
-		struct InstanceStruct
-		{
-			int health;
-			glm::vec3 position = glm::vec3(0.0, 0.0, 0.0);
 		};
 
 		struct ModelConditionState
@@ -90,18 +84,6 @@ namespace anvil
 		~Entity();
 
 		void Update();
-		void Render(IShader &shader);
-		void AddInstance(std::shared_ptr<Entity> entity, glm::vec3 &position);
-
-		/**
-		* @fn	void Entity::SetModel(const std::string model);
-		*
-		* @brief	Sets the model string of an Entity.
-		*
-		* @param	name	The name of the Model.
-		*/
-		void SetModel(const std::string model);
-
 
 		/**
 		* @fn	void Entity::AddInstance(glm::vec3 position);
@@ -110,15 +92,9 @@ namespace anvil
 		*
 		* @param	position	The position of the Entity.
 		*/
-		void AddInstance(glm::vec3 position);
+		void AddInstance(glm::vec3 &position);
 
 		void LoadResources();
-
-		inline void SetSklPath(std::string skl_path) { m_skl_path = skl_path; }
-		inline std::shared_ptr<IModel> GetModel() { return m_model; }
-		inline void AddMaterial(std::string meshName, std::shared_ptr<Material> material) { m_materials.insert({ toUpper(meshName), material }); }
-		std::shared_ptr<Material> GetMaterial(std::string meshName);
-		std::deque<std::shared_ptr<InstanceStruct>> GetInstances();
 
 		std::shared_ptr<ModelConditionState> GetModelConditionState(const std::string &name);
 		std::shared_ptr<AnimationState> GetAnimationState(const std::string &name);
@@ -129,17 +105,11 @@ namespace anvil
 
 	private:
 		bool m_resourcesLoaded = false;
-
-		std::string m_model_string;
-		std::string m_skl_path;
-		std::shared_ptr<IModel> m_model;
-		std::map<std::string, std::shared_ptr<Material>> m_materials;
 		
 		int m_health = 1000;
 		std::map<std::string, std::shared_ptr<ModelConditionState>> m_modelConditionStates;
 		std::map<std::string, std::shared_ptr<AnimationState>> m_animationStates;
 
-		std::deque<std::shared_ptr<InstanceStruct>> m_instances_old;
 		std::deque<std::shared_ptr<Instance>> m_instances;
     };
 }

@@ -37,6 +37,14 @@ namespace anvil
 		*/
 		~Animation();
 
+		/**
+		* @fn	void Animation::GetOffsetMat(int pivotID, float time);
+		*
+		* @brief	Returns the offset mat for this animation for a specific pivot at the given time
+		*
+		* @param	pivotID		ID of the pivot we want the mat for
+		* @param	time		the current time of the animation
+		*/
 		glm::mat4 GetOffsetMat(int pivotID, float time);
 	
 		inline void SetName(const std::string &name) { m_name = name; }
@@ -53,6 +61,7 @@ namespace anvil
 
 		//pivot -> type -> frame 
 		std::unordered_map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
+
 	private:
 		glm::f32 GetOffsetValue(int pivotID, int type, int frame);
 	};

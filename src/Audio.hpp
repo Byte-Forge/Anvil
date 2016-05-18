@@ -42,22 +42,39 @@ namespace anvil
          */
         ~Audio();
 
+		/**
+		* @fn	void Audio::PlaySound(const std::string& name);
+		*
+		* @brief	Plays a sound specified by name
+		*
+		* @param	name	The name of the sound that should be played
+		*/
 		void PlaySound(const std::string& name);
-		void PlayMusic(const std::string& name);
-    private:
 
-        /**
-         * @fn	void Audio::EnumerateDevices(const ALCchar *devices);
-         *
-         * @brief	Enumerate all available audio devices and print them to stdout. Only works when this extension is supported
-         *
-         * @param	devices		Pointer to the beginning of the device array
-         */
-        void EnumerateDevices(const ALCchar *devices);
+		/**
+		* @fn	void Audio::PlayMusic(const std::string& name);
+		*
+		* @brief	Plays a music file specified by name
+		*
+		* @param	name	The name of the music file that should be played
+		*/
+		void PlayMusic(const std::string& name);
+
     private:
         ALCdevice* m_device;
         ALCcontext* m_context;
 		std::vector<std::string> m_deviceList;
+
+	private:
+
+		/**
+		* @fn	void Audio::EnumerateDevices(const ALCchar *devices);
+		*
+		* @brief	Enumerate all available audio devices and print them to stdout. Only works when this extension is supported
+		*
+		* @param	devices		Pointer to the beginning of the device array
+		*/
+		void EnumerateDevices(const ALCchar *devices);
     };
 }
 

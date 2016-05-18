@@ -13,6 +13,7 @@
 #include "../Util/FPS.hpp"
 #include "../Types/Map.hpp"
 #include "../Graphics.hpp"
+
 using namespace anvil;
 
 int GameShutdown(lua_State* L);

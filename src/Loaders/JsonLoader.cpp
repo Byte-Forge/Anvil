@@ -95,10 +95,6 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 						state = std::make_shared<Entity::ModelConditionState>();
 						ent->AddModelConditionState(stateName, state);
 					}
-					//
-					ent->SetModel(d["entity"]["modelConditionStates"][i]["model"].GetString());
-					ent->SetSklPath(d["entity"]["modelConditionStates"][i]["skl_path"].GetString());
-					//
 					
 					state->modelName = d["entity"]["modelConditionStates"][i]["model"].GetString();
 					state->hierarchyPath = d["entity"]["modelConditionStates"][i]["skl_path"].GetString();
@@ -107,7 +103,6 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					{
 						for (int j = 0; j < d["entity"]["modelConditionStates"][i]["materials"].Size(); j++)
 						{
-							ent->AddMaterial(d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString(), Core::GetCore()->GetResources()->GetMaterial(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString()));
 							state->materials.insert({ d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString(), std::make_tuple(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
 						}
 					}
