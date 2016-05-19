@@ -50,16 +50,13 @@ namespace anvil
 		 */
 		bool Load(const std::string& path);
 
-		inline ALuint GetBufferId()
-		{
-			return m_buffer;
-		}
+		inline ALuint GetBufferId() { return m_buffer; }
+
     private:
         ALuint m_buffer;
 		ALsizei m_size;
 		ALsizei m_frequency;
 		ALenum m_format;
-
     };
 }
 

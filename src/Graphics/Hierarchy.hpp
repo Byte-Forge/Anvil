@@ -31,6 +31,12 @@ namespace anvil
 		* @brief	Default constructor.
 		*/
 		Hierarchy();
+
+		/**
+		* @fn	Hierarchy::~Hierarchy();
+		*
+		* @brief	Default Destructor.
+		*/
 		~Hierarchy();
 
 

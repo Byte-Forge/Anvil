@@ -24,6 +24,7 @@ namespace anvil
 	class Graphics;
 	class Audio;
 	class Frustum;
+
 	/**
 	* @class	Core
 	*
@@ -81,7 +82,6 @@ namespace anvil
 		inline std::unique_ptr<Input>& GetInput() { return m_input; }
 		inline glm::vec2 GetResolution() { return m_resolution; }
 		inline GLFWwindow* GetWindow() { return m_window; }
-
 		static inline Core* GetCore() { return m_instance; }
 
 	private:

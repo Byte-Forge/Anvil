@@ -67,13 +67,6 @@ namespace anvil
 
 	private:
 
-		/**
-		* @fn	void Audio::EnumerateDevices(const ALCchar *devices);
-		*
-		* @brief	Enumerate all available audio devices and print them to stdout. Only works when this extension is supported
-		*
-		* @param	devices		Pointer to the beginning of the device array
-		*/
 		void EnumerateDevices(const ALCchar *devices);
     };
 }

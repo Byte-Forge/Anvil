@@ -98,7 +98,7 @@ void ITerrain::Generate()
 	//std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
 	//std::shared_ptr<Entity> birch = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/birch.json");
 
-	//std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/cavetroll.json");
+	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/cavetroll.json");
 	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/soldier.json");
 	//std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/onager.json");
 
@@ -109,6 +109,7 @@ void ITerrain::Generate()
 		for (int j = 0; j < 800; j += 20)
 		{
 			soldier->AddInstance(glm::vec3(i, 20, j));
+			troll->AddInstance(glm::vec3(i + 5, 20, j + 5));
 		}
 
 	//onager->AddInstance(glm::vec3(100, 0, -50));

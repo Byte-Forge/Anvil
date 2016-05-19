@@ -41,7 +41,13 @@ namespace anvil
          */
         ~Sound();
 
+		/**
+		* @fn	void Sound::Play();
+		*
+		* @brief	plays this sound.
+		*/
 		void Play();
+
     private:
         ALuint  m_source;
     };

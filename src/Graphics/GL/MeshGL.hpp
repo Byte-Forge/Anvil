@@ -30,6 +30,12 @@ namespace anvil
 			 * @brief	Default constructor.
 			 */
 			MeshGL();
+
+			/**
+			* @fn	MeshGL::~MeshGL();
+			*
+			* @brief	Default destructor.
+			*/
 			~MeshGL();
 
 			/**

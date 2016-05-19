@@ -57,9 +57,11 @@ void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state)
 std::shared_ptr<Material> Instance::GetMaterial(const std::string& meshName)
 {
 	const auto& it = m_modelConditionState->materials.find(toUpper(meshName));
-	if (it != m_modelConditionState->materials.end())
-		return std::get<1>(it->second);
-	else
+	if (it == m_modelConditionState->materials.end())
+	{
 		std::cout << "WARNING!: No material defined for mesh: " + meshName << std::endl;
-	return nullptr;
+		const auto& i = m_modelConditionState->materials.begin();
+		return std::get<1>(i->second);
+	}
+	return std::get<1>(it->second);
 }

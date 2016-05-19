@@ -15,13 +15,35 @@
 
 namespace anvil
 {
+	/**
+	* @class	Instance
+	*
+	* @brief	An instance of an entity object
+	*/
 	class Instance : public std::enable_shared_from_this<Instance>
 	{
 	public:
+		/**
+		* @fn	Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position);
+		*
+		* @brief	Default constructor.
+		* @param	entity	the entity this instance is for
+		* @param	position	the position of this instance
+		*/
 		Instance(std::shared_ptr<Entity> entity, glm::vec3 &position);
 
+		/**
+		* @fn	Instance::~Instance();
+		*
+		* @brief	Default destructor.
+		*/
 		~Instance();
 
+		/**
+		* @fn	void Instance::Init();
+		*
+		* @brief	initialize the instance with states and set start values
+		*/
 		void Init();
 
 		/**
@@ -33,8 +55,29 @@ namespace anvil
 		*/
 		bool Update();
 
+		/**
+		* @fn	std::shared_ptr<Material> Instance::GetMaterial();
+		*
+		* @brief	returns the material for the given mesh name
+		* @param	meshName	the name of the mesh we want the material for
+		* @return	returns a pointer to the material
+		*/
 		std::shared_ptr<Material> GetMaterial(const std::string& meshName);
+
+		/**
+		* @fn	void Instance::SetModelConditionState(std::shared_ptr<Entity::ModelConditionState> state);
+		*
+		* @brief	sets the current ModelConditionState of this instance
+		* @param	state	the new state
+		*/
 		void SetModelConditionState(std::shared_ptr<Entity::ModelConditionState> state);
+
+		/**
+		* @fn	void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state);
+		*
+		* @brief	sets the current AnimationState of this instance
+		* @param	state	the new state
+		*/
 		void SetAnimationState(std::shared_ptr<Entity::AnimationState> state);
 
 		inline void SetHealth(int health) { m_health = health; }
@@ -45,7 +88,7 @@ namespace anvil
 
 	private:
 		std::shared_ptr<Entity> m_entity;
-		std::shared_ptr<IModel> m_model;
+		std::shared_ptr<IModel> m_model; //do we need this?
 		int m_health;
 		glm::vec3 m_position;
 		std::shared_ptr<Entity::ModelConditionState> m_modelConditionState;

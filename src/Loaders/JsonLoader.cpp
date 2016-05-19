@@ -103,7 +103,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					{
 						for (int j = 0; j < d["entity"]["modelConditionStates"][i]["materials"].Size(); j++)
 						{
-							state->materials.insert({ d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString(), std::make_tuple(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
+							state->materials.insert({ toUpper(d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString()), std::make_tuple(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
 						}
 					}
 				}

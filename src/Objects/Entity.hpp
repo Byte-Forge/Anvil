@@ -31,6 +31,11 @@ namespace anvil
     {
 	public:
 
+		/**
+		* @struct	KindOf
+		*
+		* @brief	Values that represent the type of the entity
+		*/
 		struct KindOf
 		{
 			bool MISC = false;
@@ -39,6 +44,11 @@ namespace anvil
 			bool BUILDING = false;
 		};
 
+		/**
+		* @struct	ModelConditionState
+		*
+		* @brief	a state of an Instance e.g. Default 
+		*/
 		struct ModelConditionState
 		{
 			std::string modelName;
@@ -47,12 +57,22 @@ namespace anvil
 			std::map<std::string, std::tuple<std::string, std::shared_ptr<Material>>> materials;
 		};
 
+		/**
+		* @enum		ANIMATION_MODE
+		*
+		* @brief	if an animation should loop or not
+		*/
 		enum ANIMATION_MODE
 		{
 			LOOP = 0,
 			ONCE = 1,
 		};
 
+		/**
+		* @struct	AnimationState
+		*
+		* @brief	the animation state an instance is in
+		*/
 		struct AnimationState
 		{
 			std::string animationName;
@@ -83,6 +103,11 @@ namespace anvil
 		 */
 		~Entity();
 
+		/**
+		* @fn	void Entity::Update();
+		*
+		* @brief	updates the instances of this entity
+		*/
 		void Update();
 
 		/**
@@ -94,9 +119,29 @@ namespace anvil
 		*/
 		void AddInstance(glm::vec3 &position);
 
+		/**
+		* @fn	void Entity::LoadResources();
+		*
+		* @brief	loads all resources (models, textures etc.) for this entity when the first instance is created
+		*/
 		void LoadResources();
 
+		/**
+		* @fn	std::shared_ptr<ModelConditionState> Entity::GetModelConditionState(const std::string &name);
+		*
+		* @brief	returns an ModelConditionState referenced by name
+		* @param	name	the name of the ConditionState 
+		* @return	returns the desired state or nullptr if it does not exist
+		*/
 		std::shared_ptr<ModelConditionState> GetModelConditionState(const std::string &name);
+
+		/**
+		* @fn	std::shared_ptr<AnimationState> Entity::GetAnimationState(const std::string &name);
+		*
+		* @brief	returns an AnimationState referenced by name
+		* @param	name	the name of the AnimationState 
+		* @return	returns the desired state or nullptr if it does not exist
+		*/
 		std::shared_ptr<AnimationState> GetAnimationState(const std::string &name);
 
 		inline int GetHealth() { return m_health; }

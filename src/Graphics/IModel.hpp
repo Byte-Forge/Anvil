@@ -80,8 +80,8 @@ namespace anvil
 		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }
 		inline void AddMesh(std::string name, std::shared_ptr<IMesh> mesh) { m_meshes.insert({ name, mesh }); }
 		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }
-		void AddInstance(std::shared_ptr<Instance> i);
-		void RemoveInstance(std::shared_ptr<Instance> i);
+		inline void AddInstance(std::shared_ptr<Instance> i) { m_instances.insert(i); }
+		inline void RemoveInstance(std::shared_ptr<Instance> i) { m_instances.erase(i); }
 
 	protected:
 		std::shared_ptr<Hierarchy> m_hierarchy; //nullpointer if no hierarchy is needed

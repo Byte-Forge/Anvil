@@ -99,9 +99,6 @@ namespace anvil
 		 *
 		 * @brief	Called by Rocket when it wants to render geometry that it does not wish to optimise.
 		 *
-		 * @author	Micha
-		 * @date	04.03.2016
-		 *
 		 * @param [in,out]	vertices	If non-null, the vertices.
 		 * @param	num_vertices		Number of vertices.
 		 * @param [in,out]	indices 	If non-null, the indices.
@@ -118,9 +115,6 @@ namespace anvil
 		 * @brief	Called by Rocket when it wants to compile geometry it believes will be static for the
 		 * 			forseeable future.
 		 *
-		 * @author	Micha
-		 * @date	04.03.2016
-		 *
 		 * @param [in,out]	vertices	If non-null, the vertices.
 		 * @param	num_vertices		Number of vertices.
 		 * @param [in,out]	indices 	If non-null, the indices.
@@ -136,9 +130,6 @@ namespace anvil
 		 *
 		 * @brief	Called by Rocket when it wants to render application-compiled geometry.
 		 *
-		 * @author	Micha
-		 * @date	04.03.2016
-		 *
 		 * @param	geometry   	The geometry.
 		 * @param	translation	The translation.
 		 */
@@ -149,9 +140,6 @@ namespace anvil
 		 *
 		 * @brief	Called by Rocket when it wants to release application-compiled geometry.
 		 *
-		 * @author	Micha
-		 * @date	04.03.2016
-		 *
 		 * @param	geometry	The geometry.
 		 */
 		void ReleaseCompiledGeometry(Rocket::Core::CompiledGeometryHandle geometry);
@@ -161,9 +149,6 @@ namespace anvil
 		 *
 		 * @brief	Called by Rocket when it wants to enable or disable scissoring to clip content.
 		 *
-		 * @author	Micha
-		 * @date	04.03.2016
-		 *
 		 * @param	enable	true to enable, false to disable.
 		 */
 		void EnableScissorRegion(bool enable);
@@ -172,9 +157,6 @@ namespace anvil
 		 * @fn	void RendererGL::SetScissorRegion(int x, int y, int width, int height);
 		 *
 		 * @brief	Called by Rocket when it wants to change the scissor region.
-		 *
-		 * @author	Micha
-		 * @date	04.03.2016
 		 *
 		 * @param	x	  	The x coordinate.
 		 * @param	y	  	The y coordinate.
@@ -187,9 +169,6 @@ namespace anvil
 		 * @fn	bool RendererGL::LoadTexture(Rocket::Core::TextureHandle& texture_handle, Rocket::Core::Vector2i& texture_dimensions, const Rocket::Core::String& source);
 		 *
 		 * @brief	Called by Rocket when a texture is required by the library.
-		 *
-		 * @author	Micha
-		 * @date	04.03.2016
 		 *
 		 * @param [in,out]	texture_handle	  	Handle of the texture.
 		 * @param [in,out]	texture_dimensions	The texture dimensions.
@@ -205,9 +184,6 @@ namespace anvil
 		 * @brief	Called by Rocket when a texture is required to be built from an internally-generated
 		 * 			sequence of pixels.
 		 *
-		 * @author	Micha
-		 * @date	04.03.2016
-		 *
 		 * @param [in,out]	texture_handle	Handle of the texture.
 		 * @param	source				  	Source for the.
 		 * @param	source_dimensions	  	Source dimensions.
@@ -220,9 +196,6 @@ namespace anvil
 		 * @fn	void RendererGL::ReleaseTexture(Rocket::Core::TextureHandle texture_handle);
 		 *
 		 * @brief	Called by Rocket when a loaded texture is no longer required.
-		 *
-		 * @author	Micha
-		 * @date	04.03.2016
 		 *
 		 * @param	texture_handle	Handle of the texture.
 		 */
