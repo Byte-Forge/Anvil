@@ -18,7 +18,7 @@ using namespace anvil;
 
 Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position) : m_entity(entity), m_position(position)
 {
-
+	srand(time(NULL));
 }
 
 Instance::~Instance()
@@ -33,8 +33,18 @@ void Instance::Init()
 	SetHealth(m_entity->GetHealth());
 }
 
+void Instance::Unlink()
+{
+	if (m_model != nullptr)
+		m_model->RemoveInstance(shared_from_this());
+}
+
 bool Instance::Update()
 {
+	//int r = rand() % 15;
+	//m_health -= r;
+	if (m_health <= 0)
+		return false;
 	return true;
 }
 

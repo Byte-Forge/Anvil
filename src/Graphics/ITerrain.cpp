@@ -100,18 +100,21 @@ void ITerrain::Generate()
 	//std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
 	//std::shared_ptr<Entity> birch = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/birch.json");
 
-	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/cavetroll.json");
-	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/soldier.json");
-	//std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/onager.json");
+	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/misty_mountains/cavetroll.json");
+	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/gondor/soldier.json");
+	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
+	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 
 	//Core::GetCore()->GetResources()->GetAnimation("bf3d/units/onager_atk.bf3d");
 
-	//troll->AddInstance(glm::vec3(0, 10, -50));
+	barracks->AddInstance(glm::vec3(0, 10, -50));
+	troll->AddInstance(glm::vec3(75, 10, -50));
+	onager->AddInstance(glm::vec3(125, 10, -50));
 	for (int i = 0; i < 800; i += 20)
 		for (int j = 0; j < 800; j += 20)
 		{
-			soldier->AddInstance(glm::vec3(i, 20, j));
-			troll->AddInstance(glm::vec3(i + 5, 20, j + 5));
+			soldier->AddInstance(glm::vec3(i, 10, j));
+			
 		}
 
 	//onager->AddInstance(glm::vec3(100, 0, -50));

@@ -37,6 +37,7 @@ void Entity::Update()
 	{
 		if (!m_instances[i]->Update())
 		{
+			m_instances[i]->Unlink();
 			m_instances.erase(m_instances.begin() + i);
 			i--;
 			size -= 1;

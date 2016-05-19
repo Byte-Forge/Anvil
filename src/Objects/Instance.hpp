@@ -47,6 +47,13 @@ namespace anvil
 		void Init();
 
 		/**
+		* @fn	void Instance::Unlink();
+		*
+		* @brief	unlinks this instance from its model
+		*/
+		void Unlink();
+
+		/**
 		* @fn	bool Instance::Update();
 		*
 		* @brief	Updates this instance.

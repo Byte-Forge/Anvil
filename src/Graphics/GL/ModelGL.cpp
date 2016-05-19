@@ -53,6 +53,9 @@ void GL::ModelGL::Render(IShader& shader)
 			i->GetMaterial(it.second->GetName())->GetAlbedoTexture()->Bind();
 			//glUniform1i(shader.GetUniform("albedoTex"), 0);
 
+			//glActiveTexture(GL_TEXTURE1); //normal textures
+			//i->GetMaterial(it.second->GetName())->GetNormalTexture()->Bind();
+
 			it.second->Render(shader);
 		}
 	}
@@ -60,5 +63,5 @@ void GL::ModelGL::Render(IShader& shader)
 
 void GL::ModelGL::Update()
 {
-
+	
 }

@@ -39,6 +39,5 @@ void Hierarchy::Update(std::shared_ptr<Animation> ani)
 			m_frame_pivots[i] = m_frame_pivots[i] * m_pivots[parentID];
 			parentID = m_parentIDs[parentID];
 		}
-		//m_frame_pivots[i] = glm::inverse(m_frame_pivots[i]);
 	}
 }
