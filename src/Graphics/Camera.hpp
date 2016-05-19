@@ -6,7 +6,6 @@
 */
 
 #pragma once
-#include "Frustum.hpp"
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -15,6 +14,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Frustum.hpp"
 
 namespace anvil
 {

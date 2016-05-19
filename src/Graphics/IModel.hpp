@@ -12,8 +12,6 @@
 #include <set>
 #include <memory>
 #include <glm/glm.hpp>
-#include "../Graphics/Hierarchy.hpp"
-#include "../Graphics/IMesh.hpp"
 #include "../Core/IResource.hpp"
 #include "../Graphics/IRenderable.hpp"
 
@@ -21,6 +19,9 @@
 namespace anvil
 {
 	class Instance;
+	class Hierarchy;
+	class IMesh;
+
 	/**
 	 * @class	IModel
 	 *

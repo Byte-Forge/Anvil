@@ -8,6 +8,8 @@
 #include "Instance.hpp"
 #include "../Exception.hpp"
 #include "../Core.hpp"
+#include "../Graphics/IModel.hpp"
+#include "../Graphics/Material.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>

@@ -14,6 +14,7 @@
 #include "../Util.hpp"        
 #include "../Core.hpp"
 #include "../Graphics.hpp"
+#include "../Graphics/IMesh.hpp"
 #include "../Graphics/Hierarchy.hpp"
 #include "../Graphics/Animation.hpp"
 #include "../Graphics/IModel.hpp"

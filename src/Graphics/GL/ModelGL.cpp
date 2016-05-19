@@ -8,13 +8,15 @@
 #include "ModelGL.hpp"
 #include "MeshGL.hpp"
 #include "../../Objects/Entity.hpp"
-#include <iostream>
 #include "../../Core.hpp"
 #include "../Camera.hpp"
-#include <glm/glm.hpp>
 #include "../../Util.hpp"
-#include <glm/gtc/type_ptr.hpp>
 #include "../../Objects/Instance.hpp"
+#include "../../Graphics/Hierarchy.hpp"
+#include "../../Graphics/IMesh.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/glm.hpp>
+#include <iostream>
 
 
 using namespace anvil;

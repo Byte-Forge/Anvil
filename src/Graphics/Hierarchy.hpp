@@ -11,11 +11,11 @@
 #include <memory>
 #include <vector>
 #include <glm/glm.hpp>
-#include "Animation.hpp"
-
 
 namespace anvil
 {
+	class Animation;
+
 	/**
 	* @class	Hierarchy
 	*

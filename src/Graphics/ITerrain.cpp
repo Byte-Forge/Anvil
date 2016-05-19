@@ -6,6 +6,8 @@
 */
 
 #include "ITerrain.hpp"
+#include "ITexture.hpp"
+#include "Quadtree.hpp"
 #include "../Core.hpp"
 #include "../Math/SimplexNoise.hpp"
 #include "../Math/Collision.hpp"
@@ -16,8 +18,8 @@
 #include "../Core/ResourceHandler.hpp"
 #include "Material.hpp"
 #include "../Objects/Entity.hpp"
-#include <chrono>
 
+#include <chrono>
 #include <future>
 
 using namespace anvil;

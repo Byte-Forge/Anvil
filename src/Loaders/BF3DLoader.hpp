@@ -8,10 +8,10 @@
 #pragma once
 #include <string>
 #include <memory> 
-#include "../Graphics/IMesh.hpp"
 
 namespace anvil
 {
+	class IMesh;
 	/**
 	 * @class	BF3DLoader
 	 *

@@ -6,6 +6,8 @@
 */
 
 #include "Graphics.hpp"
+#include "Graphics/IModel.hpp"
+#include "Graphics/IMesh.hpp"
 #include "Graphics/GL/RendererGL.hpp"
 #include "Graphics/GL/TextureGL.hpp"
 #include "Graphics/GL/ModelGL.hpp"

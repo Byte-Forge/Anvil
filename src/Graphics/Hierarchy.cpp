@@ -9,6 +9,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 #include <iostream>
+#include "Animation.hpp"
 
 using namespace anvil;
 

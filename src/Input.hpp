@@ -7,11 +7,12 @@
 #pragma once
 #include <map>
 #include <memory>
-#include "Graphics/Camera.hpp"
-#include "Graphics/IRenderer.hpp"
 
 namespace anvil
 {
+	class Camera;
+	class IRenderer;
+
 	/**
 	 * @class	Input
 	 *

@@ -8,13 +8,14 @@
 #pragma once
 #include <memory>
 #include "Graphics/IRenderer.hpp"
-#include "Graphics/IModel.hpp"
-#include "Graphics/IMesh.hpp"
 #include <stdint.h>
 #include <glm/glm.hpp>
 
 namespace anvil
 {
+	class IModel;
+	class IMesh;
+
 	/**
 	 * @class	Graphics
 	 *

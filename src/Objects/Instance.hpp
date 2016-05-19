@@ -7,14 +7,14 @@
 
 #pragma once
 #include "glm/glm.hpp"
-#include <memory>
 #include "Entity.hpp"
-#include "../Graphics/IShader.hpp"
-#include "../Graphics/IModel.hpp"
-#include "../Graphics/Material.hpp"
+#include <memory>
 
 namespace anvil
 {
+	class IModel;
+	class Material;
+
 	/**
 	* @class	Instance
 	*

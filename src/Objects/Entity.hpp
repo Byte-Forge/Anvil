@@ -13,14 +13,13 @@
 #include <glm/glm.hpp>
 #include "../Util.hpp"
 #include "../Graphics/IModel.hpp"
-#include "../Graphics/IShader.hpp"
-#include "../Graphics/Animation.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Core/IResource.hpp"
 
 namespace anvil
 {
 	class Instance;
+	class Animation;
 
     /**
      * @class	Entity
