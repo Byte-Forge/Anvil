@@ -41,7 +41,10 @@ void GL::ModelGL::Render(IShader& shader)
 
 		if (m_hierarchy != nullptr)
 		{
-			m_hierarchy->Update();
+			if (i->IsAnimated())
+				m_hierarchy->Update(i->GetAnimationState()->animation, i->GetDeltaTime());
+			else
+				m_hierarchy->Update();
 			glUniform1iv(shader.GetUniform("parentIDs"), m_hierarchy->GetParentIDs().size(), reinterpret_cast<GLint*>(m_hierarchy->GetParentIDs().data()));
 			glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
 			//glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));

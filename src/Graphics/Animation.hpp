@@ -45,7 +45,7 @@ namespace anvil
 		* @param	pivotID		ID of the pivot we want the mat for
 		* @param	time		the current time of the animation
 		*/
-		glm::mat4 GetOffsetMat(int pivotID, float time);
+		glm::mat4 GetOffsetMat(int pivotID, long long *time);
 	
 		inline void SetName(const std::string &name) { m_name = name; }
 		inline void SetHierarchyName(const std::string &name) { m_hierarchyName = name; }

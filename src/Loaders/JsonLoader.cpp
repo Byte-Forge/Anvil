@@ -83,6 +83,48 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			else
 				ent = std::make_shared<Entity>();
 
+			Entity::KindOf kO = Entity::KindOf();
+			ent->SetKindOfs(kO);
+
+			if (d["entity"].HasMember("kindOfs"))
+			{
+				if (d["entity"]["kindOfs"].HasMember("MISC"))
+				{
+					kO.MISC = true;
+				}
+				if (d["entity"]["kindOfs"].HasMember("SHRUBBERY"))
+				{
+					if (kO.MISC == true)
+						std::cout << "WARNING!: Entity cannot be of type MISC AND SHRUBBERY!!" << std::endl;
+					else
+						kO.SHRUBBERY = true;
+				}
+				if (d["entity"]["kindOfs"].HasMember("UNIT"))
+				{
+					if (kO.MISC == true)
+						std::cout << "WARNING!: Entity cannot be of type MISC AND UNIT!!" << std::endl;
+					if (kO.SHRUBBERY == true)
+						std::cout << "WARNING!: Entity cannot be of type SHRUBBERY AND UNIT!!" << std::endl;
+					else
+						kO.UNIT = true;
+				}
+				if (d["entity"]["kindOfs"].HasMember("BUILDING"))
+				{
+					if (kO.MISC == true)
+						std::cout << "WARNING!: Entity cannot be of type MISC AND BUILDING!!" << std::endl;
+					if (kO.SHRUBBERY == true)
+						std::cout << "WARNING!: Entity cannot be of type SHRUBBERY AND BUILDING!!" << std::endl;
+					if (kO.UNIT == true)
+						std::cout << "WARNING!: Entity cannot be of type UNIT AND BUILDING!!" << std::endl;
+					else
+						kO.BUILDING = true;
+				}
+				if (d["entity"]["kindOfs"].HasMember("ANIMATED"))
+				{
+					kO.ANIMATED = true;
+				}
+			}
+
 			if (d["entity"].HasMember("modelConditionStates") && d["entity"]["modelConditionStates"].IsArray())
 			{
 				std::shared_ptr<Entity::ModelConditionState> state;
@@ -106,6 +148,24 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 							state->materials.insert({ toUpper(d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString()), std::make_tuple(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
 						}
 					}
+				}
+			}
+			if (d["entity"].HasMember("animationStates") && d["entity"]["animationStates"].IsArray())
+			{
+				std::shared_ptr<Entity::AnimationState> state;
+				for (int i = 0; i < d["entity"]["animationStates"].Size(); i++)
+				{
+					std::string stateName = d["entity"]["animationStates"][i]["name"].GetString();
+					state = ent->GetAnimationState(stateName);
+					if (state == nullptr)
+					{
+						state = std::make_shared<Entity::AnimationState>();
+						ent->AddAnimationState(stateName, state);
+					}
+
+					state->animationName = d["entity"]["animationStates"][i]["animation"].GetString();
+					if (d["entity"]["animationStates"][i]["animationMode"].GetString() == "LOOP")
+						state->mode = Entity::ANIMATION_MODE::LOOP;
 				}
 			}
 		}

@@ -13,6 +13,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <chrono>
 
 using namespace anvil;
 
@@ -29,18 +30,25 @@ Instance::~Instance()
 void Instance::Init()
 {
 	SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
-	//SetAnimationState(m_entity->GetAnimationState("IDLE"));
+	if (m_entity->GetKindOfs().ANIMATED)
+		SetAnimationState(m_entity->GetAnimationState("IDLE"));
 	SetHealth(m_entity->GetHealth());
 }
 
 void Instance::Unlink()
 {
-	if (m_model != nullptr)
-		m_model->RemoveInstance(shared_from_this());
+	if (m_modelConditionState->model != nullptr)
+		m_modelConditionState->model->RemoveInstance(shared_from_this());
 }
 
 bool Instance::Update()
 {
+	auto current = std::chrono::high_resolution_clock::now();
+	m_deltaTime = (std::chrono::duration_cast<std::chrono::milliseconds>(current - m_lastUpdated).count());
+	m_lastUpdated = current;
+
+	//std::cout << m_deltaTime << std::endl;
+
 	//int r = rand() % 15;
 	//m_health -= r;
 	if (m_health <= 0)
@@ -52,11 +60,10 @@ void Instance::SetModelConditionState(std::shared_ptr<Entity::ModelConditionStat
 {
 	if (state == nullptr)
 		return;
-	if (m_model != nullptr)
-		m_model->RemoveInstance(shared_from_this());
+	if (m_modelConditionState != nullptr)
+		m_modelConditionState->model->RemoveInstance(shared_from_this());
 	m_modelConditionState = state;
-	m_model = m_modelConditionState->model;
-	m_model->AddInstance(shared_from_this());
+	m_modelConditionState->model->AddInstance(shared_from_this());
 }
 
 void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state)

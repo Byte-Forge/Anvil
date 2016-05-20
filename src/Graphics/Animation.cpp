@@ -20,13 +20,14 @@ Animation::~Animation()
 
 }
 
-glm::mat4 Animation::GetOffsetMat(int pivot, float time)
+glm::mat4 Animation::GetOffsetMat(int pivot, long long *time)
 {
 	//add a test if the animation is over and if it should loop
 
-	float delta = 1.0f / m_frameRate;
-	int frame = time / delta;
-
+	float delta = m_frameRate / 1000.0f; //frames per millisecond
+	int frame = *time * delta;
+	//std::cout << *time << std::endl;
+	//std::cout << frame % m_numFrames << std::endl;
 	return glm::mat4();
 }
 

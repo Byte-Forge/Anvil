@@ -45,7 +45,7 @@ namespace anvil
 		*
 		* @brief	Updates the Hierarchy to the current animation Frame.
 		*/
-		void Update(std::shared_ptr<Animation> ani = nullptr);
+		void Update(std::shared_ptr<Animation> ani = nullptr, long long *time = 0);
 
 		inline void SetName(std::string name) { m_name = name; }
 		inline std::string GetName() { return m_name; }

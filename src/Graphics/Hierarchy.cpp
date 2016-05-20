@@ -23,17 +23,17 @@ Hierarchy::~Hierarchy()
 
 }
 
-void Hierarchy::Update(std::shared_ptr<Animation> ani)
+void Hierarchy::Update(std::shared_ptr<Animation> ani, long long *time)
 {
 	//additionally apply the frame offsets here
 	for (int i = 0; i < m_pivotCount; i++)
 	{
-		if (ani != nullptr)
-		{
-
-		}
 		std::int32_t parentID = m_parentIDs[i];
 		m_frame_pivots[i] = m_pivots[i];
+		if (ani != nullptr)
+		{
+			ani->GetOffsetMat(i, time);
+		}
 		while (parentID >= 0)
 		{
 			m_frame_pivots[i] = m_frame_pivots[i] * m_pivots[parentID];

@@ -93,4 +93,8 @@ void Entity::LoadResources()
 			std::get<1>(mat.second) = Core::GetCore()->GetResources()->GetMaterial(std::get<0>(mat.second));
 		}
 	}
+	for (auto& state : m_animationStates)
+	{
+		state.second->animation = Core::GetCore()->GetResources()->GetAnimation(state.second->animationName);
+	}
 }
