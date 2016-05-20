@@ -13,7 +13,7 @@
 #include <string>
 #include <array>
 #include <Rocket/Core/RenderInterface.h>
-#include "../Types/Map.hpp"
+#include "../Objects/Entity.hpp"
 #include "../Core/Options.hpp"
 
 namespace anvil
@@ -101,7 +101,8 @@ namespace anvil
 
 		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox) { m_skybox = skybox; }
 		inline void RegisterTerrain(std::shared_ptr<IRenderable> terrain) { m_terrain = terrain; }
-		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable) { m_renderables.push_back(renderable); }
+		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable) { m_renderables.push_back(renderable); } 
+		inline void RegisterEntity(std::shared_ptr<Entity> entity) { m_entities.push_back(entity); }
 
 		inline void ToggleWireframeMode() {	m_wireframeMode = !m_wireframeMode;	}
 		inline void ToggleNormalsMode()	{ m_normalsMode = !m_normalsMode; }
@@ -126,6 +127,7 @@ namespace anvil
 
 		std::shared_ptr<IRenderable> m_skybox;
 		std::shared_ptr<IRenderable> m_terrain;
-		std::vector<std::shared_ptr<IRenderable>> m_renderables;
+		std::vector<std::shared_ptr<IRenderable>> m_renderables; 
+		std::vector<std::shared_ptr<Entity>> m_entities;
 	};
 }

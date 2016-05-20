@@ -9,6 +9,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <iostream>
+#include "Graphics/Camera.hpp"
+#include "Graphics/IRenderer.hpp"
 
 #define JUST_RELEASED -1
 #define RELEASED 0

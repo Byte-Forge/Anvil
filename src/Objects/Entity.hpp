@@ -18,28 +18,68 @@
 
 namespace anvil
 {
+	class Instance;
+	class Animation;
+
     /**
      * @class	Entity
      *
      * @brief	An entity is a object with visual parts to render and stats etc.
      */
-
-    class Entity : public IResource
+	class Entity : public IResource, public std::enable_shared_from_this<Entity>
     {
 	public:
 
+		/**
+		* @struct	KindOf
+		*
+		* @brief	Values that represent the type of the entity
+		*/
 		struct KindOf
 		{
 			bool MISC = false;
 			bool SHRUBBERY = false;
 			bool UNIT = false;
 			bool BUILDING = false;
+			bool IMMOBILE = false;
+
+			bool ANIMATED = false;
 		};
 
-		struct Instance
+		/**
+		* @struct	ModelConditionState
+		*
+		* @brief	a state of an Instance e.g. Default 
+		*/
+		struct ModelConditionState
 		{
-			int health;
-			glm::vec3 position = glm::vec3(0.0, 0.0, 0.0);
+			std::string modelName;
+			std::shared_ptr<IModel> model;
+			std::string hierarchyPath;
+			std::map<std::string, std::tuple<std::string, std::shared_ptr<Material>>> materials;
+		};
+
+		/**
+		* @enum		ANIMATION_MODE
+		*
+		* @brief	if an animation should loop or not
+		*/
+		enum ANIMATION_MODE
+		{
+			LOOP = 0,
+			ONCE = 1,
+		};
+
+		/**
+		* @struct	AnimationState
+		*
+		* @brief	the animation state an instance is in
+		*/
+		struct AnimationState
+		{
+			std::string animationName;
+			std::shared_ptr<Animation> animation;
+			ANIMATION_MODE mode;
 		};
 
 		/**
@@ -65,17 +105,12 @@ namespace anvil
 		 */
 		~Entity();
 
-		void Update();
-
 		/**
-		* @fn	void Entity::SetModel(const std::string model);
+		* @fn	void Entity::Update();
 		*
-		* @brief	Sets the model string of an Entity.
-		*
-		* @param	name	The name of the Model.
+		* @brief	updates the instances of this entity
 		*/
-		void SetModel(const std::string model);
-
+		void Update();
 
 		/**
 		* @fn	void Entity::AddInstance(glm::vec3 position);
@@ -84,21 +119,46 @@ namespace anvil
 		*
 		* @param	position	The position of the Entity.
 		*/
-		void AddInstance(glm::vec3 position);
+		void AddInstance(glm::vec3 &position);
 
-		inline void SetSklPath(std::string skl_path) { m_skl_path = skl_path; }
-		inline std::shared_ptr<IModel> GetModel() { return m_model; }
-		inline void AddMaterial(std::string meshName, std::shared_ptr<Material> material) { m_materials.insert({ toUpper(meshName), material }); }
-		std::shared_ptr<Material> GetMaterial(std::string meshName);
-		std::deque<std::shared_ptr<Instance>> GetInstances();
+		/**
+		* @fn	void Entity::LoadResources();
+		*
+		* @brief	loads all resources (models, textures etc.) for this entity when the first instance is created
+		*/
+		void LoadResources();
 
+		/**
+		* @fn	std::shared_ptr<ModelConditionState> Entity::GetModelConditionState(const std::string &name);
+		*
+		* @brief	returns an ModelConditionState referenced by name
+		* @param	name	the name of the ConditionState 
+		* @return	returns the desired state or nullptr if it does not exist
+		*/
+		std::shared_ptr<ModelConditionState> GetModelConditionState(const std::string &name);
+
+		/**
+		* @fn	std::shared_ptr<AnimationState> Entity::GetAnimationState(const std::string &name);
+		*
+		* @brief	returns an AnimationState referenced by name
+		* @param	name	the name of the AnimationState 
+		* @return	returns the desired state or nullptr if it does not exist
+		*/
+		std::shared_ptr<AnimationState> GetAnimationState(const std::string &name);
+
+		inline void SetKindOfs(KindOf kO) { m_kindOfs = kO; }
+		inline KindOf GetKindOfs() { return m_kindOfs; }
+		inline int GetHealth() { return m_health; }
+		inline void AddModelConditionState(const std::string name, std::shared_ptr<ModelConditionState> state) { m_modelConditionStates.insert({ toUpper(name), state }); }
+		inline void AddAnimationState(const std::string name, std::shared_ptr<AnimationState> state) { m_animationStates.insert({ toUpper(name), state }); }
 	private:
-		int m_health = 1000;
+		bool m_resourcesLoaded = false;
 
-		std::string m_model_string;
-		std::string m_skl_path;
-		std::shared_ptr<IModel> m_model;
-		std::map<std::string, std::shared_ptr<Material>> m_materials;
+		KindOf m_kindOfs = KindOf();
+		int m_health = 1000;
+		std::map<std::string, std::shared_ptr<ModelConditionState>> m_modelConditionStates;
+		std::map<std::string, std::shared_ptr<AnimationState>> m_animationStates;
+
 		std::deque<std::shared_ptr<Instance>> m_instances;
     };
 }

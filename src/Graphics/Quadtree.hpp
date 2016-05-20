@@ -56,13 +56,6 @@ namespace anvil
 		 * @return	Returns all triangles to be drawn within specified area.
 		 */
 		std::vector<uint32_t> GetTriangles(const std::array<std::array<float, 4>, 6>& frustum); 
-	
-	private:
-		bool contains(glm::vec3& vertex);
-		int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
-		bool CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
-		std::vector<uint32_t> getAllTriangles(); // Returns all triangles without AABBvsFrustum check.
-		void update(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3);
 
 	private:
 		glm::vec3 m_pos; 
@@ -78,5 +71,12 @@ namespace anvil
 		std::unique_ptr<Quadtree> m_NE;
 		std::unique_ptr<Quadtree> m_SW;
 		std::unique_ptr<Quadtree> m_SE;
+
+	private:
+		bool contains(glm::vec3& vertex);
+		int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
+		bool CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum);
+		std::vector<uint32_t> getAllTriangles(); // Returns all triangles without AABBvsFrustum check.
+		void update(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3);
 	};
 }

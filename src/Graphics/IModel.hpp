@@ -12,15 +12,15 @@
 #include <set>
 #include <memory>
 #include <glm/glm.hpp>
-#include "../Graphics/Hierarchy.hpp"
-#include "../Graphics/IMesh.hpp"
 #include "../Core/IResource.hpp"
 #include "../Graphics/IRenderable.hpp"
 
 
 namespace anvil
 {
-	class Entity;
+	class Instance;
+	class Hierarchy;
+	class IMesh;
 
 	/**
 	 * @class	IModel
@@ -81,13 +81,13 @@ namespace anvil
 		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }
 		inline void AddMesh(std::string name, std::shared_ptr<IMesh> mesh) { m_meshes.insert({ name, mesh }); }
 		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }
-		void AddEntity(Entity* entity);
-		void RemoveEntity(Entity* entity);
+		inline void AddInstance(std::shared_ptr<Instance> i) { m_instances.insert(i); }
+		inline void RemoveInstance(std::shared_ptr<Instance> i) { m_instances.erase(i); }
 
 	protected:
 		std::shared_ptr<Hierarchy> m_hierarchy; //nullpointer if no hierarchy is needed
 		std::map<std::string, std::shared_ptr<IMesh>> m_meshes;
 		BoundingVolume m_volume;
-		std::set<Entity*> m_entities;
+		std::set<std::shared_ptr<Instance>> m_instances;
 	};
 }

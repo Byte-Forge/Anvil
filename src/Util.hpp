@@ -181,12 +181,26 @@ namespace anvil
 		return fin.good(); //fin.close() is called by the destructor
 	}
 
+	/**
+	* @fn	inline void printVec(glm::vec4 vec)
+	*
+	* @brief	prints the given vector
+	*
+	* @param	vec		the vetor to be printed
+	*/
 	inline void printVec(glm::vec4 vec)
 	{
 		std::cout << vec[0] << ", " << vec[1] << ", " << vec[2] << ", " << vec[3] << std::endl;
 	}
 
-	inline void printMat(glm::mat4x4 mat)
+	/**
+	* @fn	inline void printMat4x4(glm::mat4x4 mat)
+	*
+	* @brief	prints the given 4x4 matrix
+	*
+	* @param	mat		the matrix to be printed
+	*/
+	inline void printMat4x4(glm::mat4x4 mat)
 	{
 		std::cout << mat[0][0] << ", " << mat[0][1] << ", " << mat[0][2] << ", " << mat[0][3] << std::endl;
 		std::cout << mat[1][0] << ", " << mat[1][1] << ", " << mat[1][2] << ", " << mat[1][3] << std::endl;

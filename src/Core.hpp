@@ -25,6 +25,11 @@ namespace anvil
 	class Audio;
 	class Frustum;
 
+	/**
+	* @class	Core
+	*
+	* @brief	The core of the engine
+	*/
 	class Core
 	{
 	public: 
@@ -50,58 +55,13 @@ namespace anvil
 		 */
 		void Run();
 
-		inline std::unique_ptr<GUI>& GetGUI()
-		{
-			return m_gui;
-		}
-
-		inline std::unique_ptr<Script>& GetScript()
-		{
-			return m_script;
-		}
-
-		inline std::unique_ptr<Graphics>& GetGraphics()
-		{
-			return m_graphics;
-		}
-
-		inline std::unique_ptr<ResourceHandler>& GetResources()
-		{
-			return m_resources;
-		}
-
-		inline std::unique_ptr<Map>& GetMap()
-		{
-			return m_map;
-		}
-
-		inline std::unique_ptr<Camera>& GetCamera()
-		{
-			return m_camera;
-		} 
-
-		inline std::unique_ptr<Input>& GetInput()
-		{
-			return m_input;
-		}
-
-		inline glm::vec2 GetResolution()
-		{
-			
-			return m_resolution;
-		}
-
-		inline GLFWwindow* GetWindow()
-		{
-			return m_window;
-		}
-
+		/**
+		* @fn	void Core::Quit();
+		*
+		* @brief	Quits the engine
+		*/
 		void Quit();
 
-		static inline Core* GetCore()
-		{
-			return m_instance;
-		}
 
 		Util::Timer& GetTimer()
 		{
@@ -113,13 +73,17 @@ namespace anvil
 			return m_fps;
 		}
 
-	private:
-		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-		static void MouseCallback(GLFWwindow* window, int key, int action, int mods);
-		static void MousePosCallback(GLFWwindow* window, double xpos, double ypos);
-		static void ScrollCallback(GLFWwindow* window, double x, double y);
-		static void ErrorCallback(int error, const char* description);
-		static void ResizeCallback(GLFWwindow* window, int width, int height);
+		inline std::unique_ptr<GUI>& GetGUI(){ return m_gui; }
+		inline std::unique_ptr<Script>& GetScript() { return m_script; }
+		inline std::unique_ptr<Graphics>& GetGraphics() { return m_graphics; }
+		inline std::unique_ptr<ResourceHandler>& GetResources() { return m_resources; }
+		inline std::unique_ptr<Map>& GetMap() { return m_map; }
+		inline std::unique_ptr<Camera>& GetCamera() { return m_camera; } 
+		inline std::unique_ptr<Input>& GetInput() { return m_input; }
+		inline glm::vec2 GetResolution() { return m_resolution; }
+		inline GLFWwindow* GetWindow() { return m_window; }
+		static inline Core* GetCore() { return m_instance; }
+
 	private:
 		static Core* m_instance;
 
@@ -136,5 +100,13 @@ namespace anvil
 		Util::Timer m_timer;
 		Util::FPS m_fps;
 		glm::vec2 m_resolution;
+
+	private:
+		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		static void MouseCallback(GLFWwindow* window, int key, int action, int mods);
+		static void MousePosCallback(GLFWwindow* window, double xpos, double ypos);
+		static void ScrollCallback(GLFWwindow* window, double x, double y);
+		static void ErrorCallback(int error, const char* description);
+		static void ResizeCallback(GLFWwindow* window, int width, int height);
 	};
 }

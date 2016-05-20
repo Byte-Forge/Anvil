@@ -10,6 +10,11 @@
 
 namespace anvil
 {
+	/**
+	* @class	Options
+	*
+	* @brief	options of the engine
+	*/
 	class Options
 	{
 	public:
@@ -45,6 +50,7 @@ namespace anvil
 		static inline unsigned int GetWidth()	{ return s_width; };
 		static inline unsigned int GetHeight()	{ return s_height; };
 		static inline bool GetFullscreen()		{ return s_fullscreen; };
+
 	private:
 		static bool s_fullscreen;
 		static unsigned int s_width;

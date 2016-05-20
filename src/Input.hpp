@@ -7,11 +7,12 @@
 #pragma once
 #include <map>
 #include <memory>
-#include "Graphics/Camera.hpp"
-#include "Graphics/IRenderer.hpp"
 
 namespace anvil
 {
+	class Camera;
+	class IRenderer;
+
 	/**
 	 * @class	Input
 	 *
@@ -27,6 +28,12 @@ namespace anvil
 		 * @brief	Default constructor.
 		 */
 		Input();
+
+		/**
+		* @fn	Input::~Input();
+		*
+		* @brief	Default destructor.
+		*/
 		~Input();
 
 		/**
@@ -81,19 +88,6 @@ namespace anvil
 		void Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRenderer>& renderer);
 
 	private:
-
-		/**
-		 * @fn	int Input::TranslateState(int action);
-		 *
-		 * @brief	Translate key states from glfw to our custom states.
-		 *
-		 * @param	action	The action.
-		 *
-		 * @return	The translated state.
-		 */
-		int TranslateState(int action);
-
-	private:
 		//mouse variables
 		int m_mouse_x = 0;
 		int m_mouse_y = 0;
@@ -104,5 +98,8 @@ namespace anvil
 
 		std::map<int, int> m_keyInputs;
 		std::map<int, int> m_mouseInputs;
+
+	private:
+		int TranslateState(int action);
 	};
 }

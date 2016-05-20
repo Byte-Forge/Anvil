@@ -7,14 +7,15 @@
 
 #pragma once
 #include "IRenderable.hpp"
-#include "ITexture.hpp"
-#include "Quadtree.hpp"
 #include <vector>
 #include <glm/glm.hpp>
 #include <memory>
 
 namespace anvil
 {
+	class ITexture;
+	class Quadtree;
+
 	/**
 	 * @class	ITerrain
 	 *

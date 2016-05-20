@@ -6,12 +6,15 @@
 */
 
 #include "BF3DLoader.hpp"
+#include <map>
+#include <unordered_map>
 #include <fstream>
 #include <iostream>
 #include <glm/glm.hpp>
 #include "../Util.hpp"        
 #include "../Core.hpp"
 #include "../Graphics.hpp"
+#include "../Graphics/IMesh.hpp"
 #include "../Graphics/Hierarchy.hpp"
 #include "../Graphics/Animation.hpp"
 #include "../Graphics/IModel.hpp"
@@ -76,24 +79,33 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 		std::int32_t extrapolation;
 		std::int32_t type;
 
+		std::map<int, glm::f32> frames;
+		std::unordered_map<int, std::map<int, glm::f32>> channels;
+
 		switch (chunkType)
 		{
 		case 513:
 			animation = std::make_shared<Animation>();
 			animation->SetName(readString(file));
 			animation->SetHierarchyName(readString(file));
+			animation->SetFrameRate(read<std::int32_t>(file));
+			animation->SetNumFrames(read<std::int32_t>(file));
 			break;
 		case 514:
 			pivot = read<std::int32_t>(file);
 			extrapolation = read<std::int32_t>(file);
 			type = read<std::int32_t>(file);
+			frames.clear();
+			channels.clear();
 
 			while (file.tellg() < subChunkEnd)
 			{
 				std::int32_t frame = read<std::int32_t>(file);
 				glm::f32 value = read<glm::f32>(file);
-				//animation->InsertKey(pivot, type, frame, value);
+				frames.insert({ frame, value });
 			}
+			channels.insert({ type, frames });
+			animation->AddChannel(pivot, channels);
 			break;
 		default:
 			std::cout << "unknown chunktype in animation chunk: " << chunkType << std::endl;

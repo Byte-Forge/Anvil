@@ -14,6 +14,7 @@
 #include "../Objects/Entity.hpp"
 #include "../Graphics/IParticleSystem.hpp"
 #include <iostream>
+#include <tuple>
 #include <rapidjson/document.h>
 #include <rapidjson/istreamwrapper.h>
 
@@ -82,17 +83,89 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			else
 				ent = std::make_shared<Entity>();
 
-			if (d["entity"].HasMember("model"))
-				ent->SetModel(d["entity"]["model"].GetString());
+			Entity::KindOf kO = Entity::KindOf();
+			ent->SetKindOfs(kO);
 
-			if (d["entity"].HasMember("skl_path"))
-				ent->SetSklPath(d["entity"]["skl_path"].GetString());
-
-			if (d["entity"].HasMember("materials") && d["entity"]["materials"].IsArray())
+			if (d["entity"].HasMember("kindOfs"))
 			{
-				for (int i = 0; i < d["entity"]["materials"].Size(); i++)
+				if (d["entity"]["kindOfs"].HasMember("MISC"))
 				{
-					ent->AddMaterial(d["entity"]["materials"][i]["mesh"].GetString(), Core::GetCore()->GetResources()->GetMaterial(d["entity"]["materials"][i]["material"].GetString()));
+					kO.MISC = true;
+				}
+				if (d["entity"]["kindOfs"].HasMember("SHRUBBERY"))
+				{
+					if (kO.MISC == true)
+						std::cout << "WARNING!: Entity cannot be of type MISC AND SHRUBBERY!!" << std::endl;
+					else
+						kO.SHRUBBERY = true;
+				}
+				if (d["entity"]["kindOfs"].HasMember("UNIT"))
+				{
+					if (kO.MISC == true)
+						std::cout << "WARNING!: Entity cannot be of type MISC AND UNIT!!" << std::endl;
+					if (kO.SHRUBBERY == true)
+						std::cout << "WARNING!: Entity cannot be of type SHRUBBERY AND UNIT!!" << std::endl;
+					else
+						kO.UNIT = true;
+				}
+				if (d["entity"]["kindOfs"].HasMember("BUILDING"))
+				{
+					if (kO.MISC == true)
+						std::cout << "WARNING!: Entity cannot be of type MISC AND BUILDING!!" << std::endl;
+					if (kO.SHRUBBERY == true)
+						std::cout << "WARNING!: Entity cannot be of type SHRUBBERY AND BUILDING!!" << std::endl;
+					if (kO.UNIT == true)
+						std::cout << "WARNING!: Entity cannot be of type UNIT AND BUILDING!!" << std::endl;
+					else
+						kO.BUILDING = true;
+				}
+				if (d["entity"]["kindOfs"].HasMember("ANIMATED"))
+				{
+					kO.ANIMATED = true;
+				}
+			}
+
+			if (d["entity"].HasMember("modelConditionStates") && d["entity"]["modelConditionStates"].IsArray())
+			{
+				std::shared_ptr<Entity::ModelConditionState> state;
+				for (int i = 0; i < d["entity"]["modelConditionStates"].Size(); i++)
+				{
+					std::string stateName = d["entity"]["modelConditionStates"][i]["name"].GetString();
+					state = ent->GetModelConditionState(stateName);
+					if (state == nullptr)
+					{
+						state = std::make_shared<Entity::ModelConditionState>();
+						ent->AddModelConditionState(stateName, state);
+					}
+					
+					state->modelName = d["entity"]["modelConditionStates"][i]["model"].GetString();
+					state->hierarchyPath = d["entity"]["modelConditionStates"][i]["skl_path"].GetString();
+
+					if (d["entity"]["modelConditionStates"][i].HasMember("materials") && d["entity"]["modelConditionStates"][i]["materials"].IsArray())
+					{
+						for (int j = 0; j < d["entity"]["modelConditionStates"][i]["materials"].Size(); j++)
+						{
+							state->materials.insert({ toUpper(d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString()), std::make_tuple(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
+						}
+					}
+				}
+			}
+			if (d["entity"].HasMember("animationStates") && d["entity"]["animationStates"].IsArray())
+			{
+				std::shared_ptr<Entity::AnimationState> state;
+				for (int i = 0; i < d["entity"]["animationStates"].Size(); i++)
+				{
+					std::string stateName = d["entity"]["animationStates"][i]["name"].GetString();
+					state = ent->GetAnimationState(stateName);
+					if (state == nullptr)
+					{
+						state = std::make_shared<Entity::AnimationState>();
+						ent->AddAnimationState(stateName, state);
+					}
+
+					state->animationName = d["entity"]["animationStates"][i]["animation"].GetString();
+					if (d["entity"]["animationStates"][i]["animationMode"].GetString() == "LOOP")
+						state->mode = Entity::ANIMATION_MODE::LOOP;
 				}
 			}
 		}

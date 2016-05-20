@@ -14,7 +14,11 @@
 
 namespace anvil
 {
-
+	/**
+	* @class	Collision
+	*
+	* @brief	A class for collision algorithms
+	*/
 	class Collision
 	{
 	public:

@@ -37,12 +37,21 @@ namespace anvil
 		*/
 		~Animation();
 
-		glm::mat4 GetOffsetMat(int pivotID, float time);
-		glm::f32 GetOffsetValue(int pivotID, int type, int frame);
-
+		/**
+		* @fn	void Animation::GetOffsetMat(int pivotID, float time);
+		*
+		* @brief	Returns the offset mat for this animation for a specific pivot at the given time
+		*
+		* @param	pivotID		ID of the pivot we want the mat for
+		* @param	time		the current time of the animation
+		*/
+		glm::mat4 GetOffsetMat(int pivotID, long long *time);
+	
 		inline void SetName(const std::string &name) { m_name = name; }
 		inline void SetHierarchyName(const std::string &name) { m_hierarchyName = name; }
-		inline void InsertKey(int pivot, int type, int frame, glm::f32 value) { m_data.insert({  }); }
+		inline void SetFrameRate(int frameRate) { m_frameRate = frameRate; }
+		inline void SetNumFrames(int numFrames) { m_numFrames = numFrames; }
+		inline void AddChannel(int pivot, std::unordered_map<int, std::map<int, glm::f32>> channel) { m_data.insert({ pivot, channel }); }
 
 	private:
 		std::string m_name;
@@ -52,5 +61,8 @@ namespace anvil
 
 		//pivot -> type -> frame 
 		std::unordered_map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
+
+	private:
+		glm::f32 GetOffsetValue(int pivotID, int type, int frame);
 	};
 }

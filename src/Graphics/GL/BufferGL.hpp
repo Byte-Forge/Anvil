@@ -4,6 +4,7 @@
 * Buffer.hpp
 ************************************
 */
+
 #pragma once
 #include <stdlib.h>
 

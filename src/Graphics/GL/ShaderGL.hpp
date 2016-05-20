@@ -127,14 +127,14 @@ namespace anvil
 			*/
 			int GetUniform(const std::string& id);
 
-        private:
-            void LoadShader(const std::string& file,GLenum type);
-
 		private:
             GLuint m_program;
             std::map<GLenum,GLuint> m_shaders;
 			std::map<std::string,std::string> m_macros;
 			static const std::string glslVersion;
+
+		private:
+			void LoadShader(const std::string& file, GLenum type);
         };
     }
 }

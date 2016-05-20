@@ -8,7 +8,6 @@
 #include "Camera.hpp"
 #include "../Core.hpp"
 #include <iostream>
-
 #include "../Graphics/GL/flextGL.h"
 
 using namespace anvil;

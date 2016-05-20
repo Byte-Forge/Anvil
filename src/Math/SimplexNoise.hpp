@@ -113,15 +113,15 @@ namespace anvil
 		static float raw_noise_4d(const float x, const float y, const float, const float w);
 
 	private:
-		static int fastfloor(const float x);
-		static float dot(const int* g, const float x, const float y);
-		static float dot(const int* g, const float x, const float y, const float z);
-		static float dot(const int* g, const float x, const float y, const float z, const float w);
-
-	private:
 		static int perm[512];
 		static const int grad3[12][3];
 		static const int grad4[32][4];
 		static const int simplex[64][4];
+
+	private:
+		static int fastfloor(const float x);
+		static float dot(const int* g, const float x, const float y);
+		static float dot(const int* g, const float x, const float y, const float z);
+		static float dot(const int* g, const float x, const float y, const float z, const float w);
 	};
 }
