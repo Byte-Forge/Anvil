@@ -105,13 +105,17 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 
-	barracks->AddInstance(glm::vec3(0, 10, -50));
-	troll->AddInstance(glm::vec3(75, 10, -50));
-	onager->AddInstance(glm::vec3(125, 10, -50));
+	auto vecBarracks = glm::vec3(0, 10, -50);
+	barracks->AddInstance(vecBarracks);
+	auto vecTroll = glm::vec3(75, 10, -50);
+	troll->AddInstance(vecTroll);
+	auto vecOnager = glm::vec3(125, 10, -50);
+	onager->AddInstance(vecOnager);
 	for (int i = 0; i < 800; i += 20)
 		for (int j = 0; j < 800; j += 20)
 		{
-			soldier->AddInstance(glm::vec3(i, 10, j));	
+			auto vecSoldier = glm::vec3(i, 10, j);
+			soldier->AddInstance(vecSoldier);	
 		}
 
 	//onager->AddInstance(glm::vec3(100, 0, -50));
