@@ -43,9 +43,9 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - mkdir deps && cd deps
-  - curl -L -O https://github.com/g-truc/glm/releases/download/0.9.7.4/glm-0.9.7.4.zip && unzip glm-0.9.7.4.zip
+  - git clone https://github.com/g-truc/glm.git
   - export GLM_ROOT_DIR=$(pwd)/glm
-  - curl -O -L https://github.com/g-truc/gli/releases/download/0.8.1.0/gli-0.8.1.0.zip && unzip gli-0.8.1.0.zip
+  - git clone https://github.com/g-truc/gli.git
   - export GLI_ROOT_DIR=$(pwd)/gli
   - git clone https://github.com/miloyip/rapidjson.git
   - export RAPIDJSON_ROOT_DIR=$(pwd)/rapidjson
