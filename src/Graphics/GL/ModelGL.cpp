@@ -36,13 +36,15 @@ void GL::ModelGL::Render(IShader& shader)
 	//glm::mat4 mod(1.0);
 	for (std::shared_ptr<Instance> i : m_instances)
 	{
+		i->Update();
+
 		glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
 		glUniform4fv(shader.GetUniform("position"), 1, glm::value_ptr(glm::vec4(i->GetPosition(), 1.0)));
 
 		if (m_hierarchy != nullptr)
 		{
 			if (i->IsAnimated())
-				m_hierarchy->Update(i->GetAnimationState()->animation, i->GetDeltaTime());
+				m_hierarchy->Update(i->GetAnimationState()->animation, i->GetAnimationTime());
 			else
 				m_hierarchy->Update();
 			glUniform1iv(shader.GetUniform("parentIDs"), m_hierarchy->GetParentIDs().size(), reinterpret_cast<GLint*>(m_hierarchy->GetParentIDs().data()));

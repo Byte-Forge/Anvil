@@ -95,11 +95,6 @@ void ITerrain::Generate()
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
 
-	//std::shared_ptr<Entity> rhodo = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/rhododendron.json");
-	//std::shared_ptr<Entity> dougla = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/douglas_fir.json");
-	//std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
-	//std::shared_ptr<Entity> birch = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/birch.json");
-
 	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/misty_mountains/cavetroll.json");
 	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/gondor/soldier.json");
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
@@ -113,13 +108,6 @@ void ITerrain::Generate()
 		{
 			soldier->AddInstance(glm::vec3(i, 10, j));	
 		}
-
-	//onager->AddInstance(glm::vec3(100, 0, -50));
-
-	//rhodo->AddInstance(glm::vec3(150, 5, 30));
-	//dougla->AddInstance(glm::vec3(160, 5, 30));
-	//oak->AddInstance(glm::vec3(170, 5, 30));
-	//birch->AddInstance(glm::vec3(180, 5, 30));
 
 	//wait until heightmap creation is done
 	hand.get();

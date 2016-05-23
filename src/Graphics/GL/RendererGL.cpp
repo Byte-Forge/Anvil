@@ -230,9 +230,6 @@ void RendererGL::Render(const glm::mat4& ortho)
 		m_terrain->Render(*m_terrainShaders[2]);
 	}
 
-	for (auto& entity : m_entities)
-		entity->Update();
-
 	m_modelShaders[0]->Use();
 
 	glEnable(GL_BLEND);

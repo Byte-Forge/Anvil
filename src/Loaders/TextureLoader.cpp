@@ -28,7 +28,7 @@ void TextureLoader::LoadTexture(const std::string& name, const std::string& path
 	if (!tex->Load(Texture))
 		throw AnvilException("Failed to load texture" + path, __FILE__, __LINE__);
 
-	Core::GetCore()->GetResources()->AddResource(toUpper(name), tex);
+	Core::GetCore()->GetResources()->AddResource(name, tex);
 }
 
 std::shared_ptr<ITexture> TextureLoader::LoadTextureArray(const std::vector<std::string>& paths)

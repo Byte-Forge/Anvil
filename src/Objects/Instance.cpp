@@ -10,6 +10,7 @@
 #include "../Core.hpp"
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/Material.hpp"
+#include "../Graphics/Animation.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -44,10 +45,24 @@ void Instance::Unlink()
 bool Instance::Update()
 {
 	auto current = std::chrono::high_resolution_clock::now();
-	m_deltaTime = (std::chrono::duration_cast<std::chrono::milliseconds>(current - m_lastUpdated).count());
+	if (m_firstUpdate)
+	{
+		m_lastUpdated = current;
+		m_firstUpdate = false;
+	}
+	m_animationTime += (std::chrono::duration_cast<std::chrono::milliseconds>(current - m_lastUpdated).count());
 	m_lastUpdated = current;
 
-	//std::cout << m_deltaTime << std::endl;
+	if (IsAnimated())
+	{
+		long long totalAnimationTime = m_animationState->animation->GetTotalTime();
+		if (m_animationTime > totalAnimationTime)
+		{
+			m_animationTime -= totalAnimationTime;
+			if (m_animationState->mode != Entity::ANIMATION_MODE::LOOP)
+				std::cout << "need to change ani state" << std::endl;
+		}
+	}
 
 	//int r = rand() % 15;
 	//m_health -= r;
@@ -75,7 +90,7 @@ void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state)
 
 std::shared_ptr<Material> Instance::GetMaterial(const std::string& meshName)
 {
-	const auto& it = m_modelConditionState->materials.find(toUpper(meshName));
+	const auto& it = m_modelConditionState->materials.find(meshName);
 	if (it == m_modelConditionState->materials.end())
 	{
 		std::cout << "WARNING!: No material defined for mesh: " + meshName << std::endl;

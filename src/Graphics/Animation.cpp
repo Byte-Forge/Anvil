@@ -7,6 +7,9 @@
 
 #include "Animation.hpp"
 #include <iostream>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include "../Util.hpp"
 
 using namespace anvil;
 
@@ -22,13 +25,28 @@ Animation::~Animation()
 
 glm::mat4 Animation::GetOffsetMat(int pivot, long long *time)
 {
-	//add a test if the animation is over and if it should loop
-
-	float delta = m_frameRate / 1000.0f; //frames per millisecond
+	float delta = m_framesPerSecond / 1000.0f; //frames per millisecond
 	int frame = *time * delta;
-	//std::cout << *time << std::endl;
-	//std::cout << frame % m_numFrames << std::endl;
-	return glm::mat4();
+
+	float x = GetOffsetValue(pivot, 0, frame);
+	float y = GetOffsetValue(pivot, 1, frame);
+	float z = GetOffsetValue(pivot, 2, frame);
+
+	float w = GetOffsetValue(pivot, 3, frame);
+	float qx = GetOffsetValue(pivot, 4, frame);
+	float qy = GetOffsetValue(pivot, 5, frame);
+	float qz = GetOffsetValue(pivot, 6, frame);
+
+	glm::quat q = glm::quat(w, qx, qy, qz);
+	//glm::mat4 m = glm::mat4_cast(q);
+	glm::mat4 m = glm::mat4();
+
+	m[0][3] = x;
+	m[1][3] = y;
+	m[2][3] = z;
+
+
+	return m;
 }
 
 glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
@@ -43,7 +61,6 @@ glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
 			if (it3 != it2->second.end())
 			{
 				//the searched frame is already a keyframe -> no interpolation needed?? (at constant at least?)
-				std::cout << it3->second << std::endl;
 				return it3->second;
 			}
 			//else we have to interpolate between two keyframes

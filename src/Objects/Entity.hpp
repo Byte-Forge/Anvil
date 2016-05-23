@@ -149,8 +149,9 @@ namespace anvil
 		inline void SetKindOfs(KindOf kO) { m_kindOfs = kO; }
 		inline KindOf GetKindOfs() { return m_kindOfs; }
 		inline int GetHealth() { return m_health; }
-		inline void AddModelConditionState(const std::string name, std::shared_ptr<ModelConditionState> state) { m_modelConditionStates.insert({ toUpper(name), state }); }
-		inline void AddAnimationState(const std::string name, std::shared_ptr<AnimationState> state) { m_animationStates.insert({ toUpper(name), state }); }
+		inline void AddModelConditionState(const std::string name, std::shared_ptr<ModelConditionState> state) { m_modelConditionStates.insert({ name, state }); }
+		inline void AddAnimationState(const std::string name, std::shared_ptr<AnimationState> state) { m_animationStates.insert({ name, state }); }
+	
 	private:
 		bool m_resourcesLoaded = false;
 

@@ -61,7 +61,7 @@ void Entity::AddInstance(glm::vec3 &position)
 
 std::shared_ptr<Entity::ModelConditionState> Entity::GetModelConditionState(const std::string& name)
 {
-	const auto& it = m_modelConditionStates.find(toUpper(name));
+	const auto& it = m_modelConditionStates.find(name);
 	if (it != m_modelConditionStates.end())
 		return it->second;
 	else
@@ -73,7 +73,7 @@ std::shared_ptr<Entity::ModelConditionState> Entity::GetModelConditionState(cons
 
 std::shared_ptr<Entity::AnimationState> Entity::GetAnimationState(const std::string& name)
 {
-	const auto& it = m_animationStates.find(toUpper(name));
+	const auto& it = m_animationStates.find(name);
 	if (it != m_animationStates.end())
 		return it->second;
 	else

@@ -57,7 +57,7 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 
 	fin.close();
 
-	Core::GetCore()->GetResources()->AddResource(toUpper(name), mat);
+	Core::GetCore()->GetResources()->AddResource(name, mat);
 }
 
 void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
@@ -84,7 +84,6 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 				ent = std::make_shared<Entity>();
 
 			Entity::KindOf kO = Entity::KindOf();
-			ent->SetKindOfs(kO);
 
 			if (d["entity"].HasMember("kindOfs"))
 			{
@@ -124,6 +123,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					kO.ANIMATED = true;
 				}
 			}
+			ent->SetKindOfs(kO);
 
 			if (d["entity"].HasMember("modelConditionStates") && d["entity"]["modelConditionStates"].IsArray())
 			{
@@ -145,7 +145,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					{
 						for (int j = 0; j < d["entity"]["modelConditionStates"][i]["materials"].Size(); j++)
 						{
-							state->materials.insert({ toUpper(d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString()), std::make_tuple(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
+							state->materials.insert({ d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString(), std::make_tuple(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
 						}
 					}
 				}
@@ -175,7 +175,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 
 	fin.close();
 
-	Core::GetCore()->GetResources()->AddResource(toUpper(name), ent);
+	Core::GetCore()->GetResources()->AddResource(name, ent);
 }
 
 void JsonLoader::LoadParticlesystem(const std::string & name, const std::string & path)
@@ -214,5 +214,5 @@ void JsonLoader::LoadParticlesystem(const std::string & name, const std::string 
 
 	fin.close();
 
-	Core::GetCore()->GetResources()->AddResource(toUpper(name), particleSys);
+	Core::GetCore()->GetResources()->AddResource(name, particleSys);
 }

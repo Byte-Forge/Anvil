@@ -86,17 +86,18 @@ namespace anvil
 		*/
 		void SetAnimationState(std::shared_ptr<Entity::AnimationState> state);
 
-		inline bool IsAnimated() { return m_entity->GetKindOfs().ANIMATED; }
 		inline void SetHealth(int health) { m_health = health; }
 		inline void SetPosition(glm::vec3 pos) { m_position = pos; }
 		inline glm::vec3 GetPosition() { return m_position; }
 		inline std::shared_ptr<Entity::ModelConditionState> GetModelConditionState() { return m_modelConditionState; }
 		inline std::shared_ptr<Entity::AnimationState> GetAnimationState() { return m_animationState; }
-		inline long long * GetDeltaTime() { return &m_deltaTime; }
+		inline bool IsAnimated() { return m_entity->GetKindOfs().ANIMATED; }
+		inline long long *GetAnimationTime() { return &m_animationTime; }
 
 	private:
+		bool m_firstUpdate = true;
 		std::chrono::high_resolution_clock::time_point m_lastUpdated;
-		long long m_deltaTime;
+		long long m_animationTime = 0;
 		std::shared_ptr<Entity> m_entity;
 		int m_health;
 		glm::vec3 m_position;

@@ -26,7 +26,7 @@ using namespace anvil;
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 {
 	std::string path;
-	const auto& it = m_resources.find(toUpper(name));
+	const auto& it = m_resources.find(name);
 	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
@@ -34,13 +34,13 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 			JsonLoader::LoadEntity(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Entity> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<Entity> (m_resources[name]);
 }
 
 std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string & name)
 {
 	std::string path;
-	const auto& it = m_resources.find(toUpper(name));
+	const auto& it = m_resources.find(name);
 	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
@@ -48,13 +48,13 @@ std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::s
 			JsonLoader::LoadParticlesystem(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<IParticleSystem> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<IParticleSystem> (m_resources[name]);
 }
 
 std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 {
 	std::string path;
-	const auto& it = m_resources.find(toUpper(name));
+	const auto& it = m_resources.find(name);
 	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
@@ -62,7 +62,7 @@ std::shared_ptr<ITexture> ResourceHandler::GetTexture(const std::string &name)
 			TextureLoader::LoadTexture(name, path);
 		}
 	}			
-	return std::dynamic_pointer_cast<ITexture> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<ITexture> (m_resources[name]);
 }
 
 std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::string> names)
@@ -82,7 +82,7 @@ std::shared_ptr<ITexture> ResourceHandler::GetTextureArray(std::vector<std::stri
 std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 {
 	std::string path;
-	const auto& it = m_resources.find(toUpper(name));
+	const auto& it = m_resources.find(name);
 	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
@@ -90,7 +90,7 @@ std::shared_ptr<Material> ResourceHandler::GetMaterial(const std::string &name)
 			JsonLoader::LoadMaterial(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Material> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<Material> (m_resources[name]);
 }
 
 
@@ -125,7 +125,7 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name, const std::string &skl_path)
 {
 	std::string path;
-	const auto& it = m_resources.find(toUpper(name));
+	const auto& it = m_resources.find(name);
 	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
@@ -133,13 +133,13 @@ std::shared_ptr<IModel> ResourceHandler::GetModel(const std::string &name, const
 			BF3DLoader::Load(name, path, skl_path);
 		}
 	}
-	return std::dynamic_pointer_cast<IModel> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<IModel> (m_resources[name]);
 }
 
 std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name)
 {
 	std::string path;
-	const auto& it = m_resources.find(toUpper(name));
+	const auto& it = m_resources.find(name);
 	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
@@ -147,13 +147,13 @@ std::shared_ptr<Hierarchy> ResourceHandler::GetHierarchy(const std::string &name
 			BF3DLoader::Load(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Hierarchy> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<Hierarchy> (m_resources[name]);
 }
 
 std::shared_ptr<Animation> ResourceHandler::GetAnimation(const std::string &name)
 {
 	std::string path;
-	const auto& it = m_resources.find(toUpper(name));
+	const auto& it = m_resources.find(name);
 	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
@@ -161,13 +161,13 @@ std::shared_ptr<Animation> ResourceHandler::GetAnimation(const std::string &name
 			BF3DLoader::Load(name, path);
 		}
 	}
-	return std::dynamic_pointer_cast<Animation> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<Animation> (m_resources[name]);
 }
 
 std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
 {
 	std::string path;
-	const auto& it = m_resources.find(toUpper(name));
+	const auto& it = m_resources.find(name);
 	if (it == m_resources.end())
 	{
 		if (GetFilePath(name, path))
@@ -177,13 +177,13 @@ std::shared_ptr<SoundBuffer> ResourceHandler::GetSound(const std::string& name)
 			AddResource(name, sound);
 		}
 	}
-	return std::dynamic_pointer_cast<SoundBuffer> (m_resources[toUpper(name)]);
+	return std::dynamic_pointer_cast<SoundBuffer> (m_resources[name]);
 }
 
 void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IResource> resource)
 {
 	m_resources_mutex.lock();
-	m_resources.emplace(toUpper(name),resource);
+	m_resources.emplace(name,resource);
 	m_resources_mutex.unlock();
 }
 

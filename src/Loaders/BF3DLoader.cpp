@@ -88,7 +88,7 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 			animation = std::make_shared<Animation>();
 			animation->SetName(readString(file));
 			animation->SetHierarchyName(readString(file));
-			animation->SetFrameRate(read<std::int32_t>(file));
+			animation->SetFramesPerSecond(read<std::int32_t>(file));
 			animation->SetNumFrames(read<std::int32_t>(file));
 			break;
 		case 514:
@@ -131,7 +131,7 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 
 		switch (chunkType)
 		{
-		case 2:
+		case 130:
 			mesh->SetType(read<std::uint8_t>(file));
 			mesh->SetName(readString(file));
 			mesh->SetMaterialID(read<std::int32_t>(file));
@@ -139,19 +139,19 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 			mesh->SetFaceCount(read<std::int32_t>(file));
 			mesh->SetVerticesCount(read<std::int32_t>(file));
 			break;
-		case 3:
+		case 131:
 			mesh->SetVertices(readVector<glm::f32vec3>(file, chunkSize));
 			break;
-		case 4:
+		case 132:
 			mesh->SetNormals(readVector<glm::f32vec3>(file, chunkSize));
 			break;
-		case 5:
+		case 133:
 			mesh->SetFaces(readVector<glm::i32vec3>(file, chunkSize));
 			break;
-		case 6:
+		case 134:
 			mesh->SetUVCoords(readVector<glm::f32vec2>(file, chunkSize));
 			break;
-		case 7:
+		case 135:
 			mesh->SetVertInfs(readVector<glm::i32vec2>(file, chunkSize));
 			break;
 		default:
@@ -181,16 +181,16 @@ void BF3DLoader::LoadModel(const std::string &name, std::ifstream& file, std::ui
 		std::shared_ptr<IMesh> mesh;
 		switch (chunkType)
 		{
-		case 1:
+		case 129:
 			mesh = LoadMesh(file, subChunkEnd);
 			model->AddMesh(mesh->GetName(), mesh);
 			break;
-		case 1024:
+		case 192:
 			model->SetBoundingVolume(read<IModel::Box>(file));
 			break;
-		case 1025:
-			model->SetBoundingVolume(read<IModel::Sphere>(file));
-			break;
+		//case 1025:
+		//	model->SetBoundingVolume(read<IModel::Sphere>(file));
+		//	break;
 		default:
 			std::cout << "unknown chunktype in model chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);
@@ -205,6 +205,13 @@ void BF3DLoader::Load(const std::string& name, const std::string& path, const st
 	std::ifstream file(path, std::ios::binary);
 	long size = getFStreamSize(file);
 
+	if (read<std::uint32_t>(file) != 1144211010) //test if file starts with "BF3D"
+	{
+		std::cout << "WARNING!: the file: " << path << " is not a bf3d file!" << std::endl;
+		file.close();
+		return;
+	}
+
 	while (file.tellg() < size)
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
@@ -214,6 +221,9 @@ void BF3DLoader::Load(const std::string& name, const std::string& path, const st
 		switch (chunkType)
 		{
 		case 0:
+			readString(file);
+			break;
+		case 128:
 			LoadModel(name, file, subChunkEnd, skl_path);
 			break;
 		case 256:
@@ -228,5 +238,6 @@ void BF3DLoader::Load(const std::string& name, const std::string& path, const st
 			file.seekg(subChunkEnd, std::ios::beg);
 		}
 	}
+	file.close();
 }
 
