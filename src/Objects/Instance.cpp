@@ -18,8 +18,11 @@
 
 using namespace anvil;
 
-Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position) : m_entity(entity), m_position(position)
+Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position) : m_entity(entity)
 {
+	m_m = glm::mat4();
+	SetPosition(position);
+	SetScale(0.1f);
 	srand(time(NULL));
 }
 
@@ -94,8 +97,7 @@ std::shared_ptr<Material> Instance::GetMaterial(const std::string& meshName)
 	if (it == m_modelConditionState->materials.end())
 	{
 		std::cout << "WARNING!: No material defined for mesh: " + meshName << std::endl;
-		const auto& i = m_modelConditionState->materials.begin();
-		return std::get<1>(i->second);
+		return nullptr;
 	}
 	return std::get<1>(it->second);
 }

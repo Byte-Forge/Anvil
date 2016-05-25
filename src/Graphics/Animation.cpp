@@ -25,6 +25,7 @@ Animation::~Animation()
 
 glm::mat4 Animation::GetOffsetMat(int pivot, long long *time)
 {
+	//translation * rotation * scale
 	float delta = m_framesPerSecond / 1000.0f; //frames per millisecond
 	int frame = *time * delta;
 
@@ -38,15 +39,19 @@ glm::mat4 Animation::GetOffsetMat(int pivot, long long *time)
 	float qz = GetOffsetValue(pivot, 6, frame);
 
 	glm::quat q = glm::quat(w, qx, qy, qz);
-	//glm::mat4 m = glm::mat4_cast(q);
-	glm::mat4 m = glm::mat4();
+	glm::mat4 r = glm::mat4_cast(q);
+	glm::mat4 t = glm::mat4();
 
-	m[0][3] = x;
-	m[1][3] = y;
-	m[2][3] = z;
+	t[0][3] = x;
+	t[1][3] = y;
+	t[2][3] = z;
 
+	//std::cout << "####" << std::endl;
+	//printMat4x4(t);
+	//printMat4x4(r);
+	//printMat4x4(t * r);
 
-	return m;
+	return glm::mat4();
 }
 
 glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)

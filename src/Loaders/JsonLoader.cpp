@@ -139,7 +139,8 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					}
 					
 					state->modelName = d["entity"]["modelConditionStates"][i]["model"].GetString();
-					state->hierarchyPath = d["entity"]["modelConditionStates"][i]["skl_path"].GetString();
+					if (d["entity"]["modelConditionStates"][i].HasMember("skl_path"))
+						state->hierarchyPath = d["entity"]["modelConditionStates"][i]["skl_path"].GetString();
 
 					if (d["entity"]["modelConditionStates"][i].HasMember("materials") && d["entity"]["modelConditionStates"][i]["materials"].IsArray())
 					{

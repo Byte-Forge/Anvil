@@ -81,7 +81,7 @@ void Camera::Rotate(float angle)
 
 void Camera::Rotate(Direction dir)
 {
-	float angle = 5.0f;
+	float angle = 1.0f;
 	switch (dir)
 	{
 	case (LEFT) :

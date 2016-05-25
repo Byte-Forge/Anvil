@@ -139,7 +139,7 @@ namespace anvil
 		inline glm::vec3 &GetDirection() { return m_direction; }
 
     private:
-		float m_speed = 200.0f; //Movement per second
+		float m_speed = 50.0f; //Movement per second
 		glm::vec3 m_position;
         glm::vec3 m_currentPos; 
 		glm::vec3 m_direction;

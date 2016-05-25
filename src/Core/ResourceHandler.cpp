@@ -21,6 +21,7 @@
 #include "../Graphics/IParticleSystem.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Audio/SoundBuffer.hpp"
+
 using namespace anvil;
 
 std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)

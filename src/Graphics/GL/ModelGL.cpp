@@ -33,16 +33,16 @@ GL::ModelGL::~ModelGL()
 
 void GL::ModelGL::Render(IShader& shader)
 {
-	//glm::mat4 mod(1.0);
 	for (std::shared_ptr<Instance> i : m_instances)
 	{
 		i->Update();
-
+		bool useSkeleton = false;
 		glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
-		glUniform4fv(shader.GetUniform("position"), 1, glm::value_ptr(glm::vec4(i->GetPosition(), 1.0)));
+		glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(i->GetMatrix()));
 
 		if (m_hierarchy != nullptr)
 		{
+			useSkeleton = true;
 			if (i->IsAnimated())
 				m_hierarchy->Update(i->GetAnimationState()->animation, i->GetAnimationTime());
 			else
@@ -51,16 +51,19 @@ void GL::ModelGL::Render(IShader& shader)
 			glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
 			//glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));
 		}
+		glUniform1i(shader.GetUniform("useSkeleton"), useSkeleton);
 
 		for (const auto& it : m_meshes)
 		{
-			glActiveTexture(GL_TEXTURE0); //albedo textures
-			i->GetMaterial(it.second->GetName())->GetAlbedoTexture()->Bind();
-			//glUniform1i(shader.GetUniform("albedoTex"), 0);
+			auto& m = i->GetMaterial(it.second->GetName());
+			if (m != nullptr)
+			{
+				glActiveTexture(GL_TEXTURE0); //albedo textures
+				m->GetAlbedoTexture()->Bind();
 
-			//glActiveTexture(GL_TEXTURE1); //normal textures
-			//i->GetMaterial(it.second->GetName())->GetNormalTexture()->Bind();
-
+				//glActiveTexture(GL_TEXTURE1); //normal textures
+				//i->GetMaterial(it.second->GetName())->GetNormalTexture()->Bind();
+			}
 			it.second->Render(shader);
 		}
 	}

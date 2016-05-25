@@ -7,6 +7,7 @@
 
 #pragma once
 #include "glm/glm.hpp"
+#include <glm/gtx/transform.hpp>
 #include "Entity.hpp"
 #include <memory>
 
@@ -87,8 +88,10 @@ namespace anvil
 		void SetAnimationState(std::shared_ptr<Entity::AnimationState> state);
 
 		inline void SetHealth(int health) { m_health = health; }
-		inline void SetPosition(glm::vec3 pos) { m_position = pos; }
-		inline glm::vec3 GetPosition() { return m_position; }
+		inline void SetPosition(glm::vec3 pos) { m_m = glm::translate(pos) * m_m; }
+		inline void SetScale(float scale) { m_m = m_m * glm::scale(glm::vec3(scale, scale, scale)); }
+		inline void SetScale(glm::vec3 scale) { m_m = m_m * glm::scale(scale); }
+		inline glm::mat4 GetMatrix() { return m_m; }
 		inline std::shared_ptr<Entity::ModelConditionState> GetModelConditionState() { return m_modelConditionState; }
 		inline std::shared_ptr<Entity::AnimationState> GetAnimationState() { return m_animationState; }
 		inline bool IsAnimated() { return m_entity->GetKindOfs().ANIMATED; }
@@ -100,7 +103,7 @@ namespace anvil
 		long long m_animationTime = 0;
 		std::shared_ptr<Entity> m_entity;
 		int m_health;
-		glm::vec3 m_position;
+		glm::mat4 m_m;
 		std::shared_ptr<Entity::ModelConditionState> m_modelConditionState;
 		std::shared_ptr<Entity::AnimationState> m_animationState;
 	};

@@ -95,26 +95,31 @@ void ITerrain::Generate()
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
 
+	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/tree01.json");
 	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/misty_mountains/cavetroll.json");
 	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/gondor/soldier.json");
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 
-	auto vecBarracks = glm::vec3(0, 10, -50);
-	barracks->AddInstance(vecBarracks);
-	auto vecTroll = glm::vec3(75, 10, -50);
-	troll->AddInstance(vecTroll);
-	auto vecOnager = glm::vec3(125, 10, -50);
-	onager->AddInstance(vecOnager);
-	for (int i = 0; i < 800; i += 20)
-		for (int j = 0; j < 800; j += 20)
-		{
-			auto vecSoldier = glm::vec3(i, 10, j);
-			soldier->AddInstance(vecSoldier);	
-		}
-
 	//wait until heightmap creation is done
 	hand.get();
+
+	auto vecTree = glm::vec3(-15, 0, -15);
+	tree->AddInstance(vecTree);
+	
+	auto vecBarracks = glm::vec3(0, 0, -15);
+	barracks->AddInstance(vecBarracks);
+	auto vecTroll = glm::vec3(20, 0, -15);
+	troll->AddInstance(vecTroll);
+	auto vecOnager = glm::vec3(40, 0, -15);
+	onager->AddInstance(vecOnager);
+
+	for (int i = 0; i < 100; i += 4)
+		for (int j = 0; j < 100; j += 4)
+		{
+			auto vecSoldier = glm::vec3(i, m_heightmap[i][j], j);
+			soldier->AddInstance(vecSoldier);	
+		}
 
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
