@@ -9,13 +9,15 @@
 #include <iostream>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/transform.hpp>
 #include "../Util.hpp"
+#include <ctime>
 
 using namespace anvil;
 
 Animation::Animation()
 {
-
+	srand(time(NULL));
 }
 
 Animation::~Animation()
@@ -23,35 +25,47 @@ Animation::~Animation()
 
 }
 
-glm::mat4 Animation::GetOffsetMat(int pivot, long long *time)
+void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, int pivotCount, long long *time)
 {
-	//translation * rotation * scale
 	float delta = m_framesPerSecond / 1000.0f; //frames per millisecond
 	int frame = *time * delta;
 
-	float x = GetOffsetValue(pivot, 0, frame);
-	float y = GetOffsetValue(pivot, 1, frame);
-	float z = GetOffsetValue(pivot, 2, frame);
+	for (int i = 0; i < pivotCount; i++)
+	{
+		glm::vec3 of = GetTranslationOffset(i, frame);
 
+		glm::quat qt = glm::toQuat(rest_mats[i]);
+		glm::quat q = GetRotationOffset(i, frame);
+		qt += q;
+
+		mats[i] = glm::toMat4(qt);
+
+		mats[i][0][3] = rest_mats[i][0][3] + of.x;
+		mats[i][1][3] = rest_mats[i][1][3] + of.y;
+		mats[i][2][3] = rest_mats[i][2][3] + of.z;
+	}
+}
+
+glm::vec3 Animation::GetTranslationOffset(int pivot, int frame)
+{
+	float x = GetOffsetValue(pivot, 0, frame);
+	float y = GetOffsetValue(pivot, 2, frame);
+	float z = -GetOffsetValue(pivot, 1, frame);
+
+	return glm::vec3(x, y, z);
+}
+
+
+glm::quat Animation::GetRotationOffset(int pivot, int frame)
+{
 	float w = GetOffsetValue(pivot, 3, frame);
 	float qx = GetOffsetValue(pivot, 4, frame);
 	float qy = GetOffsetValue(pivot, 5, frame);
 	float qz = GetOffsetValue(pivot, 6, frame);
 
-	glm::quat q = glm::quat(w, qx, qy, qz);
-	glm::mat4 r = glm::mat4_cast(q);
-	glm::mat4 t = glm::mat4();
+	glm::quat q = glm::quat(w, qx, qz, -qy);
 
-	t[0][3] = x;
-	t[1][3] = y;
-	t[2][3] = z;
-
-	//std::cout << "####" << std::endl;
-	//printMat4x4(t);
-	//printMat4x4(r);
-	//printMat4x4(t * r);
-
-	return glm::mat4();
+	return q;
 }
 
 glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
@@ -65,7 +79,6 @@ glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
 			const auto& it3 = it2->second.find(frame);
 			if (it3 != it2->second.end())
 			{
-				//the searched frame is already a keyframe -> no interpolation needed?? (at constant at least?)
 				return it3->second;
 			}
 			//else we have to interpolate between two keyframes
@@ -96,4 +109,19 @@ glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
 		}
 	}
 	return 0.0f;
+}
+
+void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames)
+{
+	const auto& it = m_data.find(pivot);
+	if (it == m_data.end())
+	{
+		std::unordered_map<int, std::map<int, glm::f32>> channels;
+		channels.insert({ type, frames});
+		m_data.insert({pivot, channels});
+	}
+	else
+	{
+		m_data[pivot].insert({type, frames});
+	}
 }

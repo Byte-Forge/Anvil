@@ -80,7 +80,6 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 		std::int32_t type;
 
 		std::map<int, glm::f32> frames;
-		std::unordered_map<int, std::map<int, glm::f32>> channels;
 
 		switch (chunkType)
 		{
@@ -96,16 +95,13 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 			extrapolation = read<std::int32_t>(file);
 			type = read<std::int32_t>(file);
 			frames.clear();
-			channels.clear();
-
 			while (file.tellg() < subChunkEnd)
 			{
 				std::int32_t frame = read<std::int32_t>(file);
 				glm::f32 value = read<glm::f32>(file);
 				frames.insert({ frame, value });
 			}
-			channels.insert({ type, frames });
-			animation->AddChannel(pivot, channels);
+			animation->AddChannel(pivot, type, frames);
 			break;
 		default:
 			std::cout << "unknown chunktype in animation chunk: " << chunkType << std::endl;

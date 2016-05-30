@@ -27,16 +27,21 @@ Hierarchy::~Hierarchy()
 
 void Hierarchy::Update(std::shared_ptr<Animation> ani, long long *time)
 {
+	if (ani != nullptr)
+	{
+		ani->ApplyOffsets(m_frame_pivots, m_rest_pivots, m_pivotCount, time);
+	}
 	for (int i = 0; i < m_pivotCount; i++)
 	{
 		std::int32_t parentID = m_parentIDs[i];
-		m_frame_pivots[i] = m_pivots[i];
+		m_pivots[i] = m_frame_pivots[i];
 
+		//do the parenting
 		while (parentID >= 0)
 		{
-			m_frame_pivots[i] = m_frame_pivots[i] * m_pivots[parentID];
+			m_pivots[i] = m_pivots[i] * m_frame_pivots[parentID];
 			parentID = m_parentIDs[parentID];
 		}
-		m_frame_pivots[i] = glm::transpose(m_frame_pivots[i]); //can we do this on file export already?
+		m_pivots[i] = glm::transpose(m_pivots[i]); //can we do this on file export already?
 	}
 }

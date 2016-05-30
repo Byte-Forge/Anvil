@@ -12,6 +12,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <sstream>
 #include <iomanip>
 
@@ -188,11 +190,24 @@ namespace anvil
 	*
 	* @brief	prints the given vector
 	*
-	* @param	vec		the vetor to be printed
+	* @param	vec		the vector to be printed
 	*/
 	inline void printVec(glm::vec4 vec)
 	{
 		std::cout << std::fixed << std::setprecision(2) << vec[0] << "\t" << vec[1] << "\t" << vec[2] << "\t" << vec[3] << std::endl;
+		std::cout << std::endl;
+	}
+
+	/**
+	* @fn	inline void printQuat(glm::quat q)
+	*
+	* @brief	prints the given quaternion
+	*
+	* @param	q	the quaternion to be printed
+	*/
+	inline void printQuat(glm::quat q)
+	{
+		std::cout << std::fixed << std::setprecision(2) << q.w << "\t" << q.x << "\t" << q.y << "\t" << q.z << std::endl;
 		std::cout << std::endl;
 	}
 

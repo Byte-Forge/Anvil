@@ -38,20 +38,32 @@ namespace anvil
 		~Animation();
 
 		/**
-		* @fn	void Animation::GetOffsetMat(int pivotID, float time);
+		* @fn	void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, std::vector<glm::mat4> &rest_mats, int pivotCount, float time);
 		*
-		* @brief	Returns the offset mat for this animation for a specific pivot at the given time
+		* @brief	Returns the offset mats for this animation for a specific pivot at the given time
 		*
-		* @param	pivotID		ID of the pivot we want the mat for
+		* @param	mats		the matrices the offsets should be applyed to
+		* @param	rest_mats	the rest matrices 
+		* @param	pivotCount	count of the pivots		//probably use .size()
 		* @param	time		the current time of the animation
 		*/
-		glm::mat4 GetOffsetMat(int pivotID, long long *time);
+		void ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, int pivotCount, long long *time);
+
+		/**
+		* @fn	void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames);
+		*
+		* @brief	adds an animation channel to this animation
+		*
+		* @param	pivot		the pivot this channel is for
+		* @param	type		the type of this channel
+		* @param	frames		the values for the specific frames
+		*/
+		void AddChannel(int pivot, int type, std::map<int, glm::f32> frames);
 	
 		inline void SetName(const std::string &name) { m_name = name; }
 		inline void SetHierarchyName(const std::string &name) { m_hierarchyName = name; }
 		inline void SetFramesPerSecond(int framesPerSecond) { m_framesPerSecond = framesPerSecond; }
 		inline void SetNumFrames(int numFrames) { m_numFrames = numFrames; }
-		inline void AddChannel(int pivot, std::unordered_map<int, std::map<int, glm::f32>> channel) { m_data.insert({ pivot, channel }); }
 		inline long long GetTotalTime() { return (m_numFrames / m_framesPerSecond) * 1000.0f; }
 	
 	private:
@@ -61,9 +73,11 @@ namespace anvil
 		int m_framesPerSecond; 
 
 		//pivot -> type -> frame 
-		std::unordered_map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
+		std::map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
 
 	private:
+		glm::vec3 GetTranslationOffset(int pivotID, int frame);
+		glm::quat GetRotationOffset(int pivotID, int frame);
 		glm::f32 GetOffsetValue(int pivotID, int type, int frame);
 	};
 }

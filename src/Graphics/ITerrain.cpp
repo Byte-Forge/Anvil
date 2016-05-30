@@ -104,7 +104,13 @@ void ITerrain::Generate()
 	//wait until heightmap creation is done
 	hand.get();
 
-	auto vecTree = glm::vec3(-15, 0, -15);
+	auto vecTree = glm::vec3(0, 10, 0);
+	tree->AddInstance(vecTree);
+	vecTree = glm::vec3(m_width, 10, 0);
+	tree->AddInstance(vecTree);
+	vecTree = glm::vec3(0, 10, m_height);
+	tree->AddInstance(vecTree);
+	vecTree = glm::vec3(m_width, 10, m_height);
 	tree->AddInstance(vecTree);
 	
 	auto vecBarracks = glm::vec3(0, 0, -15);
