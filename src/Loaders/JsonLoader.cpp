@@ -87,40 +87,43 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 
 			if (d["entity"].HasMember("kindOfs"))
 			{
-				if (d["entity"]["kindOfs"].HasMember("MISC"))
+				const Value& arr = d["entity"]["kindOfs"];
+				for (Value::ConstValueIterator it = arr.Begin(); it != arr.End(); ++it)
 				{
-					kO.MISC = true;
-				}
-				if (d["entity"]["kindOfs"].HasMember("SHRUBBERY"))
-				{
-					if (kO.MISC == true)
-						std::cout << "WARNING!: Entity cannot be of type MISC AND SHRUBBERY!!" << std::endl;
-					else
-						kO.SHRUBBERY = true;
-				}
-				if (d["entity"]["kindOfs"].HasMember("UNIT"))
-				{
-					if (kO.MISC == true)
-						std::cout << "WARNING!: Entity cannot be of type MISC AND UNIT!!" << std::endl;
-					if (kO.SHRUBBERY == true)
-						std::cout << "WARNING!: Entity cannot be of type SHRUBBERY AND UNIT!!" << std::endl;
-					else
-						kO.UNIT = true;
-				}
-				if (d["entity"]["kindOfs"].HasMember("BUILDING"))
-				{
-					if (kO.MISC == true)
-						std::cout << "WARNING!: Entity cannot be of type MISC AND BUILDING!!" << std::endl;
-					if (kO.SHRUBBERY == true)
-						std::cout << "WARNING!: Entity cannot be of type SHRUBBERY AND BUILDING!!" << std::endl;
-					if (kO.UNIT == true)
-						std::cout << "WARNING!: Entity cannot be of type UNIT AND BUILDING!!" << std::endl;
-					else
-						kO.BUILDING = true;
-				}
-				if (d["entity"]["kindOfs"].HasMember("ANIMATED"))
-				{
-					kO.ANIMATED = true;
+					std::string koStr = it->GetString();
+					if(koStr =="MISC")
+						kO.MISC = true;
+					else if (koStr == "SHRUBBERY")
+					{
+						if (kO.MISC == true)
+							std::cout << "WARNING!: Entity cannot be of type MISC AND SHRUBBERY!!" << std::endl;
+						else
+							kO.SHRUBBERY = true;
+					}
+					else if (koStr == "UNIT")
+					{
+						if (kO.MISC == true)
+							std::cout << "WARNING!: Entity cannot be of type MISC AND UNIT!!" << std::endl;
+						if (kO.SHRUBBERY == true)
+							std::cout << "WARNING!: Entity cannot be of type SHRUBBERY AND UNIT!!" << std::endl;
+						else
+							kO.UNIT = true;
+					}
+					else if (koStr == "BUILDING")
+					{
+						if (kO.MISC == true)
+							std::cout << "WARNING!: Entity cannot be of type MISC AND BUILDING!!" << std::endl;
+						if (kO.SHRUBBERY == true)
+							std::cout << "WARNING!: Entity cannot be of type SHRUBBERY AND BUILDING!!" << std::endl;
+						if (kO.UNIT == true)
+							std::cout << "WARNING!: Entity cannot be of type UNIT AND BUILDING!!" << std::endl;
+						else
+							kO.BUILDING = true;
+					}
+					else if (koStr == "ANIMATED")
+					{
+						kO.ANIMATED = true;
+					}
 				}
 			}
 			ent->SetKindOfs(kO);
