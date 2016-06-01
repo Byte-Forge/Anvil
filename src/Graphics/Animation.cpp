@@ -10,14 +10,14 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
+
 #include "../Util.hpp"
-#include <ctime>
 
 using namespace anvil;
 
 Animation::Animation()
 {
-	srand(time(NULL));
+
 }
 
 Animation::~Animation()
@@ -37,24 +37,24 @@ void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm
 		glm::quat qt = glm::toQuat(rest_mats[i]);
 		glm::quat q = GetRotationOffset(i, frame);
 		qt += q;
+		glm::normalize(qt);
 
 		mats[i] = glm::toMat4(qt);
 
-		mats[i][0][3] = rest_mats[i][0][3] + of.x;
-		mats[i][1][3] = rest_mats[i][1][3] + of.y;
-		mats[i][2][3] = rest_mats[i][2][3] + of.z;
+		mats[i][0][3] = of.x;
+		mats[i][1][3] = of.y;
+		mats[i][2][3] = of.z;
 	}
 }
 
 glm::vec3 Animation::GetTranslationOffset(int pivot, int frame)
 {
 	float x = GetOffsetValue(pivot, 0, frame);
-	float y = GetOffsetValue(pivot, 2, frame);
-	float z = -GetOffsetValue(pivot, 1, frame);
+	float y = GetOffsetValue(pivot, 1, frame);
+	float z = GetOffsetValue(pivot, 2, frame);
 
-	return glm::vec3(x, y, z);
+	return glm::vec3(x, z, -y);
 }
-
 
 glm::quat Animation::GetRotationOffset(int pivot, int frame)
 {
@@ -84,9 +84,9 @@ glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
 			//else we have to interpolate between two keyframes
 			else
 			{
-				int beforeFrame;
+				int beforeFrame = 0;
 				int afterFrame;
-				glm::f32 before;
+				glm::f32 before = it2->second.begin()->second;
 				glm::f32 after;
 				for (std::map<int, glm::f32>::iterator i = it2->second.begin(); i != it2->second.end(); ++i)
 				{

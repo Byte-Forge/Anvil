@@ -69,6 +69,7 @@ void BF3DLoader::LoadHierarchy(const std::string &name, std::ifstream& file, std
 void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std::uint32_t chunkEnd)
 {
 	std::shared_ptr<Animation> animation;
+
 	while (file.tellg() < chunkEnd)
 	{
 		std::uint32_t chunkType = read<std::uint32_t>(file);
@@ -87,7 +88,7 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 			animation = std::make_shared<Animation>();
 			animation->SetName(readString(file));
 			animation->SetHierarchyName(readString(file));
-			animation->SetFramesPerSecond(read<std::int32_t>(file));
+			animation->SetFramesPerSecond(read<glm::f32>(file));
 			animation->SetNumFrames(read<std::int32_t>(file));
 			break;
 		case 514:
@@ -95,6 +96,7 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 			extrapolation = read<std::int32_t>(file);
 			type = read<std::int32_t>(file);
 			frames.clear();
+
 			while (file.tellg() < subChunkEnd)
 			{
 				std::int32_t frame = read<std::int32_t>(file);

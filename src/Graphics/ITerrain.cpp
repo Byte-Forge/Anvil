@@ -127,6 +127,7 @@ void ITerrain::Generate()
 			soldier->AddInstance(vecSoldier);	
 		}
 
+
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;

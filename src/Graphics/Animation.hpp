@@ -70,7 +70,7 @@ namespace anvil
 		std::string m_name;
 		std::string m_hierarchyName;
 		int m_numFrames;
-		int m_framesPerSecond; 
+		float m_framesPerSecond; 
 
 		//pivot -> type -> frame 
 		std::map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;

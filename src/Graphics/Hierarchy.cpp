@@ -11,8 +11,6 @@
 #include <iostream>
 #include "Animation.hpp"
 
-#include "../Util.hpp"
-
 using namespace anvil;
 
 Hierarchy::Hierarchy()
@@ -28,9 +26,8 @@ Hierarchy::~Hierarchy()
 void Hierarchy::Update(std::shared_ptr<Animation> ani, long long *time)
 {
 	if (ani != nullptr)
-	{
 		ani->ApplyOffsets(m_frame_pivots, m_rest_pivots, m_pivotCount, time);
-	}
+
 	for (int i = 0; i < m_pivotCount; i++)
 	{
 		std::int32_t parentID = m_parentIDs[i];
