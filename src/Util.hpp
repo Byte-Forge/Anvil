@@ -199,6 +199,19 @@ namespace anvil
 	}
 
 	/**
+	* @fn	inline void printVec4(glm::vec4 v)
+	*
+	* @brief	prints the given vec4
+	*
+	* @param	v	the vec4 to be printed
+	*/
+	inline void printVec4(glm::vec4 v)
+	{
+		std::cout << std::fixed << std::setprecision(2) << v.x << "\t" << v.y << "\t" << v.z << "\t" << v.w << std::endl;
+		std::cout << std::endl;
+	}
+
+	/**
 	* @fn	inline void printQuat(glm::quat q)
 	*
 	* @brief	prints the given quaternion

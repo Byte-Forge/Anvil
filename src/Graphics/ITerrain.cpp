@@ -114,6 +114,7 @@ void ITerrain::Generate()
 	vecTree = glm::vec3(m_width, 10, m_height);
 	tree->AddInstance(vecTree);
 
+	/*
 	auto vecCastle = glm::vec3(100, 5, 100);
 	castle_floor->AddInstance(vecCastle, glm::vec3(0, 60, 0));
 	vecCastle = glm::vec3(100, 5, 300);
@@ -127,9 +128,11 @@ void ITerrain::Generate()
 	castle_floor->AddInstance(vecCastle);
 	vecCastle = glm::vec3(500, 5, 500);
 	castle_floor->AddInstance(vecCastle);
+	*/
 	
 	auto vecBarracks = glm::vec3(0, 0, -15);
 	barracks->AddInstance(vecBarracks);
+
 	auto vecTroll = glm::vec3(20, 0, -15);
 	troll->AddInstance(vecTroll);
 	auto vecOnager = glm::vec3(40, 0, -15);
@@ -141,6 +144,7 @@ void ITerrain::Generate()
 			auto vecSoldier = glm::vec3(i, m_heightmap[i][j], j);
 			soldier->AddInstance(vecSoldier);	
 		}
+	
 
 
 	auto end = std::chrono::system_clock::now();

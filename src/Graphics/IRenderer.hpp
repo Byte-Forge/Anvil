@@ -110,9 +110,10 @@ namespace anvil
 		inline std::array<std::string, 3> GetShaderModes() { return m_shaderModes; }
 		inline int GetTessfactor() { return Options::GetTessfactor(); } 
 		inline int GetMaxTesselation() { return m_maxTesselation; }
+		inline int GetRenderedPolygons() { return m_rendered_polygons; }
 
 	protected:
-		
+		int m_rendered_polygons = 0;
 		int m_maxTesselation = 64;
 		std::array<std::string, 3> m_shaderModes = {{ "DEFAULT", "WIREFRAME", "NORMALS" }};
 		Vendor m_vendor;

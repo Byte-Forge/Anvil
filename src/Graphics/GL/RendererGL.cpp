@@ -16,6 +16,7 @@
 #include "../../Util/stb_image.h"
 #include "../../Graphics.hpp"
 #include <iostream>
+#include <future>
 #include <glm/gtc/type_ptr.hpp>
 #include <Rocket/Core.h>
 
@@ -205,10 +206,12 @@ void RendererGL::Clear()
 
 void RendererGL::Render(const glm::mat4& ortho)
 {
+	m_rendered_polygons = 0;
+
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	m_skyboxShader->Use();
 	m_skybox->Update();
-	m_skybox->Render(*m_skyboxShader);
+	m_rendered_polygons += m_skybox->Render(*m_skyboxShader);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -217,17 +220,17 @@ void RendererGL::Render(const glm::mat4& ortho)
 	if (m_wireframeMode)
 	{
 		m_terrainShaders[1]->Use();		
-		m_terrain->Render(*m_terrainShaders[1]);
+		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[1]);
 	}
 	else
 	{
 		m_terrainShaders[0]->Use();
-		m_terrain->Render(*m_terrainShaders[0]);
+		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[0]);
 	}
 	if (m_normalsMode)
 	{
 		m_terrainShaders[2]->Use();
-		m_terrain->Render(*m_terrainShaders[2]);
+		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[2]);
 	}
 
 	for (auto& entity : m_entities)
@@ -240,7 +243,7 @@ void RendererGL::Render(const glm::mat4& ortho)
 	glDisable(GL_CULL_FACE); //we should not need this
 
     for (auto& renderable : m_renderables)
-       renderable->Render(*m_modelShaders[0]);
+		m_rendered_polygons += renderable->Render(*m_modelShaders[0]);
 
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);

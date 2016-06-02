@@ -71,7 +71,7 @@ namespace anvil
 		 * @param	center 	The center.
 		 * @param	radius 	The radius.
 		 *
-		 * @return	An int.
+		 * @return	0 if not in frustum, 1 if intersects, 2 if inside frustum
 		 */
 		static int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, const float radius);
 

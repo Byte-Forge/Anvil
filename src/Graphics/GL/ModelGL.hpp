@@ -41,8 +41,10 @@ namespace anvil
 			 * @brief	Renders the given shader.
 			 *
 			 * @param [in,out]	shader	The shader.
+			 *
+			 * @return  the number of drawn polygons
 			 */
-			void Render(IShader& shader);
+			int Render(IShader& shader);
 
 			/**
 			 * @fn	void ModelGL::Update();

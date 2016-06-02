@@ -8,6 +8,9 @@
 #include "Instance.hpp"
 #include "../Exception.hpp"
 #include "../Core.hpp"
+#include "../Math/Collision.hpp"
+#include "../Graphics/Camera.hpp"
+#include "../Graphics/Frustum.hpp"
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Graphics/Animation.hpp"
@@ -15,6 +18,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
+
+#include "../Util.hpp"
 
 using namespace anvil;
 
@@ -56,6 +61,12 @@ void Instance::Unlink()
 
 bool Instance::Update()
 {
+	//test if the instance is inside the frustum (visible)
+	if (Collision::SphereInFrustum(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(), m_m * m_modelConditionState->model->GetSphereCenter(), m_modelConditionState->model->GetSphereRadius()) > 0)
+		m_visible = true;
+	else
+		m_visible = false;
+
 	auto current = std::chrono::high_resolution_clock::now();
 	if (m_firstUpdate)
 	{
@@ -75,12 +86,6 @@ bool Instance::Update()
 				SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
 		}
 	}
-
-	int x = rand() % 2;
-	int y = rand() % 2;
-	int z = rand() % 2;
-	//Move(glm::vec3(x * 0.2f, 0.0f, z * 0.1f));
-	//m_health -= r;
 	if (m_health <= 0)
 		return false;
 	return true;

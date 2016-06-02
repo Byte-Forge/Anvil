@@ -38,7 +38,7 @@ namespace anvil
 		 */
 		struct BoundingVolume
 		{
-			glm::f32vec3 center;
+			glm::vec4 center;
 		};
 
 		/**
@@ -69,13 +69,15 @@ namespace anvil
 		virtual void Update() = 0;
 
 		/**
-		 * @fn	virtual void IModel::Render(IShader& shader) = 0;
+		 * @fn	virtual int IModel::Render(IShader& shader) = 0;
 		 *
 		 * @brief	Renders the given shader.
 		 *
 		 * @param [in,out]	shader	The shader.
+		 *
+		 * @return  returns the number of drawn polygons
 		 */
-		virtual void Render(IShader& shader) = 0;
+		virtual int Render(IShader& shader) = 0;
 
 		inline void SetHierarchy(std::shared_ptr<Hierarchy> hierarchy) { m_hierarchy = hierarchy; }
 		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }
@@ -84,7 +86,9 @@ namespace anvil
 		inline void SetBoundingSphere(BoundingSphere sphere) { m_sphere = sphere; }
 		inline void AddInstance(std::shared_ptr<Instance> i) { m_instances.insert(i); }
 		inline void RemoveInstance(std::shared_ptr<Instance> i) { m_instances.erase(i); }
-
+		inline float GetSphereRadius() { return m_sphere.radius; }
+		inline glm::vec4 GetSphereCenter() { return m_sphere.center; }
+ 
 	protected:
 		std::shared_ptr<Hierarchy> m_hierarchy; //nullpointer if no hierarchy is needed
 		std::map<std::string, std::shared_ptr<IMesh>> m_meshes;

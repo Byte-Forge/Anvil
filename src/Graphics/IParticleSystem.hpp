@@ -71,8 +71,10 @@ namespace anvil
 		 * @brief	Renders the given shader.
 		 *
 		 * @param [in,out]	shader	The shader.
+		 *
+		 * @return  returns the number of drawn polygons
 		 */
-		virtual void Render(IShader& shader) = 0;
+		virtual int Render(IShader& shader) = 0;
 
 		/**
 		 * @fn	virtual void IParticleSystem::Update();

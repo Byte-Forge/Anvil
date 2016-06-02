@@ -44,8 +44,10 @@ namespace anvil
 			 * @brief	Renders the given shader.
 			 *
 			 * @param [in,out]	shader	The shader.
+			 *
+			 *
 			 */
-			void Render(IShader& shader);
+			int Render(IShader& shader);
 
 			/**
 			* @fn	virtual void IMesh::Init() = 0;

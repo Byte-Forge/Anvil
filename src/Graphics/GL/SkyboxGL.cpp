@@ -79,7 +79,7 @@ void GL::Skybox::Update()
 
 }
 
-void GL::Skybox::Render(IShader& shader)
+int GL::Skybox::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
 	glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
@@ -92,4 +92,6 @@ void GL::Skybox::Render(IShader& shader)
 
 	m_fbo->Bind();
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_faces.size()), GL_UNSIGNED_INT,nullptr);
+
+	return m_faces.size()/3;
 }

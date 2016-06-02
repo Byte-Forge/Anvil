@@ -31,42 +31,47 @@ GL::ModelGL::~ModelGL()
 
 }
 
-void GL::ModelGL::Render(IShader& shader)
+int GL::ModelGL::Render(IShader& shader)
 {
+	int polygons = 0;
 	for (std::shared_ptr<Instance> i : m_instances)
 	{
-		bool useSkeleton = false;
-		glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
-		glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(i->GetMatrix()));
-
-		if (m_hierarchy != nullptr)
+		if (i->IsVisible())
 		{
-			useSkeleton = true;
-			if (i->IsAnimated())
-				m_hierarchy->Update(i->GetAnimationState()->animation, i->GetAnimationTime());
-			else
-				m_hierarchy->Update();
-			glUniform1iv(shader.GetUniform("parentIDs"), m_hierarchy->GetParentIDs().size(), reinterpret_cast<GLint*>(m_hierarchy->GetParentIDs().data()));
-			glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
-			//glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));
-		}
-		glUniform1i(shader.GetUniform("useSkeleton"), useSkeleton);
+			bool useSkeleton = false;
+			glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
+			glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(i->GetMatrix()));
 
-		for (const auto& it : m_meshes)
-		{
-			auto& m = i->GetMaterial(it.second->GetName());
-			if (m != nullptr)
+			if (m_hierarchy != nullptr)
 			{
-				glActiveTexture(GL_TEXTURE0); //albedo textures
-				m->GetAlbedoTexture()->Bind();
+				useSkeleton = true;
+				if (i->IsAnimated())
+					m_hierarchy->Update(i->GetAnimationState()->animation, i->GetAnimationTime());
+				else
+					m_hierarchy->Update();
+				glUniform1iv(shader.GetUniform("parentIDs"), m_hierarchy->GetParentIDs().size(), reinterpret_cast<GLint*>(m_hierarchy->GetParentIDs().data()));
+				glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
+				//glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));
+			}
+			glUniform1i(shader.GetUniform("useSkeleton"), useSkeleton);
 
-				//glActiveTexture(GL_TEXTURE1); //normal textures
-				//i->GetMaterial(it.second->GetName())->GetNormalTexture()->Bind();
+			for (const auto& it : m_meshes)
+			{
+				auto& m = i->GetMaterial(it.second->GetName());
+				if (m != nullptr)
+				{
+					//glActiveTexture(GL_TEXTURE0); //albedo textures
+					m->GetAlbedoTexture()->Bind();
 
-				it.second->Render(shader);
+					//glActiveTexture(GL_TEXTURE1); //normal textures
+					//i->GetMaterial(it.second->GetName())->GetNormalTexture()->Bind();
+
+					polygons += it.second->Render(shader);
+				}
 			}
 		}
 	}
+	return polygons;
 }
 
 void GL::ModelGL::Update()

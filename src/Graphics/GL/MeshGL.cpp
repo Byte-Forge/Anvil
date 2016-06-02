@@ -47,13 +47,15 @@ GL::MeshGL::~MeshGL()
 	}
 }
 
-void GL::MeshGL::Render(IShader& shader)
+int GL::MeshGL::Render(IShader& shader)
 {
 	glUniform1i(shader.GetUniform("meshType"), m_type);
 	glUniform1i(shader.GetUniform("parentPivot"), m_parentPivot);
 	glBindVertexArray(m_vao);
 	m_fbo->Bind();
 	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
+
+	return m_faces.size();
 }
 
 void GL::MeshGL::Init()

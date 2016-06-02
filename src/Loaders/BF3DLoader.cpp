@@ -177,6 +177,8 @@ void BF3DLoader::LoadModel(const std::string &name, std::ifstream& file, std::ui
 		std::int32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		std::shared_ptr<IMesh> mesh;
+		IModel::BoundingBox b = IModel::BoundingBox();
+		IModel::BoundingSphere s = IModel::BoundingSphere();
 		switch (chunkType)
 		{
 		case 129:
@@ -184,11 +186,14 @@ void BF3DLoader::LoadModel(const std::string &name, std::ifstream& file, std::ui
 			model->AddMesh(mesh->GetName(), mesh);
 			break;
 		case 192:
-			model->SetBoundingBox(read<IModel::BoundingBox>(file));
+			b.center = glm::vec4(read<glm::f32vec3>(file), 1.0);
+			b.extend = read<glm::f32vec3>(file);
+			model->SetBoundingBox(b);
 			break;
 		case 193:
-			std::cout << "load sphere" << std::endl;
-			model->SetBoundingSphere(read<IModel::BoundingSphere>(file));
+			s.center = glm::vec4(read<glm::f32vec3>(file), 1.0);
+			s.radius = read<glm::f32>(file);
+			model->SetBoundingSphere(s);
 			break;
 		default:
 			std::cout << "unknown chunktype in model chunk: " << chunkType << std::endl;
