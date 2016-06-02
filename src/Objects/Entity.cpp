@@ -66,7 +66,7 @@ std::shared_ptr<Entity::ModelConditionState> Entity::GetModelConditionState(cons
 		return it->second;
 	else
 	{
-		//std::cout << "WARNING!: Entity object has no ModelConditionState " + name << std::endl;
+		std::cout << "WARNING!: Entity object has no ModelConditionState " + name << std::endl;
 		return nullptr;
 	}
 }

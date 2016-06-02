@@ -73,7 +73,6 @@ bool Instance::Update()
 			m_animationTime -= totalAnimationTime;
 			if (m_animationState->mode != Entity::ANIMATION_MODE::LOOP)
 				SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
-				//std::cout << "need to change ani state" << std::endl;
 		}
 	}
 

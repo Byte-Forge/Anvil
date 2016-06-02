@@ -100,10 +100,13 @@ namespace anvil
 		inline glm::mat4 GetMatrix() { return m_m; }
 		inline std::shared_ptr<Entity::ModelConditionState> GetModelConditionState() { return m_modelConditionState; }
 		inline std::shared_ptr<Entity::AnimationState> GetAnimationState() { return m_animationState; }
-		inline bool IsAnimated() { return m_entity->GetKindOfs().ANIMATED; }
 		inline long long *GetAnimationTime() { return &m_animationTime; }
+		inline bool IsAnimated() { return m_entity->GetKindOfs().ANIMATED; }
+		inline bool IsUnit() { return m_entity->GetKindOfs().UNIT; }
+		inline bool IsVisible() { return m_visible; }
 
 	private:
+		bool m_visible = false;
 		bool m_firstUpdate = true;
 		std::chrono::high_resolution_clock::time_point m_lastUpdated;
 		long long m_animationTime = 0;

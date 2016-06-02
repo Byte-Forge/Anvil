@@ -184,11 +184,12 @@ void BF3DLoader::LoadModel(const std::string &name, std::ifstream& file, std::ui
 			model->AddMesh(mesh->GetName(), mesh);
 			break;
 		case 192:
-			model->SetBoundingVolume(read<IModel::Box>(file));
+			model->SetBoundingBox(read<IModel::BoundingBox>(file));
 			break;
-		//case 1025:
-		//	model->SetBoundingVolume(read<IModel::Sphere>(file));
-		//	break;
+		case 193:
+			std::cout << "load sphere" << std::endl;
+			model->SetBoundingSphere(read<IModel::BoundingSphere>(file));
+			break;
 		default:
 			std::cout << "unknown chunktype in model chunk: " << chunkType << std::endl;
 			file.seekg(chunkEnd, std::ios::beg);

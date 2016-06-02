@@ -46,7 +46,7 @@ namespace anvil
 		 *
 		 * @brief	A bounding box.
 		 */
-		struct Box : BoundingVolume
+		struct BoundingBox : BoundingVolume
 		{
 			glm::f32vec3 extend;
 		};
@@ -56,7 +56,7 @@ namespace anvil
 		 *
 		 * @brief	A bounding sphere.
 		 */
-		struct Sphere : BoundingVolume
+		struct BoundingSphere : BoundingVolume
 		{
 			glm::float32 radius;
 		};
@@ -80,14 +80,16 @@ namespace anvil
 		inline void SetHierarchy(std::shared_ptr<Hierarchy> hierarchy) { m_hierarchy = hierarchy; }
 		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }
 		inline void AddMesh(std::string name, std::shared_ptr<IMesh> mesh) { m_meshes.insert({ name, mesh }); }
-		inline void SetBoundingVolume(BoundingVolume vol) { m_volume = vol; }
+		inline void SetBoundingBox(BoundingBox box) { m_box = box; }
+		inline void SetBoundingSphere(BoundingSphere sphere) { m_sphere = sphere; }
 		inline void AddInstance(std::shared_ptr<Instance> i) { m_instances.insert(i); }
 		inline void RemoveInstance(std::shared_ptr<Instance> i) { m_instances.erase(i); }
 
 	protected:
 		std::shared_ptr<Hierarchy> m_hierarchy; //nullpointer if no hierarchy is needed
 		std::map<std::string, std::shared_ptr<IMesh>> m_meshes;
-		BoundingVolume m_volume;
+		BoundingBox m_box;
+		BoundingSphere m_sphere;
 		std::set<std::shared_ptr<Instance>> m_instances;
 	};
 }
