@@ -101,6 +101,7 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 	std::shared_ptr<Entity> castle_floor = Core::GetCore()->GetResources()->GetEntity("entities/structures/dwarves/castle_floor.json");
+	std::shared_ptr<Entity> necroFire = Core::GetCore()->GetResources()->GetEntity("entities/units/mordor/necromancerfire.json");
 
 	//wait until heightmap creation is done
 	hand.get();
@@ -113,6 +114,9 @@ void ITerrain::Generate()
 	tree->AddInstance(vecTree);
 	vecTree = glm::vec3(m_width, 10, m_height);
 	tree->AddInstance(vecTree);
+
+	auto vecNecro = glm::vec3(-10, 5, 20);
+	necroFire->AddInstance(vecNecro);
 
 	/*
 	auto vecCastle = glm::vec3(100, 5, 100);

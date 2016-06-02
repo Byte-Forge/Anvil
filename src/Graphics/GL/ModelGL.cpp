@@ -60,6 +60,8 @@ int GL::ModelGL::Render(IShader& shader)
 				auto& m = i->GetMaterial(it.second->GetName());
 				if (m != nullptr)
 				{
+					glm::vec2 offset = i->GetTexOffset(m->GetUPerSecond(), m->GetVPerSecond());
+					glUniform2f(shader.GetUniform("texOffset"), offset.x, offset.y);
 					//glActiveTexture(GL_TEXTURE0); //albedo textures
 					m->GetAlbedoTexture()->Bind();
 

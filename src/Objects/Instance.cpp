@@ -73,7 +73,8 @@ bool Instance::Update()
 		m_lastUpdated = current;
 		m_firstUpdate = false;
 	}
-	m_animationTime += (std::chrono::duration_cast<std::chrono::milliseconds>(current - m_lastUpdated).count());
+	m_deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(current - m_lastUpdated).count();
+	m_animationTime += m_deltaTime;
 	m_lastUpdated = current;
 
 	if (IsAnimated())

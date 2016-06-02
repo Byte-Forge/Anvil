@@ -39,6 +39,12 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 		mat = std::make_shared<Material>();
 		if (d["material"].HasMember("displacement_factor"))
 			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
+		if (d["material"].HasMember("uPerSec"))
+			mat->SetUPerSecond(d["material"]["uPerSec"].GetDouble());
+		if (d["material"].HasMember("vPerSec"))
+			mat->SetVPerSecond(d["material"]["vPerSec"].GetDouble());
+		if (d["material"].HasMember("displacement_factor"))
+			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
 		if (d["material"].HasMember("albedo"))
 			mat->SetAlbedoTexture(d["material"]["albedo"].GetString());
 		else

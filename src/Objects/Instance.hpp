@@ -104,9 +104,12 @@ namespace anvil
 		inline bool IsAnimated() { return m_entity->GetKindOfs().ANIMATED; }
 		inline bool IsUnit() { return m_entity->GetKindOfs().UNIT; }
 		inline bool IsVisible() { return m_visible; }
+		inline glm::vec2 GetTexOffset(float u, float v) { m_texOffset += glm::vec2(m_deltaTime/1000.f * u, m_deltaTime/1000.f * v); return m_texOffset; }
 
 	private:
 		bool m_visible = false;
+		glm::vec2 m_texOffset = glm::vec2(0.0f, 0.0f);
+		long long m_deltaTime;
 		bool m_firstUpdate = true;
 		std::chrono::high_resolution_clock::time_point m_lastUpdated;
 		long long m_animationTime = 0;
