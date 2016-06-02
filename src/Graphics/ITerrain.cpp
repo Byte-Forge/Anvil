@@ -100,6 +100,7 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/gondor/soldier.json");
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
+	std::shared_ptr<Entity> castle_floor = Core::GetCore()->GetResources()->GetEntity("entities/structures/dwarves/castle_floor.json");
 
 	//wait until heightmap creation is done
 	hand.get();
@@ -112,6 +113,20 @@ void ITerrain::Generate()
 	tree->AddInstance(vecTree);
 	vecTree = glm::vec3(m_width, 10, m_height);
 	tree->AddInstance(vecTree);
+
+	auto vecCastle = glm::vec3(100, 5, 100);
+	castle_floor->AddInstance(vecCastle, glm::vec3(0, 60, 0));
+	vecCastle = glm::vec3(100, 5, 300);
+	castle_floor->AddInstance(vecCastle);
+	vecCastle = glm::vec3(100, 5, 500);
+	castle_floor->AddInstance(vecCastle);
+
+	vecCastle = glm::vec3(500, 5, 100);
+	castle_floor->AddInstance(vecCastle);
+	vecCastle = glm::vec3(500, 5, 300);
+	castle_floor->AddInstance(vecCastle);
+	vecCastle = glm::vec3(500, 5, 500);
+	castle_floor->AddInstance(vecCastle);
 	
 	auto vecBarracks = glm::vec3(0, 0, -15);
 	barracks->AddInstance(vecBarracks);

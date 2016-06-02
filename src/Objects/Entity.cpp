@@ -45,7 +45,7 @@ void Entity::Update()
 	}
 }
 
-void Entity::AddInstance(glm::vec3 &position) 
+void Entity::AddInstance(glm::vec3 &position, glm::vec3 &euler)
 {
 	if (!m_resourcesLoaded)
 	{
@@ -54,7 +54,7 @@ void Entity::AddInstance(glm::vec3 &position)
 	}
 	if (m_instances.size() == 0)
 		Core::GetCore()->GetGraphics()->GetRenderer()->RegisterEntity(shared_from_this());
-	std::shared_ptr<Instance> i = std::make_shared<Instance>(shared_from_this(), position);
+	std::shared_ptr<Instance> i = std::make_shared<Instance>(shared_from_this(), position, euler);
 	i->Init();
 	m_instances.push_back(i);
 }
@@ -66,7 +66,7 @@ std::shared_ptr<Entity::ModelConditionState> Entity::GetModelConditionState(cons
 		return it->second;
 	else
 	{
-		std::cout << "WARNING!: Entity object has no ModelConditionState " + name << std::endl;
+		//std::cout << "WARNING!: Entity object has no ModelConditionState " + name << std::endl;
 		return nullptr;
 	}
 }
@@ -78,7 +78,7 @@ std::shared_ptr<Entity::AnimationState> Entity::GetAnimationState(const std::str
 		return it->second;
 	else
 	{
-		std::cout << "WARNING!: Entity object has no AnimationState " + name << std::endl;
+		//std::cout << "WARNING!: Entity object has no AnimationState " + name << std::endl;
 		return nullptr;
 	}
 }

@@ -18,11 +18,11 @@
 
 using namespace anvil;
 
-Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position) : m_entity(entity)
+Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position, glm::vec3 &euler, float scale) : m_entity(entity)
 {
 	m_m = glm::mat4();
-	SetPosition(position);
-	SetScale(0.1f);
+	Rotate(euler);
+	Move(position);
 	srand(time(NULL));
 }
 
@@ -33,9 +33,18 @@ Instance::~Instance()
 
 void Instance::Init()
 {
-	SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
-	if (m_entity->GetKindOfs().ANIMATED)
-		SetAnimationState(m_entity->GetAnimationState("IDLE"));
+	if (m_entity->GetKindOfs().BUILDING)
+	{
+		SetModelConditionState(m_entity->GetModelConditionState("CONSTRUCTION"));
+		if (m_entity->GetKindOfs().ANIMATED)
+			SetAnimationState(m_entity->GetAnimationState("CONSTRUCTION"));
+	}
+	else
+	{
+		SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
+		if (m_entity->GetKindOfs().ANIMATED)
+			SetAnimationState(m_entity->GetAnimationState("IDLE"));
+	}
 	SetHealth(m_entity->GetHealth());
 }
 
@@ -63,11 +72,15 @@ bool Instance::Update()
 		{
 			m_animationTime -= totalAnimationTime;
 			if (m_animationState->mode != Entity::ANIMATION_MODE::LOOP)
-				std::cout << "need to change ani state" << std::endl;
+				SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
+				//std::cout << "need to change ani state" << std::endl;
 		}
 	}
 
-	//int r = rand() % 15;
+	int x = rand() % 2;
+	int y = rand() % 2;
+	int z = rand() % 2;
+	//Move(glm::vec3(x * 0.2f, 0.0f, z * 0.1f));
 	//m_health -= r;
 	if (m_health <= 0)
 		return false;
@@ -81,6 +94,7 @@ void Instance::SetModelConditionState(std::shared_ptr<Entity::ModelConditionStat
 	if (m_modelConditionState != nullptr)
 		m_modelConditionState->model->RemoveInstance(shared_from_this());
 	m_modelConditionState = state;
+	Scale(state->scale);
 	m_modelConditionState->model->AddInstance(shared_from_this());
 }
 
@@ -96,7 +110,7 @@ std::shared_ptr<Material> Instance::GetMaterial(const std::string& meshName)
 	const auto& it = m_modelConditionState->materials.find(meshName);
 	if (it == m_modelConditionState->materials.end())
 	{
-		std::cout << "WARNING!: No material defined for mesh: " + meshName << std::endl;
+		//std::cout << "WARNING!: No material defined for mesh: " + meshName << std::endl;
 		return nullptr;
 	}
 	return std::get<1>(it->second);

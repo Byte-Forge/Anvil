@@ -30,7 +30,7 @@ namespace anvil
 		* @param	entity	the entity this instance is for
 		* @param	position	the position of this instance
 		*/
-		Instance(std::shared_ptr<Entity> entity, glm::vec3 &position);
+		Instance(std::shared_ptr<Entity> entity, glm::vec3 &position, glm::vec3 &euler = glm::vec3(0.0, 0.0, 0.0), float scale = 0.0f);
 
 		/**
 		* @fn	Instance::~Instance();
@@ -88,9 +88,15 @@ namespace anvil
 		void SetAnimationState(std::shared_ptr<Entity::AnimationState> state);
 
 		inline void SetHealth(int health) { m_health = health; }
-		inline void SetPosition(glm::vec3 pos) { m_m = glm::translate(pos) * m_m; }
-		inline void SetScale(float scale) { m_m = m_m * glm::scale(glm::vec3(scale, scale, scale)); }
-		inline void SetScale(glm::vec3 scale) { m_m = m_m * glm::scale(scale); }
+		inline void Move(glm::vec3 pos) { m_m = glm::translate(pos) * m_m; }
+		inline void Rotate(glm::vec3 euler) { 
+			Rotate(euler.x, glm::vec3(1.0, 0.0, 0.0)); 
+			Rotate(euler.y, glm::vec3(0.0, 1.0, 0.0));
+			Rotate(euler.z, glm::vec3(0.0, 0.0, 1.0));
+		}
+ 		inline void Rotate(float angle, glm::vec3 axis) { m_m = glm::rotate(m_m, angle, axis); }
+		inline void Scale(float scale) { m_m = m_m * glm::scale(glm::vec3(scale, scale, scale)); }
+		inline void Scale(glm::vec3 scale) { m_m = m_m * glm::scale(scale); }
 		inline glm::mat4 GetMatrix() { return m_m; }
 		inline std::shared_ptr<Entity::ModelConditionState> GetModelConditionState() { return m_modelConditionState; }
 		inline std::shared_ptr<Entity::AnimationState> GetAnimationState() { return m_animationState; }

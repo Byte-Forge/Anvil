@@ -140,6 +140,11 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 						state = std::make_shared<Entity::ModelConditionState>();
 						ent->AddModelConditionState(stateName, state);
 					}
+					if (d["entity"]["modelConditionStates"][i].HasMember("scale"))
+					{
+						std::string scale = d["entity"]["modelConditionStates"][i]["scale"].GetString();
+						state->scale = ::atof(scale.c_str());
+					}
 					
 					state->modelName = d["entity"]["modelConditionStates"][i]["model"].GetString();
 					if (d["entity"]["modelConditionStates"][i].HasMember("skl_path"))
@@ -168,8 +173,11 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					}
 
 					state->animationName = d["entity"]["animationStates"][i]["animation"].GetString();
-					if (d["entity"]["animationStates"][i]["animationMode"].GetString() == "LOOP")
+					std::string mode = d["entity"]["animationStates"][i]["animationMode"].GetString();
+					if (mode == "LOOP")
 						state->mode = Entity::ANIMATION_MODE::LOOP;
+					else if (mode == "MANUAL")
+						state->mode = Entity::ANIMATION_MODE::MANUAL;
 				}
 			}
 		}

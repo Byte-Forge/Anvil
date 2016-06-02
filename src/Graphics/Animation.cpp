@@ -36,14 +36,18 @@ void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm
 
 		glm::quat qt = glm::toQuat(rest_mats[i]);
 		glm::quat q = GetRotationOffset(i, frame);
-		qt += q;
+		qt = q + qt;
+		//qt.w -= q.w;
+		//qt.x -= q.x;
+		//qt.y -= q.y;
+		//qt.z -= q.z;
 		glm::normalize(qt);
 
 		mats[i] = glm::toMat4(qt);
 
-		mats[i][0][3] = of.x;
-		mats[i][1][3] = of.y;
-		mats[i][2][3] = of.z;
+		mats[i][0][3] = rest_mats[i][0][3] + of.x;
+		mats[i][1][3] = rest_mats[i][1][3] + of.y;
+		mats[i][2][3] = rest_mats[i][2][3] + of.z;
 	}
 }
 

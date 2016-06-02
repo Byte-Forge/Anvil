@@ -35,7 +35,6 @@ void GL::ModelGL::Render(IShader& shader)
 {
 	for (std::shared_ptr<Instance> i : m_instances)
 	{
-		i->Update();
 		bool useSkeleton = false;
 		glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
 		glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(i->GetMatrix()));
@@ -63,8 +62,9 @@ void GL::ModelGL::Render(IShader& shader)
 
 				//glActiveTexture(GL_TEXTURE1); //normal textures
 				//i->GetMaterial(it.second->GetName())->GetNormalTexture()->Bind();
+
+				it.second->Render(shader);
 			}
-			it.second->Render(shader);
 		}
 	}
 }

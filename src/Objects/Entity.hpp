@@ -54,6 +54,7 @@ namespace anvil
 		struct ModelConditionState
 		{
 			std::string modelName;
+			float scale = 1.0f;
 			std::shared_ptr<IModel> model;
 			std::string hierarchyPath;
 			std::map<std::string, std::tuple<std::string, std::shared_ptr<Material>>> materials;
@@ -68,6 +69,7 @@ namespace anvil
 		{
 			LOOP = 0,
 			ONCE = 1,
+			MANUAL = 2, //used for build animations
 		};
 
 		/**
@@ -113,13 +115,14 @@ namespace anvil
 		void Update();
 
 		/**
-		* @fn	void Entity::AddInstance(glm::vec3 position);
+		* @fn	void Entity::AddInstance(glm::vec3 position, glm::vec3 &euler);
 		*
 		* @brief	Adds an Instance to this Entity.
 		*
-		* @param	position	The position of the Entity.
+		* @param	position	The position of the Instance
+		* @param	rotation	The rotation of the Instance
 		*/
-		void AddInstance(glm::vec3 &position);
+		void AddInstance(glm::vec3 &position, glm::vec3 &euler = glm::vec3(0, 0, 0));
 
 		/**
 		* @fn	void Entity::LoadResources();
