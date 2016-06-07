@@ -23,7 +23,7 @@ Hierarchy::~Hierarchy()
 
 }
 
-void Hierarchy::Update(std::shared_ptr<Animation> ani, long long *time)
+void Hierarchy::Update(std::shared_ptr<Animation> ani, const long long time)
 {
 	if (ani != nullptr)
 	{

@@ -31,7 +31,8 @@ namespace anvil
 		* @param	entity	the entity this instance is for
 		* @param	position	the position of this instance
 		*/
-		Instance(std::shared_ptr<Entity> entity, glm::vec3 &position, glm::vec3 &euler = glm::vec3(0.0, 0.0, 0.0), float scale = 0.0f);
+		Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position, 
+			const glm::vec3 &euler = glm::vec3(0.0, 0.0, 0.0), const float scale = 0.0f);
 
 		/**
 		* @fn	Instance::~Instance();
@@ -102,7 +103,7 @@ namespace anvil
 		inline glm::mat4 GetMatrix() { return m_m; }
 		inline std::shared_ptr<Entity::ModelConditionState> GetModelConditionState() { return m_modelConditionState; }
 		inline std::shared_ptr<Entity::AnimationState> GetAnimationState() { return m_animationState; }
-		inline long long *GetAnimationTime() { return &m_animationTime; }
+		inline const long long GetAnimationTime() { return m_animationTime; }
 		inline bool IsAnimated() { return m_entity->GetKindOfs().ANIMATED; }
 		inline bool IsUnit() { return m_entity->GetKindOfs().UNIT; }
 		inline bool IsVisible() { return m_visible; }

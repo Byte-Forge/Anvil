@@ -24,11 +24,11 @@ Animation::~Animation()
 {
 
 }
-	
-void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, long long *time)
+
+void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, const long long time)
 {
 	float delta = m_framesPerSecond / 1000.0f; //frames per millisecond
-	int frame = *time * delta;
+	int frame = time * delta;
 
 	for (int i = 0; i < mats.size(); i++)
 	{

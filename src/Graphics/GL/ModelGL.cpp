@@ -57,7 +57,7 @@ int GL::ModelGL::Render(IShader& shader)
 
 			for (const auto& it : m_meshes)
 			{
-				auto& m = i->GetMaterial(it.second->GetName());
+				const auto& m = i->GetMaterial(it.second->GetName());
 				if (m != nullptr)
 				{
 					glm::vec2 offset = i->GetTexOffset(m->GetUPerSecond(), m->GetVPerSecond());

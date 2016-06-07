@@ -72,7 +72,7 @@ int GameGetFPS(lua_State* L)
 int GameGetPolygons(lua_State* L)
 {
 	int polyCount = 0;
-	auto& renderer = Core::GetCore()->GetGraphics()->GetRenderer();
+	auto renderer = Core::GetCore()->GetGraphics()->GetRenderer();
 	if (renderer)
 		polyCount = renderer->GetRenderedPolygons();
 

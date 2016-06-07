@@ -47,7 +47,7 @@ void Entity::Update()
 	}
 }
 
-void Entity::AddInstance(glm::vec3 &position, glm::vec3 &euler)
+void Entity::AddInstance(const glm::vec3 &position,const glm::vec3 &euler)
 {
 	if (!m_resourcesLoaded)
 	{

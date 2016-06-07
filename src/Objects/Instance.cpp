@@ -24,7 +24,7 @@
 
 using namespace anvil;
 
-Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position, glm::vec3 &euler, float scale) : m_entity(entity)
+Instance::Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position,const glm::vec3 &euler,const float scale) : m_entity(entity)
 {
 	m_m = glm::mat4();
 	m_direction = glm::vec3(1.0, 0.0, 0.0);

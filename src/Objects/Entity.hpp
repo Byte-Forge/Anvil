@@ -122,7 +122,7 @@ namespace anvil
 		* @param	position	The position of the Instance
 		* @param	rotation	The rotation of the Instance
 		*/
-		void AddInstance(glm::vec3 &position, glm::vec3 &euler = glm::vec3(0, 0, 0));
+		void AddInstance(const glm::vec3 &position, const glm::vec3 &euler = glm::vec3(0, 0, 0));
 
 		/**
 		* @fn	void Entity::LoadResources();

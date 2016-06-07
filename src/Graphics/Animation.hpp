@@ -11,6 +11,7 @@
 #include <map>
 #include <unordered_map>
 #include <glm/glm.hpp>
+#include <vector>
 
 namespace anvil
 {
@@ -38,7 +39,7 @@ namespace anvil
 		~Animation();
 
 		/**
-		* @fn	void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, std::vector<glm::mat4> &rest_mats, float time);
+		* @fn	void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, const long long time);
 		*
 		* @brief	Returns the offset mats for this animation for a specific pivot at the given time
 		*
@@ -46,7 +47,8 @@ namespace anvil
 		* @param	rest_mats	the rest matrices 
 		* @param	time		the current time of the animation
 		*/
-		void ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, long long *time);
+		void ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, const long long time);
+
 
 		/**
 		* @fn	void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames);
