@@ -27,6 +27,7 @@ using namespace anvil;
 Instance::Instance(std::shared_ptr<Entity> entity, glm::vec3 &position, glm::vec3 &euler, float scale) : m_entity(entity)
 {
 	m_m = glm::mat4();
+	m_direction = glm::vec3(1.0, 0.0, 0.0);
 	Rotate(euler);
 	Move(position);
 	srand(time(NULL));
@@ -83,7 +84,7 @@ bool Instance::Update()
 
 	if (IsUnit())
 	{
-		Move(glm::vec3(m_deltaTime/1000.0f * m_entity->GetSpeed(), 0.0, 0.0));
+		Move(m_direction * (m_deltaTime / 1000.0f));
 		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight((int)m_m[3][0], (int)m_m[3][2]));
 	}
 

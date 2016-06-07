@@ -26,7 +26,16 @@ Hierarchy::~Hierarchy()
 void Hierarchy::Update(std::shared_ptr<Animation> ani, long long *time)
 {
 	if (ani != nullptr)
-		ani->ApplyOffsets(m_frame_pivots, m_rest_pivots, m_pivotCount, time);
+	{
+		if (ani->GetHierarchyName() == m_name)
+		{
+			ani->ApplyOffsets(m_frame_pivots, m_rest_pivots, time);
+		}
+		else
+		{
+			std::cout << "WARNING!! the animation: " << ani->GetName() << " is not compatible with the skeleton: " << m_name << std::endl;
+		}
+	}
 
 	for (int i = 0; i < m_pivotCount; i++)
 	{

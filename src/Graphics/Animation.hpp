@@ -38,16 +38,15 @@ namespace anvil
 		~Animation();
 
 		/**
-		* @fn	void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, std::vector<glm::mat4> &rest_mats, int pivotCount, float time);
+		* @fn	void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, std::vector<glm::mat4> &rest_mats, float time);
 		*
 		* @brief	Returns the offset mats for this animation for a specific pivot at the given time
 		*
 		* @param	mats		the matrices the offsets should be applyed to
 		* @param	rest_mats	the rest matrices 
-		* @param	pivotCount	count of the pivots		//probably use .size()
 		* @param	time		the current time of the animation
 		*/
-		void ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, int pivotCount, long long *time);
+		void ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, long long *time);
 
 		/**
 		* @fn	void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames);
@@ -65,7 +64,9 @@ namespace anvil
 		inline void SetFramesPerSecond(int framesPerSecond) { m_framesPerSecond = framesPerSecond; }
 		inline void SetNumFrames(int numFrames) { m_numFrames = numFrames; }
 		inline long long GetTotalTime() { return (m_numFrames / m_framesPerSecond) * 1000.0f; }
-	
+		inline std::string GetName() { return m_name; }
+		inline std::string GetHierarchyName() { return m_hierarchyName; }
+
 	private:
 		std::string m_name;
 		std::string m_hierarchyName;
