@@ -122,14 +122,14 @@ void ITerrain::Generate()
 	vecTree = glm::vec3(m_width, 10, m_height);
 	tree->AddInstance(vecTree);
 
-	//auto vecNecro = glm::vec3(-10, 5, 20);
-	//necroFire->AddInstance(vecNecro);
+	auto vecNecro = glm::vec3(-10, 5, 20);
+	necroFire->AddInstance(vecNecro);
 
 	auto vecBarracks = glm::vec3(0, 0, -15);
 	barracks->AddInstance(vecBarracks);
 
-	//auto vecTroll = glm::vec3(20, 0, -15);
-	//troll->AddInstance(vecTroll);
+	auto vecTroll = glm::vec3(20, 0, -15);
+	troll->AddInstance(vecTroll);
 
 	for (int i = 0; i < 50; i += 2)
 		for (int j = 0; j < 50; j += 3)
@@ -335,4 +335,12 @@ void ITerrain::UpdateTextures()
 	m_spec = Core::GetCore()->GetResources()->GetTextureArray(specTextures);
 	m_disp = Core::GetCore()->GetResources()->GetTextureArray(dispTextures);
 	m_ambi = Core::GetCore()->GetResources()->GetTextureArray(aoTextures);
+}
+
+float ITerrain::GetHeight(float x, float y)
+{
+	//TODO: interpolate between the 3 edges of the triangle
+	if (x < 0.0 || y < 0.0 || x > m_width || y > m_height)
+		return 0.0f;
+	return m_heightmap[(int)x][(int)y];
 }

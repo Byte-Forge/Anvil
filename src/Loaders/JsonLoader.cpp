@@ -134,6 +134,12 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			}
 			ent->SetKindOfs(kO);
 
+			if (d["entity"].HasMember("speed"))
+			{
+				std::string speed = d["entity"]["speed"].GetString();
+				ent->SetSpeed(::atof(speed.c_str()));
+			}
+
 			if (d["entity"].HasMember("modelConditionStates") && d["entity"]["modelConditionStates"].IsArray())
 			{
 				std::shared_ptr<Entity::ModelConditionState> state;

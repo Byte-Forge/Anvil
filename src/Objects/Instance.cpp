@@ -83,8 +83,7 @@ bool Instance::Update()
 
 	if (IsUnit())
 	{
-		float speed = 2.2f;
-		Move(glm::vec3(m_deltaTime/1000.0f * speed, 0.0, 0.0));
+		Move(glm::vec3(m_deltaTime/1000.0f * m_entity->GetSpeed(), 0.0, 0.0));
 		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight((int)m_m[3][0], (int)m_m[3][2]));
 	}
 

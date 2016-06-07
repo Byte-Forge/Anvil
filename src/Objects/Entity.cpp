@@ -21,6 +21,8 @@ Entity::Entity()
 
 Entity::Entity(std::shared_ptr<Entity> parent)
 {
+	m_health = parent->m_health;
+	m_speed = parent->m_speed;
 	m_modelConditionStates = parent->m_modelConditionStates;
 	m_animationStates = parent->m_animationStates;
 }

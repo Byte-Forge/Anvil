@@ -40,6 +40,7 @@ namespace anvil
 		glm::mat4 m_lastProjection;
 		glm::mat4 m_clip;
 		bool m_updated;
+		//TODO: change this to std::array<glm::vec4, 6>
 		std::array<std::array<float, 4>, 6> m_frustum; 
 	};
 }

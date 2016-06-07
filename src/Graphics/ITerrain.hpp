@@ -69,7 +69,18 @@ namespace anvil
 		 */
 		void SetHeight(glm::vec3 &pos, float radius, float height);
 
-		inline float GetHeight(int x, int y) { return m_heightmap[x][y]; }
+
+		/**
+		* @fn	float ITerrain::GetHeight(float x, float y);
+		*
+		* @brief	Returns the terrain height at the position defined by x, y
+		*
+		* @param	x	   	the x position
+		* @param	y	   	the y position
+		*
+		* @return   returns the height at the given point
+		*/
+		float GetHeight(float x, float y);
 		
 	protected:
 
