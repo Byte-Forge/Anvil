@@ -68,6 +68,8 @@ namespace anvil
 		 * @param	height	   	The height.
 		 */
 		void SetHeight(glm::vec3 &pos, float radius, float height);
+
+		inline float GetHeight(int x, int y) { return m_heightmap[x][y]; }
 		
 	protected:
 

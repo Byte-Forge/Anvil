@@ -98,6 +98,9 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/tree01.json");
 	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/misty_mountains/cavetroll.json");
 	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/gondor/soldier.json");
+	std::shared_ptr<Entity> uruk = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/uruk.json");
+	std::shared_ptr<Entity> uruk_spear = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/uruk_spear.json");
+	std::shared_ptr<Entity> uruk_crossbow = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/uruk_crossbow.json");
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 	std::shared_ptr<Entity> castle_floor = Core::GetCore()->GetResources()->GetEntity("entities/structures/dwarves/castle_floor.json");
@@ -105,6 +108,10 @@ void ITerrain::Generate()
 
 	//wait until heightmap creation is done
 	hand.get();
+
+	auto vecOnager = glm::vec3(40, 0, -15);
+	onager->AddInstance(vecOnager);
+
 
 	auto vecTree = glm::vec3(0, 10, 0);
 	tree->AddInstance(vecTree);
@@ -115,41 +122,25 @@ void ITerrain::Generate()
 	vecTree = glm::vec3(m_width, 10, m_height);
 	tree->AddInstance(vecTree);
 
-	auto vecNecro = glm::vec3(-10, 5, 20);
-	necroFire->AddInstance(vecNecro);
+	//auto vecNecro = glm::vec3(-10, 5, 20);
+	//necroFire->AddInstance(vecNecro);
 
-	/*
-	auto vecCastle = glm::vec3(100, 5, 100);
-	castle_floor->AddInstance(vecCastle, glm::vec3(0, 60, 0));
-	vecCastle = glm::vec3(100, 5, 300);
-	castle_floor->AddInstance(vecCastle);
-	vecCastle = glm::vec3(100, 5, 500);
-	castle_floor->AddInstance(vecCastle);
-
-	vecCastle = glm::vec3(500, 5, 100);
-	castle_floor->AddInstance(vecCastle);
-	vecCastle = glm::vec3(500, 5, 300);
-	castle_floor->AddInstance(vecCastle);
-	vecCastle = glm::vec3(500, 5, 500);
-	castle_floor->AddInstance(vecCastle);
-	*/
-	
 	auto vecBarracks = glm::vec3(0, 0, -15);
 	barracks->AddInstance(vecBarracks);
 
-	auto vecTroll = glm::vec3(20, 0, -15);
-	troll->AddInstance(vecTroll);
-	auto vecOnager = glm::vec3(40, 0, -15);
-	onager->AddInstance(vecOnager);
+	//auto vecTroll = glm::vec3(20, 0, -15);
+	//troll->AddInstance(vecTroll);
 
-	for (int i = 0; i < 100; i += 4)
-		for (int j = 0; j < 100; j += 4)
+	for (int i = 0; i < 50; i += 2)
+		for (int j = 0; j < 50; j += 3)
 		{
 			auto vecSoldier = glm::vec3(i, m_heightmap[i][j], j);
-			soldier->AddInstance(vecSoldier);	
+			auto vecSpear = glm::vec3(i, m_heightmap[i][j+1], j + 1);
+			auto vecCrossbow = glm::vec3(i, m_heightmap[i][j+2], j + 2);
+			uruk->AddInstance(vecSoldier);	
+			uruk_spear->AddInstance(vecSpear);
+			uruk_crossbow->AddInstance(vecCrossbow);
 		}
-	
-
 
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);

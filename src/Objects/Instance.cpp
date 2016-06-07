@@ -14,6 +14,7 @@
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Graphics/Animation.hpp"
+#include "../Types/Map.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -62,7 +63,10 @@ void Instance::Unlink()
 bool Instance::Update()
 {
 	//test if the instance is inside the frustum (visible)
-	if (Collision::SphereInFrustum(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(), m_m * m_modelConditionState->model->GetSphereCenter(), m_modelConditionState->model->GetSphereRadius()) > 0)
+	if (Collision::SphereInFrustum(
+		Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(), 
+		m_m * m_modelConditionState->model->GetSphereCenter(), 
+		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
 		m_visible = true;
 	else
 		m_visible = false;
@@ -77,6 +81,13 @@ bool Instance::Update()
 	m_animationTime += m_deltaTime;
 	m_lastUpdated = current;
 
+	if (IsUnit())
+	{
+		float speed = 2.2f;
+		Move(glm::vec3(m_deltaTime/1000.0f * speed, 0.0, 0.0));
+		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight((int)m_m[3][0], (int)m_m[3][2]));
+	}
+
 	if (IsAnimated())
 	{
 		long long totalAnimationTime = m_animationState->animation->GetTotalTime();
@@ -84,7 +95,10 @@ bool Instance::Update()
 		{
 			m_animationTime -= totalAnimationTime;
 			if (m_animationState->mode != Entity::ANIMATION_MODE::LOOP)
+			{
 				SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
+				SetAnimationState(m_entity->GetAnimationState("DEFAULT"));
+			}
 		}
 	}
 	if (m_health <= 0)
@@ -97,7 +111,10 @@ void Instance::SetModelConditionState(std::shared_ptr<Entity::ModelConditionStat
 	if (state == nullptr)
 		return;
 	if (m_modelConditionState != nullptr)
+	{
+		Scale(1.0f / state->scale);
 		m_modelConditionState->model->RemoveInstance(shared_from_this());
+	}
 	m_modelConditionState = state;
 	Scale(state->scale);
 	m_modelConditionState->model->AddInstance(shared_from_this());

@@ -140,12 +140,8 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 				for (int i = 0; i < d["entity"]["modelConditionStates"].Size(); i++)
 				{
 					std::string stateName = d["entity"]["modelConditionStates"][i]["name"].GetString();
-					state = ent->GetModelConditionState(stateName);
-					if (state == nullptr)
-					{
-						state = std::make_shared<Entity::ModelConditionState>();
-						ent->AddModelConditionState(stateName, state);
-					}
+					state = std::make_shared<Entity::ModelConditionState>();
+					ent->AddModelConditionState(stateName, state);
 					if (d["entity"]["modelConditionStates"][i].HasMember("scale"))
 					{
 						std::string scale = d["entity"]["modelConditionStates"][i]["scale"].GetString();
@@ -171,12 +167,8 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 				for (int i = 0; i < d["entity"]["animationStates"].Size(); i++)
 				{
 					std::string stateName = d["entity"]["animationStates"][i]["name"].GetString();
-					state = ent->GetAnimationState(stateName);
-					if (state == nullptr)
-					{
-						state = std::make_shared<Entity::AnimationState>();
-						ent->AddAnimationState(stateName, state);
-					}
+					state = std::make_shared<Entity::AnimationState>();
+					ent->AddAnimationState(stateName, state);
 
 					state->animationName = d["entity"]["animationStates"][i]["animation"].GetString();
 					std::string mode = d["entity"]["animationStates"][i]["animationMode"].GetString();

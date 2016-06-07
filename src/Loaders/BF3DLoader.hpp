@@ -9,6 +9,8 @@
 #include <string>
 #include <memory> 
 
+#define VERSION 1.0
+
 namespace anvil
 {
 	class IMesh;

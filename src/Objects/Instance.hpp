@@ -9,6 +9,7 @@
 #include "glm/glm.hpp"
 #include <glm/gtx/transform.hpp>
 #include "Entity.hpp"
+#include <vector>
 #include <memory>
 
 namespace anvil
@@ -88,7 +89,8 @@ namespace anvil
 		void SetAnimationState(std::shared_ptr<Entity::AnimationState> state);
 
 		inline void SetHealth(int health) { m_health = health; }
-		inline void Move(glm::vec3 pos) { m_m = glm::translate(pos) * m_m; }
+		inline void Move(glm::vec3 dir) { m_m = glm::translate(dir) * m_m; }
+		inline void SetHeight(float height) { m_m[3][1] = height; }
 		inline void Rotate(glm::vec3 euler) { 
 			Rotate(euler.x, glm::vec3(1.0, 0.0, 0.0)); 
 			Rotate(euler.y, glm::vec3(0.0, 1.0, 0.0));

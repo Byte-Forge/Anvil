@@ -34,14 +34,9 @@ void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm
 	{
 		glm::vec3 of = GetTranslationOffset(i, frame);
 
-		glm::quat qt = glm::toQuat(rest_mats[i]);
 		glm::quat q = GetRotationOffset(i, frame);
-		qt = q + qt;
-		//qt.w -= q.w;
-		//qt.x -= q.x;
-		//qt.y -= q.y;
-		//qt.z -= q.z;
-		glm::normalize(qt);
+		glm::quat qt = glm::toQuat(rest_mats[i]);
+		qt = q;
 
 		mats[i] = glm::toMat4(qt);
 
@@ -67,7 +62,7 @@ glm::quat Animation::GetRotationOffset(int pivot, int frame)
 	float qy = GetOffsetValue(pivot, 5, frame);
 	float qz = GetOffsetValue(pivot, 6, frame);
 
-	glm::quat q = glm::quat(w, qx, qz, -qy);
+	glm::quat q = glm::quat(w, -qx, -qz, qy);
 
 	return q;
 }
@@ -99,13 +94,13 @@ glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
 						beforeFrame = i->first;
 						before = i->second;
 					}
-					if (i->first > frame)
+					else if (i->first > frame)
 					{
 						afterFrame = i->first;
 						after = i->second;
 
-						int delta = afterFrame - beforeFrame;
-						float ratio = (frame - before) / delta;
+						float delta = afterFrame - beforeFrame;
+						float ratio = (frame - beforeFrame) / delta;
 						return ratio * before + (1 - ratio) * after;
 					}
 				}

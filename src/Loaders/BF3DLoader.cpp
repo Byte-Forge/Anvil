@@ -211,7 +211,7 @@ void BF3DLoader::Load(const std::string& name, const std::string& path, const st
 
 	if (read<std::uint32_t>(file) != 1144211010) //test if file starts with "BF3D"
 	{
-		std::cout << "WARNING!: the file: " << path << " is not a bf3d file!" << std::endl;
+		std::cout << "ERROR!: the file: " << path << " is not a bf3d file!" << std::endl;
 		file.close();
 		return;
 	}
@@ -222,10 +222,17 @@ void BF3DLoader::Load(const std::string& name, const std::string& path, const st
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
 		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
+		float version;
+
 		switch (chunkType)
 		{
 		case 0:
-			readString(file);
+			version = read<glm::f32>(file);
+			if (version != VERSION)
+			{
+				std::cout << std::fixed << std::setprecision(2) << "WARNING!: " << path << " does not match the current BF3D version: " << VERSION << std::endl;
+			}
+			file.seekg(subChunkEnd, std::ios::beg);
 			break;
 		case 128:
 			LoadModel(name, file, subChunkEnd, skl_path);
