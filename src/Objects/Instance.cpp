@@ -65,7 +65,7 @@ bool Instance::Update()
 	//test if the instance is inside the frustum (visible)
 	if (Collision::SphereInFrustum(
 		Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(), 
-		m_m * m_modelConditionState->model->GetSphereCenter(), 
+		glm::vec3(m_m * m_modelConditionState->model->GetSphereCenter()), 
 		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
 		m_visible = true;
 	else
