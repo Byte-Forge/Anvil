@@ -11,6 +11,7 @@
 #include <map>
 #include <unordered_map>
 #include <glm/glm.hpp>
+#include <vector>
 
 namespace anvil
 {
@@ -47,7 +48,7 @@ namespace anvil
 		* @param	pivotCount	count of the pivots		//probably use .size()
 		* @param	time		the current time of the animation
 		*/
-		void ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, int pivotCount, long long *time);
+		void ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, const int pivotCount, const long long time);
 
 		/**
 		* @fn	void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames);
