@@ -4,6 +4,7 @@
 * RendererVK.cpp
 ************************************
 */
+
 #ifdef ANVIL_USE_VULKAN
 #include "RendererVK.hpp"
 #include <GLFW/glfw3.h>
@@ -27,7 +28,6 @@ RendererVK::RendererVK() : m_instance(nullptr), m_device(nullptr), m_physDevice(
 	vkGetPhysicalDeviceMemoryProperties(m_physDevice, &m_gpuMem);
 
 	VkResult success = glfwCreateWindowSurface(m_instance, window, NULL, &m_surface);
-
 }
 
 void RendererVK::CreateInstance()
@@ -131,7 +131,6 @@ RendererVK::~RendererVK()
 		vkDestroyDevice(m_device, NULL);
 	if(m_instance)
 		vkDestroyInstance(m_instance, NULL);
-	
 }
 
 void RendererVK::Clear()
@@ -150,8 +149,6 @@ void RendererVK::Render(const glm::mat4 & ortho)
 
 
 	err = vkCreateSemaphore(m_device, &presentCompleteSemaphoreCreateInfo,	NULL, &presentCompleteSemaphore);
-
-	
 }
 
 void RendererVK::Resize(int width, int height)
@@ -176,45 +173,5 @@ const std::string RendererVK::GetGPUName()
 {
 	return std::string();
 }
-
-void RendererVK::RenderGeometry(Rocket::Core::Vertex * vertices, int num_vertices, int * indices, int num_indices, Rocket::Core::TextureHandle texture, const Rocket::Core::Vector2f & translation)
-{
-}
-
-Rocket::Core::CompiledGeometryHandle RendererVK::CompileGeometry(Rocket::Core::Vertex * vertices, int num_vertices, int * indices, int num_indices, Rocket::Core::TextureHandle texture)
-{
-	return Rocket::Core::CompiledGeometryHandle();
-}
-
-void RendererVK::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle geometry, const Rocket::Core::Vector2f & translation)
-{
-}
-
-void RendererVK::ReleaseCompiledGeometry(Rocket::Core::CompiledGeometryHandle geometry)
-{
-}
-
-void RendererVK::EnableScissorRegion(bool enable)
-{
-}
-
-void RendererVK::SetScissorRegion(int x, int y, int width, int height)
-{
-}
-
-bool RendererVK::LoadTexture(Rocket::Core::TextureHandle & texture_handle, Rocket::Core::Vector2i & texture_dimensions, const Rocket::Core::String & source)
-{
-	return false;
-}
-
-bool RendererVK::GenerateTexture(Rocket::Core::TextureHandle & texture_handle, const Rocket::Core::byte * source, const Rocket::Core::Vector2i & source_dimensions)
-{
-	return false;
-}
-
-void RendererVK::ReleaseTexture(Rocket::Core::TextureHandle texture_handle)
-{
-}
-
 
 #endif
