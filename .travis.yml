@@ -37,6 +37,7 @@ before_install:
   - git submodule update --init spark
   - cd ./spark
   - git submodule update --init deps/nanovg
+  - cd ..
 
 install:
   - cmake --version
