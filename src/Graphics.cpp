@@ -16,8 +16,6 @@
 #include "Graphics/VK/RendererVK.hpp"
 #endif
 #include <glm/gtx/transform.hpp>
-#define STB_IMAGE_IMPLEMENTATION
-#include "Util/stb_image.h"
 #include "Core.hpp"
 
 #include <iostream>

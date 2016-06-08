@@ -18,7 +18,6 @@
 #include <iostream>
 #include <future>
 #include <glm/gtc/type_ptr.hpp>
-#include <Rocket/Core.h>
 
 using namespace anvil;
 
@@ -38,43 +37,6 @@ std::map<std::string, IRenderer::Vendor> vendorMap =
 #define TEXTURE_FREE_MEMORY_ATI                 0x87FC
 #define RENDERBUFFER_FREE_MEMORY_ATI            0x87FD
 
-class GLGeometry
-{
-public:
-	GLuint m_vbo, m_ibo, m_vao,m_texture;
-	int m_numVerts;
-
-	GLGeometry() : m_vbo(0), m_ibo(0), m_texture(0), m_numVerts(0),m_vao(0)
-	{
-	};
-
-	~GLGeometry()
-	{
-		if (m_vao)
-		{
-			glDeleteVertexArrays(1, &m_vao);
-			m_vao = 0;
-		}		
-
-		if (m_vbo)
-		{
-			glDeleteBuffers(1, &m_vbo);
-			m_vbo = 0;
-		}			
-
-		if (m_ibo)
-		{
-			glDeleteBuffers(1, &m_ibo);
-			m_ibo = 0;
-		}			
-	};
-};
-
-struct Vertex
-{
-	glm::vec2 Position, TexCoord;
-	glm::vec4 Color;
-};
 
 #if 1
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
@@ -267,154 +229,7 @@ void RendererGL::PrintInfo()
     char* glslversion = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
     std::cout << "GLSL Version: " << glslversion << std::endl;
 }
-
-void RendererGL::RenderGeometry(Rocket::Core::Vertex * vertices, int num_vertices, int * indices,
-	int num_indices, Rocket::Core::TextureHandle texture, const Rocket::Core::Vector2f & translation)
-{
-	Rocket::Core::CompiledGeometryHandle gh = CompileGeometry(vertices,
-		num_vertices, indices, num_indices, texture);
-	RenderCompiledGeometry(gh, translation);
-	ReleaseCompiledGeometry(gh);
-}
-
-Rocket::Core::CompiledGeometryHandle RendererGL::CompileGeometry(Rocket::Core::Vertex * vertices, int num_vertices, int * indices, int num_indices, Rocket::Core::TextureHandle texture)
-{
-	std::vector<Vertex> data(num_vertices);
-
-	for (unsigned long i = 0; i < data.size(); i++)
-	{
-		data[i].Position = *(glm::vec2*)&vertices[i].position;
-		data[i].TexCoord = *(glm::vec2*)&vertices[i].tex_coord;
-		data[i].Color = glm::vec4((float)vertices[i].colour.red / 255.f, (float)vertices[i].colour.green / 255.f, (float)vertices[i].colour.blue / 255.f, (float)vertices[i].colour.alpha / 255.f);
-	};
-
-	GLGeometry* geometry = new GLGeometry();
-	geometry->m_numVerts = num_indices;
-
-	glGenBuffers(1, &geometry->m_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, geometry->m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * num_vertices, &data[0], GL_STATIC_DRAW);
-
-	glGenVertexArrays(1, &geometry->m_vao);
-	glBindVertexArray(geometry->m_vao);
-
-	// position
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
-
-	// UV
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoord));
-
-	// Colors
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
-
-	glGenBuffers(1, &geometry->m_ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * num_indices, indices, GL_STATIC_DRAW);
-
-	geometry->m_texture = texture;
-
-	return Rocket::Core::CompiledGeometryHandle(geometry);
-}
-
-void RendererGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle handle, const Rocket::Core::Vector2f & translation)
-{
-	glActiveTexture(GL_TEXTURE0);
-	m_guiShader->Use();
-
-	GLGeometry* geometry = reinterpret_cast<GLGeometry*>(handle);
-	glBindVertexArray(geometry->m_vao);
-	glBindTexture(GL_TEXTURE_2D, geometry->m_texture);
 	
-	
-	if (geometry->m_texture)
-		glUniform1i(m_guiShader->GetUniform("useTex"), 1);
-	else
-		glUniform1i(m_guiShader->GetUniform("useTex"), 0);
-
-	glUniform1i(m_guiShader->GetUniform("tex"), 0);
-	
-	glUniform2f(m_guiShader->GetUniform("translation"), translation.x, translation.y);
-	auto* mat = glm::value_ptr(Core::GetCore()->GetGraphics()->GetOrtho());
-	glUniformMatrix4fv(m_guiShader->GetUniform("ortho"), 1, GL_FALSE, mat);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry->m_ibo);
-	glDrawElements(GL_TRIANGLES, geometry->m_numVerts, GL_UNSIGNED_INT, nullptr);
-	glDisable(GL_BLEND);
-}
-
-void RendererGL::ReleaseCompiledGeometry(Rocket::Core::CompiledGeometryHandle geometry)
-{
-	delete (GLGeometry*)geometry;
-}
-
-void RendererGL::EnableScissorRegion(bool enable)
-{
-	if (enable)
-		glEnable(GL_SCISSOR_TEST);
-	else
-		glDisable(GL_SCISSOR_TEST);
-}
-
-void RendererGL::SetScissorRegion(int x, int y, int width, int height)
-{
-	auto resolution = Core::GetCore()->GetResolution();
-	glScissor(x, resolution.y - (y + height), width, height);
-}
-
-bool RendererGL::LoadTexture(Rocket::Core::TextureHandle & texture_handle, Rocket::Core::Vector2i & texture_dimensions, const Rocket::Core::String & source)
-{
-	Rocket::Core::FileInterface* file_interface = Rocket::Core::GetFileInterface();
-	Rocket::Core::FileHandle file_handle = file_interface->Open(source);
-	if (file_handle==0)
-		return false;
-
-	file_interface->Seek(file_handle, 0, SEEK_END);
-	size_t buffer_size = file_interface->Tell(file_handle);
-	file_interface->Seek(file_handle, 0, SEEK_SET);
-
-	unsigned char* buffer = new unsigned char[buffer_size];
-	file_interface->Read(buffer, buffer_size, file_handle);
-	file_interface->Close(file_handle);
-
-	unsigned char *data = stbi_load_from_memory(buffer, static_cast<int>(buffer_size), &texture_dimensions.x, &texture_dimensions.y, NULL, STBI_rgb_alpha);
-	if (data == NULL)
-		return false;
-
-	GLuint handle = 0;
-	glGenTextures(1, &handle);
-	texture_handle = handle;
-	glBindTexture(GL_TEXTURE_2D, handle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_dimensions.x, texture_dimensions.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	stbi_image_free(data);
-
-	return true;
-}
-
-bool RendererGL::GenerateTexture(Rocket::Core::TextureHandle & texture_handle, const Rocket::Core::byte * source, const Rocket::Core::Vector2i & source_dimensions)
-{
-	GLuint handle = 0;
-	glGenTextures(1, &handle);
-	texture_handle = handle;
-	glBindTexture(GL_TEXTURE_2D, handle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, source_dimensions.x, source_dimensions.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, source);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	return true;
-}
-
-void RendererGL::ReleaseTexture(Rocket::Core::TextureHandle texture_handle)
-{
-	glDeleteTextures(1, reinterpret_cast<GLuint*>(&texture_handle));
-	texture_handle = 0;
-}
-
 const std::string RendererGL::GetGPUName()
 {
 	return m_deviceName;

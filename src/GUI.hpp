@@ -8,12 +8,16 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <Rocket/Core.h>
 #include <chrono>
-#include "./GUI/SystemInterface.hpp"
-#include "./GUI/ScriptInterface.hpp"
+
 
 struct GLFWwindow;
+namespace spark
+{
+	class Core;
+	class View;
+}
+
 
 namespace anvil
 {
@@ -123,12 +127,11 @@ namespace anvil
 	private:
 		int m_mouseX, m_mouseY;
 		int m_frameTick;
-		SystemInterface m_system;
-		ScriptInterface m_script;
-		Rocket::Core::Context* m_context;
 		GLFWwindow* m_window;
 		double m_accumulatedTime;
 		double m_updateInterval;
 		static const int UPDATES_PER_SECOND;
+		std::unique_ptr<spark::Core> m_core;
+		std::shared_ptr<spark::View> m_view;
 	};
 }

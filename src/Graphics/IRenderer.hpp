@@ -12,7 +12,6 @@
 #include <vector>
 #include <string>
 #include <array>
-#include <Rocket/Core/RenderInterface.h>
 #include "../Objects/Entity.hpp"
 #include "../Core/Options.hpp"
 
@@ -23,7 +22,7 @@ namespace anvil
 	 *
 	 * @brief	A renderer.
 	 */
-	class IRenderer : public Rocket::Core::RenderInterface
+	class IRenderer 
 	{
 	public:
 
