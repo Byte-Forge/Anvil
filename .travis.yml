@@ -35,6 +35,8 @@ git:
 before_install:
   - git submodule update --init glfw
   - git submodule update --init spark
+  - cd ./spark
+  - git submodule update --init deps/nanovg
 
 install:
   - cmake --version
