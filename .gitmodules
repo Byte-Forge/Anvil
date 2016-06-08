@@ -4,3 +4,6 @@
 [submodule "glfw"]
 	path = glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "spark"]
+	path = spark
+	url = https://github.com/Byte-Forge/spark.git

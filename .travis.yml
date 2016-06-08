@@ -15,17 +15,15 @@ matrix:
 addons:
   apt:
     sources: 
-      - llvm-toolchain-precise-3.7
       - george-edison55-precise-backports
       - ubuntu-toolchain-r-test
     packages:
-      - clang-3.7
+      - clang
       - g++-5
       - gcc-5
       - cmake
       - cmake-data
       - libluajit-5.1-dev
-      - liblua5.1-0-dev
       - libpthread-stubs0-dev
       - libgl1-mesa-dev
       - xorg-dev
@@ -36,12 +34,14 @@ git:
 
 before_install:
   - git submodule update --init glfw
+  - git submodule update --init spark
+  - cd ./spark
+  - git submodule update --init deps/nanovg
 
 install:
   - cmake --version
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update ; brew install llvm freetype lua luajit openal-soft;brew outdated gcc || brew upgrade gcc ; brew outdated cmake || brew upgrade cmake ; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - mkdir deps && cd deps
   - git clone https://github.com/g-truc/glm.git
   - export GLM_ROOT_DIR=$(pwd)/glm
@@ -50,11 +50,6 @@ install:
   - git clone https://github.com/miloyip/rapidjson.git
   - export RAPIDJSON_ROOT_DIR=$(pwd)/rapidjson
   - git clone https://github.com/libRocket/libRocket.git
-  - cd libRocket/Build 
-  - cmake -DCMAKE_INSTALL_PREFIX=.. -DBUILD_LUA_BINDINGS=TRUE -DBUILD_UNIVERSAL_BINARIES=OFF
-  - make install -j2 && cd ../..
-  - export ROCKET_ROOT=$(pwd)/libRocket
-  - touch cache
   - cd ..
 
 before_script:

@@ -25,9 +25,6 @@ set(SRC_DIR "src")
 #Find the Lua JIT compiler
 find_package(LuaJIT REQUIRED)
 
-#Find LibRocket
-find_package(ROCKET REQUIRED)
-
 #Find GLM for mathematics
 find_package(GLM REQUIRED)
 
@@ -53,7 +50,11 @@ find_package(Vulkan)
 set(GLFW_BUILD_EXAMPLES CACHE BOOL OFF)
 set(GLFW_BUILD_TESTS CACHE BOOL OFF)
 set(GLFW_BUILD_DOCS CACHE BOOL OFF)
-add_subdirectory(glfw REQUIRED)
+add_subdirectory(glfw)
+
+#Add spark
+set(SPARK_BUILD_TEST CACHE BOOL OFF)
+add_subdirectory(spark)
 
 #Compile all files
 file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/[a-z,A-Z]*.[c,h,def]*)
@@ -66,18 +67,23 @@ if(VULKAN_FOUND)
 endif()
 
 #Include our dependencies
-target_include_directories(${PROJ_NAME} PUBLIC glfw ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
-						${ROCKET_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${RAPIDJSON_INCLUDE_DIR})
+target_include_directories(${PROJ_NAME} PUBLIC glfw spark ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
+						${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${RAPIDJSON_INCLUDE_DIR})
 
 #Link our dependencies
-target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${ROCKET_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES}
-						glfw ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES}
+						glfw spark ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS})
 
-
-set_target_properties(${PROJ_NAME} PROPERTIES COMPILE_DEFINITIONS ROCKET_STATIC_LIB)
 #Use C++ 14
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)
-set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD_REQUIRED  TRUE)
+set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD_REQUIRED TRUE)
+
+#Optimizations
+if(MSVC)
+    target_compile_options(${PROJ_NAME} PRIVATE /arch:AVX)
+else()
+    target_compile_options(${PROJ_NAME} PRIVATE -mavx)
+endif()
 
 #add a target to generate API documentation with Doxygen
 find_package(Doxygen)
