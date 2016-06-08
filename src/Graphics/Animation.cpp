@@ -27,44 +27,19 @@ Animation::~Animation()
 
 void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, const long long time)
 {
-	float delta = m_framesPerSecond / 1000.0f; //frames per millisecond
-	int frame = time * delta;
+	int frame = time * m_framesPerMilliSecond;
 
 	for (int i = 0; i < mats.size(); i++)
 	{
-		glm::vec3 of = GetTranslationOffset(i, frame);
+		glm::vec3 of = glm::vec3(GetOffsetValue(i, 0, frame), GetOffsetValue(i, 1, frame), GetOffsetValue(i, 2, frame));
+		glm::quat q = glm::quat(GetOffsetValue(i, 3, frame), GetOffsetValue(i, 4, frame), GetOffsetValue(i, 5, frame), GetOffsetValue(i, 6, frame));
 
-		glm::quat q = GetRotationOffset(i, frame);
-		glm::quat qt = glm::toQuat(rest_mats[i]);
-		qt = q;
-
-		mats[i] = glm::toMat4(qt);
+		mats[i] = glm::toMat4(q);
 
 		mats[i][0][3] = rest_mats[i][0][3] + of.x;
 		mats[i][1][3] = rest_mats[i][1][3] + of.y;
 		mats[i][2][3] = rest_mats[i][2][3] + of.z;
 	}
-}
-
-glm::vec3 Animation::GetTranslationOffset(int pivot, int frame)
-{
-	float x = GetOffsetValue(pivot, 0, frame);
-	float y = GetOffsetValue(pivot, 1, frame);
-	float z = GetOffsetValue(pivot, 2, frame);
-
-	return glm::vec3(x, z, -y);
-}
-
-glm::quat Animation::GetRotationOffset(int pivot, int frame)
-{
-	float w = GetOffsetValue(pivot, 3, frame);
-	float qx = GetOffsetValue(pivot, 4, frame);
-	float qy = GetOffsetValue(pivot, 5, frame);
-	float qz = GetOffsetValue(pivot, 6, frame);
-
-	glm::quat q = glm::quat(w, -qx, -qz, qy);
-
-	return q;
 }
 
 glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)

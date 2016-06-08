@@ -42,8 +42,6 @@ namespace anvil
 			bool UNIT = false;
 			bool BUILDING = false;
 			bool IMMOBILE = false;
-
-			bool ANIMATED = false;
 		};
 
 		/**

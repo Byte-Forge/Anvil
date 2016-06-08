@@ -98,9 +98,9 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/tree01.json");
 	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/misty_mountains/cavetroll.json");
 	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/gondor/soldier.json");
-	std::shared_ptr<Entity> uruk = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/uruk.json");
-	std::shared_ptr<Entity> uruk_spear = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/uruk_spear.json");
-	std::shared_ptr<Entity> uruk_crossbow = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/uruk_crossbow.json");
+	std::shared_ptr<Entity> uruk = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_sword.json");
+	std::shared_ptr<Entity> uruk_spear = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_spear.json");
+	std::shared_ptr<Entity> uruk_crossbow = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_crossbow.json");
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 	std::shared_ptr<Entity> castle_floor = Core::GetCore()->GetResources()->GetEntity("entities/structures/dwarves/castle_floor.json");
@@ -109,8 +109,8 @@ void ITerrain::Generate()
 	//wait until heightmap creation is done
 	hand.get();
 
-	auto vecOnager = glm::vec3(40, 0, -15);
-	onager->AddInstance(vecOnager);
+	//auto vecOnager = glm::vec3(40, 0, -15);
+	//onager->AddInstance(vecOnager);
 
 
 	auto vecTree = glm::vec3(0, 10, 0);
@@ -122,10 +122,10 @@ void ITerrain::Generate()
 	vecTree = glm::vec3(m_width, 10, m_height);
 	tree->AddInstance(vecTree);
 
-	auto vecNecro = glm::vec3(-10, 5, 20);
-	necroFire->AddInstance(vecNecro);
+	//auto vecNecro = glm::vec3(-10, 5, 20);
+	//necroFire->AddInstance(vecNecro);
 
-	auto vecBarracks = glm::vec3(0, 0, -15);
+	auto vecBarracks = glm::vec3(25, 0, 25);
 	barracks->AddInstance(vecBarracks);
 
 	auto vecTroll = glm::vec3(20, 0, -15);
@@ -137,8 +137,8 @@ void ITerrain::Generate()
 			auto vecSoldier = glm::vec3(i, m_heightmap[i][j], j);
 			auto vecSpear = glm::vec3(i, m_heightmap[i][j+1], j + 1);
 			auto vecCrossbow = glm::vec3(i, m_heightmap[i][j+2], j + 2);
-			uruk->AddInstance(vecSoldier);	
-			uruk_spear->AddInstance(vecSpear);
+			//uruk->AddInstance(vecSoldier);	
+			//uruk_spear->AddInstance(vecSpear);
 			uruk_crossbow->AddInstance(vecCrossbow);
 		}
 
@@ -197,6 +197,7 @@ void ITerrain::CreateHeightmap()
 		for (unsigned int j = 0; j <= m_height; j++)
 		{
 			float value = 0.0f;
+			/*
 			value += SimplexNoise::scaled_octave_noise_2d(8, 0.7f, 0.5f, -20.0f, 0.0f, i / 100.0f, j / 100.0f); //for slightly evaluation
 			float mountain = SimplexNoise::scaled_octave_noise_2d(2, 0.5f, 0.1f, -10.0f, 20.0f, i / 10.0f, j / 10.0f); //for mountain terrain
 			if (value < 0.0)
@@ -205,7 +206,7 @@ void ITerrain::CreateHeightmap()
 				value += SimplexNoise::scaled_octave_noise_2d(8, 0.3f, 0.1f, 0.0f, 10.0f, i, j) * mountain / 10.0; //for mountains
 
 			value += SimplexNoise::scaled_octave_noise_2d(5, 0.01f, 0.1f, 0.0f, 2.0f, i, j); //for flat terrain
-
+			*/
 			m_heightmap[i].push_back(value);
 
 			int mat1 = 0;
@@ -339,7 +340,7 @@ void ITerrain::UpdateTextures()
 
 float ITerrain::GetHeight(float x, float y)
 {
-	//TODO: interpolate between the 3 edges of the triangle
+	//TODO: interplate between triangle edges
 	if (x < 0.0 || y < 0.0 || x > m_width || y > m_height)
 		return 0.0f;
 	return m_heightmap[(int)x][(int)y];

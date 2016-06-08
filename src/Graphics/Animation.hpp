@@ -63,7 +63,7 @@ namespace anvil
 	
 		inline void SetName(const std::string &name) { m_name = name; }
 		inline void SetHierarchyName(const std::string &name) { m_hierarchyName = name; }
-		inline void SetFramesPerSecond(int framesPerSecond) { m_framesPerSecond = framesPerSecond; }
+		inline void SetFramesPerSecond(int framesPerSecond) { m_framesPerSecond = framesPerSecond; m_framesPerMilliSecond = m_framesPerSecond / 1000.0f; }
 		inline void SetNumFrames(int numFrames) { m_numFrames = numFrames; }
 		inline long long GetTotalTime() { return (m_numFrames / m_framesPerSecond) * 1000.0f; }
 		inline std::string GetName() { return m_name; }
@@ -74,13 +74,12 @@ namespace anvil
 		std::string m_hierarchyName;
 		int m_numFrames;
 		float m_framesPerSecond; 
+		float m_framesPerMilliSecond;
 
 		//pivot -> type -> frame 
 		std::map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
 
 	private:
-		glm::vec3 GetTranslationOffset(int pivotID, int frame);
-		glm::quat GetRotationOffset(int pivotID, int frame);
 		glm::f32 GetOffsetValue(int pivotID, int type, int frame);
 	};
 }

@@ -43,14 +43,12 @@ void Instance::Init()
 	if (m_entity->GetKindOfs().BUILDING)
 	{
 		SetModelConditionState(m_entity->GetModelConditionState("CONSTRUCTION"));
-		if (m_entity->GetKindOfs().ANIMATED)
-			SetAnimationState(m_entity->GetAnimationState("CONSTRUCTION"));
+		SetAnimationState(m_entity->GetAnimationState("CONSTRUCTION"));
 	}
 	else
 	{
 		SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
-		if (m_entity->GetKindOfs().ANIMATED)
-			SetAnimationState(m_entity->GetAnimationState("IDLE"));
+		SetAnimationState(m_entity->GetAnimationState("IDLE"));
 	}
 	SetHealth(m_entity->GetHealth());
 }
@@ -84,11 +82,11 @@ bool Instance::Update()
 
 	if (IsUnit())
 	{
-		Move(m_direction * (m_deltaTime / 1000.0f));
+		Move(m_direction * (m_deltaTime / 1000.0f) * m_entity->GetSpeed());
 		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight((int)m_m[3][0], (int)m_m[3][2]));
 	}
 
-	if (IsAnimated())
+	if (m_animationState != nullptr)
 	{
 		long long totalAnimationTime = m_animationState->animation->GetTotalTime();
 		if (m_animationTime > totalAnimationTime)

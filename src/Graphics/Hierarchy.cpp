@@ -27,14 +27,7 @@ void Hierarchy::Update(std::shared_ptr<Animation> ani, const long long time)
 {
 	if (ani != nullptr)
 	{
-		if (ani->GetHierarchyName() == m_name)
-		{
-			ani->ApplyOffsets(m_frame_pivots, m_rest_pivots, time);
-		}
-		else
-		{
-			std::cout << "WARNING!! the animation: " << ani->GetName() << " is not compatible with the skeleton: " << m_name << std::endl;
-		}
+		ani->ApplyOffsets(m_frame_pivots, m_rest_pivots, time);
 	}
 
 	for (int i = 0; i < m_pivotCount; i++)
@@ -48,6 +41,6 @@ void Hierarchy::Update(std::shared_ptr<Animation> ani, const long long time)
 			m_pivots[i] = m_pivots[i] * m_frame_pivots[parentID];
 			parentID = m_parentIDs[parentID];
 		}
-		m_pivots[i] = glm::transpose(m_pivots[i]); //can we do this on file export already?
+		m_pivots[i] = glm::transpose(m_pivots[i]);
 	}
 }

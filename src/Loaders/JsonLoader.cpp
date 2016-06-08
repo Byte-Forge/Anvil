@@ -126,10 +126,6 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 						else
 							kO.BUILDING = true;
 					}
-					else if (koStr == "ANIMATED")
-					{
-						kO.ANIMATED = true;
-					}
 				}
 			}
 			ent->SetKindOfs(kO);
