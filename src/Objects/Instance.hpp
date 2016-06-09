@@ -111,10 +111,10 @@ namespace anvil
 
 	private:
 		bool m_visible = false;
+		bool m_firstUpdate = true;
 		glm::vec3 m_direction;
 		glm::vec2 m_texOffset = glm::vec2(0.0f, 0.0f);
 		long long m_deltaTime;
-		bool m_firstUpdate = true;
 		std::chrono::high_resolution_clock::time_point m_lastUpdated;
 		long long m_animationTime = 0;
 		std::shared_ptr<Entity> m_entity;

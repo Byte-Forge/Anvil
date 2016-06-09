@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <chrono>
+#include <spark/spark.hpp>
 
 
 struct GLFWwindow;
@@ -133,5 +134,8 @@ namespace anvil
 		static const int UPDATES_PER_SECOND;
 		std::unique_ptr<spark::Core> m_core;
 		std::shared_ptr<spark::View> m_view;
+
+		std::shared_ptr<spark::ILabel> m_fps;
+		std::shared_ptr<spark::ILabel> m_renderedTris;
 	};
 }

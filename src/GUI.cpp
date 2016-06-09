@@ -14,8 +14,9 @@
 #include "Core.hpp"
 #include "Util/Platform.hpp"
 #include "Graphics.hpp"
+#include "Graphics/IRenderer.hpp"
 #include <GLFW/glfw3.h>
-#include <spark/spark.hpp>
+
 using namespace anvil;
 
 const int GUI::UPDATES_PER_SECOND = 30;
@@ -36,11 +37,18 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 	
 	m_view = m_core->CreateView(800,600);
 	auto element = std::make_shared<spark::Grid>();	
-	auto label = std::make_shared<spark::ILabel>();
-	label->SetText("0");
-	label->SetFontSize(36.0f);
-	label->SetFont(defaultFont);
-	element->AddChildren(label);
+	m_fps = std::make_shared<spark::ILabel>();
+	m_fps->SetText("0");
+	m_fps->SetFontSize(26.0f);
+	m_fps->SetFont(defaultFont);
+	element->AddChildren(m_fps);
+
+	m_renderedTris = std::make_shared<spark::ILabel>();
+	m_renderedTris->SetText("0");
+	m_renderedTris->SetFontSize(26.0f);
+	m_renderedTris->SetFont(defaultFont);
+	m_renderedTris->SetMargin(spark::vec4<unsigned int>(30, 0, 0, 0));
+	element->AddChildren(m_renderedTris);
 	
 	m_view->SetRoot(element);
 
@@ -68,9 +76,12 @@ void GUI::Render()
 
 
 	//Set FPS
-	auto label = std::dynamic_pointer_cast<spark::ILabel>(*m_view->GetRoot()->GetChildren().begin());
 	int fps = Core::GetCore()->GetFPS().GetFPS();
-	label->SetText(std::to_string(fps));
+	m_fps->SetText("FPS: " + std::to_string(fps));
+
+	//set rendered tris
+	int rtris = Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons();
+	m_renderedTris->SetText("Rendered Tris: " + std::to_string(rtris));
 
 	// Calculate pixel ration for hi-dpi devices.
 	pxRatio = (float)fbWidth / (float)winWidth;

@@ -31,7 +31,7 @@ void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm
 
 	for (int i = 0; i < mats.size(); i++)
 	{
-		glm::vec3 of = glm::vec3(GetOffsetValue(i, 0, frame), GetOffsetValue(i, 1, frame), GetOffsetValue(i, 2, frame));
+		glm::vec3 of = glm::vec3(GetOffsetValue(i, 0, frame), GetOffsetValue(i, 1, frame), -GetOffsetValue(i, 2, frame));
 		glm::quat q = glm::quat(GetOffsetValue(i, 3, frame), GetOffsetValue(i, 4, frame), GetOffsetValue(i, 5, frame), GetOffsetValue(i, 6, frame));
 
 		mats[i] = glm::toMat4(q);

@@ -25,7 +25,7 @@ Entity::Entity(std::shared_ptr<Entity> parent)
 	m_speed = parent->m_speed;
 	m_modelConditionStates = parent->m_modelConditionStates;
 	m_animationStates = parent->m_animationStates;
-}
+}			
 
 Entity::~Entity()
 {

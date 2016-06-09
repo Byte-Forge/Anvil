@@ -35,7 +35,7 @@ Instance::Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position,con
 
 Instance::~Instance()
 {
-
+	Unlink();
 }
 
 void Instance::Init()
@@ -75,6 +75,8 @@ bool Instance::Update()
 	{
 		m_lastUpdated = current;
 		m_firstUpdate = false;
+		if (IsUnit())
+			m_animationTime = rand() % 2000; //to add some varation to unit animations
 	}
 	m_deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(current - m_lastUpdated).count();
 	m_animationTime += m_deltaTime;
