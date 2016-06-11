@@ -195,17 +195,38 @@ void RendererGL::Render(const glm::mat4& ortho)
 		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[2]);
 	}
 
-	for (auto& entity : m_entities)
-		entity->Update();
-
 	m_modelShaders[0]->Use();
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this
 
+	for (auto& promise : m_promises)
+	{
+		promise.get();
+	}
+
     for (auto& renderable : m_renderables)
 		m_rendered_polygons += renderable->Render(*m_modelShaders[0]);
+
+	m_promises.clear();
+	auto updateEntities = [](std::vector<std::shared_ptr<Entity>> entities)
+	{
+		for (auto& entity : entities)
+			entity->Update();
+	};
+
+	int cores = std::thread::hardware_concurrency();
+	std::size_t const vecsize = m_entities.size() / (cores - 1);
+	for (int i = 0;i < cores - 1;++i)
+	{
+		std::size_t rest = 0;
+		if (i + 1 == cores - 1)
+			rest = m_entities.size() % (cores - 1);
+
+		std::vector<std::shared_ptr<Entity>> sub_entities(m_entities.begin() + i*vecsize, m_entities.begin() + (i + 1)*vecsize + rest);
+		m_promises.push_back(std::async(std::launch::async, updateEntities, sub_entities));
+	}
 
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);

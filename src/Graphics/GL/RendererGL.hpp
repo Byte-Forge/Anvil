@@ -8,6 +8,8 @@
 #pragma once
 #include "../IRenderer.hpp"
 #include "../../Types/Map.hpp"
+#include <future>
+#include <vector>
 
 namespace anvil
 {
@@ -97,5 +99,6 @@ namespace anvil
 	private:
 		int m_totalVRAM;
 		std::string m_deviceName;
+		std::vector<std::future<void>> m_promises;
 	};
 }
