@@ -65,7 +65,8 @@ void Frustum::Recalculate(glm::mat4 view, glm::mat4 proj)
 	/* Normalize the result */
 	for (auto& plane : m_frustum)
 	{
-		glm::normalize(plane);
+		float length = glm::length(glm::vec3(plane));
+		plane /= length;
 	}
 
 	m_updated = true;
