@@ -12,7 +12,7 @@
 using namespace anvil;
 
 
-bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, const glm::vec3& size)
+bool Collision::CubeInFrustum(const std::array<glm::vec4, 6>& frustum, const glm::vec3& center, const glm::vec3& size)
 {
 	for (int p = 0; p < 6; p++)
 	{
@@ -37,7 +37,7 @@ bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum
 	return true;
 }
 
-int Collision::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, float radius)
+int Collision::SphereInFrustum(const std::array<glm::vec4, 6>& frustum, const glm::vec3& center, float radius)
 {
 	int p;
 	int c = 0;
