@@ -21,10 +21,10 @@ Quadtree::Quadtree(glm::vec2 pos, glm::vec2 size, unsigned int maxLevel, unsigne
 		return;
 
 	// Create new nodes for 4 new regions until maxLevel is reached.
-	m_NW = std::make_unique<Quadtree>(glm::vec2(pos.x - size.x / 2.f, pos.y - size.y / 2.f), size / 2.f, maxLevel, level + 1);
-	m_NE = std::make_unique<Quadtree>(glm::vec2(pos.x + size.x / 2.f, pos.y - size.y / 2.f), size / 2.f, maxLevel, level + 1);
-	m_SW = std::make_unique<Quadtree>(glm::vec2(pos.x - size.x / 2.f, pos.y + size.y / 2.f), size / 2.f, maxLevel, level + 1);
-	m_SE = std::make_unique<Quadtree>(glm::vec2(pos.x + size.x / 2.f, pos.y + size.y / 2.f), size / 2.f, maxLevel, level + 1);
+	m_nodes[0] = std::make_unique<Quadtree>(glm::vec2(pos.x - size.x / 2.f, pos.y - size.y / 2.f), size / 2.f, maxLevel, level + 1);
+	m_nodes[1] = std::make_unique<Quadtree>(glm::vec2(pos.x + size.x / 2.f, pos.y - size.y / 2.f), size / 2.f, maxLevel, level + 1);
+	m_nodes[2] = std::make_unique<Quadtree>(glm::vec2(pos.x - size.x / 2.f, pos.y + size.y / 2.f), size / 2.f, maxLevel, level + 1);
+	m_nodes[3] = std::make_unique<Quadtree>(glm::vec2(pos.x + size.x / 2.f, pos.y + size.y / 2.f), size / 2.f, maxLevel, level + 1);
 }
 
 void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& v1, glm::vec3& v2, glm::vec3& v3)
@@ -36,16 +36,21 @@ void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& v1, glm::vec3& v2, gl
 		return;
 	}
 
-	if (m_NW->contains(v1) && m_NW->contains(v2) && m_NW->contains(v3))
-		m_NW->AddTriangle(indices, v1, v2, v3);
-	else if (m_NE->contains(v1) && m_NE->contains(v2) && m_NE->contains(v3))
-		m_NE->AddTriangle(indices, v1, v2, v3);
-	else if (m_SW->contains(v1) && m_SW->contains(v2) && m_SW->contains(v3))
-		m_SW->AddTriangle(indices, v1, v2, v3);
-	else if (m_SE->contains(v1) && m_SE->contains(v2) && m_SE->contains(v3))
-		m_SE->AddTriangle(indices, v1, v2, v3);
-	else
+	bool added = false;
+	for(const auto& node : m_nodes)
+	{
+		if (node->contains(v1) && node->contains(v2) && node->contains(v3))
+		{
+			added = true;
+			node->AddTriangle(indices, v1, v2, v3);
+			break;
+		}
+	}
+
+	if(!added)
+	{
 		m_triangles.insert(m_triangles.end(), indices, indices + 3);
+	}		
 }
 
 std::vector<uint32_t> Quadtree::GetTriangles(const std::array<std::array<float, 4>, 6>& frustum)
@@ -56,54 +61,21 @@ std::vector<uint32_t> Quadtree::GetTriangles(const std::array<std::array<float, 
 	std::vector<uint32_t> retObjects;
 	std::vector<uint32_t> childObjects;
 
-	int frustumCheck = m_NW->SphereInFrustum(frustum);
-	if (frustumCheck == 2)
+	for(const auto& node : m_nodes)
 	{
-		childObjects = m_NW->getAllTriangles();
-		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
+		int frustumCheck = node->SphereInFrustum(frustum);
+		if (frustumCheck == 2)
+		{
+			childObjects = node->getAllTriangles();
+			retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
+		}
+		else if (frustumCheck == 1 && node->CubeInFrustum(frustum))
+		{
+			childObjects = node->GetTriangles(frustum);
+			retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
+		}
 	}
-	else if (frustumCheck == 1 && m_NW->CubeInFrustum(frustum))
-	{
-		childObjects = m_NW->GetTriangles(frustum);
-		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-	}
-
-	frustumCheck = m_NE->SphereInFrustum(frustum);
-	if (frustumCheck == 2)
-	{
-		childObjects = m_NE->getAllTriangles();
-		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-	}
-	else if (frustumCheck == 1 && m_NE->CubeInFrustum(frustum))
-	{
-		childObjects = m_NE->GetTriangles(frustum);
-		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-	}
-
-	frustumCheck = m_SW->SphereInFrustum(frustum);
-	if (frustumCheck == 2)
-	{
-		childObjects = m_SW->getAllTriangles();
-		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-	}
-	else if (frustumCheck == 1 && m_SW->CubeInFrustum(frustum))
-	{
-		childObjects = m_SW->GetTriangles(frustum);
-		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-	}
-
-	frustumCheck = m_SE->SphereInFrustum(frustum);
-	if (frustumCheck == 2)
-	{
-		childObjects = m_SE->getAllTriangles();
-		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-	}
-	else if (frustumCheck == 1 && m_SE->CubeInFrustum(frustum))
-	{
-		childObjects = m_SE->GetTriangles(frustum);
-		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-	}
-
+	
 	if (!m_triangles.empty())
 		retObjects.insert(retObjects.end(), m_triangles.begin(), m_triangles.end());
 
@@ -112,7 +84,10 @@ std::vector<uint32_t> Quadtree::GetTriangles(const std::array<std::array<float, 
 
 bool Quadtree::contains(glm::vec3& vertex)
 {
-	return Collision::Contains2D(vertex, m_pos, m_size);
+	return (vertex.x >= m_pos.x - m_size.x
+		&& vertex.x <= m_pos.x + m_size.x
+		&& vertex.z >= m_pos.z - m_size.z
+		&& vertex.z <= m_pos.z + m_size.z);
 }
 
 int Quadtree::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum)
@@ -133,17 +108,12 @@ std::vector<uint32_t> Quadtree::getAllTriangles()
 	}
 
 	std::vector<uint32_t> retObjects, childObjects;
-	childObjects = m_NW->getAllTriangles();
-	retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
 
-	childObjects = m_NE->getAllTriangles();
-	retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-
-	childObjects = m_SW->getAllTriangles();
-	retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
-
-	childObjects = m_SE->getAllTriangles();
-	retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
+	for(const auto& node : m_nodes)
+	{
+		childObjects = node->getAllTriangles();
+		retObjects.insert(retObjects.end(), childObjects.begin(), childObjects.end());
+	}
 
 	retObjects.insert(retObjects.end(), m_triangles.begin(), m_triangles.end());
 
