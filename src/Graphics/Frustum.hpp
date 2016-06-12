@@ -22,6 +22,16 @@ namespace anvil
 	{
 	public:
 
+		enum Planes
+		{
+			RIGHT	= 0,
+			LEFT	= 1,
+			BOTTOM	= 2,
+			TOP		= 3,
+			FAR		= 4,
+			NEAR	= 5,
+		};
+
 		/**
 		* @fn	void Frustum::Recalculate(glm::mat4 view, glm::mat4 proj);
 		*

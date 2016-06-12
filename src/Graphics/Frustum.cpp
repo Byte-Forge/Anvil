@@ -24,82 +24,49 @@ void Frustum::Recalculate(glm::mat4 view, glm::mat4 proj)
 	m_clip = proj * view;
 
 	/* Extract the numbers for the RIGHT plane */
-	m_frustum[0][0] = m_clip[0][3] - m_clip[0][0];
-	m_frustum[0][1] = m_clip[1][3] - m_clip[1][0];
-	m_frustum[0][2] = m_clip[2][3] - m_clip[2][0];
-	m_frustum[0][3] = m_clip[3][3] - m_clip[3][0];
-
-	/* Normalize the result */
-	t = sqrt(m_frustum[0][0] * m_frustum[0][0] + m_frustum[0][1] * m_frustum[0][1] + m_frustum[0][2] * m_frustum[0][2]);
-	m_frustum[0][0] /= t;
-	m_frustum[0][1] /= t;
-	m_frustum[0][2] /= t;
-	m_frustum[0][3] /= t;
+	m_frustum[RIGHT] = glm::vec4(m_clip[0][3] - m_clip[0][0],
+						m_clip[1][3] - m_clip[1][0],
+						m_clip[2][3] - m_clip[2][0],
+						m_clip[3][3] - m_clip[3][0]);
 
 	/* Extract the numbers for the LEFT plane */
-	m_frustum[1][0] = m_clip[0][3] + m_clip[0][0];
-	m_frustum[1][1] = m_clip[1][3] + m_clip[1][0];
-	m_frustum[1][2] = m_clip[2][3] + m_clip[2][0];
-	m_frustum[1][3] = m_clip[3][3] + m_clip[3][0];
+	m_frustum[LEFT] = glm::vec4(m_clip[0][3] + m_clip[0][0],
+						m_clip[1][3] + m_clip[1][0],
+						m_clip[2][3] + m_clip[2][0],
+						m_clip[3][3] + m_clip[3][0]);
 
-	/* Normalize the result */
-	t = sqrt(m_frustum[1][0] * m_frustum[1][0] + m_frustum[1][1] * m_frustum[1][1] + m_frustum[1][2] * m_frustum[1][2]);
-	m_frustum[1][0] /= t;
-	m_frustum[1][1] /= t;
-	m_frustum[1][2] /= t;
-	m_frustum[1][3] /= t;
 
 	/* Extract the BOTTOM plane */
-	m_frustum[2][0] = m_clip[0][3] + m_clip[0][1];
-	m_frustum[2][1] = m_clip[1][3] + m_clip[1][1];
-	m_frustum[2][2] = m_clip[2][3] + m_clip[2][1];
-	m_frustum[2][3] = m_clip[3][3] + m_clip[3][1];
-
-	/* Normalize the result */
-	t = sqrt(m_frustum[2][0] * m_frustum[2][0] + m_frustum[2][1] * m_frustum[2][1] + m_frustum[2][2] * m_frustum[2][2]);
-	m_frustum[2][0] /= t;
-	m_frustum[2][1] /= t;
-	m_frustum[2][2] /= t;
-	m_frustum[2][3] /= t;
+	m_frustum[BOTTOM] = glm::vec4(m_clip[0][3] + m_clip[0][1],
+						m_clip[1][3] + m_clip[1][1],
+						m_clip[2][3] + m_clip[2][1],
+						m_clip[3][3] + m_clip[3][1]);
 
 	/* Extract the TOP plane */
-	m_frustum[3][0] = m_clip[0][3] - m_clip[0][1];
-	m_frustum[3][1] = m_clip[1][3] - m_clip[1][1];
-	m_frustum[3][2] = m_clip[2][3] - m_clip[2][1];
-	m_frustum[3][3] = m_clip[3][3] - m_clip[3][1];
+	m_frustum[TOP] = glm::vec4(m_clip[0][3] - m_clip[0][1],
+						m_clip[1][3] - m_clip[1][1],
+						m_clip[2][3] - m_clip[2][1],
+						m_clip[3][3] - m_clip[3][1]);
 
-	/* Normalize the result */
-	t = sqrt(m_frustum[3][0] * m_frustum[3][0] + m_frustum[3][1] * m_frustum[3][1] + m_frustum[3][2] * m_frustum[3][2]);
-	m_frustum[3][0] /= t;
-	m_frustum[3][1] /= t;
-	m_frustum[3][2] /= t;
-	m_frustum[3][3] /= t;
 
 	/* Extract the FAR plane */
-	m_frustum[4][0] = m_clip[0][3] - m_clip[0][2];
-	m_frustum[4][1] = m_clip[1][3] - m_clip[1][2];
-	m_frustum[4][2] = m_clip[2][3] - m_clip[2][2];
-	m_frustum[4][3] = m_clip[3][3] - m_clip[3][2];
+	m_frustum[FAR] = glm::vec4(m_clip[0][3] - m_clip[0][2],
+						m_clip[1][3] - m_clip[1][2],
+						m_clip[2][3] - m_clip[2][2],
+						m_clip[3][3] - m_clip[3][2]);
 
-	/* Normalize the result */
-	t = sqrt(m_frustum[4][0] * m_frustum[4][0] + m_frustum[4][1] * m_frustum[4][1] + m_frustum[4][2] * m_frustum[4][2]);
-	m_frustum[4][0] /= t;
-	m_frustum[4][1] /= t;
-	m_frustum[4][2] /= t;
-	m_frustum[4][3] /= t;
 
 	/* Extract the NEAR plane */
-	m_frustum[5][0] = m_clip[0][3] + m_clip[0][2];
-	m_frustum[5][1] = m_clip[1][3] + m_clip[1][2];
-	m_frustum[5][2] = m_clip[2][3] + m_clip[2][2];
-	m_frustum[5][3] = m_clip[3][3] + m_clip[3][2];
+	m_frustum[NEAR] = glm::vec4(m_clip[0][3] + m_clip[0][2],
+						m_clip[1][3] + m_clip[1][2],
+						m_clip[2][3] + m_clip[2][2],
+						m_clip[3][3] + m_clip[3][2]);
 
 	/* Normalize the result */
-	t = sqrt(m_frustum[5][0] * m_frustum[5][0] + m_frustum[5][1] * m_frustum[5][1] + m_frustum[5][2] * m_frustum[5][2]);
-	m_frustum[5][0] /= t;
-	m_frustum[5][1] /= t;
-	m_frustum[5][2] /= t;
-	m_frustum[5][3] /= t;
+	for (auto& plane : m_frustum)
+	{
+		glm::normalize(plane);
+	}
 
 	m_updated = true;
 }
