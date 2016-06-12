@@ -204,7 +204,7 @@ void RendererGL::Render(const glm::mat4& ortho)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this
 
-    for (auto& renderable : m_renderables)
+	for (auto& renderable : m_renderables)
 		m_rendered_polygons += renderable->Render(*m_modelShaders[0]);
 
 	glEnable(GL_CULL_FACE);

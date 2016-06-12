@@ -112,16 +112,6 @@ void ITerrain::Generate()
 	//auto vecOnager = glm::vec3(40, 0, -15);
 	//onager->AddInstance(vecOnager);
 
-
-	auto vecTree = glm::vec3(0, 10, 0);
-	tree->AddInstance(vecTree);
-	vecTree = glm::vec3(m_width, 10, 0);
-	tree->AddInstance(vecTree);
-	vecTree = glm::vec3(0, 10, m_height);
-	tree->AddInstance(vecTree);
-	vecTree = glm::vec3(m_width, 10, m_height);
-	tree->AddInstance(vecTree);
-
 	//auto vecNecro = glm::vec3(-10, 5, 20);
 	//necroFire->AddInstance(vecNecro);
 
@@ -141,6 +131,15 @@ void ITerrain::Generate()
 			//uruk_spear->AddInstance(vecSpear);
 			uruk_crossbow->AddInstance(vecCrossbow);
 		}
+
+	auto vecTree = glm::vec3(0, 10, 0);
+	tree->AddInstance(vecTree);
+	vecTree = glm::vec3(m_width, 10, 0);
+	tree->AddInstance(vecTree);
+	vecTree = glm::vec3(0, 10, m_height);
+	tree->AddInstance(vecTree);
+	vecTree = glm::vec3(m_width, 10, m_height);
+	tree->AddInstance(vecTree);
 
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
