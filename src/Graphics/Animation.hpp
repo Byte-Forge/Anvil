@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <glm/glm.hpp>
 #include <vector>
+#include "AnimationPose.hpp"
 
 namespace anvil
 {
@@ -78,6 +79,10 @@ namespace anvil
 
 		//pivot -> type -> frame 
 		std::map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
+		int m_instanceCount = 0;
+		int m_lastFrame = -1;
+		bool m_useCache = false;
+		std::map<int, AnimationPose> m_poses;
 
 	private:
 		glm::f32 GetOffsetValue(int pivotID, int type, int frame);

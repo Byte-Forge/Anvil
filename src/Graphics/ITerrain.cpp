@@ -115,14 +115,14 @@ void ITerrain::Generate()
 	//auto vecNecro = glm::vec3(-10, 5, 20);
 	//necroFire->AddInstance(vecNecro);
 
-	auto vecBarracks = glm::vec3(25, 0, 25);
-	barracks->AddInstance(vecBarracks);
+	//auto vecBarracks = glm::vec3(25, 0, 25);
+	//barracks->AddInstance(vecBarracks);
 
 	auto vecTroll = glm::vec3(20, 0, -15);
 	troll->AddInstance(vecTroll);
 
-	for (int i = 0; i < 20; i += 2)
-		for (int j = 0; j < 20; j += 3)
+	for (int i = 0; i < 100; i += 2)
+		for (int j = 0; j < 100; j += 3)
 		{
 			auto vecSoldier = glm::vec3(i, m_heightmap[i][j], j);
 			auto vecSpear = glm::vec3(i, m_heightmap[i][j+1], j + 1);
