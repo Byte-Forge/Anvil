@@ -67,11 +67,7 @@ namespace anvil
 
 		std::vector<uint32_t> m_triangles;
 
-		std::unique_ptr<Quadtree> m_NW;
-		std::unique_ptr<Quadtree> m_NE;
-		std::unique_ptr<Quadtree> m_SW;
-		std::unique_ptr<Quadtree> m_SE;
-
+		std::array<std::unique_ptr<Quadtree>,4> m_nodes;
 	private:
 		bool contains(glm::vec3& vertex);
 		int SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum);

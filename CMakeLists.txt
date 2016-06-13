@@ -78,6 +78,8 @@ target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD_REQUIRED TRUE)
 
+add_definitions(-DGLM_FORCE_AVX)
+
 #Optimizations
 if(MSVC)
     target_compile_options(${PROJ_NAME} PRIVATE /arch:AVX)

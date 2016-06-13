@@ -38,6 +38,6 @@ namespace anvil
 
 	private:
 		int m_count; //number of instances that uses this pose per frame
-		std::vector<glm::mat4> m_data;
+		std::vector<glm::f32mat4x4> m_data;
 	};
 }

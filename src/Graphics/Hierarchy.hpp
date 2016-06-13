@@ -39,12 +39,9 @@ namespace anvil
 		*/
 		~Hierarchy();
 
-		/**
-		* @fn	void Hierarchy::Update();
-		*
-		* @brief	Updates the Hierarchy to the current animation Frame.
-		*/
-		void Update(std::shared_ptr<Animation> ani = nullptr, const long long time = 0);
+		void ComputeFrame(std::shared_ptr<Animation> ani = nullptr, const long long time = 0);
+
+		std::vector<glm::f32mat4x4> GetPivots(std::shared_ptr<Animation> ani = nullptr, const long long time = 0);
 
 		inline void SetName(std::string name) { m_name = name; }
 		inline std::string GetName() { return m_name; }
@@ -53,16 +50,14 @@ namespace anvil
 		inline void SetCenterPos(glm::vec3 centerPos) { m_centerPos = centerPos; }
 		inline glm::vec3 GetCenterPos() { return m_centerPos; }
 		inline void AddParentID(std::int32_t ID) { m_parentIDs.push_back(ID); }
-		inline std::vector<std::int32_t> GetParentIDs() { return m_parentIDs; }
 		inline void AddPivot(glm::f32mat4x4 pivot) { m_rest_pivots.push_back(pivot); m_pivots.push_back(pivot); m_frame_pivots.push_back(pivot); }
-		inline std::vector<glm::f32mat4x4> GetPivots() { return m_pivots; }
 
 	private:
 		std::string m_name;
 		int m_pivotCount;
 		glm::vec3 m_centerPos;
 		std::vector<std::int32_t> m_parentIDs;
-		std::vector<glm::f32mat4x4> m_rest_pivots; //pivots of the rest pose
+		std::vector<glm::f32mat4x4> m_rest_pivots; //pivots of the rest pose (the raw data)
 		std::vector<glm::f32mat4x4> m_frame_pivots; //pivots with their frame offsets
 		std::vector<glm::f32mat4x4> m_pivots; //the pivots for the current frame
 	};

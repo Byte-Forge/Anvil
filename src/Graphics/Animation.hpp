@@ -39,17 +39,9 @@ namespace anvil
 		*/
 		~Animation();
 
-		/**
-		* @fn	void Animation::ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, const long long time);
-		*
-		* @brief	Returns the offset mats for this animation for a specific pivot at the given time
-		*
-		* @param	mats		the matrices the offsets should be applyed to
-		* @param	rest_mats	the rest matrices 
-		* @param	time		the current time of the animation
-		*/
-		void ApplyOffsets(std::vector<glm::mat4> &mats, const std::vector<glm::mat4> &rest_mats, const long long time);
+		void ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vector<glm::mat4> &rest_mats, const long long time);
 
+		void GetFrame(std::vector<glm::mat4> &mats, const long long time);
 
 		/**
 		* @fn	void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames);
@@ -79,9 +71,6 @@ namespace anvil
 
 		//pivot -> type -> frame 
 		std::map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
-		int m_instanceCount = 0;
-		int m_lastFrame = -1;
-		bool m_useCache = false;
 		std::map<int, AnimationPose> m_poses;
 
 	private:

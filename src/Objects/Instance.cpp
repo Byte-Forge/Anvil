@@ -14,6 +14,7 @@
 #include "../Graphics/IModel.hpp"
 #include "../Graphics/Material.hpp"
 #include "../Graphics/Animation.hpp"
+#include "../Graphics/Hierarchy.hpp"
 #include "../Types/Map.hpp"
 #include <iostream>
 #include <cstdlib>
@@ -61,15 +62,6 @@ void Instance::Unlink()
 
 bool Instance::Update()
 {
-	//test if the instance is inside the frustum (visible)
-	if (Collision::SphereInFrustum(
-		Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(), 
-		glm::vec3(m_m * m_modelConditionState->model->GetSphereCenter()), 
-		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
-		m_visible = true;
-	else
-		m_visible = false;
-
 	auto current = std::chrono::high_resolution_clock::now();
 	if (m_firstUpdate)
 	{
@@ -81,6 +73,19 @@ bool Instance::Update()
 	m_deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(current - m_lastUpdated).count();
 	m_animationTime += m_deltaTime;
 	m_lastUpdated = current;
+
+	//test if the instance is inside the frustum (visible)
+	if (Collision::SphereInFrustum(
+		Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(),
+		glm::vec3(m_m * m_modelConditionState->model->GetSphereCenter()),
+		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
+	{
+		m_visible = true;
+		if (m_animationState != nullptr)
+			m_modelConditionState->model->GetHierarchy()->ComputeFrame(m_animationState->animation, m_animationTime);
+	}
+	else
+		m_visible = false;
 
 	if (IsUnit())
 	{

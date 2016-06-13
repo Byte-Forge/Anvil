@@ -121,8 +121,8 @@ void ITerrain::Generate()
 	auto vecTroll = glm::vec3(20, 0, -15);
 	troll->AddInstance(vecTroll);
 
-	for (int i = 0; i < 100; i += 2)
-		for (int j = 0; j < 100; j += 3)
+	for (int i = 0; i < 50; i += 2)
+		for (int j = 0; j < 50; j += 3)
 		{
 			auto vecSoldier = glm::vec3(i, m_heightmap[i][j], j);
 			auto vecSpear = glm::vec3(i, m_heightmap[i][j+1], j + 1);

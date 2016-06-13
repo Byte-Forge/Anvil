@@ -23,11 +23,16 @@ Hierarchy::~Hierarchy()
 
 }
 
-void Hierarchy::Update(std::shared_ptr<Animation> ani, const long long time)
+void Hierarchy::ComputeFrame(std::shared_ptr<Animation> ani, const long long time)
+{
+	ani->ComputeFrame(m_frame_pivots, m_rest_pivots, time);
+}
+
+std::vector<glm::f32mat4x4> Hierarchy::GetPivots(std::shared_ptr<Animation> ani, const long long time)
 {
 	if (ani != nullptr)
 	{
-		ani->ApplyOffsets(m_frame_pivots, m_rest_pivots, time);
+		ani->GetFrame(m_frame_pivots, time);
 	}
 
 	for (int i = 0; i < m_pivotCount; i++)
@@ -43,4 +48,5 @@ void Hierarchy::Update(std::shared_ptr<Animation> ani, const long long time)
 		}
 		m_pivots[i] = glm::transpose(m_pivots[i]);
 	}
+	return m_pivots;
 }
