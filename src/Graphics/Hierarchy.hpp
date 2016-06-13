@@ -39,8 +39,24 @@ namespace anvil
 		*/
 		~Hierarchy();
 
-		void ComputeFrame(std::shared_ptr<Animation> ani = nullptr, const long long time = 0);
+		/**
+		* @fn	void Hierarchy::ComputeFrame(std::shared_ptr<Animation> ani = nullptr, const long long time = 0);
+		*
+		* @brief	compute the matrices for a frame specified by time
+		*
+		* @param	ani				the animation that we want the frame of
+		* @param	time			the time that represents a frame
+		*/
+		void ComputeFrame(std::shared_ptr<Animation> ani, const long long time);
 
+		/**
+		* @fn	void Hierarchy::GetPivots(std::shared_ptr<Animation> ani = nullptr, const long long time = 0);
+		*
+		* @brief	returns the pivots of this Hierarchy 
+		*
+		* @param	ani				the animation that we want the frame pivots of
+		* @param	time			the time that represents a frame
+		*/
 		std::vector<glm::f32mat4x4> GetPivots(std::shared_ptr<Animation> ani = nullptr, const long long time = 0);
 
 		inline void SetName(std::string name) { m_name = name; }

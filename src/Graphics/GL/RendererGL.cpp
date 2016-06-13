@@ -218,7 +218,7 @@ void RendererGL::Render(const glm::mat4& ortho)
 
 	int cores = std::thread::hardware_concurrency();
 	std::size_t const vecsize = m_entities.size() / (cores - 1);
-	for (int i = 0;i < cores - 1;++i)
+	for (int i = 0;i < cores - 1; ++i)
 	{
 		std::size_t rest = 0;
 		if (i + 1 == cores - 1)

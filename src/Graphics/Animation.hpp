@@ -39,9 +39,26 @@ namespace anvil
 		*/
 		~Animation();
 
+		/**
+		* @fn	void Animation::ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vector<glm::mat4> &rest_mats, const long long time);
+		*
+		* @brief	compute the matrices for a frame specified by time
+		*
+		* @param	frame_mats		the matrices that the offsets are applyed to
+		* @param	rest_mats		the rest pose matrices of the hierarchy
+		* @param	time			the time that represents a frame
+		*/
 		void ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vector<glm::mat4> &rest_mats, const long long time);
 
-		void GetFrame(std::vector<glm::mat4> &mats, const long long time);
+		/**
+		* @fn	void Animation::GetFrame(std::vector<glm::mat4> &frame_mats, const long long time);
+		*
+		* @brief	returns the matrices for the frame represented by time
+		*
+		* @param	frame_mats		the matrices that the offsets are applyed to
+		* @param	time		the time that represents a frame
+		*/
+		void GetFrame(std::vector<glm::mat4> &frame_mats, const long long time);
 
 		/**
 		* @fn	void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames);

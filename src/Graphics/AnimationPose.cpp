@@ -9,7 +9,7 @@
 
 using namespace anvil;
 
-AnimationPose::AnimationPose(std::vector<glm::mat4> data)
+AnimationPose::AnimationPose(std::vector<glm::mat4> &data)
 {
 	m_data = data;
 }

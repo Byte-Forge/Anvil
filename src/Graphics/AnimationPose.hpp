@@ -25,7 +25,7 @@ namespace anvil
 		*
 		* @brief	Default constructor.
 		*/
-		AnimationPose(std::vector<glm::mat4> data);
+		AnimationPose(std::vector<glm::mat4> &data);
 
 		/**
 		* @fn	AnimationPose::~AnimationPose();
@@ -37,7 +37,7 @@ namespace anvil
 		inline std::vector<glm::mat4> GetData() { return m_data; }
 
 	private:
-		int m_count; //number of instances that uses this pose per frame
+		int m_count; //number of instances that use this pose per frame
 		std::vector<glm::f32mat4x4> m_data;
 	};
 }
