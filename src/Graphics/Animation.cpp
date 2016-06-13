@@ -37,7 +37,6 @@ void Animation::ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vect
 			glm::vec4 of = glm::vec4(GetOffsetValue(i, 0, frame), GetOffsetValue(i, 1, frame), GetOffsetValue(i, 2, frame), 1.0f);
 			glm::quat q = glm::quat(GetOffsetValue(i, 3, frame), GetOffsetValue(i, 4, frame), GetOffsetValue(i, 5, frame), GetOffsetValue(i, 6, frame));
 
-
 			frame_mats[i] = glm::toMat4(q);
 			//of *= of;
 
@@ -61,7 +60,11 @@ void Animation::ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vect
 			}
 			frame_mats[i] = glm::transpose(frame_mats[i]);
 		}
-		m_poses.insert({ frame, AnimationPose(frame_mats) });
+		m_poses_mutex.lock();
+		const auto& it2 = m_poses.find(frame);
+		if (it == m_poses.end())
+			m_poses.insert({ frame, AnimationPose(frame_mats) });
+		m_poses_mutex.unlock();
 	}
 }
 

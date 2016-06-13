@@ -210,22 +210,22 @@ void RendererGL::Render(const glm::mat4& ortho)
 		m_rendered_polygons += renderable->Render(*m_modelShaders[0]);
 
 	m_promises.clear();
-	auto updateEntities = [](std::vector<std::shared_ptr<Entity>> entities)
+	auto updateInstances = [](std::vector<std::shared_ptr<Instance>> instances)
 	{
-		for (auto& entity : entities)
-			entity->Update();
+		for (auto& instance : instances)
+			instance->Update();
 	};
 
 	int cores = std::thread::hardware_concurrency();
-	std::size_t const vecsize = m_entities.size() / (cores - 1);
+	std::size_t const vecsize = m_instances.size() / (cores - 1);
 	for (int i = 0;i < cores - 1; ++i)
 	{
 		std::size_t rest = 0;
 		if (i + 1 == cores - 1)
-			rest = m_entities.size() % (cores - 1);
+			rest = m_instances.size() % (cores - 1);
 
-		std::vector<std::shared_ptr<Entity>> sub_entities(m_entities.begin() + i*vecsize, m_entities.begin() + (i + 1)*vecsize + rest);
-		m_promises.push_back(std::async(std::launch::async, updateEntities, sub_entities));
+		std::vector<std::shared_ptr<Instance>> sub_instances(m_instances.begin() + i*vecsize, m_instances.begin() + (i + 1)*vecsize + rest);
+		m_promises.push_back(std::async(std::launch::async, updateInstances, sub_instances));
 	}
 
 	glEnable(GL_CULL_FACE);

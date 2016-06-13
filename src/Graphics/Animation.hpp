@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <glm/glm.hpp>
 #include <vector>
+#include <mutex>
 #include "AnimationPose.hpp"
 
 namespace anvil
@@ -86,6 +87,7 @@ namespace anvil
 		int m_numFrames;
 		float m_framesPerSecond; 
 		float m_framesPerMilliSecond;
+		std::mutex m_poses_mutex;
 
 		//pivot -> type -> frame 
 		std::map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
