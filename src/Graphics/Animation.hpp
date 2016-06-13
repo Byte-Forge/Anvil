@@ -40,15 +40,16 @@ namespace anvil
 		~Animation();
 
 		/**
-		* @fn	void Animation::ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vector<glm::mat4> &rest_mats, const long long time);
+		* @fn	void Animation::ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vector<glm::mat4> &rest_mats, std::vector<std::int32_t> &parentIDs, const long long time);
 		*
 		* @brief	compute the matrices for a frame specified by time
 		*
 		* @param	frame_mats		the matrices that the offsets are applyed to
 		* @param	rest_mats		the rest pose matrices of the hierarchy
+		* @param	parentIDs		the ids needed for parenting
 		* @param	time			the time that represents a frame
 		*/
-		void ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vector<glm::mat4> &rest_mats, const long long time);
+		void ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vector<glm::mat4> &rest_mats, std::vector<std::int32_t> &parentIDs, const long long time);
 
 		/**
 		* @fn	void Animation::GetFrame(std::vector<glm::mat4> &frame_mats, const long long time);

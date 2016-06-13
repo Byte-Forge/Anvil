@@ -25,7 +25,7 @@ Hierarchy::~Hierarchy()
 
 void Hierarchy::ComputeFrame(std::shared_ptr<Animation> ani, const long long time)
 {
-	ani->ComputeFrame(m_frame_pivots, m_rest_pivots, time);
+	ani->ComputeFrame(m_frame_pivots, m_rest_pivots, m_parentIDs, time);
 }
 
 std::vector<glm::f32mat4x4> Hierarchy::GetPivots(std::shared_ptr<Animation> ani, const long long time)
@@ -33,8 +33,11 @@ std::vector<glm::f32mat4x4> Hierarchy::GetPivots(std::shared_ptr<Animation> ani,
 	if (ani != nullptr)
 	{
 		ani->GetFrame(m_frame_pivots, time);
+		return m_frame_pivots;
 	}
 
+	//do this only once for hierarchies with no animation
+	/*
 	for (int i = 0; i < m_pivotCount; i++)
 	{
 		std::int32_t parentID = m_parentIDs[i];
@@ -48,5 +51,6 @@ std::vector<glm::f32mat4x4> Hierarchy::GetPivots(std::shared_ptr<Animation> ani,
 		}
 		m_pivots[i] = glm::transpose(m_pivots[i]);
 	}
+	*/
 	return m_pivots;
 }

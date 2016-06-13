@@ -115,8 +115,8 @@ void ITerrain::Generate()
 	//auto vecNecro = glm::vec3(-10, 5, 20);
 	//necroFire->AddInstance(vecNecro);
 
-	//auto vecBarracks = glm::vec3(25, 0, 25);
-	//barracks->AddInstance(vecBarracks);
+	auto vecBarracks = glm::vec3(25, 0, 25);
+	barracks->AddInstance(vecBarracks);
 
 	auto vecTroll = glm::vec3(20, 0, -15);
 	troll->AddInstance(vecTroll);
