@@ -53,7 +53,7 @@ void Quadtree::AddTriangle(uint32_t indices[3], glm::vec3& v1, glm::vec3& v2, gl
 	}		
 }
 
-std::vector<uint32_t> Quadtree::GetTriangles(const std::array<std::array<float, 4>, 6>& frustum)
+std::vector<uint32_t> Quadtree::GetTriangles(const std::array<glm::vec4, 6>& frustum)
 {
 	if (m_level == m_maxLevel)
 		return m_triangles;
@@ -90,12 +90,12 @@ bool Quadtree::contains(glm::vec3& vertex)
 		&& vertex.z <= m_pos.z + m_size.z);
 }
 
-int Quadtree::SphereInFrustum(const std::array<std::array<float, 4>, 6>& frustum)
+int Quadtree::SphereInFrustum(const std::array<glm::vec4, 6>& frustum)
 {
 	return Collision::SphereInFrustum(frustum, m_pos, m_radius);
 }
 
-bool Quadtree::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum)
+bool Quadtree::CubeInFrustum(const std::array<glm::vec4, 6>& frustum)
 {
 	return Collision::CubeInFrustum(frustum, m_pos, m_size);
 }
