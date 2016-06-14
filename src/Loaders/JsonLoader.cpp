@@ -139,7 +139,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			if (d["entity"].HasMember("modelConditionStates") && d["entity"]["modelConditionStates"].IsArray())
 			{
 				std::shared_ptr<Entity::ModelConditionState> state;
-				for (int i = 0; i < d["entity"]["modelConditionStates"].Size(); i++)
+				for (unsigned int i = 0; i < d["entity"]["modelConditionStates"].Size(); i++)
 				{
 					std::string stateName = d["entity"]["modelConditionStates"][i]["name"].GetString();
 					state = std::make_shared<Entity::ModelConditionState>();
@@ -166,7 +166,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			if (d["entity"].HasMember("animationStates") && d["entity"]["animationStates"].IsArray())
 			{
 				std::shared_ptr<Entity::AnimationState> state;
-				for (int i = 0; i < d["entity"]["animationStates"].Size(); i++)
+				for (unsigned int i = 0; i < d["entity"]["animationStates"].Size(); i++)
 				{
 					std::string stateName = d["entity"]["animationStates"][i]["name"].GetString();
 					state = std::make_shared<Entity::AnimationState>();

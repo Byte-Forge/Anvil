@@ -101,7 +101,7 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 	
 	std::vector<std::string> temp;
 	temp = IO::ListFiles("materials/terrain/", "json");
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
 		if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
 		{
@@ -109,10 +109,10 @@ std::vector<std::string> ResourceHandler::GetTerrainMaterials()
 		}
 	}
 
-	for (int i = 0; i < m_modDirs.size(); i++)
+	for (unsigned int i = 0; i < m_modDirs.size(); i++)
 	{
 		temp = IO::ListFiles(m_modDirs[i] + "materials/terrain/", "json");
-		for (int i = 0; i < temp.size(); i++)
+		for (unsigned int i = 0; i < temp.size(); i++)
 		{
 			if (!(std::find(materials.begin(), materials.end(), temp[i]) != materials.end()))
 			{
