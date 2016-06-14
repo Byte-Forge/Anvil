@@ -29,41 +29,44 @@ void Animation::ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vect
 {
 	int frame = time * m_framesPerMilliSecond;
 
+	m_poses_mutex.lock();
 	const auto& it = m_poses.find(frame);
+	m_poses_mutex.unlock();
 	if (it == m_poses.end())
 	{
-		for (int i = 0; i < frame_mats.size(); i++)
+		std::vector<glm::mat4> mats;
+		for (int i = 0; i < rest_mats.size(); i++)
 		{
 			glm::vec4 of = glm::vec4(GetOffsetValue(i, 0, frame), GetOffsetValue(i, 1, frame), GetOffsetValue(i, 2, frame), 1.0f);
 			glm::quat q = glm::quat(GetOffsetValue(i, 3, frame), GetOffsetValue(i, 4, frame), GetOffsetValue(i, 5, frame), GetOffsetValue(i, 6, frame));
 
-			frame_mats[i] = glm::toMat4(q);
+			mats.push_back(glm::toMat4(q));
 			//of *= of;
 
-			frame_mats[i][0][3] = rest_mats[i][0][3] + of.x;
-			frame_mats[i][1][3] = rest_mats[i][1][3] + of.y;
-			frame_mats[i][2][3] = rest_mats[i][2][3] + of.z;
+			mats[i][0][3] = rest_mats[i][0][3] + of.x;
+			mats[i][1][3] = rest_mats[i][1][3] + of.y;
+			mats[i][2][3] = rest_mats[i][2][3] + of.z;
 		}
 
 		//do the parenting
 		std::vector<glm::mat4> pivots;
-		for (int i = 0; i < frame_mats.size(); i++)
+		for (int i = 0; i < rest_mats.size(); i++)
 		{
 			std::int32_t parentID = parentIDs[i];
-			pivots.push_back(frame_mats[i]);
+			pivots.push_back(mats[i]);
 
 			//do the parenting
 			while (parentID >= 0)
 			{
-				frame_mats[i] = frame_mats[i] * pivots[parentID];
+				mats[i] = mats[i] * pivots[parentID];
 				parentID = parentIDs[parentID];
 			}
-			frame_mats[i] = glm::transpose(frame_mats[i]);
+			mats[i] = glm::transpose(mats[i]);
 		}
 		m_poses_mutex.lock();
 		const auto& it2 = m_poses.find(frame);
 		if (it == m_poses.end())
-			m_poses.insert({ frame, AnimationPose(frame_mats) });
+			m_poses.insert({ frame, AnimationPose(mats) });
 		m_poses_mutex.unlock();
 	}
 }
