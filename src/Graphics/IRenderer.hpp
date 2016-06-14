@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <array>
+#include <future>
 #include "../Objects/Instance.hpp"
 #include "../Core/Options.hpp"
 
@@ -98,6 +99,10 @@ namespace anvil
 		 */
 		virtual const std::string GetGPUName() = 0;
 
+
+		void UpdateInstances();
+		void JoinInstanceThreads();
+
 		inline void RegisterSkybox(std::shared_ptr<IRenderable> skybox) { m_skybox = skybox; }
 		inline void RegisterTerrain(std::shared_ptr<IRenderable> terrain) { m_terrain = terrain; }
 		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable) { m_renderables.push_back(renderable); } 
@@ -129,5 +134,6 @@ namespace anvil
 		std::shared_ptr<IRenderable> m_terrain;
 		std::vector<std::shared_ptr<IRenderable>> m_renderables; 
 		std::vector<std::shared_ptr<Instance>> m_instances;
+		std::vector<std::future<void>> m_promises;
 	};
 }

@@ -201,36 +201,15 @@ void RendererGL::Render(const glm::mat4& ortho)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this
 
-	for (auto& promise : m_promises)
-	{
-		promise.get();
-	}
+	JoinInstanceThreads();
 
     for (auto& renderable : m_renderables)
 		m_rendered_polygons += renderable->Render(*m_modelShaders[0]);
 
-	m_promises.clear();
-	auto updateInstances = [](std::vector<std::shared_ptr<Instance>> instances)
-	{
-		for (auto& instance : instances)
-			instance->Update();
-	};
-
-	int cores = std::thread::hardware_concurrency();
-	std::size_t const vecsize = m_instances.size() / (cores - 1);
-	for (int i = 0;i < cores - 1; ++i)
-	{
-		std::size_t rest = 0;
-		if (i + 1 == cores - 1)
-			rest = m_instances.size() % (cores - 1);
-
-		std::vector<std::shared_ptr<Instance>> sub_instances(m_instances.begin() + i*vecsize, m_instances.begin() + (i + 1)*vecsize + rest);
-		m_promises.push_back(std::async(std::launch::async, updateInstances, sub_instances));
-	}
+	UpdateInstances();
 
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
-
 	glDisable(GL_DEPTH_TEST);
 }
 
