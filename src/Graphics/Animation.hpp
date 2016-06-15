@@ -7,12 +7,14 @@
 
 #pragma once
 #include "../Core/IResource.hpp"
+#include "../Math/Interpolate.hpp"
 #include <string>
 #include <map>
 #include <unordered_map>
 #include <glm/glm.hpp>
 #include <vector>
 #include <mutex>
+#include <memory>
 #include "AnimationPose.hpp"
 
 namespace anvil
@@ -25,6 +27,8 @@ namespace anvil
 	class Animation : public IResource
 	{
 	public:
+		typedef std::shared_ptr<Interpolate<int,glm::f32>> AniInterpolate;
+
 
 		/**
 		* @fn	Animation::Animation();
@@ -73,13 +77,13 @@ namespace anvil
 		*/
 		void AddChannel(int pivot, int type, std::map<int, glm::f32> frames);
 	
-		inline void SetName(const std::string &name) { m_name = name; }
-		inline void SetHierarchyName(const std::string &name) { m_hierarchyName = name; }
-		inline void SetFramesPerSecond(int framesPerSecond) { m_framesPerSecond = framesPerSecond; m_framesPerMilliSecond = m_framesPerSecond / 1000.0f; }
-		inline void SetNumFrames(int numFrames) { m_numFrames = numFrames; }
-		inline long long GetTotalTime() { return (m_numFrames / m_framesPerSecond) * 1000.0f; }
-		inline std::string GetName() { return m_name; }
-		inline std::string GetHierarchyName() { return m_hierarchyName; }
+		inline void SetName(const std::string &name) 			{ m_name = name; }
+		inline void SetHierarchyName(const std::string &name) 	{ m_hierarchyName = name; }
+		inline void SetFramesPerSecond(int framesPerSecond) 	{ m_framesPerSecond = framesPerSecond; m_framesPerMilliSecond = m_framesPerSecond / 1000.0f; }
+		inline void SetNumFrames(int numFrames) 				{ m_numFrames = numFrames; }
+		inline long long GetTotalTime() 						{ return (m_numFrames / m_framesPerSecond) * 1000.0f; }
+		inline std::string GetName() 							{ return m_name; }
+	inline std::string GetHierarchyName() 						{ return m_hierarchyName; }
 
 	private:
 		std::string m_name;
@@ -90,7 +94,7 @@ namespace anvil
 		std::mutex m_poses_mutex;
 
 		//pivot -> type -> frame 
-		std::map<int, std::unordered_map<int, std::map<int, glm::f32>>> m_data;
+		std::map<int, std::unordered_map<int, AniInterpolate>> m_data;
 		std::map<int, AnimationPose> m_poses;
 
 	private:
