@@ -30,7 +30,7 @@ namespace anvil
 			auto upper = this->m_points.lower_bound(x);
 			auto lower = std::prev(this->m_points.upper_bound(x));
 
-			const ytype pitch = (upper->first-lower->first)/(upper->second-lower->second);
+			const ytype pitch = (upper->second-lower->second)/(upper->first-lower->first);
 
 			return lower->second+pitch*(upper->first-lower->first);
 		}
