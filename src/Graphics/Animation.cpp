@@ -91,7 +91,7 @@ glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
 		const auto& it2 = it->second.find(type);
 		if (it2 != it->second.end())
 		{
-			it2->second->GetPoint(frame%m_numFrames);
+			return it2->second->GetPoint(frame%m_numFrames);
 		}
 	}
 	return 0.0f;
