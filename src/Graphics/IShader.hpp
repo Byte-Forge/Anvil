@@ -67,25 +67,6 @@ namespace anvil
 		virtual void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader) = 0;
 
 		/**
-		 * @fn	virtual void IShader::Define(const std::string& macro) = 0;
-		 *
-		 * @brief	Defines the given macro.
-		 *
-		 * @param	macro	The macro.
-		 */
-		virtual void Define(const std::string& macro) = 0;
-
-		/**
-		 * @fn	virtual void IShader::Define(const std::string& macro, const std::string& value) = 0;
-		 *
-		 * @brief	Defines.
-		 *
-		 * @param	macro	The macro.
-		 * @param	value	The value.
-		 */
-		virtual void Define(const std::string& macro, const std::string& value) = 0;
-
-		/**
 		 * @fn	virtual void IShader::Compile() = 0;
 		 *
 		 * @brief	Compiles this object.

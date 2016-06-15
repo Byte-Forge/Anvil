@@ -15,8 +15,6 @@
 
 using namespace anvil;
 
-const std::string GL::Shader::glslVersion = "400 core";
-
 GL::Shader::Shader()
 {
     m_program = glCreateProgram();
@@ -32,15 +30,6 @@ GL::Shader::~Shader()
     glDeleteProgram(m_program);
 }
 
-void GL::Shader::Define(const std::string & macro)
-{
-	m_macros[macro] = std::string();
-}
-
-void GL::Shader::Define(const std::string & macro, const std::string & value)
-{
-	m_macros[macro] = value;
-}
 
 void GL::Shader::Load(const std::string &vertShader, const std::string &fragShader)
 {
@@ -78,26 +67,15 @@ void GL::Shader::LoadShader(const std::string& file, GLenum type)
     std::ifstream fin(file);
     if(fin.fail())
 		throw AnvilException("Failed to load shader " + file, __FILE__, __LINE__);
-
-	int* size = new int[2];
-    char** buffer = new char*[2];
-
-	std::string macroStr;
-	macroStr += "#version " + glslVersion + "\n";
-	for (const auto& m : m_macros)
-	{
-		macroStr += "#define " + m.first + " " + m.second + "\n";
-	}
 	
-	size[0] = macroStr.size();
-	buffer[0] = const_cast<char*>(macroStr.c_str());
-	fin.seekg(0, std::ios::end);
-	
-	size[1] = (int)fin.tellg();
+	std::cout << file << std::endl;
+	int size = 0;
+	fin.seekg(0, std::ios::end);	
+	size = (int)fin.tellg();
 	fin.seekg(0, std::ios::beg);
-	buffer[1] = new char[size[1]];
-	std::memset(buffer[1], 0, size[1]);
-    fin.read(buffer[1], size[1]);
+	char* buffer = new char[size];
+	std::memset(buffer, 0, size);
+    fin.read(buffer, size);
 
     if(m_shaders[type])
     {
@@ -106,11 +84,10 @@ void GL::Shader::LoadShader(const std::string& file, GLenum type)
 
     m_shaders[type] = glCreateShader(type);
     const auto& shader = m_shaders[type];
-    glShaderSource(shader,2,buffer, size);
+    glShaderSource(shader,1,&buffer, &size);
 
-	delete[] size;
-	delete[] buffer[1];
-	delete[] buffer;
+	if(buffer)
+		delete[] buffer;
 }
 
 void GL::Shader::Use()

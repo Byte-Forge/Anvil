@@ -26,10 +26,17 @@ namespace anvil
 	*/
 	class Animation : public IResource
 	{
+	private:
+		typedef Interpolate<int, glm::f32> Interpolate;
+		typedef LinearInterpolate<int, glm::f32> InterpolateLinear;
+		typedef std::shared_ptr<Interpolate> InterpolatePtr;
+
+		inline InterpolatePtr MakeLinearInterpolate()
+		{
+			return std::make_shared<InterpolateLinear>();
+
+		}
 	public:
-		typedef std::shared_ptr<Interpolate<int,glm::f32>> AniInterpolate;
-
-
 		/**
 		* @fn	Animation::Animation();
 		*
@@ -94,7 +101,7 @@ namespace anvil
 		std::mutex m_poses_mutex;
 
 		//pivot -> type -> frame 
-		std::map<int, std::unordered_map<int, AniInterpolate>> m_data;
+		std::map<int, std::unordered_map<int, InterpolatePtr>> m_data;
 		std::map<int, AnimationPose> m_poses;
 
 	private:

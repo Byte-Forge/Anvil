@@ -123,13 +123,9 @@ RendererGL::RendererGL()
 	m_modelShaders[0]->Load("shader/gl/model.vert", "shader/gl/model.frag");
 	m_modelShaders[0]->Compile();
 
-	for (unsigned int i = 0; i < m_shaderModes.size(); i++)
-	{
-		m_terrainShaders.push_back(std::make_unique<GL::Shader>());
-		m_terrainShaders[i]->Define(m_shaderModes[i]);
-		m_terrainShaders[i]->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
-		m_terrainShaders[i]->Compile();
-	}
+	m_terrainShader = std::make_unique<GL::Shader>();
+	m_terrainShader->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
+	m_terrainShader->Compile();
 
 	m_vendor = OTHER;
 	auto iterator = vendorMap.find(reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
@@ -179,22 +175,10 @@ void RendererGL::Render(const glm::mat4& ortho)
 
 	m_terrain->Update();
 
-	if (m_wireframeMode)
-	{
-		m_terrainShaders[1]->Use();		
-		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[1]);
-	}
-	else
-	{
-		m_terrainShaders[0]->Use();
-		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[0]);
-	}
-	if (m_normalsMode)
-	{
-		m_terrainShaders[2]->Use();
-		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[2]);
-	}
 
+	m_terrainShader->Use();
+	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
+	
 	m_modelShaders[0]->Use();
 
 	glEnable(GL_BLEND);

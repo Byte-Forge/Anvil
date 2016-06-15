@@ -102,8 +102,8 @@ void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames)
 	const auto& it = m_data.find(pivot);
 	if (it == m_data.end())
 	{
-		std::unordered_map<int, AniInterpolate> channels;
-		AniInterpolate interpolate = std::make_shared<LinearInterpolate<int,glm::f32>>();
+		std::unordered_map<int, InterpolatePtr> channels;
+		InterpolatePtr interpolate = MakeLinearInterpolate();
 		for(const auto& frame : frames)
 		{
 
@@ -114,7 +114,7 @@ void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames)
 	}
 	else
 	{
-		AniInterpolate interpolate = std::make_shared<LinearInterpolate<int,glm::f32>>();
+		InterpolatePtr interpolate  = MakeLinearInterpolate();
 		for(const auto& frame : frames)
 		{
 			interpolate->AddPoint(frame.first,frame.second);
