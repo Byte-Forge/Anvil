@@ -91,36 +91,7 @@ glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
 		const auto& it2 = it->second.find(type);
 		if (it2 != it->second.end())
 		{
-			const auto& it3 = it2->second.find(frame);
-			if (it3 != it2->second.end())
-			{
-				return it3->second;
-			}
-			//else we have to interpolate between two keyframes
-			else
-			{
-				int beforeFrame = 0;
-				int afterFrame;
-				glm::f32 before = it2->second.begin()->second;
-				glm::f32 after;
-				for (std::map<int, glm::f32>::iterator i = it2->second.begin(); i != it2->second.end(); ++i)
-				{
-					if (i->first < frame)
-					{
-						beforeFrame = i->first;
-						before = i->second;
-					}
-					else if (i->first > frame)
-					{
-						afterFrame = i->first;
-						after = i->second;
-
-						float delta = afterFrame - beforeFrame;
-						float ratio = (frame - beforeFrame) / delta;
-						return ratio * before + (1 - ratio) * after;
-					}
-				}
-			}
+			return it2->second->GetPoint(frame%m_numFrames);
 		}
 	}
 	return 0.0f;
@@ -131,12 +102,23 @@ void Animation::AddChannel(int pivot, int type, int interpolation, std::map<int,
 	const auto& it = m_data.find(pivot);
 	if (it == m_data.end())
 	{
-		std::unordered_map<int, std::map<int, glm::f32>> channels;
-		channels.insert({ type, frames});
+		std::unordered_map<int, AniInterpolate> channels;
+		AniInterpolate interpolate = std::make_shared<LinearInterpolate<int,glm::f32>>();
+		for(const auto& frame : frames)
+		{
+
+			interpolate->AddPoint(frame.first,frame.second);
+		}
+		channels.insert({ type, interpolate});
 		m_data.insert({pivot, channels});
 	}
 	else
 	{
-		m_data[pivot].insert({type, frames});
+		AniInterpolate interpolate = std::make_shared<LinearInterpolate<int,glm::f32>>();
+		for(const auto& frame : frames)
+		{
+			interpolate->AddPoint(frame.first,frame.second);
+		}
+		m_data[pivot].insert({type, interpolate});
 	}
 }

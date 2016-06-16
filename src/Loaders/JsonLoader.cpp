@@ -37,7 +37,6 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 	if (d.HasMember("material"))
 	{
 		mat = std::make_shared<Material>();
-		std::cout << d["material"].GetType() << std::endl;
 		if (d["material"].HasMember("displacement_factor"))
 			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
 		if (d["material"].HasMember("uPerSec"))

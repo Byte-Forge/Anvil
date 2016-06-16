@@ -120,6 +120,7 @@ void ITerrain::Generate()
 	//auto vecNecro = glm::vec3(-10, 5, 20);
 	//necroFire->AddInstance(vecNecro);
 
+
 	//auto vecBarracks = glm::vec3(25, 0, 25);
 	//barracks->AddInstance(vecBarracks);
 
@@ -137,7 +138,7 @@ void ITerrain::Generate()
 			uruk_crossbow->AddInstance(vecCrossbow);
 		}
 
-	auto vecTree = glm::vec3(0, 10, 0);
+	/*auto vecTree = glm::vec3(0, 10, 0);
 	tree->AddInstance(vecTree);
 	vecTree = glm::vec3(m_width, 10, 0);
 	tree->AddInstance(vecTree);
@@ -145,7 +146,7 @@ void ITerrain::Generate()
 	tree->AddInstance(vecTree);
 	vecTree = glm::vec3(m_width, 10, m_height);
 	tree->AddInstance(vecTree);
-
+*/
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;
