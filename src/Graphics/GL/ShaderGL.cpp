@@ -100,7 +100,9 @@ int GL::Shader::GetUniform(const std::string &name)
 	const auto& it = m_uniforms.find(name);
 	if (it == m_uniforms.end())
 	{
-		GLuint loc = glGetUniformLocation(m_program, name.c_str());
+		const GLint loc = glGetUniformLocation(m_program, name.c_str());
+		if (loc == -1)
+			throw AnvilException("Uniform: \"" + name + "\" doesn't exist!", __FILE__, __LINE__);
 		m_uniforms[name] = loc;
 		return loc;
 	}
