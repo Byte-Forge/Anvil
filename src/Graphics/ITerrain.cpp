@@ -26,6 +26,8 @@ using namespace anvil;
 
 ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width), m_height(height)
 {
+	m_quadtree = std::make_shared<Quadtree>(glm::vec2(m_width / 2.f, m_height / 2.f), glm::vec2(m_width / 2.f, m_height / 2.f));
+	Generate();
 }
 
 int ITerrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
@@ -34,9 +36,12 @@ int ITerrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
 	glm::vec3 direction;
 	Core::GetCore()->GetCamera()->ScreenPosToWorldRay(mousePos, origin, direction);
 	glm::vec3 point;
+
+	origin = glm::vec3(origin.x, origin.z, origin.y);
+	direction = glm::vec3(direction.x, direction.z, direction.y);
 	for (unsigned int i = 0; i < m_faces.size(); i += 3)
 	{
-		if (glm::intersectRayTriangle(origin, direction, m_vertices[m_faces[i]], m_vertices[m_faces[i + 1]], m_vertices[m_faces[i + 2]], point))
+		if (glm::intersectRayTriangle(origin, direction, m_vertices[m_faces[i]], m_vertices[m_faces[i+1]], m_vertices[m_faces[i+2]], point))
 		{
 			pos = point;
 			return 1;
@@ -101,7 +106,6 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> uruk = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_sword.json");
 	std::shared_ptr<Entity> uruk_spear = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_spear.json");
 	std::shared_ptr<Entity> uruk_crossbow = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_crossbow.json");
-	std::shared_ptr<Entity> uruk_crossbow_test = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_crossbow_test.json");
 	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 	std::shared_ptr<Entity> castle_floor = Core::GetCore()->GetResources()->GetEntity("entities/structures/dwarves/castle_floor.json");
@@ -116,23 +120,21 @@ void ITerrain::Generate()
 	//auto vecNecro = glm::vec3(-10, 5, 20);
 	//necroFire->AddInstance(vecNecro);
 
-	auto vecBarracks = glm::vec3(25, 0, 25);
-	barracks->AddInstance(vecBarracks);
+	//auto vecBarracks = glm::vec3(25, 0, 25);
+	//barracks->AddInstance(vecBarracks);
 
-	auto vecTroll = glm::vec3(20, 0, -15);
-	troll->AddInstance(vecTroll);
+	//auto vecTroll = glm::vec3(20, 0, -15);
+	//troll->AddInstance(vecTroll);
 
-	for (int i = 0; i < 50; i += 2)
-		for (int j = 0; j < 50; j += 3)
+	for (int i = 0; i < 20; i += 2)
+		for (int j = 0; j < 20; j += 3)
 		{
 			auto vecSoldier = glm::vec3(i, m_heightmap[i][j], j);
 			auto vecSpear = glm::vec3(i, m_heightmap[i][j+1], j + 1);
 			auto vecCrossbow = glm::vec3(i, m_heightmap[i][j+2], j + 2);
-			auto vecCrossbow_test = glm::vec3(i, m_heightmap[i][j + 3], j + 3);
 			//uruk->AddInstance(vecSoldier);	
 			//uruk_spear->AddInstance(vecSpear);
 			uruk_crossbow->AddInstance(vecCrossbow);
-			uruk_crossbow_test->AddInstance(vecCrossbow_test);
 		}
 
 	auto vecTree = glm::vec3(0, 10, 0);
@@ -342,8 +344,29 @@ void ITerrain::UpdateTextures()
 
 float ITerrain::GetHeight(float x, float y)
 {
-	//TODO: interplate between triangle edges
 	if (x < 0.0 || y < 0.0 || x > m_width || y > m_height)
 		return 0.0f;
 	return m_heightmap[(int)x][(int)y];
+	//TODO: interplate between triangle edges
+	/*
+	int ix = x;
+	int iy = y;
+	float xoffset = x - ix;
+	float yoffset = y - iy;
+	glm::vec3 basis, first, second;
+	if (xoffset > 0.5f && yoffset > 0.5f)
+	{
+		basis = glm::vec3(ix + 1, m_heightmap[ix + 1][iy + 1], iy + 1);
+		first = glm::vec3(ix + 1, m_heightmap[ix + 1][iy - 1], iy - 1) - basis;
+		second = glm::vec3(ix - 1, m_heightmap[ix - 1][iy + 1], iy + 1) - basis;
+		return (basis + (xoffset * first) + (yoffset * second)).y;
+	}
+	else
+	{
+		basis = glm::vec3(ix, m_heightmap[ix][iy], iy);
+		first = glm::vec3(ix + 1, m_heightmap[ix + 1][iy], iy) - basis;
+		second = glm::vec3(ix, m_heightmap[ix][iy+1], iy+1) - basis;
+		return (basis + (xoffset * first) + (yoffset * second)).y;
+	}
+	*/
 }

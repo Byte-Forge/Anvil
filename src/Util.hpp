@@ -191,9 +191,9 @@ namespace anvil
 	*
 	* @param	vec		the vector to be printed
 	*/
-	inline void printVec(glm::vec4 vec)
+	inline void printVec(glm::vec3 vec)
 	{
-		std::cout << std::fixed << std::setprecision(2) << vec[0] << "\t" << vec[1] << "\t" << vec[2] << "\t" << vec[3] << std::endl;
+		std::cout << std::fixed << std::setprecision(2) << vec.x << "\t" << vec.y << "\t" << vec.z << std::endl;
 		std::cout << std::endl;
 	}
 

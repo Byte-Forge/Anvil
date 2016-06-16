@@ -26,6 +26,24 @@ namespace anvil
 	{
 	public:
 
+		enum CHANNELTYPES
+		{
+			X = 0,
+			Y = 1,
+			Z = 2, 
+			W = 3,
+			QX = 4,
+			QY = 5,
+			QZ = 6
+		};
+
+		enum INTERPOLATION
+		{
+			CONSTANT = 0,
+			LINEAR = 1,
+			BEZIER = 2
+		};
+
 		/**
 		* @fn	Animation::Animation();
 		*
@@ -71,7 +89,7 @@ namespace anvil
 		* @param	type		the type of this channel
 		* @param	frames		the values for the specific frames
 		*/
-		void AddChannel(int pivot, int type, std::map<int, glm::f32> frames);
+		void AddChannel(int pivot, int type, int interpolation, std::map<int, glm::f32> frames);
 	
 		inline void SetName(const std::string &name) { m_name = name; }
 		inline void SetHierarchyName(const std::string &name) { m_hierarchyName = name; }

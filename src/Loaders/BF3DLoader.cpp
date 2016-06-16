@@ -77,7 +77,7 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
 		std::int32_t pivot;
-		std::int32_t extrapolation;
+		std::int32_t interpolation;
 		std::int32_t type;
 
 		std::map<int, glm::f32> frames;
@@ -93,7 +93,7 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 			break;
 		case 514:
 			pivot = read<std::int32_t>(file);
-			extrapolation = read<std::int32_t>(file);
+			interpolation = read<std::int32_t>(file);
 			type = read<std::int32_t>(file);
 			frames.clear();
 
@@ -103,7 +103,7 @@ void BF3DLoader::LoadAnimation(const std::string &name, std::ifstream &file, std
 				glm::f32 value = read<glm::f32>(file);
 				frames.insert({ frame, value });
 			}
-			animation->AddChannel(pivot, type, frames);
+			animation->AddChannel(pivot, type, interpolation, frames);
 			break;
 		default:
 			std::cout << "unknown chunktype in animation chunk: " << chunkType << std::endl;

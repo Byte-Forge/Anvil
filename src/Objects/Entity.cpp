@@ -57,7 +57,6 @@ void Entity::AddInstance(const glm::vec3 &position,const glm::vec3 &euler)
 	}
 	std::shared_ptr<Instance> i = std::make_shared<Instance>(shared_from_this(), position, euler);
 	Core::GetCore()->GetGraphics()->GetRenderer()->RegisterInstance(i);
-	i->Init();
 	m_instances.push_back(i);
 }
 
@@ -97,6 +96,7 @@ void Entity::LoadResources()
 	}
 	for (auto& state : m_animationStates)
 	{
-		state.second->animation = Core::GetCore()->GetResources()->GetAnimation(state.second->animationName);
+		for (auto& ani : state.second->animations)
+			ani.animation = Core::GetCore()->GetResources()->GetAnimation(ani.animationName);
 	}
 }

@@ -46,7 +46,7 @@ int GL::ModelGL::Render(IShader& shader)
 			{
 				useSkeleton = true;
 				if (i->IsAnimated())
-					glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots(i->GetAnimationState()->animation, i->GetAnimationTime()).front()));
+					glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots(i->GetAnimation(), i->GetAnimationTime()).front()));
 				else 
 					glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
 				//glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));

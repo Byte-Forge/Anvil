@@ -102,7 +102,7 @@ namespace anvil
 		inline void Scale(glm::vec3 scale) { m_m = m_m * glm::scale(scale); }
 		inline glm::mat4 GetMatrix() { return m_m; }
 		inline std::shared_ptr<Entity::ModelConditionState> GetModelConditionState() { return m_modelConditionState; }
-		inline std::shared_ptr<Entity::AnimationState> GetAnimationState() { return m_animationState; }
+		inline std::shared_ptr<Animation> GetAnimation() { return m_animationState->animations[m_animationIndex].animation; }
 		inline const long long GetAnimationTime() { return m_animationTime; }
 		inline bool IsAnimated() { return m_animationState != nullptr; }
 		inline bool IsUnit() { return m_entity->GetKindOfs().UNIT; }
@@ -122,5 +122,6 @@ namespace anvil
 		glm::mat4 m_m;
 		std::shared_ptr<Entity::ModelConditionState> m_modelConditionState;
 		std::shared_ptr<Entity::AnimationState> m_animationState;
+		int m_animationIndex = 0;
 	};
 }

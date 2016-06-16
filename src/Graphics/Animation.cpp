@@ -37,11 +37,11 @@ void Animation::ComputeFrame(std::vector<glm::mat4> &frame_mats, const std::vect
 		std::vector<glm::mat4> mats;
 		for (int i = 0; i < rest_mats.size(); i++)
 		{
-			glm::vec4 of = glm::vec4(GetOffsetValue(i, 0, frame), GetOffsetValue(i, 1, frame), GetOffsetValue(i, 2, frame), 1.0f);
-			glm::quat q = glm::quat(GetOffsetValue(i, 3, frame), GetOffsetValue(i, 4, frame), GetOffsetValue(i, 5, frame), GetOffsetValue(i, 6, frame));
+			glm::vec4 of = glm::vec4(GetOffsetValue(i, X, frame), GetOffsetValue(i, Y, frame), GetOffsetValue(i, Z, frame), 1.0f);
+			glm::quat q = glm::quat(GetOffsetValue(i, W, frame), GetOffsetValue(i, QX, frame), GetOffsetValue(i, QY, frame), GetOffsetValue(i, QZ, frame));
 
 			mats.push_back(glm::toMat4(q));
-			//of *= of;
+			//of = rest_mats[i] * of;
 
 			mats[i][0][3] = rest_mats[i][0][3] + of.x;
 			mats[i][1][3] = rest_mats[i][1][3] + of.y;
@@ -126,7 +126,7 @@ glm::f32 Animation::GetOffsetValue(int pivotID, int type, int frame)
 	return 0.0f;
 }
 
-void Animation::AddChannel(int pivot, int type, std::map<int, glm::f32> frames)
+void Animation::AddChannel(int pivot, int type, int interpolation, std::map<int, glm::f32> frames)
 {
 	const auto& it = m_data.find(pivot);
 	if (it == m_data.end())

@@ -65,8 +65,6 @@ namespace anvil
 
         private:
 			//rendering stuff
-			glm::mat4 m_mvp;
-			glm::mat4 m_mod;
 			glm::mat3 m_mv3x3;
 
 			GLuint m_vao;

@@ -71,15 +71,26 @@ namespace anvil
 		};
 
 		/**
+		* @struct	Animation
+		*
+		* @brief	the animation of an animationState
+		*/
+		struct AnimationStruct
+		{
+			std::string animationName;
+			std::shared_ptr<Animation> animation;
+			float speed = 1.0f;
+			ANIMATION_MODE mode;
+		};
+
+		/**
 		* @struct	AnimationState
 		*
 		* @brief	the animation state an instance is in
 		*/
 		struct AnimationState
 		{
-			std::string animationName;
-			std::shared_ptr<Animation> animation;
-			ANIMATION_MODE mode;
+			std::vector<AnimationStruct> animations;
 		};
 
 		/**

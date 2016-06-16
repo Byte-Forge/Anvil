@@ -134,10 +134,6 @@ void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm
 	glm::vec4 viewport = glm::vec4(0, 0, resolution.x, resolution.y);
 	glm::vec3 screenPos = glm::vec3(mouse_pos.x, mouse_pos.y, 0.0f);
 
-	//out origin seems to work but intersection is still buggy
 	out_origin = glm::unProject(screenPos, m_view, m_proj, viewport);
-
-	std::cout << "world_pos: " << out_origin.x << ", " << out_origin.y << ", " << out_origin.z << std::endl;
-	//std::cout << "direction: " << m_direction.x << ", " << m_direction.y << ", " << m_direction.z << std::endl;
 	out_direction = m_direction;
 }

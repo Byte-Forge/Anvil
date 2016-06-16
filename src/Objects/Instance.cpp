@@ -31,7 +31,7 @@ Instance::Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position,con
 	m_direction = glm::vec3(1.0, 0.0, 0.0);
 	Rotate(euler);
 	Move(position);
-	srand(time(NULL));
+	std::srand(time(NULL));
 }
 
 Instance::~Instance()
@@ -65,13 +65,13 @@ bool Instance::Update()
 	auto current = std::chrono::high_resolution_clock::now();
 	if (m_firstUpdate)
 	{
+		Init();
 		m_lastUpdated = current;
 		m_firstUpdate = false;
-		if (IsUnit())
-			m_animationTime = rand() % 2000; //to add some varation to unit animations
+		if (IsAnimated())
+			m_animationTime = std::rand() % 2000; //to add some varation to unit animations
 	}
 	m_deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(current - m_lastUpdated).count();
-	m_animationTime += m_deltaTime;
 	m_lastUpdated = current;
 
 	//test if the instance is inside the frustum (visible)
@@ -81,8 +81,8 @@ bool Instance::Update()
 		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
 	{
 		m_visible = true;
-		if (m_animationState != nullptr)
-			m_modelConditionState->model->GetHierarchy()->ComputeFrame(m_animationState->animation, m_animationTime);
+		if (IsAnimated())
+			m_modelConditionState->model->GetHierarchy()->ComputeFrame(m_animationState->animations[m_animationIndex].animation, m_animationTime);
 	}
 	else
 		m_visible = false;
@@ -93,16 +93,17 @@ bool Instance::Update()
 		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight((int)m_m[3][0], (int)m_m[3][2]));
 	}
 
-	if (m_animationState != nullptr)
+	if (IsAnimated())
 	{
-		long long totalAnimationTime = m_animationState->animation->GetTotalTime();
+		m_animationTime += m_deltaTime * m_animationState->animations[m_animationIndex].speed;
+		long long totalAnimationTime = m_animationState->animations[m_animationIndex].animation->GetTotalTime();
 		if (m_animationTime > totalAnimationTime)
 		{
 			m_animationTime -= totalAnimationTime;
-			if (m_animationState->mode != Entity::ANIMATION_MODE::LOOP)
+			if (m_animationState->animations[m_animationIndex].mode != Entity::ANIMATION_MODE::LOOP)
 			{
 				SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
-				SetAnimationState(m_entity->GetAnimationState("DEFAULT"));
+				SetAnimationState(m_entity->GetAnimationState("IDLE"));
 			}
 		}
 	}
@@ -130,6 +131,7 @@ void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state)
 	if (state == nullptr)
 		return;
 	m_animationState = state;
+	m_animationIndex = std::rand() % m_animationState->animations.size();
 }
 
 std::shared_ptr<Material> Instance::GetMaterial(const std::string& meshName)

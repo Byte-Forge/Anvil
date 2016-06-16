@@ -122,6 +122,8 @@ namespace anvil
 		void UpdateTextures();
 
 	protected:
+		glm::mat4 m_mod;
+
 		std::shared_ptr<ITexture> m_diff;
 		std::shared_ptr<ITexture> m_nrm;
 		std::shared_ptr<ITexture> m_spec;

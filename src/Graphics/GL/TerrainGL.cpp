@@ -19,11 +19,8 @@
 
 using namespace anvil;
 
-GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width,height),m_vao(0)
+GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width,height), m_vao(0)
 {
-	m_quadtree = std::make_shared<Quadtree>(glm::vec2(m_width / 2.f, m_height / 2.f), glm::vec2(m_width / 2.f, m_height / 2.f));
-
-	Generate();
 	UpdateBufferData();
 
 	glGenVertexArrays(1, &m_vao);

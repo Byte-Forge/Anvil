@@ -37,6 +37,7 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 	if (d.HasMember("material"))
 	{
 		mat = std::make_shared<Material>();
+		std::cout << d["material"].GetType() << std::endl;
 		if (d["material"].HasMember("displacement_factor"))
 			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
 		if (d["material"].HasMember("uPerSec"))
@@ -172,12 +173,25 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					state = std::make_shared<Entity::AnimationState>();
 					ent->AddAnimationState(stateName, state);
 
-					state->animationName = d["entity"]["animationStates"][i]["animation"].GetString();
-					std::string mode = d["entity"]["animationStates"][i]["animationMode"].GetString();
-					if (mode == "LOOP")
-						state->mode = Entity::ANIMATION_MODE::LOOP;
-					else if (mode == "MANUAL")
-						state->mode = Entity::ANIMATION_MODE::MANUAL;
+					if (d["entity"]["animationStates"][i].HasMember("animations") && d["entity"]["animationStates"][i]["animations"].IsArray())
+					{
+						for (unsigned int j = 0; j < d["entity"]["animationStates"][i]["animations"].Size(); j++)
+						{
+							Entity::AnimationStruct ani = Entity::AnimationStruct();
+							ani.animationName = d["entity"]["animationStates"][i]["animations"][j]["animation"].GetString();
+							std::string mode = d["entity"]["animationStates"][i]["animations"][j]["animationMode"].GetString();
+							if (mode == "LOOP")
+								ani.mode = Entity::ANIMATION_MODE::LOOP;
+							else if (mode == "MANUAL")
+								ani.mode = Entity::ANIMATION_MODE::MANUAL;
+							if (d["entity"]["animationStates"][i]["animations"][j].HasMember("speed"))
+							{
+								std::string speed = d["entity"]["animationStates"][i]["animations"][j]["speed"].GetString();
+								ani.speed = ::atof(speed.c_str());
+							}
+							state->animations.push_back(ani);
+						}
+					}
 				}
 			}
 		}
