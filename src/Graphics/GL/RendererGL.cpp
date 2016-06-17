@@ -42,10 +42,10 @@ std::map<std::string, IRenderer::Vendor> vendorMap =
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
                                GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
-
+	/*
 	if (type == GL_DEBUG_TYPE_OTHER_ARB)
 		return;
-
+*/
     std::cout << "--GL DEBUG--" << std::endl;
     std::cout << "Message: "<< message << std::endl;
     std::cout << "Type: ";
@@ -111,6 +111,7 @@ RendererGL::RendererGL()
 		throw AnvilException("S3TC texture compression not supported!", __FILE__, __LINE__);
 
 
+	m_matrix_ubo.Create();
 	m_guiShader = std::make_unique<GL::Shader>();
 	m_guiShader->Load("shader/gl/gui.vert", "shader/gl/gui.frag");
 	m_guiShader->Compile();

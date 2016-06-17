@@ -8,6 +8,7 @@
 #pragma once
 #include "../IRenderer.hpp"
 #include "../../Types/Map.hpp"
+#include "UboGL.hpp"
 #include <vector>
 
 namespace anvil
@@ -19,6 +20,13 @@ namespace anvil
 	 */
 	class RendererGL : public IRenderer
 	{
+	private:
+		struct MatrixData
+		{
+			glm::mat4 m;
+			glm::mat4 v;
+			glm::mat4 mpv;
+		} m_matrices;
 	public:
 
 		/**
@@ -95,8 +103,14 @@ namespace anvil
 		 */
 		const std::string GetGPUName();
 
+
+		inline GL::UniformBuffer<MatrixData>& GetMatrixUbu()
+		{
+			m_matrix_ubo;
+		}
 	private:
 		int m_totalVRAM;
 		std::string m_deviceName;
+		GL::UniformBuffer<MatrixData> m_matrix_ubo;
 	};
 }

@@ -5,7 +5,7 @@
 namespace anvil
 {
 	template<class xtype, class ytype>
-	class Interpolate
+	class Interpolation
 	{
 	public:
 		inline void AddPoint(const xtype x, const ytype y)
@@ -22,7 +22,7 @@ namespace anvil
 
 
 	template<class xtype,class ytype>
-	class LinearInterpolate : public Interpolate<xtype, ytype> //public Interpolate<int, glm::f32>
+	class LinearInterpolation : public Interpolation<xtype, ytype> //public Interpolate<int, glm::f32>
 	{
 	public:
 		ytype GetPoint(const xtype x)

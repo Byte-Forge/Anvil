@@ -71,10 +71,8 @@ GL::Terrain::~Terrain()
 int GL::Terrain::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
-	glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(m_mod));
-	glUniformMatrix4fv(shader.GetUniform("v"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewMatrix()));
-	glUniformMatrix3fv(shader.GetUniform("mv3x3"), 1, GL_FALSE, glm::value_ptr(glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)));
-	glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod));
+	//wohin damit?
+	shader.GetUniformBuffer("matrix_block");
 
 	glm::vec3 lightDir = glm::vec3(0.f,-1.f,0.f);
 	glUniform3f(shader.GetUniform("lightDir"), lightDir.x, lightDir.y, lightDir.z);

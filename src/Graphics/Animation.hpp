@@ -27,8 +27,8 @@ namespace anvil
 	class Animation : public IResource
 	{
 	private:
-		typedef Interpolate<int, glm::f32> Interpolate;
-		typedef LinearInterpolate<int, glm::f32> InterpolateLinear;
+		typedef Interpolation<int, glm::f32> Interpolate;
+		typedef LinearInterpolation<int, glm::f32> InterpolateLinear;
 		typedef std::shared_ptr<Interpolate> InterpolatePtr;
 
 		inline InterpolatePtr MakeLinearInterpolate()
