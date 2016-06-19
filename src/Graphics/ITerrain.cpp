@@ -109,24 +109,33 @@ void ITerrain::Generate()
 	//wait until heightmap creation is done
 	hand.get();
 
-	auto ent = glm::vec3(30, m_heightmap[50][50], 50);
-	oak->AddInstance(ent);
-
-	ent = glm::vec3(50, m_heightmap[50][50], 50);
-	douglas_fir->AddInstance(ent);
-
-	ent = glm::vec3(70, m_heightmap[50][50], 50);
-	hemlock_fir->AddInstance(ent);
-
-	ent = glm::vec3(90, m_heightmap[50][50], 50);
-	rhododendron->AddInstance(ent);
+	for (unsigned int i = 0; i < m_width; i++)
+	{
+		for (unsigned int j = 0; j < m_height; j++)
+		{
+			int k = rand() % 400;
+			if (k == 0)
+			{
+				int l = rand() % 20;
+				auto ent = glm::vec3(i, GetHeight(i, j), j);
+				if (l == 0)
+					oak->AddInstance(ent);
+				else if (l == 1)
+					douglas_fir->AddInstance(ent);
+				else if (l == 2)
+					hemlock_fir->AddInstance(ent);
+				else if (l == 3)
+					rhododendron->AddInstance(ent);
+			}
+		}
+	}
 
 	/////////////////////////////////////////////////////// MOD STUFF ////////////////////////////////////////////////////////////////
 
 	std::shared_ptr<Entity> castle_wall = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle_wall.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 
-	ent = glm::vec3(40, m_heightmap[50][50], 40);
+	auto ent = glm::vec3(40, m_heightmap[50][50], 40);
 	castle_wall->AddInstance(ent, glm::vec3(0, 90, 0));
 
 	ent = glm::vec3(20, m_heightmap[50][50], 40);

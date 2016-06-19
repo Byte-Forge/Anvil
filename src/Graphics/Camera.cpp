@@ -17,7 +17,7 @@ Camera::Camera() : m_up(0.0, 1.0, 0.0), m_currentPos(-30.0, 30.0, -30.0), m_look
 {
 	const auto& res = Core::GetCore()->GetResolution();
 	m_ratio = res.x / res.y;
-	m_proj = glm::perspective(m_fov, m_ratio, 0.1, 10000.0);
+	m_proj = glm::perspective(m_fov, m_ratio, m_near, m_far);
 
 	m_frustum = std::make_unique<Frustum>();
 }

@@ -78,7 +78,7 @@ bool Instance::Update()
 	if (Collision::SphereInFrustum(
 		Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(),
 		glm::vec3(m_m * m_modelConditionState->model->GetSphereCenter()),
-		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale * 2.0f) > 0)
+		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
 	{
 		m_visible = true;
 		if (IsAnimated())

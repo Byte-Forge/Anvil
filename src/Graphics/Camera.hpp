@@ -133,7 +133,7 @@ namespace anvil
 		inline const glm::mat4& GetViewMatrix() { return m_view; }
 		inline const glm::mat4& GetViewProjectionMatrix() { return m_vp; }
 		inline void SetFOV(double fov) { m_fov = fov; }
-        inline void SetRatio(double ratio) { m_ratio = ratio; }
+        inline void SetRatio(double ratio) { m_ratio = ratio; m_proj = glm::perspective(m_fov, m_ratio, m_near, m_far); }
         inline void SetPosition(glm::vec3 pos) { m_position = pos; }
 		inline std::unique_ptr<Frustum>& GetFrustum() { return m_frustum; }
 		inline glm::vec3 &GetDirection() { return m_direction; }
@@ -145,6 +145,8 @@ namespace anvil
 		glm::vec3 m_direction;
         glm::vec3 m_lookat;
         glm::vec3 m_up;
+		double m_near = 0.5;
+		double m_far = 10000.0;
         double m_fov; 
         double m_ratio; 
 

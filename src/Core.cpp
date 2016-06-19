@@ -38,6 +38,7 @@ void Core::ResizeCallback(GLFWwindow * window, int width, int height)
 {
 	Core::GetCore()->GetGraphics()->Resize(width, height);
 	Core::GetCore()->GetGUI()->Resize(width, height);
+	Core::GetCore()->GetCamera()->SetRatio(width / height);
 }
 
 void Core::MouseCallback(GLFWwindow* window, int key, int action, int mods)
