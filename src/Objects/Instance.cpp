@@ -78,7 +78,7 @@ bool Instance::Update()
 	if (Collision::SphereInFrustum(
 		Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(),
 		glm::vec3(m_m * m_modelConditionState->model->GetSphereCenter()),
-		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
+		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale * 2.0f) > 0)
 	{
 		m_visible = true;
 		if (IsAnimated())
@@ -90,7 +90,7 @@ bool Instance::Update()
 	if (IsUnit())
 	{
 		Move(m_direction * (m_deltaTime / 1000.0f) * m_entity->GetSpeed());
-		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight((int)m_m[3][0], (int)m_m[3][2]));
+		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight(m_m[3][0], m_m[3][2]));
 	}
 
 	if (IsAnimated())
@@ -131,7 +131,7 @@ void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state)
 	if (state == nullptr)
 		return;
 	m_animationState = state;
-	m_animationIndex = std::rand() % m_animationState->animations.size();
+	m_animationIndex = 0; //std::rand() % m_animationState->animations.size();
 }
 
 std::shared_ptr<Material> Instance::GetMaterial(const std::string& meshName)
@@ -139,7 +139,7 @@ std::shared_ptr<Material> Instance::GetMaterial(const std::string& meshName)
 	const auto& it = m_modelConditionState->materials.find(meshName);
 	if (it == m_modelConditionState->materials.end())
 	{
-		//std::cout << "WARNING!: No material defined for mesh: " + meshName << std::endl;
+		std::cout << "WARNING!: No material defined for mesh: " + meshName << std::endl;
 		return nullptr;
 	}
 	return std::get<1>(it->second);

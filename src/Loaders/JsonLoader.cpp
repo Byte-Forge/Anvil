@@ -183,6 +183,8 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 								ani.mode = Entity::ANIMATION_MODE::LOOP;
 							else if (mode == "MANUAL")
 								ani.mode = Entity::ANIMATION_MODE::MANUAL;
+							else if (mode == "ONCE")
+								ani.mode = Entity::ANIMATION_MODE::ONCE;
 							if (d["entity"]["animationStates"][i]["animations"][j].HasMember("speed"))
 							{
 								std::string speed = d["entity"]["animationStates"][i]["animations"][j]["speed"].GetString();

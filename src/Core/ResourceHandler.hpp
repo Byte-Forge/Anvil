@@ -154,15 +154,7 @@ namespace anvil
 		 */
 		void AddResource(const std::string &name, std::shared_ptr<IResource> resource);
 
-		inline void AddModDir(const std::string& dir)
-		{
-			//this is not working dont know why
-			/*
-			if (std::find(m_modDirs.begin(), m_modDirs.end(), m_modDir + dir) != m_modDirs.end())
-				return;
-			m_modDirs.push_back(dir);
-			*/
-		}
+		void AddModDir(const std::string& dir);
 
     private:
 		std::vector<std::string> m_modDirs;

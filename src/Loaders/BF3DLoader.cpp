@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <glm/glm.hpp>
+#include "../Exception.hpp"
 #include "../Util.hpp"        
 #include "../Core.hpp"
 #include "../Graphics.hpp"
@@ -211,8 +212,8 @@ void BF3DLoader::Load(const std::string& name, const std::string& path, const st
 
 	if (read<std::uint32_t>(file) != 1144211010) //test if file starts with "BF3D"
 	{
-		std::cout << "ERROR!: the file: " << path << " is not a bf3d file!" << std::endl;
 		file.close();
+		throw AnvilException("ERROR!: the file: " + path + " is not a bf3d file!", __FILE__, __LINE__);
 		return;
 	}
 

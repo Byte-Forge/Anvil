@@ -49,7 +49,6 @@ int GL::ModelGL::Render(IShader& shader)
 					glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots(i->GetAnimation(), i->GetAnimationTime()).front()));
 				else 
 					glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
-				//glUniform3fv(shader.GetUniform("centerPos"), 1, glm::value_ptr(m_hierarchy->GetCenterPos()));
 			}
 			glUniform1i(shader.GetUniform("useSkeleton"), useSkeleton);
 
@@ -62,9 +61,6 @@ int GL::ModelGL::Render(IShader& shader)
 					glUniform2f(shader.GetUniform("texOffset"), offset.x, offset.y);
 					glActiveTexture(GL_TEXTURE0); //albedo textures
 					m->GetAlbedoTexture()->Bind();
-
-					//glActiveTexture(GL_TEXTURE1); //normal textures
-					//i->GetMaterial(it.second->GetName())->GetNormalTexture()->Bind();
 
 					polygons += it.second->Render(shader);
 				}

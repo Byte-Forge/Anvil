@@ -100,53 +100,43 @@ void ITerrain::Generate()
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
 
-	std::shared_ptr<Entity> tree = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/tree01.json");
-	std::shared_ptr<Entity> troll = Core::GetCore()->GetResources()->GetEntity("entities/units/misty_mountains/cavetroll.json");
-	std::shared_ptr<Entity> soldier = Core::GetCore()->GetResources()->GetEntity("entities/units/gondor/soldier.json");
-	std::shared_ptr<Entity> uruk = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_sword.json");
-	std::shared_ptr<Entity> uruk_spear = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_spear.json");
-	std::shared_ptr<Entity> uruk_crossbow = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_crossbow.json");
-	std::shared_ptr<Entity> onager = Core::GetCore()->GetResources()->GetEntity("entities/units/rohan/onager.json");
-	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
-	std::shared_ptr<Entity> castle_floor = Core::GetCore()->GetResources()->GetEntity("entities/structures/dwarves/castle_floor.json");
-	std::shared_ptr<Entity> necroFire = Core::GetCore()->GetResources()->GetEntity("entities/units/mordor/necromancerfire.json");
+	std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
+	std::shared_ptr<Entity> douglas_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/douglas_fir.json"); 
+	std::shared_ptr<Entity> hemlock_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/hemlock_fir.json");
+	std::shared_ptr<Entity> rhododendron = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/rhododendron.json");
+
 
 	//wait until heightmap creation is done
 	hand.get();
 
-	//auto vecOnager = glm::vec3(40, 0, -15);
-	//onager->AddInstance(vecOnager);
+	auto ent = glm::vec3(30, m_heightmap[50][50], 50);
+	oak->AddInstance(ent);
 
-	//auto vecNecro = glm::vec3(-10, 5, 20);
-	//necroFire->AddInstance(vecNecro);
+	ent = glm::vec3(50, m_heightmap[50][50], 50);
+	douglas_fir->AddInstance(ent);
 
+	ent = glm::vec3(70, m_heightmap[50][50], 50);
+	hemlock_fir->AddInstance(ent);
 
-	//auto vecBarracks = glm::vec3(25, 0, 25);
-	//barracks->AddInstance(vecBarracks);
+	ent = glm::vec3(90, m_heightmap[50][50], 50);
+	rhododendron->AddInstance(ent);
 
-	//auto vecTroll = glm::vec3(20, 0, -15);
-	//troll->AddInstance(vecTroll);
+	/////////////////////////////////////////////////////// MOD STUFF ////////////////////////////////////////////////////////////////
 
-	for (int i = 0; i < 20; i += 2)
-		for (int j = 0; j < 20; j += 3)
-		{
-			auto vecSoldier = glm::vec3(i, m_heightmap[i][j], j);
-			auto vecSpear = glm::vec3(i, m_heightmap[i][j+1], j + 1);
-			auto vecCrossbow = glm::vec3(i, m_heightmap[i][j+2], j + 2);
-			//uruk->AddInstance(vecSoldier);	
-			//uruk_spear->AddInstance(vecSpear);
-			uruk_crossbow->AddInstance(vecCrossbow);
-		}
+	std::shared_ptr<Entity> castle_wall = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle_wall.json");
+	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 
-	/*auto vecTree = glm::vec3(0, 10, 0);
-	tree->AddInstance(vecTree);
-	vecTree = glm::vec3(m_width, 10, 0);
-	tree->AddInstance(vecTree);
-	vecTree = glm::vec3(0, 10, m_height);
-	tree->AddInstance(vecTree);
-	vecTree = glm::vec3(m_width, 10, m_height);
-	tree->AddInstance(vecTree);
-*/
+	ent = glm::vec3(40, m_heightmap[50][50], 40);
+	castle_wall->AddInstance(ent, glm::vec3(0, 90, 0));
+
+	ent = glm::vec3(20, m_heightmap[50][50], 40);
+	castle_wall->AddInstance(ent);
+
+	ent = glm::vec3(0, m_heightmap[50][50], 0);
+	//barracks->AddInstance(ent);
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 	std::cout << "# created the terrain in: " << duration.count() << "ms" << std::endl;
@@ -279,7 +269,7 @@ void ITerrain::UpdateBufferData()
 
 			if (uvs_changed)
 			{
-				int val = 4;
+				int val = 16; //over how many quads the texture is stretched
 				m_uvs.push_back({ 0.0 + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });			
 				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 1.0 / val + j % val * 1.0 / val });
 				m_uvs.push_back({ 1.0 / val + i % val * 1.0 / val, 0.0 + j % val * 1.0 / val });
@@ -347,9 +337,8 @@ float ITerrain::GetHeight(float x, float y)
 {
 	if (x < 0.0 || y < 0.0 || x > m_width || y > m_height)
 		return 0.0f;
-	return m_heightmap[(int)x][(int)y];
+	//return m_heightmap[(int)x][(int)y];
 	//TODO: interplate between triangle edges
-	/*
 	int ix = x;
 	int iy = y;
 	float xoffset = x - ix;
@@ -369,5 +358,4 @@ float ITerrain::GetHeight(float x, float y)
 		second = glm::vec3(ix, m_heightmap[ix][iy+1], iy+1) - basis;
 		return (basis + (xoffset * first) + (yoffset * second)).y;
 	}
-	*/
 }
