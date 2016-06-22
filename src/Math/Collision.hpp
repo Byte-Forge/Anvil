@@ -23,6 +23,12 @@ namespace anvil
 	{
 	public:
 
+		enum INTERSECTION
+		{
+			OUTSIDE = 0,
+			INTERSECTS = 1,
+			INSIDE = 2
+		};
 
 		/**
 		 * @fn	static bool Collision::CubeInFrustum(const std::array<std::array<float, 4>, 6>& frustum, const glm::vec3& center, const glm::vec3& size);

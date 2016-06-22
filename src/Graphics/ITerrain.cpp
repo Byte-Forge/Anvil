@@ -26,6 +26,7 @@ using namespace anvil;
 
 ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width), m_height(height)
 {
+	srand(time(NULL));
 	m_quadtree = std::make_shared<Quadtree>(glm::vec2(m_width / 2.f, m_height / 2.f), glm::vec2(m_width / 2.f, m_height / 2.f));
 	Generate();
 }
@@ -100,51 +101,44 @@ void ITerrain::Generate()
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
 
-	std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
-	std::shared_ptr<Entity> douglas_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/douglas_fir.json"); 
-	std::shared_ptr<Entity> hemlock_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/hemlock_fir.json");
-	std::shared_ptr<Entity> rhododendron = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/rhododendron.json");
+	//std::shared_ptr<Entity> fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/fir.json");
+	//std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
+	//std::shared_ptr<Entity> douglas_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/douglas_fir.json"); 
+	//std::shared_ptr<Entity> hemlock_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/hemlock_fir.json");
+	//std::shared_ptr<Entity> rhododendron = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/rhododendron.json");
 
 
 	//wait until heightmap creation is done
 	hand.get();
 
-	for (unsigned int i = 0; i < m_width; i++)
-	{
-		for (unsigned int j = 0; j < m_height; j++)
-		{
-			int k = rand() % 400;
-			if (k == 0)
-			{
-				int l = rand() % 20;
-				auto ent = glm::vec3(i, GetHeight(i, j), j);
-				if (l == 0)
-					oak->AddInstance(ent);
-				else if (l == 1)
-					douglas_fir->AddInstance(ent);
-				else if (l == 2)
-					hemlock_fir->AddInstance(ent);
-				else if (l == 3)
-					rhododendron->AddInstance(ent);
-			}
-		}
-	}
 
 	/////////////////////////////////////////////////////// MOD STUFF ////////////////////////////////////////////////////////////////
 
+	std::shared_ptr<Entity> castle_floor = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle_floor.json");
 	std::shared_ptr<Entity> castle_wall = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle_wall.json");
 	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
 
-	auto ent = glm::vec3(40, m_heightmap[50][50], 40);
-	castle_wall->AddInstance(ent, glm::vec3(0, 90, 0));
+	std::shared_ptr<Entity> uruk_cross = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_crossbow.json");
+
+	auto ent = glm::vec3(50, 0.01, 50);
+	castle_floor->AddInstance(ent);
+
+	ent = glm::vec3(40, m_heightmap[50][50], 40);
+	castle_wall->AddInstance(ent);
 
 	ent = glm::vec3(20, m_heightmap[50][50], 40);
 	castle_wall->AddInstance(ent);
 
-	ent = glm::vec3(0, m_heightmap[50][50], 0);
-	//barracks->AddInstance(ent);
+	ent = glm::vec3(70, m_heightmap[75][75], 63);
+	barracks->AddInstance(ent);
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	ent = glm::vec3(70, m_heightmap[75][50], 36);
+	barracks->AddInstance(ent);
+
+	ent = glm::vec3(20, m_heightmap[50][50], 20);
+	uruk_cross->AddInstance(ent);
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);

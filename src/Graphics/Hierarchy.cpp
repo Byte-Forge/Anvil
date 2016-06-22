@@ -25,16 +25,18 @@ Hierarchy::~Hierarchy()
 
 void Hierarchy::ComputeFrame(std::shared_ptr<Animation> ani, const long long time)
 {
-	ani->ComputeFrame(m_frame_pivots, m_rest_pivots, m_parentIDs, time);
+	//ani->ComputeFrame(m_frame_pivots, m_rest_pivots, m_parentIDs, time);
 }
 
 std::vector<glm::f32mat4x4> Hierarchy::GetPivots(std::shared_ptr<Animation> ani, const long long time)
 {
+	/*
 	if (ani != nullptr)
 	{
 		ani->GetFrame(m_frame_pivots, time);
 		return m_frame_pivots;
 	}
+	*/
 
 	//do this only once for hierarchies with no animation
 	for (int i = 0; i < m_pivotCount; i++)

@@ -47,9 +47,9 @@ int Collision::SphereInFrustum(const std::array<glm::vec4, 6>& frustum, const gl
 	{
 		d = frustum[p][0] * center.x + frustum[p][1] * center.y + frustum[p][2] * center.z + frustum[p][3];
 		if (d <= -radius)
-			return 0;
+			return OUTSIDE;
 		if (d > radius)
 			c++;
 	}
-	return (c == 6) ? 2 : 1;
+	return (c == 6) ? INSIDE : INTERSECTS;
 }

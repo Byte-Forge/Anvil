@@ -43,8 +43,7 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 			mat->SetUPerSecond(d["material"]["uPerSec"].GetDouble());
 		if (d["material"].HasMember("vPerSec"))
 			mat->SetVPerSecond(d["material"]["vPerSec"].GetDouble());
-		if (d["material"].HasMember("displacement_factor"))
-			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
+
 		if (d["material"].HasMember("albedo"))
 			mat->SetAlbedoTexture(d["material"]["albedo"].GetString());
 		else
@@ -132,8 +131,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 
 			if (d["entity"].HasMember("speed"))
 			{
-				std::string speed = d["entity"]["speed"].GetString();
-				ent->SetSpeed(::atof(speed.c_str()));
+				ent->SetSpeed(d["entity"]["speed"].GetDouble());
 			}
 
 			if (d["entity"].HasMember("modelConditionStates") && d["entity"]["modelConditionStates"].IsArray())
@@ -146,8 +144,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					ent->AddModelConditionState(stateName, state);
 					if (d["entity"]["modelConditionStates"][i].HasMember("scale"))
 					{
-						std::string scale = d["entity"]["modelConditionStates"][i]["scale"].GetString();
-						state->scale = ::atof(scale.c_str());
+						state->scale = d["entity"]["modelConditionStates"][i]["scale"].GetDouble();
 					}
 					
 					state->modelName = d["entity"]["modelConditionStates"][i]["model"].GetString();
@@ -187,8 +184,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 								ani.mode = Entity::ANIMATION_MODE::ONCE;
 							if (d["entity"]["animationStates"][i]["animations"][j].HasMember("speed"))
 							{
-								std::string speed = d["entity"]["animationStates"][i]["animations"][j]["speed"].GetString();
-								ani.speed = ::atof(speed.c_str());
+								ani.speed = d["entity"]["animationStates"][i]["animations"][j]["speed"].GetDouble();
 							}
 							state->animations.push_back(ani);
 						}

@@ -89,7 +89,7 @@ bool Instance::Update()
 
 	if (IsUnit())
 	{
-		Move(m_direction * (m_deltaTime / 1000.0f) * m_entity->GetSpeed());
+		//Move(m_direction * (m_deltaTime / 1000.0f) * m_entity->GetSpeed());
 		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight(m_m[3][0], m_m[3][2]));
 	}
 
