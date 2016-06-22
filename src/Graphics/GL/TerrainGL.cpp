@@ -71,14 +71,9 @@ GL::Terrain::~Terrain()
 int GL::Terrain::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
-	//wohin damit?
-	shader.GetUniformBuffer("matrix_block");
 
 	glm::vec3 lightDir = glm::vec3(0.f,-1.f,0.f);
 	glUniform3f(shader.GetUniform("lightDir"), lightDir.x, lightDir.y, lightDir.z);
-
-	glm::vec3 diffuseColor = glm::vec3(0.8f, 0.8f, 0.8f);
-	glUniform3f(shader.GetUniform("diffuseColor"), lightDir.x, lightDir.y, lightDir.z);
 
 	glUniform1i(shader.GetUniform("tess_factor"), Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor());
 	glUniform1i(shader.GetUniform("max_factor"), Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation());

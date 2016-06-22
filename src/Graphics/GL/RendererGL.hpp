@@ -23,10 +23,9 @@ namespace anvil
 	private:
 		struct MatrixData
 		{
-			glm::mat4 m;
-			glm::mat4 v;
-			glm::mat4 mpv;
+			glm::mat4 vp;
 		} m_matrices;
+
 	public:
 
 		/**
@@ -104,13 +103,12 @@ namespace anvil
 		const std::string GetGPUName();
 
 
-		inline GL::UniformBuffer<MatrixData>& GetMatrixUbu()
-		{
-			m_matrix_ubo;
-		}
+		inline GL::UniformBuffer<MatrixData>& GetMatrixUbo() { return m_matrix_ubo; }
+
 	private:
 		int m_totalVRAM;
 		std::string m_deviceName;
+		MatrixData m_matrix_data;
 		GL::UniformBuffer<MatrixData> m_matrix_ubo;
 	};
 }

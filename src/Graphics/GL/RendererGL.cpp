@@ -9,6 +9,7 @@
 #include "flextGL.h"
 #include "TextureGL.hpp"
 #include "ShaderGL.hpp"
+#include "../Camera.hpp"
 #include "../../Core.hpp"
 #include "../../Core/ResourceHandler.hpp"
 #include "../IRenderable.hpp"
@@ -110,8 +111,9 @@ RendererGL::RendererGL()
 	if(!FLEXT_EXT_texture_compression_s3tc)
 		throw AnvilException("S3TC texture compression not supported!", __FILE__, __LINE__);
 
-
+	m_matrix_data = MatrixData();
 	m_matrix_ubo.Create();
+
 	m_guiShader = std::make_unique<GL::Shader>();
 	m_guiShader->Load("shader/gl/gui.vert", "shader/gl/gui.frag");
 	m_guiShader->Compile();
@@ -120,9 +122,9 @@ RendererGL::RendererGL()
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
 	m_skyboxShader->Compile();
 
-	m_modelShaders.push_back(std::make_unique<GL::Shader>());
-	m_modelShaders[0]->Load("shader/gl/model.vert", "shader/gl/model.frag");
-	m_modelShaders[0]->Compile();
+	m_modelShader = std::make_unique<GL::Shader>();
+	m_modelShader->Load("shader/gl/model.vert", "shader/gl/model.frag");
+	m_modelShader->Compile();
 
 	m_terrainShader = std::make_unique<GL::Shader>();
 	m_terrainShader->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
@@ -176,12 +178,15 @@ void RendererGL::Render(const glm::mat4& ortho)
 
 	m_terrain->Update();
 
+	m_matrix_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
+	m_matrix_ubo.Update(m_matrix_data);
 
 	m_terrainShader->Use();
+	m_matrix_ubo.Bind(m_terrainShader->GetUniformBuffer("matrix_block"));
 	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
-	m_modelShaders[0]->Use();
-
+	m_modelShader->Use();
+	m_matrix_ubo.Bind(m_modelShader->GetUniformBuffer("matrix_block"));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this
@@ -189,7 +194,7 @@ void RendererGL::Render(const glm::mat4& ortho)
 	JoinInstanceThreads();
 
     for (auto& renderable : m_renderables)
-		m_rendered_polygons += renderable->Render(*m_modelShaders[0]);
+		m_rendered_polygons += renderable->Render(*m_modelShader);
 
 	UpdateInstances();
 

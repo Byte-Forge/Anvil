@@ -1,5 +1,7 @@
 #pragma once
 #include "flextGL.h"
+#include <iostream>
+#include <stdlib.h>
 
 namespace anvil
 {
@@ -8,8 +10,6 @@ namespace anvil
 		template<class T>
 		class UniformBuffer
 		{
-		private:
-			GLuint m_ubo;
 		public:
 			UniformBuffer() : m_ubo(0)
 			{
@@ -31,15 +31,16 @@ namespace anvil
 			void Update(const T& data)
 			{
 				glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
-				GLvoid* p = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
-				memcpy(p, &data, sizeof(data));
-				glUnmapBuffer(GL_UNIFORM_BUFFER);
+				glBufferData(GL_UNIFORM_BUFFER, sizeof(data), &data, GL_DYNAMIC_DRAW);
 			}
 
 			void Bind(const GLuint index)
 			{
-				glBindBufferBase(GL_UNIFORM_BUFFER,index, m_ubo);
+				glBindBufferBase(GL_UNIFORM_BUFFER, index, m_ubo);
 			}
+
+		private:
+			GLuint m_ubo;
 		};
 	}
 	
