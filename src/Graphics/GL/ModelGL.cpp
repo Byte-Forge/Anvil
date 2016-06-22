@@ -39,7 +39,6 @@ int GL::ModelGL::Render(IShader& shader)
 		if (i->IsVisible())
 		{
 			bool useSkeleton = false;
-			glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
 			glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(i->GetMatrix()));
 
 			if (m_hierarchy != nullptr)
