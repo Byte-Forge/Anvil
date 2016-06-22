@@ -31,7 +31,7 @@ namespace anvil
 		* @param	entity	the entity this instance is for
 		* @param	position	the position of this instance
 		*/
-		Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position, 
+		Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position,
 			const glm::vec3 &euler = glm::vec3(0.0, 0.0, 0.0), const float scale = 0.0f);
 
 		/**
@@ -90,14 +90,16 @@ namespace anvil
 		void SetAnimationState(std::shared_ptr<Entity::AnimationState> state);
 
 		inline void SetHealth(int health) { m_health = health; }
-		inline void Move(glm::vec3 dir) { m_m = glm::translate(dir) * m_m; }
+		inline void Move() { m_m = glm::translate(m_direction * m_entity->GetSpeed() * (m_deltaTime / 1000.0f)) * m_m; }
+		inline void SetPosition(glm::vec3 position) { m_m[3][0] = position.x; m_m[3][1] = position.y; m_m[3][2] = position.z; }
+		inline void SetDirection(glm::vec3 direction) { m_direction = direction; }
 		inline void SetHeight(float height) { m_m[3][1] = height; }
 		inline void Rotate(glm::vec3 euler) { 
 			Rotate(euler.x, glm::vec3(1.0, 0.0, 0.0)); 
 			Rotate(euler.y, glm::vec3(0.0, 1.0, 0.0));
 			Rotate(euler.z, glm::vec3(0.0, 0.0, 1.0));
 		}
- 		inline void Rotate(float angle, glm::vec3 axis) { m_m = glm::rotate(m_m, angle, axis); }
+		inline void Rotate(float angle, glm::vec3 axis) { m_m = glm::rotate(m_m, glm::radians(angle), axis); }
 		inline void Scale(float scale) { m_m = m_m * glm::scale(glm::vec3(scale, scale, scale)); }
 		inline void Scale(glm::vec3 scale) { m_m = m_m * glm::scale(scale); }
 		inline glm::mat4 GetMatrix() { return m_m; }
