@@ -17,7 +17,7 @@ Util::Timer::Timer() : m_elapsed(1)
 
 void Util::Timer::Update()
 {
-	auto current = std::chrono::high_resolution_clock::now();
+	const auto current = std::chrono::high_resolution_clock::now();
 	m_elapsed = (std::chrono::duration_cast<std::chrono::microseconds>(current - m_last).count());
 	m_last = current;
 }

@@ -34,7 +34,7 @@ GL::ModelGL::~ModelGL()
 int GL::ModelGL::Render(IShader& shader)
 {
 	int polygons = 0;
-	for (std::shared_ptr<Instance> i : m_instances)
+	for (const auto i : m_instances)
 	{
 		if (i->IsVisible())
 		{

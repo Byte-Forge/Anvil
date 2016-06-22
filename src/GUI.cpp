@@ -28,7 +28,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 	auto fonts = IO::ListFiles("ui/fonts/");
 	auto defaultFont = fonts.front();
 
-	for (auto font : fonts)
+	for (const auto& font : fonts)
 	{
 		std::cout << font << std::endl;
 		if(!m_core->AddFont(font, "ui/fonts/" + font))

@@ -27,7 +27,7 @@ Camera::~Camera()
 
 }
 
-void Camera::Move(glm::vec3 dir)
+void Camera::Move(const glm::vec3& dir)
 {
 	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
 	float speed = m_speed * timePassed;
@@ -40,7 +40,7 @@ void Camera::Move(glm::vec3 dir)
 	m_lookat += offset;
 }
 
-void Camera::Move(Direction dir)
+void Camera::Move(const Direction dir)
 {
 	glm::vec3 offset;
 	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
@@ -72,14 +72,14 @@ void Camera::Move(Direction dir)
 	}
 }
 
-void Camera::Rotate(float angle)
+void Camera::Rotate(const float angle)
 {
 	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6f;
 	glm::vec3 delta = m_currentPos - m_lookat;
 	m_currentPos = m_lookat + glm::rotateY(delta, angle * timePassed);
 }
 
-void Camera::Rotate(Direction dir)
+void Camera::Rotate(const Direction dir)
 {
 	float angle = 1.0f;
 	switch (dir)
@@ -95,7 +95,7 @@ void Camera::Rotate(Direction dir)
 	}
 }
 
-void Camera::Zoom(Direction dir)
+void Camera::Zoom(const Direction dir)
 {
 	float timePassed = Core::GetCore()->GetTimer().GetElapsedTime() / 1e6;
 	switch (dir)
@@ -112,7 +112,7 @@ void Camera::Zoom(Direction dir)
 	}
 }
 
-void Camera::Zoom(int value)
+void Camera::Zoom(const int value)
 {
 	m_currentPos += m_direction * (value * m_currentPos.y/10.0f);
 }

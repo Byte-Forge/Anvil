@@ -9,7 +9,7 @@
 
 using namespace anvil;
 
-glm::vec3  Math::ComputeNormal(glm::vec3& a, glm::vec3& b, glm::vec3& c)
+const glm::vec3  Math::ComputeNormal(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c)
 {
 	return glm::normalize(glm::cross(c - b, a - b));
 }

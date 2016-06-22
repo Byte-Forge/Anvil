@@ -69,7 +69,7 @@ namespace anvil
 		 *
 		 * @param	dir	The directory where we move as a 3-dimensional vector.
 		 */
-		void Move(glm::vec3 dir);
+		void Move(const glm::vec3& dir);
 
 		/**
 		 * @fn	void Camera::Move(Direction dir);
@@ -78,7 +78,7 @@ namespace anvil
 		 *
 		 * @param	dir	The directory where we move as Direction enum 
 		 */
-		void Move(Direction dir);
+		void Move(const Direction dir);
 
 		/**
 		 * @fn	void Camera::Rotate(float angle);
@@ -87,7 +87,7 @@ namespace anvil
 		 *
 		 * @param	angle	The angle we will rotate.
 		 */
-		void Rotate(float angle);
+		void Rotate(const float angle);
 
 		/**
 		 * @fn	void Camera::Rotate(Direction dir);
@@ -96,7 +96,7 @@ namespace anvil
 		 *
 		 * @param	dir	The directory around we will rotate by a fixed angle.
 		 */
-		void Rotate(Direction dir);
+		void Rotate(const Direction dir);
 
 		/**
 		 * @fn	void Camera::Zoom(Direction dir);
@@ -105,7 +105,7 @@ namespace anvil
 		 *
 		 * @param	dir	The dir.
 		 */
-		void Zoom(Direction dir);
+		void Zoom(const Direction dir);
 
 		/**
 		 * @fn	void Camera::Zoom(int value);
@@ -114,7 +114,7 @@ namespace anvil
 		 *
 		 * @param	value	The value we will zoom in or out.
 		 */
-		void Zoom(int value);
+		void Zoom(const int value);
 
 		/**
 		 * @fn	void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction);
