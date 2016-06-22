@@ -37,25 +37,29 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 	if (d.HasMember("material"))
 	{
 		mat = std::make_shared<Material>();
-		if (d["material"].HasMember("displacement_factor"))
-			mat->SetDisplacementFactor(d["material"]["displacement_factor"].GetDouble());
-		if (d["material"].HasMember("uPerSec"))
-			mat->SetUPerSecond(d["material"]["uPerSec"].GetDouble());
-		if (d["material"].HasMember("vPerSec"))
-			mat->SetVPerSecond(d["material"]["vPerSec"].GetDouble());
 
-		if (d["material"].HasMember("albedo"))
-			mat->SetAlbedoTexture(d["material"]["albedo"].GetString());
+		const auto& node = d["material"];
+		if (node.HasMember("displacement_factor"))
+			mat->SetDisplacementFactor(node["displacement_factor"].GetDouble());
+		if (node.HasMember("uPerSec"))
+			mat->SetUPerSecond(node["uPerSec"].GetDouble());
+		if (node.HasMember("vPerSec"))
+			mat->SetVPerSecond(node["vPerSec"].GetDouble());
+		if (node.HasMember("displacement_factor"))
+			mat->SetDisplacementFactor(node["displacement_factor"].GetDouble());
+
+		if (node.HasMember("albedo"))
+			mat->SetAlbedoTexture(node["albedo"].GetString());
 		else
 			throw AnvilException("Material file has no albedo texture: " + path, __FILE__, __LINE__);
-		if (d["material"].HasMember("normal"))
-			mat->SetNormalTexture(d["material"]["normal"].GetString());
-		if (d["material"].HasMember("specular"))
-			mat->SetSpecularTexture(d["material"]["specular"].GetString());
-		if (d["material"].HasMember("displacement"))
-			mat->SetDisplacementTexture(d["material"]["displacement"].GetString());
-		if (d["material"].HasMember("ambient_occ"))
-			mat->SetAmbientOcclusionTexture(d["material"]["ambient_occ"].GetString());
+		if (node.HasMember("normal"))
+			mat->SetNormalTexture(node["normal"].GetString());
+		if (node.HasMember("specular"))
+			mat->SetSpecularTexture(node["specular"].GetString());
+		if (node.HasMember("displacement"))
+			mat->SetDisplacementTexture(node["displacement"].GetString());
+		if (node.HasMember("ambient_occ"))
+			mat->SetAmbientOcclusionTexture(node["ambient_occ"].GetString());
 	}
 	else
 		throw AnvilException("Material file has no material object: " + path, __FILE__, __LINE__);
@@ -81,18 +85,19 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 
 	if (d.HasMember("entity"))
 	{
-		if (d["entity"].IsObject())
+		const auto& node = d["entity"];
+		if (node.IsObject())
 		{
-			if (d["entity"].HasMember("parent"))
-				ent = std::make_shared<Entity>(Core::GetCore()->GetResources()->GetEntity(d["entity"]["parent"].GetString()));
+			if (node.HasMember("parent"))
+				ent = std::make_shared<Entity>(Core::GetCore()->GetResources()->GetEntity(node["parent"].GetString()));
 			else
 				ent = std::make_shared<Entity>();
 
 			Entity::KindOf kO = Entity::KindOf();
 
-			if (d["entity"].HasMember("kindOfs"))
+			if (node.HasMember("kindOfs"))
 			{
-				const Value& arr = d["entity"]["kindOfs"];
+				const Value& arr = node["kindOfs"];
 				for (Value::ConstValueIterator it = arr.Begin(); it != arr.End(); ++it)
 				{
 					std::string koStr = it->GetString();
@@ -129,60 +134,60 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			}
 			ent->SetKindOfs(kO);
 
-			if (d["entity"].HasMember("speed"))
+			if (node.HasMember("speed"))
 			{
 				ent->SetSpeed(d["entity"]["speed"].GetDouble());
 			}
 
-			if (d["entity"].HasMember("modelConditionStates") && d["entity"]["modelConditionStates"].IsArray())
+			if (node.HasMember("modelConditionStates") && node["modelConditionStates"].IsArray())
 			{
 				std::shared_ptr<Entity::ModelConditionState> state;
-				for (unsigned int i = 0; i < d["entity"]["modelConditionStates"].Size(); i++)
+				for (unsigned int i = 0; i < node["modelConditionStates"].Size(); i++)
 				{
-					std::string stateName = d["entity"]["modelConditionStates"][i]["name"].GetString();
+					std::string stateName = node["modelConditionStates"][i]["name"].GetString();
 					state = std::make_shared<Entity::ModelConditionState>();
 					ent->AddModelConditionState(stateName, state);
-					if (d["entity"]["modelConditionStates"][i].HasMember("scale"))
+					if (node["modelConditionStates"][i].HasMember("scale"))
 					{
 						state->scale = d["entity"]["modelConditionStates"][i]["scale"].GetDouble();
 					}
 					
-					state->modelName = d["entity"]["modelConditionStates"][i]["model"].GetString();
-					if (d["entity"]["modelConditionStates"][i].HasMember("skl_path"))
-						state->hierarchyPath = d["entity"]["modelConditionStates"][i]["skl_path"].GetString();
+					state->modelName = node["modelConditionStates"][i]["model"].GetString();
+					if (node["modelConditionStates"][i].HasMember("skl_path"))
+						state->hierarchyPath = node["modelConditionStates"][i]["skl_path"].GetString();
 
-					if (d["entity"]["modelConditionStates"][i].HasMember("materials") && d["entity"]["modelConditionStates"][i]["materials"].IsArray())
+					if (node["modelConditionStates"][i].HasMember("materials") && node["modelConditionStates"][i]["materials"].IsArray())
 					{
-						for (int j = 0; j < d["entity"]["modelConditionStates"][i]["materials"].Size(); j++)
+						for (int j = 0; j < node["modelConditionStates"][i]["materials"].Size(); j++)
 						{
-							state->materials.insert({ d["entity"]["modelConditionStates"][i]["materials"][j]["mesh"].GetString(), std::make_tuple(d["entity"]["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
+							state->materials.insert({ node["modelConditionStates"][i]["materials"][j]["mesh"].GetString(), std::make_tuple(node["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
 						}
 					}
 				}
 			}
-			if (d["entity"].HasMember("animationStates") && d["entity"]["animationStates"].IsArray())
+			if (node.HasMember("animationStates") && node["animationStates"].IsArray())
 			{
 				std::shared_ptr<Entity::AnimationState> state;
-				for (unsigned int i = 0; i < d["entity"]["animationStates"].Size(); i++)
+				for (unsigned int i = 0; i < node["animationStates"].Size(); i++)
 				{
-					std::string stateName = d["entity"]["animationStates"][i]["name"].GetString();
+					std::string stateName = node["animationStates"][i]["name"].GetString();
 					state = std::make_shared<Entity::AnimationState>();
 					ent->AddAnimationState(stateName, state);
 
-					if (d["entity"]["animationStates"][i].HasMember("animations") && d["entity"]["animationStates"][i]["animations"].IsArray())
+					if (node["animationStates"][i].HasMember("animations") && node["animationStates"][i]["animations"].IsArray())
 					{
-						for (unsigned int j = 0; j < d["entity"]["animationStates"][i]["animations"].Size(); j++)
+						for (unsigned int j = 0; j < node["animationStates"][i]["animations"].Size(); j++)
 						{
 							Entity::AnimationStruct ani = Entity::AnimationStruct();
-							ani.animationName = d["entity"]["animationStates"][i]["animations"][j]["animation"].GetString();
-							std::string mode = d["entity"]["animationStates"][i]["animations"][j]["animationMode"].GetString();
+							ani.animationName = node["animationStates"][i]["animations"][j]["animation"].GetString();
+							std::string mode = node["animationStates"][i]["animations"][j]["animationMode"].GetString();
 							if (mode == "LOOP")
 								ani.mode = Entity::ANIMATION_MODE::LOOP;
 							else if (mode == "MANUAL")
 								ani.mode = Entity::ANIMATION_MODE::MANUAL;
 							else if (mode == "ONCE")
 								ani.mode = Entity::ANIMATION_MODE::ONCE;
-							if (d["entity"]["animationStates"][i]["animations"][j].HasMember("speed"))
+							if (node["animationStates"][i]["animations"][j].HasMember("speed"))
 							{
 								ani.speed = d["entity"]["animationStates"][i]["animations"][j]["speed"].GetDouble();
 							}
@@ -216,19 +221,20 @@ void JsonLoader::LoadParticlesystem(const std::string & name, const std::string 
 
 	if (d.HasMember("particlesystem"))
 	{
-		if (d["particlesystem"].IsObject())
+		const auto& node = d["particlesystem"];
+		if (node.IsObject())
 		{
-			if (d["particlesystem"].HasMember("lifetime"))
+			if (node.HasMember("lifetime"))
 			{
-				particleSys->SetLifetime(d["particlesystem"]["lifetime"].GetInt());
+				particleSys->SetLifetime(node["lifetime"].GetInt());
 			}
-			if (d["particlesystem"].HasMember("interval"))
+			if (node.HasMember("interval"))
 			{
-				particleSys->SetSpawnInterval(d["particlesystem"]["interval"].GetInt());
+				particleSys->SetSpawnInterval(node["interval"].GetInt());
 			}
-			if (d["particlesystem"].HasMember("spawnrate"))
+			if (node.HasMember("spawnrate"))
 			{
-				particleSys->SetSpawnRate(d["particlesystem"]["spawnrate"].GetInt());
+				particleSys->SetSpawnRate(node["spawnrate"].GetInt());
 			}
 		}
 	}

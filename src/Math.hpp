@@ -30,6 +30,6 @@ namespace anvil
 		 *
 		 * @return	The calculated normal.
 		 */
-		static glm::vec3 ComputeNormal(glm::vec3& a, glm::vec3& b, glm::vec3& c);
+		static const glm::vec3 ComputeNormal(const glm::vec3& a, const glm::vec3& b, const glm::vec3& c);
 	};
 }
