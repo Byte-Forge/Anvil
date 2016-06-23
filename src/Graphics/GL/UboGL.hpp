@@ -31,9 +31,7 @@ namespace anvil
 			void Update(const T& data)
 			{
 				glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
-				GLvoid* p = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
-				memcpy(p, &data, sizeof(data));
-				glUnmapBuffer(GL_UNIFORM_BUFFER);
+				glBufferData(GL_UNIFORM_BUFFER, sizeof(data), &data, GL_DYNAMIC_DRAW);
 			}
 
 			void Bind(const GLuint index)

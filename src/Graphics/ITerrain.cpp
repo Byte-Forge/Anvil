@@ -92,11 +92,11 @@ void ITerrain::Generate()
 	auto begin = std::chrono::system_clock::now();
 
 	//m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
-	m_terrainMaterials.push_back("materials/terrain/grass.json");
-	m_terrainMaterials.push_back("materials/terrain/grass_2.json");
-	m_terrainMaterials.push_back("materials/terrain/grass_3.json");
-	m_terrainMaterials.push_back("materials/terrain/grass_4.json");
-	m_terrainMaterials.push_back("materials/terrain/cliff_snowy.json");
+	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
+	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
+	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
+	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
+	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
 
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();

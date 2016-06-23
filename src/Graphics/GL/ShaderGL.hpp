@@ -37,25 +37,6 @@ namespace anvil
              */
             ~Shader();
 
-			/**
-			 * @fn	void Shader::Define(const std::string& macro);
-			 *
-			 * @brief	Defines the given macro.
-			 *
-			 * @param	macro	The macro.
-			 */
-			void Define(const std::string& macro);
-
-			/**
-			 * @fn	void Shader::Define(const std::string& macro, const std::string& value);
-			 *
-			 * @brief	Defines.
-			 *
-			 * @param	macro	The macro.
-			 * @param	value	The value.
-			 */
-			void Define(const std::string& macro, const std::string& value);
-
             /**
              * @fn	void Shader::Load(const std::string& vertShader, const std::string& fragShader);
              *
@@ -127,11 +108,11 @@ namespace anvil
 			*/
 			int GetUniform(const std::string& id);
 
+
+            int GetUniformBuffer(const std::string& id);
 		private:
             GLuint m_program;
             std::map<GLenum,GLuint> m_shaders;
-			std::map<std::string,std::string> m_macros;
-			static const std::string glslVersion;
 
 		private:
 			void LoadShader(const std::string& file, GLenum type);

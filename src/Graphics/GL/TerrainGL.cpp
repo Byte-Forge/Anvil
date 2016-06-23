@@ -68,13 +68,9 @@ GL::Terrain::~Terrain()
 int GL::Terrain::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
-	glUniformMatrix4fv(shader.GetUniform("m"), 1, GL_FALSE, glm::value_ptr(m_mod));
-	glUniformMatrix4fv(shader.GetUniform("v"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewMatrix()));
-	glUniformMatrix3fv(shader.GetUniform("mv3x3"), 1, GL_FALSE, glm::value_ptr(glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix() * m_mod)));
-	glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix() * m_mod));
 
-	glm::vec3 lightPos = glm::vec3({ m_width/2.0, 400.0, m_height / 2.0 });
-	glUniform3f(shader.GetUniform("lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	glm::vec3 lightDir = glm::vec3(0.1f,1.0f,0.f);
+	glUniform3f(shader.GetUniform("lightDir"), lightDir.x, lightDir.y, lightDir.z);
 
 	glUniform1i(shader.GetUniform("tess_factor"), Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor());
 	glUniform1i(shader.GetUniform("max_factor"), Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation());

@@ -9,6 +9,7 @@
 #include "flextGL.h"
 #include "TextureGL.hpp"
 #include "ShaderGL.hpp"
+#include "../Camera.hpp"
 #include "../../Core.hpp"
 #include "../../Core/ResourceHandler.hpp"
 #include "../IRenderable.hpp"
@@ -42,10 +43,10 @@ std::map<std::string, IRenderer::Vendor> vendorMap =
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
                                GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
-
+	/*
 	if (type == GL_DEBUG_TYPE_OTHER_ARB)
 		return;
-
+*/
     std::cout << "--GL DEBUG--" << std::endl;
     std::cout << "Message: "<< message << std::endl;
     std::cout << "Type: ";
@@ -110,6 +111,8 @@ RendererGL::RendererGL()
 	if(!FLEXT_EXT_texture_compression_s3tc)
 		throw AnvilException("S3TC texture compression not supported!", __FILE__, __LINE__);
 
+	m_matrix_data = MatrixData();
+	m_matrix_ubo.Create();
 
 	m_guiShader = std::make_unique<GL::Shader>();
 	m_guiShader->Load("shader/gl/gui.vert", "shader/gl/gui.frag");
@@ -119,17 +122,13 @@ RendererGL::RendererGL()
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
 	m_skyboxShader->Compile();
 
-	m_modelShaders.push_back(std::make_unique<GL::Shader>());
-	m_modelShaders[0]->Load("shader/gl/model.vert", "shader/gl/model.frag");
-	m_modelShaders[0]->Compile();
+	m_modelShader = std::make_unique<GL::Shader>();
+	m_modelShader->Load("shader/gl/model.vert", "shader/gl/model.frag");
+	m_modelShader->Compile();
 
-	for (unsigned int i = 0; i < m_shaderModes.size(); i++)
-	{
-		m_terrainShaders.push_back(std::make_unique<GL::Shader>());
-		m_terrainShaders[i]->Define(m_shaderModes[i]);
-		m_terrainShaders[i]->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
-		m_terrainShaders[i]->Compile();
-	}
+	m_terrainShader = std::make_unique<GL::Shader>();
+	m_terrainShader->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
+	m_terrainShader->Compile();
 
 	m_vendor = OTHER;
 	auto iterator = vendorMap.find(reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
@@ -179,24 +178,16 @@ void RendererGL::Render(const glm::mat4& ortho)
 
 	m_terrain->Update();
 
-	if (m_wireframeMode)
-	{
-		m_terrainShaders[1]->Use();		
-		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[1]);
-	}
-	else
-	{
-		m_terrainShaders[0]->Use();
-		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[0]);
-	}
-	if (m_normalsMode)
-	{
-		m_terrainShaders[2]->Use();
-		m_rendered_polygons += m_terrain->Render(*m_terrainShaders[2]);
-	}
+	m_matrix_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
+	m_matrix_data.v3x3 = glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix());
+	m_matrix_ubo.Update(m_matrix_data);
 
-	m_modelShaders[0]->Use();
-
+	m_terrainShader->Use();
+	m_matrix_ubo.Bind(m_terrainShader->GetUniformBuffer("matrix_block"));
+	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
+	
+	m_modelShader->Use();
+	m_matrix_ubo.Bind(m_modelShader->GetUniformBuffer("matrix_block"));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this
@@ -204,7 +195,7 @@ void RendererGL::Render(const glm::mat4& ortho)
 	JoinInstanceThreads();
 
     for (auto& renderable : m_renderables)
-		m_rendered_polygons += renderable->Render(*m_modelShaders[0]);
+		m_rendered_polygons += renderable->Render(*m_modelShader);
 
 	UpdateInstances();
 

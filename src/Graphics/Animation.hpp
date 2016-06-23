@@ -26,15 +26,21 @@ namespace anvil
 	*/
 	class Animation : public IResource
 	{
-	public:
-		typedef std::shared_ptr<Interpolate<int,glm::f32>> AniInterpolate;
+	private:
+		typedef Interpolation<int, glm::f32> Interpolate;
+		typedef LinearInterpolation<int, glm::f32> InterpolateLinear;
+		typedef std::shared_ptr<Interpolate> InterpolatePtr;
 
+		inline InterpolatePtr MakeLinearInterpolate()
+		{
+			return std::make_shared<InterpolateLinear>();
 
+		}
 		enum CHANNELTYPES
 		{
 			X = 0,
 			Y = 1,
-			Z = 2, 
+			Z = 2,
 			W = 3,
 			QX = 4,
 			QY = 5,
@@ -47,7 +53,7 @@ namespace anvil
 			LINEAR = 1,
 			BEZIER = 2
 		};
-
+	public:
 		/**
 		* @fn	Animation::Animation();
 		*
@@ -112,7 +118,7 @@ namespace anvil
 		std::mutex m_poses_mutex;
 
 		//pivot -> type -> frame 
-		std::map<int, std::unordered_map<int, AniInterpolate>> m_data;
+		std::map<int, std::unordered_map<int, InterpolatePtr>> m_data;
 		std::map<int, AnimationPose> m_poses;
 
 	private:
