@@ -63,9 +63,9 @@ void Entity::AddInstance(const glm::vec3 &position, const glm::vec3 &euler)
 	for (Child c : m_children)
 	{
 		std::shared_ptr<Entity> e = Core::GetCore()->GetResources()->GetEntity(c.name);
-		//c.position = glm::rotateX(c.position, euler.x);
-		c.position = glm::rotateY(c.position, euler.y);
-		//c.position = glm::rotateZ(c.position, euler.z);
+		c.position = glm::rotateX(c.position, glm::radians(euler.x));
+		c.position = glm::rotateY(c.position, glm::radians(euler.y));
+		c.position = glm::rotateZ(c.position, glm::radians(euler.z));
 		e->AddInstance(position + c.position, c.rotation + euler);
 	}
 }
