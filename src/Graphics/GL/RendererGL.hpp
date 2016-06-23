@@ -24,6 +24,7 @@ namespace anvil
 		struct MatrixData
 		{
 			glm::mat4 vp;
+			glm::mat3 v3x3;
 		} m_matrices;
 
 	public:
