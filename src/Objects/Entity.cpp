@@ -9,6 +9,7 @@
 #include "../Core.hpp"
 #include "../Graphics.hpp"
 #include "Instance.hpp"
+#include "glm/gtx/rotate_vector.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -58,6 +59,15 @@ void Entity::AddInstance(const glm::vec3 &position, const glm::vec3 &euler)
 	std::shared_ptr<Instance> i = std::make_shared<Instance>(shared_from_this(), position, euler);
 	Core::GetCore()->GetGraphics()->GetRenderer()->RegisterInstance(i);
 	m_instances.push_back(i);
+
+	for (Child c : m_children)
+	{
+		std::shared_ptr<Entity> e = Core::GetCore()->GetResources()->GetEntity(c.name);
+		//c.position = glm::rotateX(c.position, euler.x);
+		c.position = glm::rotateY(c.position, euler.y);
+		//c.position = glm::rotateZ(c.position, euler.z);
+		e->AddInstance(position + c.position, c.rotation + euler);
+	}
 }
 
 std::shared_ptr<Entity::ModelConditionState> Entity::GetModelConditionState(const std::string& name)

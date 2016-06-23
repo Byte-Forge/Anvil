@@ -114,28 +114,12 @@ void ITerrain::Generate()
 
 	/////////////////////////////////////////////////////// MOD STUFF ////////////////////////////////////////////////////////////////
 
-	std::shared_ptr<Entity> castle_floor = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle_floor.json");
-	std::shared_ptr<Entity> castle_wall = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle_wall.json");
-	std::shared_ptr<Entity> barracks = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/barracks.json");
+	std::shared_ptr<Entity> castle = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle.json");
 
 	std::shared_ptr<Entity> uruk_cross = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_crossbow.json");
 
-	auto ent = glm::vec3(0, 0.01, 0);
-	castle_floor->AddInstance(ent, glm::vec3(0.0, 0.0f, 0.0));
-
-	ent = glm::vec3(100, m_heightmap[50][50], 40);
-	castle_wall->AddInstance(ent);
-
-	ent = glm::vec3(10, m_heightmap[50][50], 40);
-	castle_wall->AddInstance(ent, glm::vec3(0.0, 45.0, 0.0));
-
-
-
-	ent = glm::vec3(20, m_heightmap[75][75], 13);
-	barracks->AddInstance(ent);
-
-	ent = glm::vec3(20, m_heightmap[75][50], -14);
-	barracks->AddInstance(ent, glm::vec3(0.0, -90.0, 0.0));
+	auto ent = glm::vec3(50, 0.01, 50);
+	castle->AddInstance(ent, glm::vec3(0.0, -45.0f, 0.0));
 
 	ent = glm::vec3(20, m_heightmap[50][50], 20);
 	uruk_cross->AddInstance(ent);

@@ -94,6 +94,19 @@ namespace anvil
 		};
 
 		/**
+		* @struct	child
+		*
+		* @brief	child entity of this entity
+		*/
+		struct Child
+		{
+			std::string name;
+			glm::vec3 position = glm::vec3(0.0, 0.0, 0.0);
+			glm::vec3 rotation = glm::vec3(0.0, 0.0, 0.0);
+			float scale = 1.0f;
+		};
+
+		/**
 		 * @fn	Entity::Entity();
 		 *
 		 * @brief	creates a new Entity object without a parent 
@@ -165,8 +178,9 @@ namespace anvil
 		inline int GetHealth() { return m_health; }
 		inline void AddModelConditionState(const std::string name, std::shared_ptr<ModelConditionState> state) { m_modelConditionStates.insert({ name, state }); }
 		inline void AddAnimationState(const std::string name, std::shared_ptr<AnimationState> state) { m_animationStates.insert({ name, state }); }
+		inline void AddChild(Child child) { m_children.push_back(child); }
 	
-	private:
+private:
 		bool m_resourcesLoaded = false;
 
 		KindOf m_kindOfs = KindOf();
@@ -174,7 +188,7 @@ namespace anvil
 		int m_health = 1000;
 		std::map<std::string, std::shared_ptr<ModelConditionState>> m_modelConditionStates;
 		std::map<std::string, std::shared_ptr<AnimationState>> m_animationStates;
-
+		std::vector<Child> m_children;
 		std::deque<std::shared_ptr<Instance>> m_instances;
     };
 }

@@ -196,6 +196,43 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					}
 				}
 			}
+			if (node.HasMember("childs") && node["childs"].IsArray())
+			{
+				for (unsigned int i = 0; i < node["childs"].Size(); i++)
+				{
+					Entity::Child child = Entity::Child();
+					const auto& c = node["childs"][i];
+					if (c.HasMember("name"))
+					{
+						child.name = c["name"].GetString();
+					}
+					if (c.HasMember("position"))
+					{
+						const auto& pos = c["position"];
+						if (pos.HasMember("x"))
+							child.position.x = pos["x"].GetDouble();
+						if (pos.HasMember("y"))
+							child.position.y = pos["y"].GetDouble();
+						if (pos.HasMember("z"))
+							child.position.z = pos["z"].GetDouble();
+					}
+					if (c.HasMember("rotation"))
+					{
+						const auto& rot = c["rotation"];
+						if (rot.HasMember("x"))
+							child.rotation.x = rot["x"].GetDouble();
+						if (rot.HasMember("y"))
+							child.rotation.y = rot["y"].GetDouble();
+						if (rot.HasMember("z"))
+							child.rotation.z = rot["z"].GetDouble();
+					}
+					if (c.HasMember("scale"))
+					{
+						child.scale = c["scale"].GetDouble();
+					}
+					ent->AddChild(child);
+				}
+			}
 		}
 	}
 	else
