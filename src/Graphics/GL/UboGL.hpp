@@ -19,7 +19,7 @@ namespace anvil
 			~UniformBuffer()
 			{
 				if(m_ubo)
-					glDeleteBuffers(1,&m_ubo);
+					glDeleteBuffers(1, &m_ubo);
 				m_ubo = 0;
 			}
 
@@ -36,7 +36,7 @@ namespace anvil
 
 			void Bind(const GLuint index)
 			{
-				glBindBufferBase(GL_UNIFORM_BUFFER,index, m_ubo);
+				glBindBufferBase(GL_UNIFORM_BUFFER, index, m_ubo);
 			}
 		};
 	}

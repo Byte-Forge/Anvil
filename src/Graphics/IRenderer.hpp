@@ -124,7 +124,6 @@ namespace anvil
 		bool m_wireframeMode = false;
 		bool m_normalsMode = false;
 
-		std::unique_ptr<IShader> m_guiShader;
 		std::unique_ptr<IShader> m_skyboxShader;
 		std::unique_ptr<IShader> m_terrainShader;
 		std::shared_ptr<IShader> m_modelShader;

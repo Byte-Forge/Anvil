@@ -53,7 +53,9 @@ int GL::MeshGL::Render(IShader& shader)
 	glUniform1i(shader.GetUniform("parentPivot"), m_parentPivot);
 	glBindVertexArray(m_vao);
 	m_fbo->Bind();
-	glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
+	//used for tesselation
+	glPatchParameteri(GL_PATCH_VERTICES, 3);
+	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
 
 	return m_faces.size();
 }

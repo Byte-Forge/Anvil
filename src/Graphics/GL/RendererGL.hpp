@@ -25,7 +25,13 @@ namespace anvil
 		{
 			glm::mat4 vp;
 			glm::mat3 v3x3;
-		} m_matrices;
+		};
+
+		struct TesselationData
+		{
+			int tess_factor;
+			int max_tess_factor;
+		};
 
 	public:
 
@@ -103,13 +109,13 @@ namespace anvil
 		 */
 		const std::string GetGPUName();
 
-
-		inline GL::UniformBuffer<MatrixData>& GetMatrixUbo() { return m_matrix_ubo; }
-
 	private:
 		int m_totalVRAM;
 		std::string m_deviceName;
+
 		MatrixData m_matrix_data;
 		GL::UniformBuffer<MatrixData> m_matrix_ubo;
+		TesselationData m_tesselation_data;
+		GL::UniformBuffer<TesselationData> m_tesselation_ubo;
 	};
 }

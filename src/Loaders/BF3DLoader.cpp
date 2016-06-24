@@ -31,7 +31,6 @@ using namespace anvil;
 
 void BF3DLoader::LoadHierarchy(const std::string &name, std::ifstream& file, std::uint32_t chunkEnd)
 {
-	std::cout << name << std::endl;
 	std::shared_ptr<Hierarchy> hierarchy;
 	while (file.tellg() < chunkEnd)
 	{
@@ -39,13 +38,11 @@ void BF3DLoader::LoadHierarchy(const std::string &name, std::ifstream& file, std
 		std::uint32_t chunkSize = read<std::uint32_t>(file);
 		std::uint32_t subChunkEnd = static_cast<long>(file.tellg()) + chunkSize;
 
-
 		switch (chunkType)
 		{
 		case 257:
 			hierarchy = std::make_shared<Hierarchy>();
 			hierarchy->SetName(readString(file));
-			std::cout << hierarchy->GetName() << std::endl;
 			hierarchy->SetPivotCount(read<std::uint32_t>(file));
 			hierarchy->SetCenterPos(read<glm::f32vec3>(file));
 			break;

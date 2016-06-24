@@ -22,6 +22,10 @@ namespace anvil
 	class Material : public IResource
 	{
 	public:
+		Material();
+
+		~Material();
+
 		inline void SetDisplacementFactor(float factor) { m_displacementFactor = factor; }
 		inline void SetUPerSecond(float value) { m_uPerSec = value; }
 		inline void SetVPerSecond(float value) { m_vPerSec = value; }

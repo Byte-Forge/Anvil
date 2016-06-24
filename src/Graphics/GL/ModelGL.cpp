@@ -13,6 +13,8 @@
 #include "../../Util.hpp"
 #include "../../Objects/Instance.hpp"
 #include "../../Graphics/Hierarchy.hpp"
+#include "../../Graphics.hpp"
+#include "../../Graphics/IRenderer.hpp"
 #include "../../Graphics/IMesh.hpp"
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/glm.hpp>
@@ -51,6 +53,9 @@ int GL::ModelGL::Render(IShader& shader)
 			}
 			glUniform1i(shader.GetUniform("useSkeleton"), useSkeleton);
 
+			glm::vec3 lightDir = glm::vec3(0.1f, 1.0f, 0.f);
+			glUniform3f(shader.GetUniform("lightDir"), lightDir.x, lightDir.y, lightDir.z);
+
 			for (const auto& it : m_meshes)
 			{
 				const auto& m = i->GetMaterial(it.second->GetName());
@@ -58,8 +63,26 @@ int GL::ModelGL::Render(IShader& shader)
 				{
 					glm::vec2 offset = i->GetTexOffset(m->GetUPerSecond(), m->GetVPerSecond());
 					glUniform2f(shader.GetUniform("texOffset"), offset.x, offset.y);
+
 					glActiveTexture(GL_TEXTURE0); //albedo textures
 					m->GetAlbedoTexture()->Bind();
+					glUniform1i(shader.GetUniform("albedoTex"), 0);
+
+					glActiveTexture(GL_TEXTURE1); //normal textures
+					m->GetNormalTexture()->Bind();
+					glUniform1i(shader.GetUniform("normalTex"), 1);
+
+					glActiveTexture(GL_TEXTURE2); //spec textures
+					m->GetSpecularTexture()->Bind();
+					glUniform1i(shader.GetUniform("specularTex"), 2);
+
+					glActiveTexture(GL_TEXTURE3); //disp textures
+					m->GetDisplacementTexture()->Bind();
+					glUniform1i(shader.GetUniform("displacementTex"), 3);
+					
+					glActiveTexture(GL_TEXTURE4); //ambi textures
+					m->GetAmbientOcclusionTexture()->Bind();
+					glUniform1i(shader.GetUniform("ambientTex"), 4);
 
 					polygons += it.second->Render(shader);
 				}

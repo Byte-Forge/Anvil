@@ -72,9 +72,6 @@ int GL::Terrain::Render(IShader& shader)
 	glm::vec3 lightDir = glm::vec3(0.1f,1.0f,0.f);
 	glUniform3f(shader.GetUniform("lightDir"), lightDir.x, lightDir.y, lightDir.z);
 
-	glUniform1i(shader.GetUniform("tess_factor"), Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor());
-	glUniform1i(shader.GetUniform("max_factor"), Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation());
-
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();
 	glUniform1i(shader.GetUniform("albedoTex"), 0);

@@ -46,7 +46,7 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 	/*
 	if (type == GL_DEBUG_TYPE_OTHER_ARB)
 		return;
-*/
+	*/
     std::cout << "--GL DEBUG--" << std::endl;
     std::cout << "Message: "<< message << std::endl;
     std::cout << "Type: ";
@@ -114,16 +114,15 @@ RendererGL::RendererGL()
 	m_matrix_data = MatrixData();
 	m_matrix_ubo.Create();
 
-	m_guiShader = std::make_unique<GL::Shader>();
-	m_guiShader->Load("shader/gl/gui.vert", "shader/gl/gui.frag");
-	m_guiShader->Compile();
+	m_tesselation_data = TesselationData();
+	m_tesselation_ubo.Create();
 
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
 	m_skyboxShader->Compile();
 
 	m_modelShader = std::make_unique<GL::Shader>();
-	m_modelShader->Load("shader/gl/model.vert", "shader/gl/model.frag");
+	m_modelShader->Load("shader/gl/model.vert", "shader/gl/model.tesc", "shader/gl/model.tese", "shader/gl/model.geom", "shader/gl/model.frag");
 	m_modelShader->Compile();
 
 	m_terrainShader = std::make_unique<GL::Shader>();
@@ -180,14 +179,20 @@ void RendererGL::Render(const glm::mat4& ortho)
 
 	m_matrix_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
 	m_matrix_data.v3x3 = glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix());
+	m_tesselation_data.tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor();
+	m_tesselation_data.max_tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation();
+
 	m_matrix_ubo.Update(m_matrix_data);
+	m_tesselation_ubo.Update(m_tesselation_data);
 
 	m_terrainShader->Use();
 	m_matrix_ubo.Bind(m_terrainShader->GetUniformBuffer("matrix_block"));
+	m_tesselation_ubo.Bind(m_terrainShader->GetUniformBuffer("tesselation_block"));
 	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
 	m_modelShader->Use();
 	m_matrix_ubo.Bind(m_modelShader->GetUniformBuffer("matrix_block"));
+	m_tesselation_ubo.Bind(m_modelShader->GetUniformBuffer("tesselation_block"));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this

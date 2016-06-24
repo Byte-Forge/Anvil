@@ -22,11 +22,11 @@ void TextureLoader::LoadTexture(const std::string& name, const std::string& path
 {
 	gli::texture Texture = gli::load(path);
 	if (Texture.empty())
-		throw AnvilException("Failed to load empty texture" + path, __FILE__, __LINE__);
+		throw AnvilException("Failed to load empty texture: " + path, __FILE__, __LINE__);
 
 	auto tex = Core::GetCore()->GetGraphics()->GetTexture();
 	if (!tex->Load(Texture))
-		throw AnvilException("Failed to load texture" + path, __FILE__, __LINE__);
+		throw AnvilException("Failed to load texture: " + path, __FILE__, __LINE__);
 
 	Core::GetCore()->GetResources()->AddResource(name, tex);
 }
