@@ -69,9 +69,6 @@ int GL::Terrain::Render(IShader& shader)
 {
 	glBindVertexArray(m_vao);
 
-	glm::vec3 lightDir = glm::vec3(0.1f,1.0f,0.f);
-	glUniform3f(shader.GetUniform("lightDir"), lightDir.x, lightDir.y, lightDir.z);
-
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();
 	glUniform1i(shader.GetUniform("albedoTex"), 0);

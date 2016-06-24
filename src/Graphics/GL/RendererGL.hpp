@@ -33,6 +33,15 @@ namespace anvil
 			int max_tess_factor;
 		};
 
+		struct LightData
+		{
+			glm::vec3 cameraPos;
+			glm::vec3 lightDir;
+			glm::vec3 diffuse;
+			glm::vec3 ambient;
+			glm::vec3 spec;
+		};
+
 	public:
 
 		/**
@@ -117,5 +126,7 @@ namespace anvil
 		GL::UniformBuffer<MatrixData> m_matrix_ubo;
 		TesselationData m_tesselation_data;
 		GL::UniformBuffer<TesselationData> m_tesselation_ubo;
+		LightData m_light_data;
+		GL::UniformBuffer<LightData> m_light_ubo;
 	};
 }

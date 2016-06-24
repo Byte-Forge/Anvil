@@ -117,6 +117,9 @@ RendererGL::RendererGL()
 	m_tesselation_data = TesselationData();
 	m_tesselation_ubo.Create();
 
+	m_light_data = LightData();
+	m_light_ubo.Create();
+
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
 	m_skyboxShader->Compile();
@@ -179,20 +182,30 @@ void RendererGL::Render(const glm::mat4& ortho)
 
 	m_matrix_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
 	m_matrix_data.v3x3 = glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix());
+	m_matrix_ubo.Update(m_matrix_data);
+
 	m_tesselation_data.tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor();
 	m_tesselation_data.max_tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation();
-
-	m_matrix_ubo.Update(m_matrix_data);
 	m_tesselation_ubo.Update(m_tesselation_data);
+
+	m_light_data.cameraPos = Core::GetCore()->GetCamera()->GetPosition();
+	glm::vec3 lightDir = glm::vec3(0.1f, 1.0f, 0.f);
+	m_light_data.lightDir = lightDir;
+	m_light_data.ambient = lightDir; //just to initialize
+	m_light_data.diffuse = lightDir; //just to initialize
+	m_light_data.spec = lightDir; //just to initialize
+	m_light_ubo.Update(m_light_data);
 
 	m_terrainShader->Use();
 	m_matrix_ubo.Bind(m_terrainShader->GetUniformBuffer("matrix_block"));
 	m_tesselation_ubo.Bind(m_terrainShader->GetUniformBuffer("tesselation_block"));
+	m_light_ubo.Bind(m_terrainShader->GetUniformBuffer("light_block"));
 	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
 	m_modelShader->Use();
 	m_matrix_ubo.Bind(m_modelShader->GetUniformBuffer("matrix_block"));
 	m_tesselation_ubo.Bind(m_modelShader->GetUniformBuffer("tesselation_block"));
+	m_light_ubo.Bind(m_modelShader->GetUniformBuffer("light_block"));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this

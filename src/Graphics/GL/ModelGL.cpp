@@ -53,9 +53,6 @@ int GL::ModelGL::Render(IShader& shader)
 			}
 			glUniform1i(shader.GetUniform("useSkeleton"), useSkeleton);
 
-			glm::vec3 lightDir = glm::vec3(0.1f, 1.0f, 0.f);
-			glUniform3f(shader.GetUniform("lightDir"), lightDir.x, lightDir.y, lightDir.z);
-
 			for (const auto& it : m_meshes)
 			{
 				const auto& m = i->GetMaterial(it.second->GetName());
