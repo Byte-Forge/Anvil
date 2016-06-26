@@ -197,15 +197,15 @@ void RendererGL::Render(const glm::mat4& ortho)
 	m_light_ubo.Update(m_light_data);
 
 	m_terrainShader->Use();
-	m_matrix_ubo.Bind(m_terrainShader->GetUniformBuffer("matrix_block"));
-	m_tesselation_ubo.Bind(m_terrainShader->GetUniformBuffer("tesselation_block"));
-	m_light_ubo.Bind(m_terrainShader->GetUniformBuffer("light_block"));
+	m_matrix_ubo.Bind(m_terrainShader->GetUniformBuffer("matrix_block", 0));
+	m_tesselation_ubo.Bind(m_terrainShader->GetUniformBuffer("tesselation_block", 1));
+	m_light_ubo.Bind(m_terrainShader->GetUniformBuffer("light_block", 2));
 	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
 	m_modelShader->Use();
-	m_matrix_ubo.Bind(m_modelShader->GetUniformBuffer("matrix_block"));
-	m_tesselation_ubo.Bind(m_modelShader->GetUniformBuffer("tesselation_block"));
-	m_light_ubo.Bind(m_modelShader->GetUniformBuffer("light_block"));
+	m_matrix_ubo.Bind(m_modelShader->GetUniformBuffer("matrix_block", 0));
+	m_tesselation_ubo.Bind(m_modelShader->GetUniformBuffer("tesselation_block", 1));
+	m_light_ubo.Bind(m_modelShader->GetUniformBuffer("light_block", 2));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this

@@ -92,7 +92,7 @@ namespace anvil
 		virtual int GetUniform(const std::string& id) = 0;
 
 
-		virtual int GetUniformBuffer(const std::string& id) = 0;
+		virtual int GetUniformBuffer(const std::string& id, int index) = 0;
 	protected:
 		std::map<std::string, int> m_uniforms;
 		std::map<std::string, int> m_ubos;
