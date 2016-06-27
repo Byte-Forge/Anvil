@@ -50,7 +50,7 @@ namespace anvil
 		inline void SetFaceCount(glm::uint32 faceCount) { m_faceCount = faceCount; }
 		inline void SetVerticesCount(glm::uint32 vertCount) { m_vertCount = vertCount; }
 		inline void SetVertices(std::vector<glm::f32vec3> vertices) { m_vertices = vertices; }
-		inline void SetNormals(std::vector<glm::f32vec3> normals) { normals = m_normals; }
+		inline void SetNormals(std::vector<glm::f32vec3> normals) { m_normals = normals; }
 		inline void SetUVCoords(std::vector<glm::f32vec2> uvCoords) { m_uvCoords = uvCoords; }
 		inline void SetFaces(std::vector<glm::i32vec3> faces) { m_faces = faces; }
 		inline void SetVertInfs(std::vector<glm::i32vec2> vertInfs) { m_vertInfs = vertInfs; }
