@@ -36,6 +36,8 @@ GL::MeshGL::MeshGL() : m_vao(0)
 
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
 	m_fbo->Bind();
+
+	glBindVertexArray(0);
 }
 
 GL::MeshGL::~MeshGL()
@@ -62,6 +64,7 @@ int GL::MeshGL::Render(IShader& shader)
 
 void GL::MeshGL::Init()
 {
+	glBindVertexArray(m_vao);
 	m_vbo->Bind();
 	m_vbo->Update(sizeof(glm::f32vec3) * m_vertices.size(), m_vertices.data());
 
@@ -85,4 +88,5 @@ void GL::MeshGL::Init()
 
 	m_fbo->Bind();
 	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), m_faces.data());
+	glBindVertexArray(0);
 }

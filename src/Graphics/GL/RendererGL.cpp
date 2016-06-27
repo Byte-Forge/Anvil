@@ -188,12 +188,15 @@ void RendererGL::Render(const glm::mat4& ortho)
 	m_tesselation_data.max_tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation();
 	m_tesselation_ubo.Update(m_tesselation_data);
 
-	m_light_data.cameraPos = Core::GetCore()->GetCamera()->GetPosition();
-	glm::vec3 lightDir = glm::vec3(0.1f, 1.0f, 0.f);
+	m_light_data.cameraPos = glm::vec4(Core::GetCore()->GetCamera()->GetPosition(),1.0f);
+	glm::vec4 lightDir = glm::vec4(0.1f, 1.0f, 0.f,1.0f);
 	m_light_data.lightDir = lightDir;
-	m_light_data.ambient = lightDir; //just to initialize
-	m_light_data.diffuse = lightDir; //just to initialize
-	m_light_data.spec = lightDir; //just to initialize
+	glm::vec4 ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
+	m_light_data.ambient = ambient; //just to initialize
+	glm::vec4 diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
+	m_light_data.diffuse = diffuse; //just to initialize
+	glm::vec4 spec = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_light_data.spec = spec; //just to initialize
 	m_light_ubo.Update(m_light_data);
 
 	m_terrainShader->Use();

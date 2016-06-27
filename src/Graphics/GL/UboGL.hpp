@@ -32,6 +32,7 @@ namespace anvil
 			{
 				glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
 				glBufferData(GL_UNIFORM_BUFFER, sizeof(data), &data, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_UNIFORM_BUFFER, 0);
 			}
 
 			void Bind(const GLuint index)

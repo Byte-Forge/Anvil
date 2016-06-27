@@ -24,22 +24,22 @@ namespace anvil
 		struct MatrixData
 		{
 			glm::mat4 vp;
-			glm::mat3 v3x3;
+			glm::mat4 v;
 		};
 
 		struct TesselationData
 		{
-			int tess_factor;
-			int max_tess_factor;
+			glm::int32 tess_factor;
+			glm::int32 max_tess_factor;
 		};
 
 		struct LightData
 		{
-			glm::vec3 cameraPos;
-			glm::vec3 lightDir;
-			glm::vec3 diffuse;
-			glm::vec3 ambient;
-			glm::vec3 spec;
+			glm::vec4 cameraPos;
+			glm::vec4 lightDir;
+			glm::vec4 diffuse;
+			glm::vec4 ambient;
+			glm::vec4 spec;
 		};
 
 	public:
