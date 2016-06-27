@@ -143,6 +143,7 @@ std::shared_ptr<IMesh> BF3DLoader::LoadMesh(std::ifstream& file, std::uint32_t c
 			break;
 		case 132:
 			mesh->SetNormals(readVector<glm::f32vec3>(file, chunkSize));
+			std::cout << "normals" << std::endl;
 			break;
 		case 133:
 			mesh->SetFaces(readVector<glm::i32vec3>(file, chunkSize));

@@ -110,7 +110,7 @@ int GL::Shader::GetUniform(const std::string &name)
 	return it->second;
 }
 
-int GL::Shader::GetUniformBuffer(const std::string &name, int index)
+int GL::Shader::GetUniformBuffer(const std::string &name)
 {
 	const auto& it = m_ubos.find(name);
 	if (it == m_ubos.end())
@@ -119,7 +119,7 @@ int GL::Shader::GetUniformBuffer(const std::string &name, int index)
 		if (loc == -1)
 			throw AnvilException("Uniform buffer: \"" + name + "\" doesn't exist!", __FILE__, __LINE__);
 		m_ubos[name] = loc;
-		glUniformBlockBinding(m_program, index, loc);
+		//glUniformBlockBinding(m_program, index, loc);
 		return loc;
 	}
 		

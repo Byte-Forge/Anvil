@@ -111,14 +111,8 @@ RendererGL::RendererGL()
 	if(!FLEXT_EXT_texture_compression_s3tc)
 		throw AnvilException("S3TC texture compression not supported!", __FILE__, __LINE__);
 
-	m_matrix_data = MatrixData();
-	m_matrix_ubo.Create();
-
-	m_tesselation_data = TesselationData();
-	m_tesselation_ubo.Create();
-
-	m_light_data = LightData();
-	m_light_ubo.Create();
+	m_ubo_data = UboData();
+	m_ubo.Create();
 
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
@@ -180,35 +174,29 @@ void RendererGL::Render(const glm::mat4& ortho)
 
 	m_terrain->Update();
 
-	m_matrix_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
-	m_matrix_data.v = glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix());
-	m_matrix_ubo.Update(m_matrix_data);
+	m_ubo_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
+	m_ubo_data.v = glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix());
 
-	m_tesselation_data.tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor();
-	m_tesselation_data.max_tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation();
-	m_tesselation_ubo.Update(m_tesselation_data);
+	m_ubo_data.tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor();
+	m_ubo_data.max_tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation();
 
-	m_light_data.cameraPos = glm::vec4(Core::GetCore()->GetCamera()->GetPosition(),1.0f);
+	m_ubo_data.cameraPos = glm::vec4(Core::GetCore()->GetCamera()->GetPosition(),1.0f);
 	glm::vec4 lightDir = glm::vec4(0.1f, 1.0f, 0.f,1.0f);
-	m_light_data.lightDir = lightDir;
+	m_ubo_data.lightDir = lightDir;
 	glm::vec4 ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
-	m_light_data.ambient = ambient; //just to initialize
+	m_ubo_data.ambient = ambient; //just to initialize
 	glm::vec4 diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
-	m_light_data.diffuse = diffuse; //just to initialize
+	m_ubo_data.diffuse = diffuse; //just to initialize
 	glm::vec4 spec = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_light_data.spec = spec; //just to initialize
-	m_light_ubo.Update(m_light_data);
+	m_ubo_data.spec = spec; //just to initialize
+	m_ubo.Update(m_ubo_data);
 
 	m_terrainShader->Use();
-	m_matrix_ubo.Bind(m_terrainShader->GetUniformBuffer("matrix_block", 0));
-	m_tesselation_ubo.Bind(m_terrainShader->GetUniformBuffer("tesselation_block", 1));
-	m_light_ubo.Bind(m_terrainShader->GetUniformBuffer("light_block", 2));
+	m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
 	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
 	m_modelShader->Use();
-	m_matrix_ubo.Bind(m_modelShader->GetUniformBuffer("matrix_block", 0));
-	m_tesselation_ubo.Bind(m_modelShader->GetUniformBuffer("tesselation_block", 1));
-	m_light_ubo.Bind(m_modelShader->GetUniformBuffer("light_block", 2));
+	m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE); //we should not need this

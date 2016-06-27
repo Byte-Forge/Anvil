@@ -21,20 +21,14 @@ namespace anvil
 	class RendererGL : public IRenderer
 	{
 	private:
-		struct MatrixData
+		struct UboData
 		{
 			glm::mat4 vp;
 			glm::mat4 v;
-		};
 
-		struct TesselationData
-		{
 			glm::int32 tess_factor;
 			glm::int32 max_tess_factor;
-		};
 
-		struct LightData
-		{
 			glm::vec4 cameraPos;
 			glm::vec4 lightDir;
 			glm::vec4 diffuse;
@@ -122,11 +116,7 @@ namespace anvil
 		int m_totalVRAM;
 		std::string m_deviceName;
 
-		MatrixData m_matrix_data;
-		GL::UniformBuffer<MatrixData> m_matrix_ubo;
-		TesselationData m_tesselation_data;
-		GL::UniformBuffer<TesselationData> m_tesselation_ubo;
-		LightData m_light_data;
-		GL::UniformBuffer<LightData> m_light_ubo;
+		UboData m_ubo_data;
+		GL::UniformBuffer<UboData> m_ubo;
 	};
 }

@@ -117,7 +117,7 @@ namespace anvil
 
 	protected:
 		int m_rendered_polygons = 0;
-		int m_maxTesselation = 32;
+		int m_maxTesselation = 1;
 	
 		Vendor m_vendor;
 
