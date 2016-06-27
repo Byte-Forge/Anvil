@@ -181,7 +181,7 @@ void RendererGL::Render(const glm::mat4& ortho)
 	m_terrain->Update();
 
 	m_matrix_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
-	m_matrix_data.v3x3 = glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix());
+	m_matrix_data.v = glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix());
 	m_matrix_ubo.Update(m_matrix_data);
 
 	m_tesselation_data.tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor();
