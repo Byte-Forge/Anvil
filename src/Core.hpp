@@ -81,6 +81,7 @@ namespace anvil
 		inline std::unique_ptr<Camera>& GetCamera() { return m_camera; } 
 		inline std::unique_ptr<Input>& GetInput() { return m_input; }
 		inline glm::vec2 GetResolution() { return m_resolution; }
+		inline void SetResolution(glm::vec2 res) { m_resolution = res; }
 		inline GLFWwindow* GetWindow() { return m_window; }
 		static inline Core* GetCore() { return m_instance; }
 

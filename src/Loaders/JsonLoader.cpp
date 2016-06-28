@@ -50,8 +50,6 @@ void JsonLoader::LoadMaterial(const std::string &name, const std::string &path)
 
 		if (node.HasMember("albedo"))
 			mat->SetAlbedoTexture(node["albedo"].GetString());
-		else
-			throw AnvilException("Material file has no albedo texture: " + path, __FILE__, __LINE__);
 		if (node.HasMember("normal"))
 			mat->SetNormalTexture(node["normal"].GetString());
 		if (node.HasMember("specular"))
