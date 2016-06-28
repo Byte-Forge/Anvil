@@ -71,12 +71,10 @@ void Input::Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRe
 		cam->Rotate(Direction::RIGHT);
 	if (m_keyInputs[GLFW_KEY_F1] == JUST_RELEASED)
 	{
-		renderer->ToggleWireframeMode();
 		m_keyInputs[GLFW_KEY_F1] = RELEASED;
 	}
 	if (m_keyInputs[GLFW_KEY_F2] == JUST_RELEASED)
 	{
-		renderer->ToggleNormalsMode();
 		m_keyInputs[GLFW_KEY_F2] = RELEASED;
 	}
 

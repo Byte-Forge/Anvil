@@ -39,6 +39,16 @@ namespace anvil
 		virtual void CreateArray(size_t size, size_t levels, int width, int height, const gli::format format, const gli::swizzles swizzles) = 0;
 
 		/**
+		* @fn	virtual void ITexture::Create(int width, int height) = 0;
+		*
+		* @brief	Creates a texture for a framebuffer.
+		*
+		* @param	width   	The width.
+		* @param	height  	The height.
+		*/
+		virtual void Create(int width, int height) = 0;
+
+		/**
 		 * @fn	virtual bool ITexture::SetLevel(int level, const gli::texture& tex) = 0;
 		 *
 		 * @brief	Sets a level.

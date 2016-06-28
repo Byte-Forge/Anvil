@@ -94,8 +94,6 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 RendererGL::RendererGL() 
 {
     flextInit();
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
 
 	#if 1
 	if (FLEXT_ARB_debug_output)
@@ -184,12 +182,17 @@ void RendererGL::Render(const glm::mat4& ortho)
 	glm::vec4 lightDir = glm::vec4(0.1f, 1.0f, 0.f,1.0f);
 	m_ubo_data.lightDir = lightDir;
 	glm::vec4 ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
-	m_ubo_data.ambient = ambient; //just to initialize
+	m_ubo_data.ambient = ambient; 
 	glm::vec4 diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
-	m_ubo_data.diffuse = diffuse; //just to initialize
+	m_ubo_data.diffuse = diffuse;
 	glm::vec4 spec = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_ubo_data.spec = spec; //just to initialize
+	m_ubo_data.spec = spec; 
 	m_ubo.Update(m_ubo_data);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
+	//m_frameBuffer.GetTexture()->Bind();
 
 	m_terrainShader->Use();
 	m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
@@ -199,7 +202,6 @@ void RendererGL::Render(const glm::mat4& ortho)
 	m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDisable(GL_CULL_FACE); //we should not need this
 
 	JoinInstanceThreads();
 

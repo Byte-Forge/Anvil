@@ -99,7 +99,6 @@ namespace anvil
 		 */
 		virtual const std::string GetGPUName() = 0;
 
-
 		void UpdateInstances();
 		void JoinInstanceThreads();
 
@@ -108,21 +107,15 @@ namespace anvil
 		inline void RegisterRenderable(std::shared_ptr<IRenderable> renderable) { m_renderables.push_back(renderable); } 
 		inline void RegisterInstance(std::shared_ptr<Instance> instance) { m_instances.push_back(instance); }
 
-		inline void ToggleWireframeMode() {	m_wireframeMode = !m_wireframeMode;	}
-		inline void ToggleNormalsMode()	{ m_normalsMode = !m_normalsMode; }
-
 		inline int GetTessfactor() { return Options::GetTessfactor(); } 
 		inline int GetMaxTesselation() { return m_maxTesselation; }
 		inline int GetRenderedPolygons() { return m_rendered_polygons; }
 
 	protected:
 		int m_rendered_polygons = 0;
-		int m_maxTesselation = 1;
+		int m_maxTesselation = 64;
 	
 		Vendor m_vendor;
-
-		bool m_wireframeMode = false;
-		bool m_normalsMode = false;
 
 		std::unique_ptr<IShader> m_skyboxShader;
 		std::unique_ptr<IShader> m_terrainShader;

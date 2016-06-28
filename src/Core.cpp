@@ -104,7 +104,7 @@ Core::Core()
 	 
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 	m_window = glfwCreateWindow(Options::GetWidth(), Options::GetHeight(), "anvil engine", 
-								Options::GetFullscreen() ? glfwGetPrimaryMonitor() : nullptr ,nullptr);
+								Options::GetFullscreen() ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
 	int width, height;
 	glfwGetWindowSize(m_window, &width, &height);
