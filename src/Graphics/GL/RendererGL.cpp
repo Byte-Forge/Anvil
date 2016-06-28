@@ -179,7 +179,7 @@ void RendererGL::Render(const glm::mat4& ortho)
 	m_ubo_data.max_tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation();
 
 	m_ubo_data.cameraPos = glm::vec4(Core::GetCore()->GetCamera()->GetPosition(),1.0f);
-	glm::vec4 lightDir = glm::vec4(0.1f, 1.0f, 0.f,1.0f);
+	glm::vec4 lightDir = glm::vec4(1.0f, 1.0f, 0.f,0.0f);
 	m_ubo_data.lightDir = lightDir;
 	glm::vec4 ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 	m_ubo_data.ambient = ambient; 

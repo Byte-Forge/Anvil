@@ -31,8 +31,8 @@ void GL::Texture::CreateArray(size_t size, size_t levels,int width, int height,c
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_R, Format.Swizzles[0]);
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_G, Format.Swizzles[1]);
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_B, Format.Swizzles[2]);
-	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_A, Format.Swizzles[3]);
-	glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_A, Format.Swizzles[3]);
+	//glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexStorage3D(m_target, static_cast<GLsizei>(levels), Format.Internal, width, height, static_cast<GLsizei>(size));
 }
@@ -97,8 +97,8 @@ bool GL::Texture::Load(const gli::texture &tex)
 	glTexParameteri(m_target, GL_TEXTURE_SWIZZLE_A, Format.Swizzles[3]);
 	glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glm::tvec3<GLsizei> const Dimensions(tex.extent());
 	GLsizei const FaceTotal = static_cast<GLsizei>(tex.layers() * tex.faces());
 
