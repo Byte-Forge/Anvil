@@ -105,7 +105,6 @@ RendererGL::RendererGL()
 	if(!FLEXT_ARB_texture_storage)
 		throw AnvilException("ARB_texture_storage not supported!", __FILE__, __LINE__);
 
-
 	if(!FLEXT_EXT_texture_compression_s3tc)
 		throw AnvilException("S3TC texture compression not supported!", __FILE__, __LINE__);
 
@@ -123,6 +122,10 @@ RendererGL::RendererGL()
 	m_terrainShader = std::make_unique<GL::Shader>();
 	m_terrainShader->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
 	m_terrainShader->Compile();
+
+	m_quadShader = std::make_unique<GL::Shader>();
+	m_quadShader->Load("shader/gl/quad.vert", "shader/gl/quad.frag");
+	m_quadShader->Compile();
 
 	m_vendor = OTHER;
 	auto iterator = vendorMap.find(reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
@@ -144,6 +147,21 @@ RendererGL::RendererGL()
 	else
 		m_totalVRAM = 0;
 
+	glm::vec2 res = Core::GetCore()->GetResolution();
+	m_frameBuffer = std::make_unique<GL::FrameBuffer>(res*16.0f);
+
+	static const float quad_vertices[] = {
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f
+	};
+
+	m_quad_vbo = std::make_unique<GL::Buffer>(GL::ARRAY_BUFFER);
+	m_quad_vbo->Update(sizeof(quad_vertices), quad_vertices, GL::STATIC);
+
 	Core::GetCore()->GetResources()->GetParticleSystem("particle/test.json");
 }
 
@@ -159,24 +177,17 @@ void RendererGL::Clear()
             GL_DEPTH_BUFFER_BIT);
 }
 
-void RendererGL::Render(const glm::mat4& ortho)
+void RendererGL::Render()
 {
 	m_rendered_polygons = 0;
-
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
-	m_skyboxShader->Use();
-	m_skybox->Update();
-	m_rendered_polygons += m_skybox->Render(*m_skyboxShader);
-
-	glEnable(GL_DEPTH_TEST);
 
 	m_terrain->Update();
 
 	m_ubo_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
-	m_ubo_data.v = glm::mat3(Core::GetCore()->GetCamera()->GetViewMatrix());
+	m_ubo_data.v = Core::GetCore()->GetCamera()->GetViewMatrix();
 
-	m_ubo_data.tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetTessfactor();
-	m_ubo_data.max_tess_factor = Core::GetCore()->GetGraphics()->GetRenderer()->GetMaxTesselation();
+	m_ubo_data.tess_factor = GetTessfactor();
+	m_ubo_data.max_tess_factor = m_maxTesselation;
 
 	m_ubo_data.cameraPos = glm::vec4(Core::GetCore()->GetCamera()->GetPosition(),1.0f);
 	glm::vec4 lightDir = glm::vec4(1.0f, 1.0f, 0.f,0.0f);
@@ -187,19 +198,27 @@ void RendererGL::Render(const glm::mat4& ortho)
 	m_ubo_data.diffuse = diffuse;
 	glm::vec4 spec = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_ubo_data.spec = spec; 
+
 	m_ubo.Update(m_ubo_data);
 
+	m_frameBuffer->Bind();
+
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
+	Clear();
+
+	m_skyboxShader->Use();
+	m_rendered_polygons += m_skybox->Render(*m_skyboxShader);
+
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-
-	//m_frameBuffer.GetTexture()->Bind();
 
 	m_terrainShader->Use();
 	m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
 	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
 	m_modelShader->Use();
-	m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
+	m_ubo.Bind(m_modelShader->GetUniformBuffer("ubo_block"));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -209,15 +228,33 @@ void RendererGL::Render(const glm::mat4& ortho)
 		m_rendered_polygons += renderable->Render(*m_modelShader);
 
 	UpdateInstances();
-
-	glEnable(GL_CULL_FACE);
-	glDisable(GL_BLEND);
+		
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
+	glm::vec2 res = Core::GetCore()->GetResolution();
+	glViewport(0, 0, res.x, res.y);
+	Clear();
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+
+	/////////////////////////////////////////////// render framebuffer to quad /////////////////////////////////////////////////////////
+	m_quadShader->Use();
+
+	glActiveTexture(GL_TEXTURE0);
+	m_frameBuffer->BindTexture();
+	//glUniform1i(m_quadShader->GetUniform("renderedTexture"), 0);
+
+	glEnableVertexAttribArray(0);
+	m_quad_vbo->Bind();
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+	glDrawArrays(GL_TRIANGLES, 0, 6); 
+
+	glDisableVertexAttribArray(0);
 }
 
 void RendererGL::Resize(int width, int height)
 {
-	glViewport(0, 0, width, height);
+	m_frameBuffer->Resize(glm::vec2(width, height));
 }
 
 void RendererGL::PrintInfo()

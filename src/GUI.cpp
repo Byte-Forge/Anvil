@@ -35,7 +35,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 			std::cout << "Failed to add font!"<< std::endl;
 	}
 	
-	m_view = m_core->CreateView(800,600);
+	m_view = m_core->CreateView(800, 600);
 	auto element = std::make_shared<spark::Grid>();	
 	m_fps = std::make_shared<spark::ILabel>();
 	m_fps->SetText("0");
@@ -74,7 +74,6 @@ void GUI::Render()
 	glfwGetWindowSize(m_window, &winWidth, &winHeight);
 	glfwGetFramebufferSize(m_window, &fbWidth, &fbHeight);
 
-
 	//Set FPS
 	int fps = Core::GetCore()->GetFPS().GetFPS();
 	m_fps->SetText("FPS: " + std::to_string(fps));
@@ -99,7 +98,7 @@ void GUI::LoadFile(const std::string& file)
 
 void GUI::Resize(int width, int height)
 {
-	
+
 }
 
 void GUI::MouseMove(int x, int y, int mods)

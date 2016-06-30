@@ -47,13 +47,11 @@ namespace anvil
 		virtual void Clear() = 0;
 
 		/**
-		 * @fn	virtual void IRenderer::Render(const glm::mat4& ortho) = 0;
+		 * @fn	virtual void IRenderer::Render() = 0;
 		 *
 		 * @brief	Renders the given ortho.
-		 *
-		 * @param	ortho	The ortho.
 		 */
-		virtual void Render(const glm::mat4& ortho) = 0;
+		virtual void Render() = 0;
 
 		/**
 		 * @fn	virtual void IRenderer::Resize(int width,int height) = 0;
@@ -120,6 +118,7 @@ namespace anvil
 		std::unique_ptr<IShader> m_skyboxShader;
 		std::unique_ptr<IShader> m_terrainShader;
 		std::shared_ptr<IShader> m_modelShader;
+		std::shared_ptr<IShader> m_quadShader;
 
 		std::shared_ptr<IRenderable> m_skybox;
 		std::shared_ptr<IRenderable> m_terrain;

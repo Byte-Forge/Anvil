@@ -83,11 +83,6 @@ int GL::ModelGL::Render(IShader& shader)
 
 					polygons += it.second->Render(shader);
 				}
-				else
-				{
-					//send pink material color to shader, and a boolean not to use textures
-					polygons += it.second->Render(shader);
-				}
 			}
 		}
 	}

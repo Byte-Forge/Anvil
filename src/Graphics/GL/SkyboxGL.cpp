@@ -86,9 +86,9 @@ int GL::Skybox::Render(IShader& shader)
 	glm::vec3 pos = Core::GetCore()->GetCamera()->GetPosition();
 	glUniform3f(shader.GetUniform("cameraPosition"), pos.x, pos.y, pos.z);
 
-	glActiveTexture(GL_TEXTURE0); //diffuse texture
+	glActiveTexture(GL_TEXTURE1); //diffuse texture
 	m_diff->Bind();
-	glUniform1i(shader.GetUniform("skybox"), 0);
+	glUniform1i(shader.GetUniform("skybox"), 1);
 
 	m_fbo->Bind();
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_faces.size()), GL_UNSIGNED_INT,nullptr);

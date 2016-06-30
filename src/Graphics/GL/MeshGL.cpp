@@ -59,19 +59,18 @@ int GL::MeshGL::Render(IShader& shader)
 	glPatchParameteri(GL_PATCH_VERTICES, 3);
 	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
 
+	glBindVertexArray(0);
+
 	return m_faces.size();
 }
 
 void GL::MeshGL::Init()
 {
 	glBindVertexArray(m_vao);
-	m_vbo->Bind();
 	m_vbo->Update(sizeof(glm::f32vec3) * m_vertices.size(), m_vertices.data());
 
-	m_nbo->Bind();
 	m_nbo->Update(sizeof(glm::f32vec3) * m_normals.size(), m_normals.data());
 
-	m_uvbo->Bind();
 	m_uvbo->Update(sizeof(glm::f32vec2) * m_uvCoords.size(), m_uvCoords.data());
 
 	if (m_vertInfs.size() > 0)
@@ -82,11 +81,9 @@ void GL::MeshGL::Init()
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 2, GL_INT, GL_FALSE, 0, nullptr);
 
-		m_infbo->Bind();
 		m_infbo->Update(sizeof(glm::i32vec2) * m_vertInfs.size(), m_vertInfs.data());
 	}
 
-	m_fbo->Bind();
 	m_fbo->Update(sizeof(glm::i32vec3) * m_faces.size(), m_faces.data());
 	glBindVertexArray(0);
 }

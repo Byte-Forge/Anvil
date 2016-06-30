@@ -9,7 +9,6 @@
 #include "flextGL.h"
 #include <glm/glm.hpp>
 #include <memory>
-#include "TextureGL.hpp"
 
 namespace anvil
 {
@@ -52,21 +51,21 @@ namespace anvil
 			*/
 			void Bind();
 
+			void BindTexture();
+
 			/**
-			* @fn	void FrameBuffer::Valid();
+			* @fn	void FrameBuffer::Resize(glm::vec2 size);
 			*
-			* @brief	Checks if the framebuffer is valid;
+			* @brief	Resize the framebuffer to the given resolution.
+			* @param	size	the new resolution
 			*/
-			bool Valid();
-
-			void AttachTexture();
-
-			inline std::shared_ptr<GL::Texture> GetTexture() { return m_texture; }
+			void Resize(glm::vec2 size);
 
 		private:
 			glm::vec2 m_size;
 			unsigned int m_handle;
-			std::shared_ptr<GL::Texture> m_texture;
+			unsigned int m_texture_handle;
+			unsigned int m_render_handle;
 		};
 	}
 }

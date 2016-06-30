@@ -43,13 +43,11 @@ namespace anvil
 		void Clear();
 
 		/**
-		 * @fn	void RendererVK::Render(const glm::mat4& ortho);
+		 * @fn	void RendererVK::Render();
 		 *
-		 * @brief	Renders the given ortho.
-		 *
-		 * @param	ortho	The ortho.
+		 * @brief	Renders
 		 */
-		void Render(const glm::mat4& ortho);
+		void Render();
 
 		/**
 		 * @fn	void RendererVK::Resize(int width, int height);

@@ -37,19 +37,6 @@ void GL::Texture::CreateArray(size_t size, size_t levels,int width, int height,c
 	glTexStorage3D(m_target, static_cast<GLsizei>(levels), Format.Internal, width, height, static_cast<GLsizei>(size));
 }
 
-void GL::Texture::Create(int width, int height)
-{
-	m_target = GL_TEXTURE_2D;
-	glGenTextures(1, &m_handle);
-	glBindTexture(m_target, m_handle);
-	glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexImage2D(m_target, 0, GL_RGBA8, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
-}
-
 bool GL::Texture::SetLevel(int level, const gli::texture & tex)
 {
 	gli::gl::format const Format = GL.translate(tex.format(),tex.swizzles());
@@ -78,13 +65,12 @@ bool GL::Texture::SetLevel(int level, const gli::texture & tex)
 			}
 		}
 	}
-
 	return true;
 }
 
 bool GL::Texture::Load(const gli::texture &tex)
 {
-	gli::gl::format const Format = GL.translate(tex.format(),tex.swizzles());
+	gli::gl::format const Format = GL.translate(tex.format(), tex.swizzles());
 	m_target = GL.translate(tex.target());
 
 	glGenTextures(1, &m_handle);

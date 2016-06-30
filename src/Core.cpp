@@ -103,7 +103,7 @@ Core::Core()
 	#endif
 	 
 
-	//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 	m_window = glfwCreateWindow(Options::GetWidth(), Options::GetHeight(), "anvil engine", 
 								Options::GetFullscreen() ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 

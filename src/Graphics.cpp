@@ -35,9 +35,6 @@ Graphics::Graphics(Graphics::RenderBackend backend) : m_backend(backend), m_avai
 		break;
 	#endif
 	}
-
-	auto resolution = Core::GetCore()->GetResolution();
-	m_ortho = glm::ortho(0.0f, resolution.x, resolution.y, 000.0f);
 }
 
 Graphics::~Graphics()
@@ -52,13 +49,12 @@ void Graphics::Clear()
 
 void Graphics::Render()
 {
-	m_renderer->Render(m_ortho);
+	m_renderer->Render();
 }
 
 void Graphics::Resize(int width, int height)
 {
 	m_renderer->Resize(width,height);
-	m_ortho = glm::ortho(0.0f, (float)width, (float)height, 000.0f);
 }
 
 void Graphics::SetRenderer(RenderBackend backend)

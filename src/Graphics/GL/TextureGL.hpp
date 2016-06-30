@@ -55,16 +55,6 @@ namespace anvil
 			void CreateArray(size_t size, size_t levels,int width, int height, const gli::format format, const gli::swizzles swizzles);
 
 			/**
-			 * @fn	void Texture::Create(int width, int height);
-			 *
-			 * @brief	Creates a texture for a framebuffer.
-			 *
-			 * @param	width   	The width.
-			 * @param	height  	The height.
-			 */
-			void Create(int width, int height);
-
-			/**
 			 * @fn	bool Texture::SetLevel(int level, const gli::texture& tex);
 			 *
 			 * @brief	Sets a level.
@@ -93,8 +83,6 @@ namespace anvil
              * @brief	Binds this object.
              */
             void Bind();
-
-			inline GLuint GetHandle() { return m_handle; }
 
         private:
             GLuint m_handle;

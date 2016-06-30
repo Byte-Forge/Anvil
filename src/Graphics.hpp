@@ -120,12 +120,10 @@ namespace anvil
 		inline void AllowBackend(RenderBackend backend) { m_available.push_back(backend); }
 		inline RenderBackend GetBackend() { return m_backend; }
 		inline std::shared_ptr<IRenderer> GetRenderer() { return m_renderer; }
-		inline glm::mat4& GetOrtho() { return m_ortho; }
 
 	private: 
 		RenderBackend m_backend;
 		std::vector<RenderBackend> m_available;
-		glm::mat4 m_ortho;
 		std::shared_ptr<IRenderer> m_renderer;
 	};
 }

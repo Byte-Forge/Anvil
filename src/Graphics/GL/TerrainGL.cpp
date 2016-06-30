@@ -27,35 +27,30 @@ GL::Terrain::Terrain(std::uint32_t width, std::uint32_t height) : ITerrain(width
 	glBindVertexArray(m_vao);
 
 	m_vbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
-	m_vbo->Bind();
 	m_vbo->Update(static_cast<unsigned int>(m_vertices.size() * sizeof(glm::vec3)), m_vertices.data());
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	m_uvbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
-	m_uvbo->Bind();
 	m_uvbo->Update(static_cast<unsigned int>(m_uvs.size() * sizeof(glm::vec2)), m_uvs.data());
 	
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	m_nbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
-	m_nbo->Bind();
 	m_nbo->Update(static_cast<unsigned int>(m_normals.size() * sizeof(glm::vec3)), m_normals.data());
 
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	m_mbo = std::make_unique<GL::Buffer>(ARRAY_BUFFER);
-	m_mbo->Bind();
 	m_mbo->Update(static_cast<unsigned int>(m_materials.size() * sizeof(std::uint32_t)), m_materials.data());
 
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	m_fbo = std::make_unique<GL::Buffer>(ELEMENT_ARRAY_BUFFER);
-	m_fbo->Bind();
 	m_fbo->Update(static_cast<unsigned int>(m_faces.size() * sizeof(std::uint32_t)), m_faces.data());
 }
 
@@ -94,6 +89,8 @@ int GL::Terrain::Render(IShader& shader)
 	m_fbo->Bind();
 	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, nullptr);
 
+	glBindVertexArray(0);
+
 	return m_faces.size()/3;
 }
 
@@ -104,7 +101,6 @@ void GL::Terrain::Update()
 		m_faces = m_quadtree->GetTriangles(Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray());
 		if (m_faces.size() > 0)
 		{
-			m_fbo->Bind();
 			m_fbo->Update(m_faces.size() * sizeof(std::uint32_t), &m_faces[0]);
 			faces_changed = false;
 		}
@@ -112,22 +108,18 @@ void GL::Terrain::Update()
 
 	if (heightmap_changed)
 	{
-		m_vbo->Bind();
 		m_vbo->Update(sizeof(glm::vec3) * m_vertices.size(), &m_vertices[0]);
 
-		m_nbo->Bind();
 		m_nbo->Update(sizeof(glm::vec3) * m_normals.size(), &m_normals[0]);
 		heightmap_changed = false;
 	}
 	if (uvs_changed)
 	{
-		m_uvbo->Bind();
 		m_uvbo->Update(sizeof(glm::vec2) * m_uvs.size(), &m_uvs[0]);
 		uvs_changed = false;
 	}
 	if (materials_changed)
 	{
-		m_mbo->Bind();
 		m_mbo->Update(sizeof(glm::vec3) * m_materials.size(), &m_materials[0]);
 		materials_changed = false;
 	}

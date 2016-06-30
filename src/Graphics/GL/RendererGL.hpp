@@ -9,6 +9,8 @@
 #include "../IRenderer.hpp"
 #include "../../Types/Map.hpp"
 #include "UboGL.hpp"
+#include "BufferGL.hpp"
+#include "FrameBufferGL.hpp"
 #include <vector>
 
 namespace anvil
@@ -60,13 +62,11 @@ namespace anvil
 		void Clear();
 
 		/**
-		 * @fn	void RendererGL::Render(const glm::mat4& ortho);
+		 * @fn	void RendererGL::Render();
 		 *
 		 * @brief	Renders the given ortho.
-		 *
-		 * @param	ortho	The ortho.
 		 */
-		void Render(const glm::mat4& ortho);
+		void Render();
 
 		/**
 		 * @fn	void RendererGL::Resize(int width, int height);
@@ -116,7 +116,11 @@ namespace anvil
 		int m_totalVRAM;
 		std::string m_deviceName;
 
+		std::unique_ptr<GL::FrameBuffer> m_frameBuffer;
+
 		UboData m_ubo_data;
 		GL::UniformBuffer<UboData> m_ubo;
+
+		std::unique_ptr<GL::Buffer> m_quad_vbo;
 	};
 }
