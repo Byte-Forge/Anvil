@@ -9,6 +9,7 @@
 #include "flextGL.h"
 #include "TextureGL.hpp"
 #include "ShaderGL.hpp"
+#include "../../Core/Options.hpp"
 #include "../Camera.hpp"
 #include "../../Core.hpp"
 #include "../../Core/ResourceHandler.hpp"
@@ -148,7 +149,8 @@ RendererGL::RendererGL()
 		m_totalVRAM = 0;
 
 	glm::vec2 res = Core::GetCore()->GetResolution();
-	m_frameBuffer = std::make_unique<GL::FrameBuffer>(res*16.0f);
+	float sampleValue = Options::GetSampleFactor();
+	m_frameBuffer = std::make_unique<GL::FrameBuffer>(res * sampleValue);
 
 	static const float quad_vertices[] = {
 		-1.0f, -1.0f, 0.0f,
@@ -201,7 +203,8 @@ void RendererGL::Render()
 
 	m_ubo.Update(m_ubo_data);
 
-	m_frameBuffer->Bind();
+	if (Options::GetSampleFactor() > 1)
+		m_frameBuffer->Bind();
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 	Clear();
@@ -228,28 +231,31 @@ void RendererGL::Render()
 		m_rendered_polygons += renderable->Render(*m_modelShader);
 
 	UpdateInstances();
-		
-	glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
-	glm::vec2 res = Core::GetCore()->GetResolution();
-	glViewport(0, 0, res.x, res.y);
-	Clear();
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
 
-	/////////////////////////////////////////////// render framebuffer to quad /////////////////////////////////////////////////////////
-	m_quadShader->Use();
+	if (Options::GetSampleFactor() > 1)
+	{
+		/////////////////////////////////////////////// render framebuffer to quad /////////////////////////////////////////////////////////
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
+		glm::vec2 res = Core::GetCore()->GetResolution();
+		glViewport(0, 0, res.x, res.y);
+		Clear();
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
 
-	glActiveTexture(GL_TEXTURE0);
-	m_frameBuffer->BindTexture();
-	//glUniform1i(m_quadShader->GetUniform("renderedTexture"), 0);
+		m_quadShader->Use();
 
-	glEnableVertexAttribArray(0);
-	m_quad_vbo->Bind();
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+		glActiveTexture(GL_TEXTURE0);
+		m_frameBuffer->BindTexture();
+		//glUniform1i(m_quadShader->GetUniform("renderedTexture"), 0);
 
-	glDrawArrays(GL_TRIANGLES, 0, 6); 
+		glEnableVertexAttribArray(0);
+		m_quad_vbo->Bind();
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-	glDisableVertexAttribArray(0);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		glDisableVertexAttribArray(0);
+	}
 }
 
 void RendererGL::Resize(int width, int height)

@@ -91,7 +91,7 @@ Core::Core()
 	if (!glfwInit())
 		throw AnvilException("Failed to initialize glfw!", __FILE__, __LINE__);
 
-	glfwSetErrorCallback(ErrorCallback);
+	//glfwSetErrorCallback(ErrorCallback);
 	Graphics::RenderBackend backend = Graphics::OpenGL;
 
 	#ifdef ANVIL_USE_VULKAN

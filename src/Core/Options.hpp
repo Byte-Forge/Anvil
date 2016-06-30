@@ -46,15 +46,17 @@ namespace anvil
 		 */
 		static void Default();
 
-		static inline int GetTessfactor()		{ return s_tessFactor; };
-		static inline unsigned int GetWidth()	{ return s_width; };
-		static inline unsigned int GetHeight()	{ return s_height; };
-		static inline bool GetFullscreen()		{ return s_fullscreen; };
+		static inline int GetTessfactor()		{ return s_tessFactor; }
+		static inline unsigned int GetWidth()	{ return s_width; }
+		static inline unsigned int GetHeight()	{ return s_height; }
+		static inline bool GetFullscreen()		{ return s_fullscreen; }
+		static inline int GetSampleFactor()		{ return s_sampleFactor; }
 
 	private:
 		static bool s_fullscreen;
 		static unsigned int s_width;
 		static unsigned int s_height;
 		static int s_tessFactor;
+		static int s_sampleFactor;
 	};
 }
