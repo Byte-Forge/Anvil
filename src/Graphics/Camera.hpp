@@ -146,7 +146,7 @@ namespace anvil
         glm::vec3 m_lookat;
         glm::vec3 m_up;
 		double m_near = 0.5;
-		double m_far = 10000.0;
+		double m_far = 1000.0;
         double m_fov; 
         double m_ratio; 
 

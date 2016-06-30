@@ -27,6 +27,8 @@ namespace anvil
 		{
 			glm::mat4 vp;
 			glm::mat4 v;
+			glm::mat4 depth_vp;
+			glm::mat4 depth_bias_vp;
 
 			glm::int32 tess_factor;
 			glm::int32 max_tess_factor;
@@ -113,11 +115,13 @@ namespace anvil
 		const std::string GetGPUName();
 
 	private:
-		bool m_render2buffer = false; 
+		bool m_render2buffer = true; 
+		bool m_renderShadows = true;
 		int m_totalVRAM;
 		std::string m_deviceName;
 
 		std::unique_ptr<GL::FrameBuffer> m_frameBuffer;
+		std::unique_ptr<GL::FrameBuffer> m_shadowBuffer;
 
 		UboData m_ubo_data;
 		GL::UniformBuffer<UboData> m_ubo;

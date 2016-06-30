@@ -81,6 +81,8 @@ void GL::Skybox::Update()
 
 int GL::Skybox::Render(IShader& shader)
 {
+	glDisable(GL_DEPTH_TEST);
+
 	glBindVertexArray(m_vao);
 	glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
 	glm::vec3 pos = Core::GetCore()->GetCamera()->GetPosition();
@@ -92,6 +94,8 @@ int GL::Skybox::Render(IShader& shader)
 
 	m_fbo->Bind();
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_faces.size()), GL_UNSIGNED_INT,nullptr);
+
+	glEnable(GL_DEPTH_TEST);
 
 	return m_faces.size()/3;
 }

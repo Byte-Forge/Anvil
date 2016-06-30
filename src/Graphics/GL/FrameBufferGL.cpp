@@ -22,8 +22,8 @@ GL::FrameBuffer::FrameBuffer(glm::vec2 size) : m_size(size)
 	glGenFramebuffers(1, &m_handle);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_handle);
 	//attach color texture
-	glGenTextures(1, &m_texture_handle);
-	glBindTexture(GL_TEXTURE_2D, m_texture_handle);
+	glGenTextures(1, &m_color_tex);
+	glBindTexture(GL_TEXTURE_2D, m_color_tex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_size.x, m_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
 	// Poor filtering
@@ -32,15 +32,20 @@ GL::FrameBuffer::FrameBuffer(glm::vec2 size) : m_size(size)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_texture_handle, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_color_tex, 0);
 
-	//needed for depth testing otherwise glEnable(GL_DEPTH_TEST) has no effekt
-	glGenRenderbuffers(1, &m_render_handle);
-	glBindRenderbuffer(GL_RENDERBUFFER, m_render_handle);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_size.x, m_size.y);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_render_handle);
+	//attach depth texture
+	glGenTextures(1, &m_depth_tex);
+	glBindTexture(GL_TEXTURE_2D, m_depth_tex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, m_size.x, m_size.y, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depth_tex, 0);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		throw AnvilException("Failed to create FrameBuffer!", __FILE__, __LINE__);
@@ -54,15 +59,15 @@ GL::FrameBuffer::~FrameBuffer()
 		glDeleteFramebuffers(1, &m_handle);
 		m_handle = 0;
 	}
-	if (m_texture_handle)
+	if (m_color_tex)
 	{
-		glDeleteTextures(1, &m_texture_handle);
-		m_texture_handle = 0;
+		glDeleteTextures(1, &m_color_tex);
+		m_color_tex = 0;
 	}
-	if (m_render_handle)
+	if (m_depth_tex)
 	{
-		glDeleteRenderbuffers(1, &m_render_handle);
-		m_render_handle = 0;
+		glDeleteTextures(1, &m_depth_tex);
+		m_depth_tex = 0;
 	}
 }
 
@@ -75,5 +80,11 @@ void GL::FrameBuffer::Bind()
 void GL::FrameBuffer::BindTexture()
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_texture_handle);
+	glBindTexture(GL_TEXTURE_2D, m_color_tex);
+}
+
+void GL::FrameBuffer::BindDepthTexture()
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_depth_tex);
 }

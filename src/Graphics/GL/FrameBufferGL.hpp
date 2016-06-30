@@ -53,11 +53,13 @@ namespace anvil
 
 			void BindTexture();
 
+			void BindDepthTexture();
+
 		private:
 			glm::vec2 m_size;
 			unsigned int m_handle;
-			unsigned int m_texture_handle;
-			unsigned int m_render_handle;
+			unsigned int m_color_tex;
+			unsigned int m_depth_tex;
 		};
 	}
 }

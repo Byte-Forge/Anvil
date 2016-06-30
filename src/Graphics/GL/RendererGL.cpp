@@ -151,6 +151,7 @@ RendererGL::RendererGL()
 	glm::vec2 res = Core::GetCore()->GetResolution();
 	float sampleValue = Options::GetSampleFactor();
 	m_frameBuffer = std::make_unique<GL::FrameBuffer>(res * sampleValue);
+	m_shadowBuffer = std::make_unique<GL::FrameBuffer>(res * sampleValue);
 
 	static const float quad_vertices[] = {
 		-1.0f, -1.0f, 0.0f,
@@ -188,15 +189,29 @@ void RendererGL::Render()
 
 	m_terrain->Update();
 
+	glm::vec3 lightDir = glm::vec3(1.0f, 1.0f, 0.f);
+
+	// Compute the MVP matrix from the light's point of view
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+	glm::mat4 depthViewMatrix = glm::lookAt(lightDir, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+	glm::mat4 biasMatrix(
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+	);
+
 	m_ubo_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
 	m_ubo_data.v = Core::GetCore()->GetCamera()->GetViewMatrix();
+	m_ubo_data.depth_vp = depthProjectionMatrix * depthViewMatrix;
+	m_ubo_data.depth_bias_vp = biasMatrix * depthProjectionMatrix * depthViewMatrix;
 
 	m_ubo_data.tess_factor = GetTessfactor();
 	m_ubo_data.max_tess_factor = m_maxTesselation;
 
 	m_ubo_data.cameraPos = glm::vec4(Core::GetCore()->GetCamera()->GetPosition(),1.0f);
-	glm::vec4 lightDir = glm::vec4(1.0f, 1.0f, 0.f,0.0f);
-	m_ubo_data.lightDir = lightDir;
+	m_ubo_data.lightDir = glm::vec4(lightDir, 1.0f);
 	glm::vec4 ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
 	m_ubo_data.ambient = ambient; 
 	glm::vec4 diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
@@ -206,6 +221,38 @@ void RendererGL::Render()
 
 	m_ubo.Update(m_ubo_data);
 
+	JoinInstanceThreads();
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	/////////////////////////////////////////////// render scene to shadowbuffer /////////////////////////////////////////////////////////
+	if (m_renderShadows)
+	{
+		m_shadowBuffer->Bind();
+
+		glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
+		Clear();
+
+		m_skyboxShader->Use();
+		m_skybox->Render(*m_skyboxShader);
+
+		m_terrainShader->Use();
+		m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
+		m_terrain->Render(*m_terrainShader);
+
+		m_modelShader->Use();
+		m_ubo.Bind(m_modelShader->GetUniformBuffer("ubo_block"));
+
+		for (auto& renderable : m_renderables)
+			renderable->Render(*m_modelShader);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
+	}
+
+	/////////////////////////////////////////////// render scene to framebuffer /////////////////////////////////////////////////////////
 	if (m_render2buffer)
 		m_frameBuffer->Bind();
 
@@ -215,20 +262,14 @@ void RendererGL::Render()
 	m_skyboxShader->Use();
 	m_rendered_polygons += m_skybox->Render(*m_skyboxShader);
 
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-
 	m_terrainShader->Use();
 	m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
 	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
 	m_modelShader->Use();
+	//m_shadowBuffer->BindDepthTexture();
+	//glUniform1i(m_modelShader->GetUniform("shadowMap"), 7);
 	m_ubo.Bind(m_modelShader->GetUniformBuffer("ubo_block"));
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	JoinInstanceThreads();
 
     for (auto& renderable : m_renderables)
 		m_rendered_polygons += renderable->Render(*m_modelShader);
@@ -249,6 +290,7 @@ void RendererGL::Render()
 
 		glActiveTexture(GL_TEXTURE0);
 		m_frameBuffer->BindTexture();
+		//m_shadowBuffer->BindDepthTexture();
 		//glUniform1i(m_quadShader->GetUniform("renderedTexture"), 0);
 
 		glEnableVertexAttribArray(0);
@@ -266,6 +308,7 @@ void RendererGL::Resize(int width, int height)
 	glViewport(0, 0, width, height);
 	float sampleValue = Options::GetSampleFactor();
 	m_frameBuffer = std::make_unique<GL::FrameBuffer>(glm::vec2(width, height) * sampleValue);
+	m_shadowBuffer = std::make_unique<GL::FrameBuffer>(glm::vec2(width, height) * sampleValue);
 }
 
 void RendererGL::PrintInfo()
