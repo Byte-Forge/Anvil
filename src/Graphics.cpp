@@ -54,7 +54,7 @@ void Graphics::Render()
 
 void Graphics::Resize(int width, int height)
 {
-	m_renderer->Resize(width,height);
+	m_renderer->Resize(width, height);
 }
 
 void Graphics::SetRenderer(RenderBackend backend)

@@ -34,7 +34,7 @@ void Core::ErrorCallback(int error, const char* description)
 	std::cerr << description << std::endl;
 }
 
-void Core::ResizeCallback(GLFWwindow * window, int width, int height)
+void Core::ResizeCallback(GLFWwindow *window, int width, int height)
 {
 	Core::GetCore()->GetGraphics()->Resize(width, height);
 	Core::GetCore()->GetGUI()->Resize(width, height);
@@ -91,7 +91,7 @@ Core::Core()
 	if (!glfwInit())
 		throw AnvilException("Failed to initialize glfw!", __FILE__, __LINE__);
 
-	//glfwSetErrorCallback(ErrorCallback);
+	glfwSetErrorCallback(ErrorCallback);
 	Graphics::RenderBackend backend = Graphics::OpenGL;
 
 	#ifdef ANVIL_USE_VULKAN
@@ -103,9 +103,9 @@ Core::Core()
 	#endif
 	 
 	glfwWindowHint(GLFW_SAMPLES, 1); //what exactly does this do?
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 	m_window = glfwCreateWindow(Options::GetWidth(), Options::GetHeight(), "anvil engine", 

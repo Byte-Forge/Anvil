@@ -53,14 +53,6 @@ namespace anvil
 
 			void BindTexture();
 
-			/**
-			* @fn	void FrameBuffer::Resize(glm::vec2 size);
-			*
-			* @brief	Resize the framebuffer to the given resolution.
-			* @param	size	the new resolution
-			*/
-			void Resize(glm::vec2 size);
-
 		private:
 			glm::vec2 m_size;
 			unsigned int m_handle;

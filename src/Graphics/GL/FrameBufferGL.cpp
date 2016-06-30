@@ -77,11 +77,3 @@ void GL::FrameBuffer::BindTexture()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture_handle);
 }
-
-void GL::FrameBuffer::Resize(glm::vec2 size)
-{
-	m_size = size;
-	//glBindTexture(GL_TEXTURE_2D, m_texture_handle);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_size.x, m_size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-	//glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_texture_handle, 0);
-}

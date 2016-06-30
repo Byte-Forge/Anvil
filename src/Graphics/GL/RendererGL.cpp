@@ -181,6 +181,9 @@ void RendererGL::Clear()
 
 void RendererGL::Render()
 {
+	if (Options::GetSampleFactor() > 1)
+		m_render2buffer = true;
+
 	m_rendered_polygons = 0;
 
 	m_terrain->Update();
@@ -203,7 +206,7 @@ void RendererGL::Render()
 
 	m_ubo.Update(m_ubo_data);
 
-	if (Options::GetSampleFactor() > 1)
+	if (m_render2buffer)
 		m_frameBuffer->Bind();
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
@@ -232,7 +235,7 @@ void RendererGL::Render()
 
 	UpdateInstances();
 
-	if (Options::GetSampleFactor() > 1)
+	if (m_render2buffer)
 	{
 		/////////////////////////////////////////////// render framebuffer to quad /////////////////////////////////////////////////////////
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
@@ -260,7 +263,9 @@ void RendererGL::Render()
 
 void RendererGL::Resize(int width, int height)
 {
-	m_frameBuffer->Resize(glm::vec2(width, height));
+	glViewport(0, 0, width, height);
+	float sampleValue = Options::GetSampleFactor();
+	m_frameBuffer = std::make_unique<GL::FrameBuffer>(glm::vec2(width, height) * sampleValue);
 }
 
 void RendererGL::PrintInfo()
