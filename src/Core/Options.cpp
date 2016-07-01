@@ -1,11 +1,15 @@
+/*
+************************************
+* Copyright (C) 2016 ByteForge
+* Options.cpp
+************************************
+*/
+
 #include "Options.hpp"
-#include <fstream>
-#include <rapidjson/prettywriter.h>
-#include <rapidjson/document.h>
-#include <rapidjson/istreamwrapper.h>
-#include <rapidjson/ostreamwrapper.h>
+#include "../Loaders/JsonLoader.hpp"
+#include "../Writer/JsonWriter.hpp"
+
 using namespace anvil;
-using namespace rapidjson;
 
 bool Options::s_fullscreen			= false;
 unsigned int Options::s_width		= 800;
@@ -15,78 +19,10 @@ int Options::s_sampleFactor			= 1;
 
 bool Options::Load(const std::string& path)
 {
-	bool result = true;
-	std::ifstream fin(path, std::ios::in);
-	if (fin.fail())
-		return false;
-
-	IStreamWrapper isw(fin);
-	Document d;
-	d.ParseStream(isw);
-
-	if (d.HasMember("options"))
-	{
-		if (d["options"].HasMember("width"))
-			s_width = d["options"]["width"].GetUint();
-		else
-			result = false;
-		if (d["options"].HasMember("height"))
-			s_height = d["options"]["height"].GetUint();
-		else
-			result = false;
-		if (d["options"].HasMember("tessfactor"))
-			s_tessFactor = d["options"]["tessfactor"].GetInt();
-		else
-			result = false;
-		if (d["options"].HasMember("fullscreen"))
-			s_fullscreen = d["options"]["fullscreen"].GetBool();
-		if (d["options"].HasMember("samplefactor"))
-		{
-			s_sampleFactor = d["options"]["samplefactor"].GetInt();
-			//TODO: do tests for sample Factor here
-		}
-		else
-			result = false;
-	}
-	else
-	{
-		result = false;
-	}
-	fin.close();
-
-	return result;
+	return JsonLoader::LoadOptions(path);
 }
 
 void Options::Save(const std::string& path)
 {
-	Document d;
-	auto& allocator = d.GetAllocator();
-	d.SetObject();
-	Value options(kObjectType);
-	{
-		Value width(s_width);
-		options.AddMember("width", width, allocator);
-	}
-	{
-		Value height(s_height);
-		options.AddMember("height", height, allocator);
-	}
-	{
-		Value fullscreen(s_fullscreen);
-		options.AddMember("fullscreen", fullscreen, allocator);
-	}
-	{
-		Value tessfactor(s_tessFactor);
-		options.AddMember("tessfactor", tessfactor, allocator);
-	}
-	{
-		Value tessfactor(s_sampleFactor);
-		options.AddMember("samplefactor", tessfactor, allocator);
-	}
-	d.AddMember("options",options, allocator);
-
-	std::ofstream ofs(path);
-	OStreamWrapper osw(ofs);
-	PrettyWriter<OStreamWrapper> writer(osw);
-	d.Accept(writer);
+	JsonWriter::SaveOptions(path);
 }

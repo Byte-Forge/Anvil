@@ -48,5 +48,14 @@ namespace anvil
 		 * @param	path	Full pathname of the file.
 		 */
 		static void LoadParticlesystem(const std::string& name, const std::string& path);
+
+		/**
+		* @fn	static void JsonLoader::LoadOptions(const std::string& path);
+		*
+		* @brief	Load the engine options
+		*
+		* @param	path	Full pathname of the optionafile.
+		*/
+		static bool LoadOptions(const std::string& path);
 	};
 }

@@ -13,6 +13,7 @@
 #include "../Exception.hpp"
 #include "../Objects/Entity.hpp"
 #include "../Graphics/IParticleSystem.hpp"
+#include "../Core/Options.hpp"
 #include <iostream>
 #include <tuple>
 #include <rapidjson/document.h>
@@ -279,4 +280,48 @@ void JsonLoader::LoadParticlesystem(const std::string & name, const std::string 
 	fin.close();
 
 	Core::GetCore()->GetResources()->AddResource(name, particleSys);
+}
+
+bool JsonLoader::LoadOptions(const std::string& path)
+{
+	bool result = true;
+	std::ifstream fin(path, std::ios::in);
+	if (fin.fail())
+		return false;
+
+	IStreamWrapper isw(fin);
+	Document d;
+	d.ParseStream(isw);
+
+	if (d.HasMember("options"))
+	{
+		if (d["options"].HasMember("width"))
+			Options::SetWidth(d["options"]["width"].GetUint());
+		else
+			result = false;
+		if (d["options"].HasMember("height"))
+			Options::SetHeight(d["options"]["height"].GetUint());
+		else
+			result = false;
+		if (d["options"].HasMember("tessfactor"))
+			Options::SetTessFactor(d["options"]["tessfactor"].GetInt());
+		else
+			result = false;
+		if (d["options"].HasMember("fullscreen"))
+			Options::SetFullscreen(d["options"]["fullscreen"].GetBool());
+		if (d["options"].HasMember("samplefactor"))
+		{
+			Options::SetSampleFactor(d["options"]["samplefactor"].GetInt());
+			//TODO: do tests for sample Factor here
+		}
+		else
+			result = false;
+	}
+	else
+	{
+		result = false;
+	}
+	fin.close();
+
+	return result;
 }
