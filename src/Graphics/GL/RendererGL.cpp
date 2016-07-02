@@ -109,20 +109,41 @@ RendererGL::RendererGL()
 	if(!FLEXT_EXT_texture_compression_s3tc)
 		throw AnvilException("S3TC texture compression not supported!", __FILE__, __LINE__);
 
+	m_matrix_data = MatrixData();
+	m_matrix_ubo.Create();
+
+	m_depth_matrix_data = DepthMatrixData();
+	m_depth_matrix_ubo.Create();
+
+	m_tessellation_data = TessellationData();
+	m_tessellation_ubo.Create();
+
+	m_light_data = LightData();
+	m_light_ubo.Create();
+
 	m_ubo_data = UboData();
 	m_ubo.Create();
 
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
 	m_skyboxShader->Compile();
+	m_skyboxShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
+	m_skyboxShader->AttachUBO("light_block", m_light_ubo.GetID());
 
 	m_modelShader = std::make_unique<GL::Shader>();
 	m_modelShader->Load("shader/gl/model.vert", "shader/gl/model.tesc", "shader/gl/model.tese", "shader/gl/model.geom", "shader/gl/model.frag");
 	m_modelShader->Compile();
+	m_modelShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
+	m_modelShader->AttachUBO("depth_matrix_block", m_depth_matrix_ubo.GetID());
+	m_modelShader->AttachUBO("tessellation_block", m_tessellation_ubo.GetID());
+	m_modelShader->AttachUBO("light_block", m_light_ubo.GetID());
 
 	m_terrainShader = std::make_unique<GL::Shader>();
 	m_terrainShader->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
 	m_terrainShader->Compile();
+	m_terrainShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
+	m_terrainShader->AttachUBO("tessellation_block", m_tessellation_ubo.GetID());
+	m_terrainShader->AttachUBO("light_block", m_light_ubo.GetID());
 
 	m_quadShader = std::make_unique<GL::Shader>();
 	m_quadShader->Load("shader/gl/quad.vert", "shader/gl/quad.frag");
@@ -142,7 +163,7 @@ RendererGL::RendererGL()
 	else if (m_vendor == AMD)
 	{
 		int vram[4];
-		glGetIntegerv(VBO_FREE_MEMORY_ATI, vram);
+		//glGetIntegerv(VBO_FREE_MEMORY_ATI, vram); //invalid enum crash on amd gpu??
 		m_totalVRAM = vram[0] / 1024;
 	}
 	else
@@ -164,6 +185,13 @@ RendererGL::RendererGL()
 
 	m_quad_vbo = std::make_unique<GL::Buffer>(GL::ARRAY_BUFFER);
 	m_quad_vbo->Update(sizeof(quad_vertices), quad_vertices, GL::STATIC);
+
+	m_biasMatrix = glm::mat4(
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+	);
 
 	Core::GetCore()->GetResources()->GetParticleSystem("particle/test.json");
 }
@@ -195,31 +223,27 @@ void RendererGL::Render()
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
 	glm::mat4 depthViewMatrix = glm::lookAt(lightDir, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
-	glm::mat4 biasMatrix(
-		0.5, 0.0, 0.0, 0.0,
-		0.0, 0.5, 0.0, 0.0,
-		0.0, 0.0, 0.5, 0.0,
-		0.5, 0.5, 0.5, 1.0
-	);
+	m_matrix_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
+	m_matrix_data.v = Core::GetCore()->GetCamera()->GetViewMatrix();
+	m_matrix_ubo.Update(m_matrix_data);
 
-	m_ubo_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
-	m_ubo_data.v = Core::GetCore()->GetCamera()->GetViewMatrix();
-	m_ubo_data.depth_vp = depthProjectionMatrix * depthViewMatrix;
-	m_ubo_data.depth_bias_vp = biasMatrix * depthProjectionMatrix * depthViewMatrix;
+	m_depth_matrix_data.depth_vp = depthProjectionMatrix * depthViewMatrix;
+	m_depth_matrix_data.depth_bias_vp = m_biasMatrix * depthProjectionMatrix * depthViewMatrix;
+	m_depth_matrix_ubo.Update(m_depth_matrix_data);
 
-	m_ubo_data.tess_factor = GetTessfactor();
-	m_ubo_data.max_tess_factor = m_maxTesselation;
+	m_tessellation_data.tess_factor = GetTessfactor();
+	m_tessellation_data.max_tess_factor = m_maxTesselation;
+	m_tessellation_ubo.Update(m_tessellation_data);
 
-	m_ubo_data.cameraPos = glm::vec4(Core::GetCore()->GetCamera()->GetPosition(),1.0f);
-	m_ubo_data.lightDir = glm::vec4(lightDir, 1.0f);
+	m_light_data.cameraPos = glm::vec4(Core::GetCore()->GetCamera()->GetPosition(), 1.0f);
+	m_light_data.lightDir = glm::vec4(lightDir, 1.0f);
 	glm::vec4 ambient = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
-	m_ubo_data.ambient = ambient; 
+	m_light_data.ambient = ambient; 
 	glm::vec4 diffuse = glm::vec4(0.9f, 0.9f, 0.9f, 1.0f);
-	m_ubo_data.diffuse = diffuse;
+	m_light_data.diffuse = diffuse;
 	glm::vec4 spec = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_ubo_data.spec = spec; 
-
-	m_ubo.Update(m_ubo_data);
+	m_light_data.spec = spec; 
+	m_light_ubo.Update(m_light_data);
 
 	JoinInstanceThreads();
 
@@ -240,11 +264,9 @@ void RendererGL::Render()
 		m_skybox->Render(*m_skyboxShader);
 
 		m_terrainShader->Use();
-		m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
 		m_terrain->Render(*m_terrainShader);
 
 		m_modelShader->Use();
-		m_ubo.Bind(m_modelShader->GetUniformBuffer("ubo_block"));
 
 		for (auto& renderable : m_renderables)
 			renderable->Render(*m_modelShader);
@@ -263,13 +285,11 @@ void RendererGL::Render()
 	m_rendered_polygons += m_skybox->Render(*m_skyboxShader);
 
 	m_terrainShader->Use();
-	m_ubo.Bind(m_terrainShader->GetUniformBuffer("ubo_block"));
 	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
 	m_modelShader->Use();
 	//m_shadowBuffer->BindDepthTexture();
 	//glUniform1i(m_modelShader->GetUniform("shadowMap"), 7);
-	m_ubo.Bind(m_modelShader->GetUniformBuffer("ubo_block"));
 
     for (auto& renderable : m_renderables)
 		m_rendered_polygons += renderable->Render(*m_modelShader);

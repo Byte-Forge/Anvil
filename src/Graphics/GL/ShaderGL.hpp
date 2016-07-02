@@ -108,8 +108,10 @@ namespace anvil
 			*/
 			int GetUniform(const std::string& id);
 
-
             int GetUniformBuffer(const std::string& id);
+
+			void AttachUBO(const std::string& name, int id);
+
 		private:
             GLuint m_program;
             std::map<GLenum,GLuint> m_shaders;

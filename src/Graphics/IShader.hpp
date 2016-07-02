@@ -8,6 +8,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include <vector>
 
 namespace anvil
 {
@@ -91,11 +92,14 @@ namespace anvil
 		 */
 		virtual int GetUniform(const std::string& id) = 0;
 
-
 		virtual int GetUniformBuffer(const std::string& id) = 0;
+
+		virtual void AttachUBO(const std::string& name, int id) = 0;
+
 	protected:
 		std::map<std::string, int> m_uniforms;
 		std::map<std::string, int> m_ubos;
+		std::vector<int> m_uboIDs;
     };
 }
 

@@ -23,6 +23,33 @@ namespace anvil
 	class RendererGL : public IRenderer
 	{
 	private:
+		struct MatrixData
+		{
+			glm::mat4 vp;
+			glm::mat4 v;
+		};
+
+		struct DepthMatrixData
+		{
+			glm::mat4 depth_vp;
+			glm::mat4 depth_bias_vp;
+		};
+
+		struct TessellationData
+		{
+			glm::int32 tess_factor;
+			glm::int32 max_tess_factor;
+		};
+
+		struct LightData
+		{
+			glm::vec4 cameraPos;
+			glm::vec4 lightDir;
+			glm::vec4 diffuse;
+			glm::vec4 ambient;
+			glm::vec4 spec;
+		};
+
 		struct UboData
 		{
 			glm::mat4 vp;
@@ -115,17 +142,28 @@ namespace anvil
 		const std::string GetGPUName();
 
 	private:
-		bool m_render2buffer = true; 
-		bool m_renderShadows = true;
+		bool m_render2buffer = false; 
+		bool m_renderShadows = false;
 		int m_totalVRAM;
 		std::string m_deviceName;
 
 		std::unique_ptr<GL::FrameBuffer> m_frameBuffer;
 		std::unique_ptr<GL::FrameBuffer> m_shadowBuffer;
 
+		MatrixData m_matrix_data;
+		GL::UniformBuffer<MatrixData> m_matrix_ubo;
+		DepthMatrixData m_depth_matrix_data;
+		GL::UniformBuffer<DepthMatrixData> m_depth_matrix_ubo;
+		TessellationData m_tessellation_data;
+		GL::UniformBuffer<TessellationData> m_tessellation_ubo;
+		LightData m_light_data;
+		GL::UniformBuffer<LightData> m_light_ubo;
+
 		UboData m_ubo_data;
 		GL::UniformBuffer<UboData> m_ubo;
 
 		std::unique_ptr<GL::Buffer> m_quad_vbo;
+
+		glm::mat4 m_biasMatrix;
 	};
 }

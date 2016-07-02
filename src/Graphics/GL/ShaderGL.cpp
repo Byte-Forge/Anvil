@@ -61,14 +61,12 @@ void GL::Shader::Load(const std::string& vertShader, const std::string& tessCont
 	LoadShader(fragShader, GL_FRAGMENT_SHADER);
 }
 
-
 void GL::Shader::LoadShader(const std::string& file, GLenum type)
 {
     std::ifstream fin(file);
     if(fin.fail())
 		throw AnvilException("Failed to load shader " + file, __FILE__, __LINE__);
 	
-	std::cout << file << std::endl;
 	int size = 0;
 	fin.seekg(0, std::ios::end);	
 	size = (int)fin.tellg();
@@ -93,6 +91,9 @@ void GL::Shader::LoadShader(const std::string& file, GLenum type)
 void GL::Shader::Use()
 {
     glUseProgram(m_program);
+	//bind its ubos
+	for (int index : m_uboIDs)
+		glBindBufferBase(GL_UNIFORM_BUFFER, index, index);
 }
 
 int GL::Shader::GetUniform(const std::string &name)
@@ -120,10 +121,8 @@ int GL::Shader::GetUniformBuffer(const std::string &name)
 		/*if (loc == -1)
 			throw AnvilException("Uniform buffer: \"" + name + "\" doesn't exist!", __FILE__, __LINE__);*/
 		m_ubos[name] = loc;
-		//glUniformBlockBinding(m_program, index, loc);
 		return loc;
 	}
-		
 	return it->second;
 }
 
@@ -166,3 +165,8 @@ void GL::Shader::Compile()
 	}
 }
 
+void GL::Shader::AttachUBO(const std::string& name, int id)
+{
+	glUniformBlockBinding(m_program, GetUniformBuffer(name), id);
+	m_uboIDs.push_back(id);
+}

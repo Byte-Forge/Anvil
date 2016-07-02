@@ -84,9 +84,6 @@ int GL::Skybox::Render(IShader& shader)
 	glDisable(GL_DEPTH_TEST);
 
 	glBindVertexArray(m_vao);
-	glUniformMatrix4fv(shader.GetUniform("mvp"), 1, GL_FALSE, glm::value_ptr(Core::GetCore()->GetCamera()->GetViewProjectionMatrix()));
-	glm::vec3 pos = Core::GetCore()->GetCamera()->GetPosition();
-	glUniform3f(shader.GetUniform("cameraPosition"), pos.x, pos.y, pos.z);
 
 	glActiveTexture(GL_TEXTURE1); //diffuse texture
 	m_diff->Bind();
