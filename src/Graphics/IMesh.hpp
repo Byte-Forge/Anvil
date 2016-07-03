@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <glm/glm.hpp>
+#include "IRenderer.hpp"
 
 namespace anvil
 {
@@ -24,15 +25,16 @@ namespace anvil
 	public:
 
 		/**
-		 * @fn	virtual void IMesh::Render(IShader& shader) = 0;
+		 * @fn	virtual void IMesh::Render(IShader& shader, bool minimal) = 0;
 		 *
 		 * @brief	Renders the given shader.
 		 *
 		 * @param [in,out]	shader	The shader.
+		 * @param	minimal		if it should render with minimal settings
 		 *
 		 * @param  returns the number of drawn polygons
 		 */
-		virtual int Render(IShader& shader) = 0;
+		virtual int Render(IShader& shader, bool minimal) = 0;
 
 
 		/**

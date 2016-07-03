@@ -69,15 +69,16 @@ namespace anvil
 		virtual void Update() = 0;
 
 		/**
-		 * @fn	virtual int IModel::Render(IShader& shader) = 0;
+		 * @fn	virtual int IModel::Render(IShader& shader, bool minimal) = 0;
 		 *
 		 * @brief	Renders the given shader.
 		 *
 		 * @param [in,out]	shader	The shader.
+		 * @param	minimal if it should render with minimal settings
 		 *
 		 * @return  returns the number of drawn polygons
 		 */
-		virtual int Render(IShader& shader) = 0;
+		virtual int Render(IShader& shader, bool minimal) = 0;
 
 		inline void SetHierarchy(std::shared_ptr<Hierarchy> hierarchy) { m_hierarchy = hierarchy; }
 		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }

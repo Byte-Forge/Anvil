@@ -138,6 +138,16 @@ RendererGL::RendererGL()
 	m_modelShader->AttachUBO("tessellation_block", m_tessellation_ubo.GetID());
 	m_modelShader->AttachUBO("light_block", m_light_ubo.GetID());
 
+	m_minimal_modelShader = std::make_unique<GL::Shader>();
+	m_minimal_modelShader->Load("shader/gl/minimal_model.vert", "shader/gl/minimal_model.frag");
+	m_minimal_modelShader->Compile();
+	m_minimal_modelShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
+
+	m_minimal_terrainShader = std::make_unique<GL::Shader>();
+	m_minimal_terrainShader->Load("shader/gl/minimal_terrain.vert", "shader/gl/minimal_terrain.frag");
+	m_minimal_terrainShader->Compile();
+	m_minimal_terrainShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
+
 	m_terrainShader = std::make_unique<GL::Shader>();
 	m_terrainShader->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
 	m_terrainShader->Compile();
@@ -253,7 +263,7 @@ void RendererGL::Render()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	/////////////////////////////////////////////// render scene to shadowbuffer /////////////////////////////////////////////////////////
-	if (m_renderShadows)
+	if (m_renderShadows && !m_lowSettings)
 	{
 		m_shadowBuffer->Bind();
 
@@ -263,19 +273,19 @@ void RendererGL::Render()
 		m_skyboxShader->Use();
 		m_skybox->Render(*m_skyboxShader);
 
-		m_terrainShader->Use();
-		m_terrain->Render(*m_terrainShader);
+		m_minimal_terrainShader->Use();
+		m_terrain->Render(*m_minimal_terrainShader, true);
 
-		m_modelShader->Use();
+		m_minimal_modelShader->Use();
 
 		for (auto& renderable : m_renderables)
-			renderable->Render(*m_modelShader);
+			renderable->Render(*m_minimal_modelShader, true); //always render with minimal settings here
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
 	}
 
 	/////////////////////////////////////////////// render scene to framebuffer /////////////////////////////////////////////////////////
-	if (m_render2buffer)
+	if (m_render2buffer && !m_lowSettings)
 		m_frameBuffer->Bind();
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
@@ -283,20 +293,31 @@ void RendererGL::Render()
 
 	m_skyboxShader->Use();
 	m_rendered_polygons += m_skybox->Render(*m_skyboxShader);
-
-	m_terrainShader->Use();
-	m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 	
-	m_modelShader->Use();
-	//m_shadowBuffer->BindDepthTexture();
-	//glUniform1i(m_modelShader->GetUniform("shadowMap"), 7);
+	if (m_lowSettings)
+	{
+		m_minimal_terrainShader->Use();
+		m_rendered_polygons += m_terrain->Render(*m_minimal_terrainShader, true);
 
-    for (auto& renderable : m_renderables)
-		m_rendered_polygons += renderable->Render(*m_modelShader);
+		m_minimal_modelShader->Use();
+		for (auto& renderable : m_renderables)
+			m_rendered_polygons += renderable->Render(*m_minimal_modelShader, true);
+	}
+	else
+	{
+		m_terrainShader->Use();
+		m_rendered_polygons += m_terrain->Render(*m_terrainShader);
+
+		m_modelShader->Use();
+		//m_shadowBuffer->BindDepthTexture();
+		//glUniform1i(m_modelShader->GetUniform("shadowMap"), 7);
+		for (auto& renderable : m_renderables)
+			m_rendered_polygons += renderable->Render(*m_modelShader);
+	}
 
 	UpdateInstances();
 
-	if (m_render2buffer)
+	if (m_render2buffer && !m_lowSettings)
 	{
 		/////////////////////////////////////////////// render framebuffer to quad /////////////////////////////////////////////////////////
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer

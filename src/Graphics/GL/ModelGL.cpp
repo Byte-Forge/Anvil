@@ -33,7 +33,7 @@ GL::ModelGL::~ModelGL()
 
 }
 
-int GL::ModelGL::Render(IShader& shader)
+int GL::ModelGL::Render(IShader& shader, bool minimal)
 {
 	int polygons = 0;
 	for (const auto i : m_instances)
@@ -58,30 +58,33 @@ int GL::ModelGL::Render(IShader& shader)
 				const auto& m = i->GetMaterial(it.second->GetName());
 				if (m != nullptr)
 				{
-					glm::vec2 offset = i->GetTexOffset(m->GetUPerSecond(), m->GetVPerSecond());
-					glUniform2f(shader.GetUniform("texOffset"), offset.x, offset.y);
-
 					glActiveTexture(GL_TEXTURE0); //albedo textures
 					m->GetAlbedoTexture()->Bind();
 					glUniform1i(shader.GetUniform("albedoTex"), 0);
 
-					glActiveTexture(GL_TEXTURE1); //normal textures
-					m->GetNormalTexture()->Bind();
-					glUniform1i(shader.GetUniform("normalTex"), 1);
+					if (!minimal)
+					{
+						glActiveTexture(GL_TEXTURE1); //normal textures
+						m->GetNormalTexture()->Bind();
+						glUniform1i(shader.GetUniform("normalTex"), 1);
 
-					glActiveTexture(GL_TEXTURE2); //spec textures
-					m->GetSpecularTexture()->Bind();
-					glUniform1i(shader.GetUniform("specularTex"), 2);
+						glActiveTexture(GL_TEXTURE2); //spec textures
+						m->GetSpecularTexture()->Bind();
+						glUniform1i(shader.GetUniform("specularTex"), 2);
 
-					glActiveTexture(GL_TEXTURE3); //disp textures
-					m->GetDisplacementTexture()->Bind();
-					glUniform1i(shader.GetUniform("displacementTex"), 3);
-					
-					glActiveTexture(GL_TEXTURE4); //ambi textures
-					m->GetAmbientOcclusionTexture()->Bind();
-					glUniform1i(shader.GetUniform("ambientTex"), 4);
+						glActiveTexture(GL_TEXTURE3); //disp textures
+						m->GetDisplacementTexture()->Bind();
+						glUniform1i(shader.GetUniform("displacementTex"), 3);
 
-					polygons += it.second->Render(shader);
+						glActiveTexture(GL_TEXTURE4); //ambi textures
+						m->GetAmbientOcclusionTexture()->Bind();
+						glUniform1i(shader.GetUniform("ambientTex"), 4);
+
+						glm::vec2 offset = i->GetTexOffset(m->GetUPerSecond(), m->GetVPerSecond());
+						glUniform2f(shader.GetUniform("texOffset"), offset.x, offset.y);
+					}
+
+					polygons += it.second->Render(shader, minimal);
 				}
 			}
 		}

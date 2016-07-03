@@ -43,15 +43,16 @@ namespace anvil
 			~Skybox();
 
 			/**
-			 * @fn	void Skybox::Render(IShader& shader);
+			 * @fn	void Skybox::Render(IShader& shader, bool minimal);
 			 *
 			 * @brief	Renders the given shader.
 			 *
 			 * @param [in,out]	shader	The shader.
+			 * @param	minimal if it should render with minimal settings
 			 *
 			 * @return returns the number of drawn polygons
 			 */
-			int Render(IShader& shader);
+			int Render(IShader& shader, bool minimal);
 
 			/**
 			 * @fn	void Skybox::Update();

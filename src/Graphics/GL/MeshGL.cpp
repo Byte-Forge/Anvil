@@ -49,15 +49,23 @@ GL::MeshGL::~MeshGL()
 	}
 }
 
-int GL::MeshGL::Render(IShader& shader)
+int GL::MeshGL::Render(IShader& shader, bool minimal)
 {
 	glUniform1i(shader.GetUniform("meshType"), m_type);
 	glUniform1i(shader.GetUniform("parentPivot"), m_parentPivot);
 	glBindVertexArray(m_vao);
 	m_fbo->Bind();
-	//used for tesselation
-	glPatchParameteri(GL_PATCH_VERTICES, 3);
-	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
+
+	if (minimal)
+	{
+		glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
+	}
+	else
+	{
+		//used for tesselation
+		glPatchParameteri(GL_PATCH_VERTICES, 3);
+		glDrawElements(GL_PATCHES, (GLsizei)m_faces.size() * 3, GL_UNSIGNED_INT, nullptr);
+	}
 
 	glBindVertexArray(0);
 

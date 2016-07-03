@@ -7,7 +7,6 @@
 
 #include "Input.hpp"
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 #include <iostream>
 #include "Types/Map.hpp"
 #include "Graphics/Camera.hpp"
@@ -82,11 +81,13 @@ void Input::Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRe
 	{
 		glm::vec3 position;
 		glm::vec2 mousePos = glm::vec2(m_mouse_x, m_mouse_y);
-		if (Core::GetCore()->GetMap()->GetTerrain()->GetMousePositionInWorldSpace(mousePos, position))
+		/*if (Core::GetCore()->GetMap()->GetTerrain()->GetMousePositionInWorldSpace(mousePos, position))
 		{
+			std::shared_ptr<Entity> e = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle_wall.json");
+			e->AddInstance(position);
 			Core::GetCore()->GetMap()->GetTerrain()->SetHeight(position, 20.0f, 5.0f);
 			Core::GetCore()->GetMap()->GetTerrain()->SetMaterial(position, 20.0f, 4);
-		}
+		}*/
 	}
 
 	if (m_mouseInputs[GLFW_MOUSE_BUTTON_2] == PRESSED)

@@ -36,15 +36,16 @@ namespace anvil
 			~ModelGL();
 
 			/**
-			 * @fn	void ModelGL::Render(IShader& shader);
+			 * @fn	void ModelGL::Render(IShader& shader, bool minimal);
 			 *
 			 * @brief	Renders the given shader.
 			 *
 			 * @param [in,out]	shader	The shader.
+			 * @param	minimal	if it should render with minimal settings
 			 *
 			 * @return  the number of drawn polygons
 			 */
-			int Render(IShader& shader);
+			int Render(IShader& shader, bool minimal);
 
 			/**
 			 * @fn	void ModelGL::Update();

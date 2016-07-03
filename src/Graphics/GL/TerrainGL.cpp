@@ -60,34 +60,41 @@ GL::Terrain::~Terrain()
 	m_vao = 0;
 }
 
-int GL::Terrain::Render(IShader& shader)
+int GL::Terrain::Render(IShader& shader, bool minimal)
 {
 	glBindVertexArray(m_vao);
+	m_fbo->Bind();
 
 	glActiveTexture(GL_TEXTURE0); //diffuse textures
 	m_diff->Bind();
 	glUniform1i(shader.GetUniform("albedoTex"), 0);
 
-	glActiveTexture(GL_TEXTURE1); //normal textures
-	m_nrm->Bind();
-	glUniform1i(shader.GetUniform("normalTex"), 1);
+	if (!minimal)
+	{
+		glActiveTexture(GL_TEXTURE1); //normal textures
+		m_nrm->Bind();
+		glUniform1i(shader.GetUniform("normalTex"), 1);
 
-	glActiveTexture(GL_TEXTURE2); //spec textures
-	m_spec->Bind();
-	glUniform1i(shader.GetUniform("specularTex"), 2);
+		glActiveTexture(GL_TEXTURE2); //spec textures
+		m_spec->Bind();
+		glUniform1i(shader.GetUniform("specularTex"), 2);
 
-	glActiveTexture(GL_TEXTURE3); //disp textures
-	m_disp->Bind();
-	glUniform1i(shader.GetUniform("displacementTex"), 3);
+		glActiveTexture(GL_TEXTURE3); //disp textures
+		m_disp->Bind();
+		glUniform1i(shader.GetUniform("displacementTex"), 3);
 
-	glActiveTexture(GL_TEXTURE4); //ambi textures
-	m_ambi->Bind();
-	glUniform1i(shader.GetUniform("ambientTex"), 4);
+		glActiveTexture(GL_TEXTURE4); //ambi textures
+		m_ambi->Bind();
+		glUniform1i(shader.GetUniform("ambientTex"), 4);
 
-	//used for tesselation
-	glPatchParameteri(GL_PATCH_VERTICES, 3);
-	m_fbo->Bind();
-	glDrawElements(GL_PATCHES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, nullptr);
+		//used for tesselation
+		glPatchParameteri(GL_PATCH_VERTICES, 3);
+		glDrawElements(GL_PATCHES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, nullptr);
+	}
+	else
+	{
+		glDrawElements(GL_TRIANGLES, (GLsizei)m_faces.size(), GL_UNSIGNED_INT, nullptr);
+	}
 
 	glBindVertexArray(0);
 

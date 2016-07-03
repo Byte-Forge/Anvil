@@ -20,16 +20,17 @@ namespace anvil
 	public:
 
 		/**
-		 * @fn	virtual int IRenderable::Render(int mode,const IShader& shader) = 0;
+		 * @fn	virtual int IRenderable::Render(const IShader& shader, bool minimal) = 0;
 		 *
-		 * @brief	Renders the given mode.
-		 *
-		 * @param	mode  	The mode.
+		 * @brief	Renders the object.
+
 		 * @param	shader	The shader.
+		 * 					
+		 * @param	minimal if it should render with minimal requirements
 		 *
 		 * @return returns the number of drawn polygons
 		 */
-		virtual int Render(IShader& shader) = 0;
+		virtual int Render(IShader& shader, bool minimal = false) = 0;
 
 		/**
 		 * @fn	virtual void IRenderable::Update() = 0;

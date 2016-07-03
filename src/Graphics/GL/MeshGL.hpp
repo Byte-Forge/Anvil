@@ -39,15 +39,14 @@ namespace anvil
 			~MeshGL();
 
 			/**
-			 * @fn	void MeshGL::Render(IShader& shader);
+			 * @fn	void MeshGL::Render(IShader& shader, bool minimal);
 			 *
 			 * @brief	Renders the given shader.
 			 *
 			 * @param [in,out]	shader	The shader.
-			 *
-			 *
+			 * @param	minimal	if it should render with minimal settings
 			 */
-			int Render(IShader& shader);
+			int Render(IShader& shader, bool minimal);
 
 			/**
 			* @fn	virtual void IMesh::Init() = 0;

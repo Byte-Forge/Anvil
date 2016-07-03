@@ -79,7 +79,7 @@ void GL::Skybox::Update()
 
 }
 
-int GL::Skybox::Render(IShader& shader)
+int GL::Skybox::Render(IShader& shader, bool minimal)
 {
 	glDisable(GL_DEPTH_TEST);
 

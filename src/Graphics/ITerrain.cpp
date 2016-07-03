@@ -31,21 +31,35 @@ ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width), 
 	Generate();
 }
 
+//implemented with binary search
 int ITerrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
 {
+	float epsilon = 0.1;
 	glm::vec3 origin;
 	glm::vec3 direction;
 	Core::GetCore()->GetCamera()->ScreenPosToWorldRay(mousePos, origin, direction);
 	glm::vec3 point;
+	float distance = 200;
 
-	origin = glm::vec3(origin.x, origin.z, origin.y);
-	direction = glm::vec3(direction.x, direction.z, direction.y);
-	for (unsigned int i = 0; i < m_faces.size(); i += 3)
+	glm::vec3 testPoint = origin + direction * distance;
+	while (true)
 	{
-		if (glm::intersectRayTriangle(origin, direction, m_vertices[m_faces[i]], m_vertices[m_faces[i+1]], m_vertices[m_faces[i+2]], point))
+		float height = GetHeight(testPoint.x, testPoint.z);
+		distance /= 2.0f;
+		float difference = testPoint.y - height;
+		if (difference < epsilon)
 		{
-			pos = point;
+			pos = testPoint;
+			printVec(pos);
 			return 1;
+		}
+		else if (testPoint.y > height)
+		{
+			testPoint -= direction*distance;
+		}
+		else if (testPoint.y < height)
+		{
+			testPoint += direction*distance;
 		}
 	}
 	return 0;

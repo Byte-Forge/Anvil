@@ -49,7 +49,7 @@ namespace anvil
 		/**
 		 * @fn	virtual void IRenderer::Render() = 0;
 		 *
-		 * @brief	Renders the given ortho.
+		 * @brief	Renders the scene
 		 */
 		virtual void Render() = 0;
 
@@ -112,12 +112,15 @@ namespace anvil
 	protected:
 		int m_rendered_polygons = 0;
 		int m_maxTesselation = 64;
+		bool m_lowSettings = true;
 	
 		Vendor m_vendor;
 
 		std::unique_ptr<IShader> m_skyboxShader;
 		std::unique_ptr<IShader> m_terrainShader;
+		std::unique_ptr<IShader> m_minimal_terrainShader;
 		std::shared_ptr<IShader> m_modelShader;
+		std::shared_ptr<IShader> m_minimal_modelShader;
 		std::shared_ptr<IShader> m_quadShader;
 
 		std::shared_ptr<IRenderable> m_skybox;

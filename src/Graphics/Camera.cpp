@@ -134,6 +134,6 @@ void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm
 	glm::vec4 viewport = glm::vec4(0, 0, resolution.x, resolution.y);
 	glm::vec3 screenPos = glm::vec3(mouse_pos.x, mouse_pos.y, 0.0f);
 
-	out_origin = glm::unProject(screenPos, m_view, m_proj, viewport);
+	out_origin = glm::unProject(screenPos, glm::inverse(m_view), m_proj, viewport);
 	out_direction = m_direction;
 }

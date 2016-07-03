@@ -7,6 +7,7 @@
 #pragma once
 #include <map>
 #include <memory>
+#include <glm/glm.hpp>
 
 namespace anvil
 {
