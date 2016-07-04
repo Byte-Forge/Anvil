@@ -46,12 +46,14 @@ namespace anvil
 		 */
 		static void Default();
 
+		static inline bool GetMinimalRendering() { return s_minimalRendering; }
 		static inline int GetTessfactor()		{ return s_tessFactor; }
 		static inline unsigned int GetWidth()	{ return s_width; }
 		static inline unsigned int GetHeight()	{ return s_height; }
 		static inline bool GetFullscreen()		{ return s_fullscreen; }
 		static inline int GetSampleFactor()		{ return s_sampleFactor; }
 
+		static inline void SetMinimalRendering(bool minRender) { s_minimalRendering = minRender; }
 		static inline void SetFullscreen(bool fullscreen) { s_fullscreen = fullscreen; }
 		static inline void SetWidth(int width) { s_width = width; }
 		static inline void SetHeight(int height) { s_height = height; }
@@ -59,6 +61,7 @@ namespace anvil
 		static inline void SetSampleFactor(int factor) { s_sampleFactor = factor; }
 
 	private:
+		static bool s_minimalRendering;
 		static bool s_fullscreen;
 		static unsigned int s_width;
 		static unsigned int s_height;

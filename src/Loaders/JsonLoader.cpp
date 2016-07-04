@@ -314,6 +314,10 @@ bool JsonLoader::LoadOptions(const std::string& path)
 			Options::SetSampleFactor(d["options"]["samplefactor"].GetInt());
 			//TODO: do tests for sample Factor here
 		}
+		if (d["options"].HasMember("minimalRendering"))
+		{
+			Options::SetMinimalRendering(d["options"]["minimalRendering"].GetBool());
+		}
 		else
 			result = false;
 	}

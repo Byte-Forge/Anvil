@@ -112,7 +112,7 @@ namespace anvil
 	protected:
 		int m_rendered_polygons = 0;
 		int m_maxTesselation = 64;
-		bool m_lowSettings = true;
+		bool m_lowSettings = false;
 	
 		Vendor m_vendor;
 

@@ -220,6 +220,8 @@ void RendererGL::Clear()
 
 void RendererGL::Render()
 {
+	if (Options::GetMinimalRendering())
+		m_lowSettings = true;
 	if (Options::GetSampleFactor() > 1)
 		m_render2buffer = true;
 

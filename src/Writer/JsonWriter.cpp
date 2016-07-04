@@ -42,6 +42,10 @@ void JsonWriter::SaveOptions(const std::string& path)
 		Value tessfactor(Options::GetSampleFactor());
 		options.AddMember("samplefactor", tessfactor, allocator);
 	}
+	{
+		Value minRender(Options::GetMinimalRendering());
+		options.AddMember("minimalRendering", minRender, allocator);
+	}
 	d.AddMember("options", options, allocator);
 
 	std::ofstream ofs(path);

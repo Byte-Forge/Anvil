@@ -11,6 +11,7 @@
 
 using namespace anvil;
 
+bool Options::s_minimalRendering	= false;
 bool Options::s_fullscreen			= false;
 unsigned int Options::s_width		= 800;
 unsigned int Options::s_height		= 600;
