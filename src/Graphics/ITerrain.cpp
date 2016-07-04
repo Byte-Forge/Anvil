@@ -135,6 +135,15 @@ void ITerrain::Generate()
 	auto ent = glm::vec3(50, 0.5, 50);
 	castle->AddInstance(ent, glm::vec3(0.0, -45.0f, 0.0));
 
+	ent = glm::vec3(50, 0.5, 150);
+	castle->AddInstance(ent, glm::vec3(0.0, 45.0f, 0.0));
+
+	ent = glm::vec3(150, 0.5, 50);
+	castle->AddInstance(ent, glm::vec3(0.0, -135.0f, 0.0));
+
+	ent = glm::vec3(150, 0.5, 150);
+	castle->AddInstance(ent, glm::vec3(0.0, 135.0f, 0.0));
+
 
 	ent = glm::vec3(20, m_heightmap[50][50], 20);
 	uruk_cross->AddInstance(ent);

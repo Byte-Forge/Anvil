@@ -112,14 +112,18 @@ namespace anvil
 	protected:
 		int m_rendered_polygons = 0;
 		int m_maxTesselation = 64;
+		bool m_render2buffer = false;
+		bool m_renderShadows = false;
 		bool m_lowSettings = false;
 	
 		Vendor m_vendor;
 
 		std::unique_ptr<IShader> m_skyboxShader;
 		std::unique_ptr<IShader> m_terrainShader;
+		std::unique_ptr<IShader> m_shadow_terrainShader;
 		std::unique_ptr<IShader> m_minimal_terrainShader;
 		std::shared_ptr<IShader> m_modelShader;
+		std::shared_ptr<IShader> m_shadow_modelShader;
 		std::shared_ptr<IShader> m_minimal_modelShader;
 		std::shared_ptr<IShader> m_quadShader;
 

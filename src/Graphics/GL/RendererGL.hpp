@@ -142,8 +142,6 @@ namespace anvil
 		const std::string GetGPUName();
 
 	private:
-		bool m_render2buffer = false; 
-		bool m_renderShadows = false;
 		int m_totalVRAM;
 		std::string m_deviceName;
 

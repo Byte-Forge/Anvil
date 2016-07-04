@@ -143,15 +143,26 @@ RendererGL::RendererGL()
 	m_minimal_modelShader->Compile();
 	m_minimal_modelShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
 
+	m_shadow_modelShader = std::make_unique<GL::Shader>();
+	m_shadow_modelShader->Load("shader/gl/shadow_model.vert", "shader/gl/shadow.frag");
+	m_shadow_modelShader->Compile();
+	m_shadow_modelShader->AttachUBO("depth_matrix_block", m_depth_matrix_ubo.GetID());
+
 	m_minimal_terrainShader = std::make_unique<GL::Shader>();
 	m_minimal_terrainShader->Load("shader/gl/minimal_terrain.vert", "shader/gl/minimal_terrain.frag");
 	m_minimal_terrainShader->Compile();
 	m_minimal_terrainShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
 
+	m_shadow_terrainShader = std::make_unique<GL::Shader>();
+	m_shadow_terrainShader->Load("shader/gl/shadow_terrain.vert", "shader/gl/shadow.frag");
+	m_shadow_terrainShader->Compile();
+	m_shadow_terrainShader->AttachUBO("depth_matrix_block", m_depth_matrix_ubo.GetID());
+
 	m_terrainShader = std::make_unique<GL::Shader>();
 	m_terrainShader->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
 	m_terrainShader->Compile();
 	m_terrainShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
+	m_terrainShader->AttachUBO("depth_matrix_block", m_depth_matrix_ubo.GetID());
 	m_terrainShader->AttachUBO("tessellation_block", m_tessellation_ubo.GetID());
 	m_terrainShader->AttachUBO("light_block", m_light_ubo.GetID());
 
@@ -181,8 +192,8 @@ RendererGL::RendererGL()
 
 	glm::vec2 res = Core::GetCore()->GetResolution();
 	float sampleValue = Options::GetSampleFactor();
-	m_frameBuffer = std::make_unique<GL::FrameBuffer>(res * sampleValue);
 	m_shadowBuffer = std::make_unique<GL::FrameBuffer>(res * sampleValue);
+	m_frameBuffer = std::make_unique<GL::FrameBuffer>(res * sampleValue);
 
 	static const float quad_vertices[] = {
 		-1.0f, -1.0f, 0.0f,
@@ -222,22 +233,34 @@ void RendererGL::Render()
 {
 	if (Options::GetMinimalRendering())
 		m_lowSettings = true;
+	else
+		m_lowSettings = false;
+
 	if (Options::GetSampleFactor() > 1)
 		m_render2buffer = true;
+	else
+		m_render2buffer = false;
+
+	if (Options::GetShadows())
+		m_renderShadows = true;
+	else
+		m_renderShadows = false;
 
 	m_rendered_polygons = 0;
 
 	m_terrain->Update();
 
-	glm::vec3 lightDir = glm::vec3(1.0f, 1.0f, 0.f);
-
-	// Compute the MVP matrix from the light's point of view
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
-	glm::mat4 depthViewMatrix = glm::lookAt(lightDir, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::vec3 lightDir = glm::vec3(-0.0f, 3.0f, -3.0f);
 
 	m_matrix_data.vp = Core::GetCore()->GetCamera()->GetViewProjectionMatrix();
 	m_matrix_data.v = Core::GetCore()->GetCamera()->GetViewMatrix();
 	m_matrix_ubo.Update(m_matrix_data);
+
+	// Compute the MVP matrix from the light's point of view
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-100, 100, -100, 100, 0.5, 1000.0);
+	float distance = glm::length(Core::GetCore()->GetCamera()->GetPosition() - Core::GetCore()->GetCamera()->GetLookAt());
+	glm::mat4 depthViewMatrix = glm::lookAt(lightDir * distance + Core::GetCore()->GetCamera()->GetLookAt(), Core::GetCore()->GetCamera()->GetLookAt(), glm::vec3(0, 1, 0));
+	//glm::mat4 depthViewMatrix = glm::lookAt(lightDir, glm::vec3(0.0, 0.0, 0.0), glm::vec3(0, 1, 0));
 
 	m_depth_matrix_data.depth_vp = depthProjectionMatrix * depthViewMatrix;
 	m_depth_matrix_data.depth_bias_vp = m_biasMatrix * depthProjectionMatrix * depthViewMatrix;
@@ -267,21 +290,17 @@ void RendererGL::Render()
 	/////////////////////////////////////////////// render scene to shadowbuffer /////////////////////////////////////////////////////////
 	if (m_renderShadows && !m_lowSettings)
 	{
+		glEnable(GL_DEPTH_TEST);
 		m_shadowBuffer->Bind();
-
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
 		Clear();
 
-		m_skyboxShader->Use();
-		m_skybox->Render(*m_skyboxShader);
+		m_shadow_terrainShader->Use();
+		m_terrain->Render(*m_shadow_terrainShader, true);
 
-		m_minimal_terrainShader->Use();
-		m_terrain->Render(*m_minimal_terrainShader, true);
-
-		m_minimal_modelShader->Use();
-
+		m_shadow_modelShader->Use();
 		for (auto& renderable : m_renderables)
-			renderable->Render(*m_minimal_modelShader, true); //always render with minimal settings here
+			renderable->Render(*m_shadow_modelShader, true); 
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
 	}
@@ -308,21 +327,31 @@ void RendererGL::Render()
 	else
 	{
 		m_terrainShader->Use();
+		if (m_renderShadows)
+		{
+			m_shadowBuffer->BindDepthTexture();
+			glUniform1i(m_terrainShader->GetUniform("shadowMap"), 9);
+		}
+		glUniform1i(m_terrainShader->GetUniform("use_shadows"), m_renderShadows);
 		m_rendered_polygons += m_terrain->Render(*m_terrainShader);
 
 		m_modelShader->Use();
-		//m_shadowBuffer->BindDepthTexture();
-		//glUniform1i(m_modelShader->GetUniform("shadowMap"), 7);
+		if (m_renderShadows)
+		{
+			m_shadowBuffer->BindDepthTexture();
+			glUniform1i(m_modelShader->GetUniform("shadowMap"), 9);
+		}
+		glUniform1i(m_modelShader->GetUniform("use_shadows"), m_renderShadows);
 		for (auto& renderable : m_renderables)
 			m_rendered_polygons += renderable->Render(*m_modelShader);
 	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
 
 	UpdateInstances();
 
 	if (m_render2buffer && !m_lowSettings)
 	{
 		/////////////////////////////////////////////// render framebuffer to quad /////////////////////////////////////////////////////////
-		glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
 		glm::vec2 res = Core::GetCore()->GetResolution();
 		glViewport(0, 0, res.x, res.y);
 		Clear();
@@ -333,8 +362,6 @@ void RendererGL::Render()
 
 		glActiveTexture(GL_TEXTURE0);
 		m_frameBuffer->BindTexture();
-		//m_shadowBuffer->BindDepthTexture();
-		//glUniform1i(m_quadShader->GetUniform("renderedTexture"), 0);
 
 		glEnableVertexAttribArray(0);
 		m_quad_vbo->Bind();

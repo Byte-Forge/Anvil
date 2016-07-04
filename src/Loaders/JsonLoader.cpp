@@ -318,6 +318,10 @@ bool JsonLoader::LoadOptions(const std::string& path)
 		{
 			Options::SetMinimalRendering(d["options"]["minimalRendering"].GetBool());
 		}
+		if (d["options"].HasMember("shadows"))
+		{
+			Options::SetShadows(d["options"]["shadows"].GetBool());
+		}
 		else
 			result = false;
 	}
