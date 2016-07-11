@@ -9,6 +9,7 @@
 #include "../Core.hpp"
 #include <iostream>
 #include "../Graphics/GL/flextGL.h"
+#include "../Util.hpp"
 
 using namespace anvil;
 
@@ -17,6 +18,7 @@ Camera::Camera() : m_up(0.0, 1.0, 0.0), m_currentPos(-30.0, 30.0, -30.0), m_look
 {
 	const auto& res = Core::GetCore()->GetResolution();
 	m_ratio = res.x / res.y;
+	m_viewport = glm::vec4(0, 0, res.x, res.y);
 	m_proj = glm::perspective(m_fov, m_ratio, m_near, m_far);
 
 	m_frustum = std::make_unique<Frustum>();
@@ -123,6 +125,10 @@ void Camera::Update()
 	m_direction = glm::normalize(m_lookat - m_position);
     m_view = glm::lookAt(m_position, m_lookat, m_up);
     m_vp = m_proj * m_view;
+	const auto& res = Core::GetCore()->GetResolution();
+	m_ratio = res.x / res.y;
+	m_proj = glm::perspective(m_fov, m_ratio, m_near, m_far);
+	m_viewport = glm::vec4(0, 0, res.x, res.y);
 
 	m_frustum->Recalculate(m_view, m_proj);
 }
@@ -132,8 +138,9 @@ void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm
 {
 	const glm::vec2& resolution = Core::GetCore()->GetResolution();
 	glm::vec4 viewport = glm::vec4(0, 0, resolution.x, resolution.y);
-	glm::vec3 screenPos = glm::vec3(mouse_pos.x, mouse_pos.y, 0.0f);
+	glm::vec3 screenPosNear = glm::vec3(mouse_pos.x, resolution.y - mouse_pos.y, 0.0f);
+	glm::vec3 screenPosFar = glm::vec3(mouse_pos.x, resolution.y - mouse_pos.y, 1.0f);
 
-	out_origin = glm::unProject(screenPos, m_view, m_proj, viewport);
-	out_direction = m_direction;
+	out_origin = glm::unProject(screenPosNear, m_view, m_proj, viewport);
+	out_direction = glm::normalize(glm::unProject(screenPosFar, m_view, m_proj, viewport) - out_origin);
 }

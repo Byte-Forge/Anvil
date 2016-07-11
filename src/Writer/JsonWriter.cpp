@@ -7,7 +7,6 @@
 
 #include "JsonWriter.hpp"
 #include "../Core/Options.hpp"
-#include <rapidjson/document.h>
 #include <fstream>
 #include <rapidjson/prettywriter.h>
 #include <rapidjson/document.h>

@@ -81,13 +81,13 @@ void Input::Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRe
 	{
 		glm::vec3 position;
 		glm::vec2 mousePos = glm::vec2(m_mouse_x, m_mouse_y);
-		/*if (Core::GetCore()->GetMap()->GetTerrain()->GetMousePositionInWorldSpace(mousePos, position))
+		if (Core::GetCore()->GetMap()->GetTerrain()->GetMousePositionInWorldSpace(mousePos, position))
 		{
-			std::shared_ptr<Entity> e = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle_wall.json");
-			e->AddInstance(position);
-			Core::GetCore()->GetMap()->GetTerrain()->SetHeight(position, 20.0f, 5.0f);
-			Core::GetCore()->GetMap()->GetTerrain()->SetMaterial(position, 20.0f, 4);
-		}*/
+			//std::shared_ptr<Entity> e = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/grass.json");
+			//e->AddInstance(position + glm::vec3(0.0, 35, 0.0));
+			Core::GetCore()->GetMap()->GetTerrain()->SetHeight(position, 10.0f, 5.0f);
+			Core::GetCore()->GetMap()->GetTerrain()->SetMaterial(position, 10.0f, 0);
+		}
 	}
 
 	if (m_mouseInputs[GLFW_MOUSE_BUTTON_2] == PRESSED)

@@ -185,7 +185,20 @@ namespace anvil
 	}
 
 	/**
-	* @fn	inline void printVec(glm::vec4 vec)
+	* @fn	inline void printVec2(glm::vec2 vec)
+	*
+	* @brief	prints the given vector
+	*
+	* @param	vec		the vector to be printed
+	*/
+	inline void printVec2(glm::vec2 vec)
+	{
+		std::cout << std::fixed << std::setprecision(2) << vec.x << "\t" << vec.y << std::endl;
+		std::cout << std::endl;
+	}
+
+	/**
+	* @fn	inline void printVec(glm::vec3 vec)
 	*
 	* @brief	prints the given vector
 	*

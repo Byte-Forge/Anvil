@@ -282,8 +282,8 @@ void RendererGL::Render()
 
 	JoinInstanceThreads();
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -301,7 +301,6 @@ void RendererGL::Render()
 		m_shadow_modelShader->Use();
 		for (auto& renderable : m_renderables)
 			renderable->Render(*m_shadow_modelShader, true); 
-
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); //unbind framebuffer
 	}
 
@@ -314,7 +313,7 @@ void RendererGL::Render()
 
 	m_skyboxShader->Use();
 	m_rendered_polygons += m_skybox->Render(*m_skyboxShader);
-	
+
 	if (m_lowSettings)
 	{
 		m_minimal_terrainShader->Use();

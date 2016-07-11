@@ -34,33 +34,33 @@ ITerrain::ITerrain(std::uint32_t width, std::uint32_t height) : m_width(width), 
 //implemented with binary search
 int ITerrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
 {
-	float epsilon = 0.1;
+	float epsilon = 0.1f;
 	glm::vec3 origin;
 	glm::vec3 direction;
 	Core::GetCore()->GetCamera()->ScreenPosToWorldRay(mousePos, origin, direction);
-	glm::vec3 point;
-	float distance = 200;
+	float distance = 500;
 
 	glm::vec3 testPoint = origin + direction * distance;
-	while (true)
+	int count = 0;
+	while (count < 100)
 	{
 		float height = GetHeight(testPoint.x, testPoint.z);
-		distance /= 2.0f;
-		float difference = testPoint.y - height;
+		float difference = glm::abs(testPoint.y - height);
 		if (difference < epsilon)
 		{
 			pos = testPoint;
-			printVec(pos);
 			return 1;
 		}
 		else if (testPoint.y > height)
 		{
-			testPoint -= direction*distance;
+			testPoint += direction*distance;
 		}
 		else if (testPoint.y < height)
 		{
-			testPoint += direction*distance;
+			distance /= 2.0f;
+			testPoint -= direction*distance;
 		}
+		count++;
 	}
 	return 0;
 }
@@ -73,6 +73,8 @@ void ITerrain::SetMaterial(glm::vec3 &pos, float radius, int material)
 		for (unsigned int j = pos_2.y - radius + 1; j < pos_2.y + radius + 1; j++)
 		{
 			glm::vec2 vertex = { i, j };
+			if (i < 0 || j < 0 || i > m_width || j > m_height)
+				continue;
 			if (glm::distance(vertex, pos_2) <= radius)
 			{
 				m_materialmap[i][j] = glm::vec3(material, m_materialmap[i][j].x, m_materialmap[i][j].z);
@@ -91,6 +93,8 @@ void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 		for (unsigned int j = pos_2.y - radius + 1; j < pos_2.y + radius + 1; j++)
 		{
 			glm::vec2 vertex = { i, j };
+			if (i < 0 || j < 0 || i > m_width || j > m_height)
+				continue;
 			if (glm::distance(vertex, pos_2) <= radius)
 			{
 				m_heightmap[i][j] = height;
@@ -107,20 +111,19 @@ void ITerrain::Generate()
 
 	//m_terrainMaterials = Core::GetCore()->GetResources()->GetTerrainMaterials();
 	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
-	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
-	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
-	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
-	m_terrainMaterials.push_back("materials/terrain/medieval_pavement.json");
+	m_terrainMaterials.push_back("materials/terrain/dirt.json");
 
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
 
-	//std::shared_ptr<Entity> fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/fir.json");
-	//std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
-	//std::shared_ptr<Entity> douglas_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/douglas_fir.json"); 
+	std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
+	std::shared_ptr<Entity> douglas_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/douglas_fir.json"); 
 	//std::shared_ptr<Entity> hemlock_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/hemlock_fir.json");
 	//std::shared_ptr<Entity> rhododendron = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/rhododendron.json");
 
+
+	auto ent1 = glm::vec3(10, 0.5, 10);
+	//oak->AddInstance(ent1, glm::vec3(0.0, -45.0f, 0.0));
 
 	//wait until heightmap creation is done
 	hand.get();
@@ -133,20 +136,11 @@ void ITerrain::Generate()
 	std::shared_ptr<Entity> uruk_cross = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_crossbow.json");
 
 	auto ent = glm::vec3(50, 0.5, 50);
-	castle->AddInstance(ent, glm::vec3(0.0, -45.0f, 0.0));
-
-	ent = glm::vec3(50, 0.5, 150);
-	castle->AddInstance(ent, glm::vec3(0.0, 45.0f, 0.0));
-
-	ent = glm::vec3(150, 0.5, 50);
-	castle->AddInstance(ent, glm::vec3(0.0, -135.0f, 0.0));
-
-	ent = glm::vec3(150, 0.5, 150);
-	castle->AddInstance(ent, glm::vec3(0.0, 135.0f, 0.0));
+	//castle->AddInstance(ent, glm::vec3(0.0, -45.0f, 0.0));
 
 
 	ent = glm::vec3(20, m_heightmap[50][50], 20);
-	uruk_cross->AddInstance(ent);
+	//uruk_cross->AddInstance(ent);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -244,6 +238,9 @@ void ITerrain::UpdateBufferData()
 
 		m_vertices.clear();
 		m_normals.clear();
+		//also clear faces and recreate the quadtree
+		//or update faces?
+
 	}
 	if (uvs_changed)
 		m_uvs.clear();
@@ -350,8 +347,6 @@ float ITerrain::GetHeight(float x, float y)
 {
 	if (x < 0.0 || y < 0.0 || x > m_width || y > m_height)
 		return 0.0f;
-	//return m_heightmap[(int)x][(int)y];
-	//TODO: interplate between triangle edges
 	int ix = x;
 	int iy = y;
 	float xoffset = x - ix;
