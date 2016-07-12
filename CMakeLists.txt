@@ -46,11 +46,28 @@ find_package(GLI REQUIRED)
 #Find Vulkan
 find_package(Vulkan)
 
+#Find glfw
+find_package(glfw3)
+
+#Find CoreFoundation
+IF (APPLE)
+   FIND_LIBRARY(COREFOUNDATION_LIBRARY CoreFoundation)
+   set(osxframeworks "-framework CoreFoundation")
+else ()
+   set(osxframeworks "")
+ENDIF (APPLE)
+      
 #Add GLFW
 set(GLFW_BUILD_EXAMPLES CACHE BOOL OFF)
 set(GLFW_BUILD_TESTS CACHE BOOL OFF)
 set(GLFW_BUILD_DOCS CACHE BOOL OFF)
-add_subdirectory(glfw)
+if (NOT GLFW_FOUND)
+   message(STATUS "GLFW not found, use internal")
+   add_subdirectory(glfw)
+   set(glfw_internal "glfw")
+else ()
+   set(glfw_internal "")
+endif ()
 
 #Add spark
 set(SPARK_BUILD_TEST CACHE BOOL OFF)
@@ -67,12 +84,15 @@ if(VULKAN_FOUND)
 endif()
 
 #Include our dependencies
-target_include_directories(${PROJ_NAME} PUBLIC glfw spark ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
+target_include_directories(${PROJ_NAME} PUBLIC ${glfw_internal} spark ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
 						${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${RAPIDJSON_INCLUDE_DIR})
 
 #Link our dependencies
 target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES}
-						glfw spark ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS})
+						glfw3 spark ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS} ${osxframeworks})
+SET(GCC_COVERAGE_LINK_FLAGS    "-pagezero_size 10000 -image_base 100000000")
+SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
+
 
 #Use C++ 14
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)

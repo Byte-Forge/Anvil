@@ -99,7 +99,7 @@ RendererGL::RendererGL()
 	#if 1
 	if (FLEXT_ARB_debug_output)
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
-        glDebugMessageCallbackARB(debugCallback, nullptr);	//crashes on mac
+        //glDebugMessageCallbackARB(debugCallback, nullptr);	//crashes on mac
 	#endif
 
 	//doesnt throw a exception on mac??

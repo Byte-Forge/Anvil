@@ -14,7 +14,7 @@ using namespace anvil;
 
 Script::Script()
 {
-	m_state = luaL_newstate();  //crash on mac, maybe lua as dynamic build
+	m_state = luaL_newstate();  //crash on mac, if not linked with "-pagezero_size 10000 -image_base 100000000"
 	luaL_openlibs(m_state);
 }
 
