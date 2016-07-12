@@ -103,11 +103,13 @@ Core::Core()
 	#endif
 	 
 	glfwWindowHint(GLFW_SAMPLES, 1); //what exactly does this do?
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+
 	m_window = glfwCreateWindow(Options::GetWidth(), Options::GetHeight(), "anvil engine", 
 								Options::GetFullscreen() ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 

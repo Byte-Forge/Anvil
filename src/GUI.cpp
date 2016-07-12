@@ -39,6 +39,8 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 	auto element = std::make_shared<spark::Grid>();	
 	m_fps = std::make_shared<spark::ILabel>();
 	m_fps->SetText("0");
+	m_fps->SetBorderSize(0.0);
+	m_fps->SetBackgroundColor(spark::vec4<unsigned int>(0, 0, 0, 0));
 	m_fps->SetFontSize(26.0f);
 	m_fps->SetFont(defaultFont);
 	element->AddChildren(m_fps);
@@ -46,6 +48,8 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 	m_renderedTris = std::make_shared<spark::ILabel>();
 	m_renderedTris->SetText("0");
 	m_renderedTris->SetFontSize(26.0f);
+	m_renderedTris->SetBorderSize(0.0);
+	m_renderedTris->SetBackgroundColor(spark::vec4<unsigned int>(0, 0, 0, 0));
 	m_renderedTris->SetFont(defaultFont);
 	m_renderedTris->SetMargin(spark::vec4<unsigned int>(30, 0, 0, 0));
 	element->AddChildren(m_renderedTris);
