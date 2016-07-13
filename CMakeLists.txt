@@ -94,8 +94,6 @@ target_link_libraries(${PROJ_NAME} spark ${LUA_LIBRARIES} ${OPENAL_LIBRARY} ${FR
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD_REQUIRED TRUE)
 
-add_definitions(-DGLM_FORCE_AVX)
-
 #add a target to generate API documentation with Doxygen
 find_package(Doxygen)
 option(BUILD_DOCUMENTATION "Create and install the HTML based API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
