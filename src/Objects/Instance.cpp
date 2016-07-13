@@ -116,9 +116,9 @@ bool Instance::Update()
 				}
 			}
 		}
-		if (m_health <= 0)
-			return false;
 	}
+	if (m_health <= 0)
+		return false;
 	return true;
 }
 

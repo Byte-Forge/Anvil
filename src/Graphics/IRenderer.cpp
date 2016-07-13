@@ -11,6 +11,18 @@ using namespace anvil;
 
 void IRenderer::UpdateInstances()
 {
+	int size = m_instances.size();
+	for (int i = 0; i < size; i++)
+	{
+		if (!m_instances[i]->Update())
+		{
+			m_instances[i]->Unlink();
+			m_instances.erase(m_instances.begin() + i);
+			i--;
+			size -= 1;
+		}
+	}
+
 	m_promises.clear();
 	auto updateInstances = [](std::vector<std::shared_ptr<Instance>> instances)
 	{

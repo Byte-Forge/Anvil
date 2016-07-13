@@ -15,12 +15,12 @@
 
 using namespace anvil;
 
-Entity::Entity() 
+Entity::Entity(std::string name) : m_name(name)
 {
 
 }
 
-Entity::Entity(std::shared_ptr<Entity> parent)
+Entity::Entity(std::string name, std::shared_ptr<Entity> parent) : m_name(name)
 {
 	m_health = parent->m_health;
 	m_speed = parent->m_speed;
@@ -36,20 +36,10 @@ Entity::~Entity()
 
 void Entity::Update()
 {
-	int size = m_instances.size();
-	for (int i = 0; i < size; i++)
-	{
-		if (!m_instances[i]->Update())
-		{
-			m_instances[i]->Unlink();
-			m_instances.erase(m_instances.begin() + i);
-			i--;
-			size -= 1;
-		}
-	}
+
 }
 
-void Entity::AddInstance(const glm::vec3 &position, const glm::vec3 &euler)
+std::shared_ptr<Instance> Entity::AddInstance(const glm::vec3 &position, const glm::vec3 &euler)
 {
 	if (!m_resourcesLoaded)
 	{
@@ -68,6 +58,7 @@ void Entity::AddInstance(const glm::vec3 &position, const glm::vec3 &euler)
 		c.position = glm::rotateZ(c.position, glm::radians(euler.z));
 		e->AddInstance(position + c.position, c.rotation + euler);
 	}
+	return i;
 }
 
 std::shared_ptr<Entity::ModelConditionState> Entity::GetModelConditionState(const std::string& name)
@@ -77,7 +68,7 @@ std::shared_ptr<Entity::ModelConditionState> Entity::GetModelConditionState(cons
 		return it->second;
 	else
 	{
-		std::cout << "WARNING!: Entity object has no ModelConditionState " + name << std::endl;
+		std::cout << "WARNING!: Entity object " + m_name + " has no ModelConditionState " + name << std::endl;
 		return nullptr;
 	}
 }
@@ -89,7 +80,7 @@ std::shared_ptr<Entity::AnimationState> Entity::GetAnimationState(const std::str
 		return it->second;
 	else
 	{
-		//std::cout << "WARNING!: Entity object has no AnimationState " + name << std::endl;
+		//std::cout << "WARNING!: Entity object " + m_name + "  has no AnimationState " + name << std::endl;
 		return nullptr;
 	}
 }

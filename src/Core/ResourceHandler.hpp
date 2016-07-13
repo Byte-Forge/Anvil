@@ -47,6 +47,15 @@ namespace anvil
 		std::shared_ptr<Entity> GetEntity(const std::string &name);
 
 		/**
+		* @fn	std::vector<std::string> ResourceHandler::GetEntityList();
+		*
+		* @brief	Gets all entities.
+		*
+		* @return	The entitys.
+		*/
+		std::vector<std::string> GetEntityList();
+
+		/**
 		 * @fn	std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string &name);
 		 *
 		 * @brief	Gets particle system.

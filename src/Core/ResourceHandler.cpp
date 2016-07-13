@@ -38,6 +38,36 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 	return std::dynamic_pointer_cast<Entity> (m_resources[name]);
 }
 
+std::vector<std::string> ResourceHandler::GetEntityList()
+{
+	std::vector<std::string> entities;
+	std::vector<std::string> temp = IO::ListFiles("entities/", "json");
+
+	for (unsigned int i = 0; i < m_modDirs.size(); i++)
+	{
+		std::vector<std::string> temp2 = IO::ListFiles(m_modDirs[i] + "entities/", "json");
+		for (unsigned int i = 0; i < temp2.size(); i++)
+		{
+			std::cout << temp[i] << std::endl;
+			if (std::find(temp.begin(), temp.end(), temp2[i]) == temp.end())
+			{
+				temp.push_back(temp2[i]);
+			}
+		}
+	}
+
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		if (temp[i].find("template") == 0)
+		{
+			std::cout << temp[i] << std::endl;
+			entities.push_back(temp[i]);
+		}
+	}
+
+	return entities;
+}
+
 std::shared_ptr<IParticleSystem> ResourceHandler::GetParticleSystem(const std::string & name)
 {
 	std::string path;

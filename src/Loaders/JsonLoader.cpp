@@ -88,9 +88,9 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 		if (node.IsObject())
 		{
 			if (node.HasMember("parent"))
-				ent = std::make_shared<Entity>(Core::GetCore()->GetResources()->GetEntity(node["parent"].GetString()));
+				ent = std::make_shared<Entity>(name, Core::GetCore()->GetResources()->GetEntity(node["parent"].GetString()));
 			else
-				ent = std::make_shared<Entity>();
+				ent = std::make_shared<Entity>(name);
 
 			Entity::KindOf kO = Entity::KindOf();
 

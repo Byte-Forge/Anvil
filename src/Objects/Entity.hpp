@@ -111,7 +111,7 @@ namespace anvil
 		 *
 		 * @brief	creates a new Entity object without a parent 
 		 */
-		Entity();
+		Entity(std::string name);
 
 		/**
 		 * @fn	Entity::Entity(std::shared_ptr<Entity> parent);
@@ -120,7 +120,7 @@ namespace anvil
 		 * 			
 		 * @param	parent	The parent entity of this entity
 		 */
-		Entity(std::shared_ptr<Entity> parent);
+		Entity(std::string name, std::shared_ptr<Entity> parent);
 
 		/**
 		 * @fn	Entity::~Entity();
@@ -144,7 +144,7 @@ namespace anvil
 		* @param	position	The position of the Instance
 		* @param	rotation	The rotation of the Instance
 		*/
-		void AddInstance(const glm::vec3 &position, const glm::vec3 &euler = glm::vec3(0, 0, 0));
+		std::shared_ptr<Instance> AddInstance(const glm::vec3 &position, const glm::vec3 &euler = glm::vec3(0, 0, 0));
 
 		/**
 		* @fn	void Entity::LoadResources();
@@ -180,7 +180,8 @@ namespace anvil
 		inline void AddAnimationState(const std::string name, std::shared_ptr<AnimationState> state) { m_animationStates.insert({ name, state }); }
 		inline void AddChild(Child child) { m_children.push_back(child); }
 	
-private:
+	private:
+		std::string m_name;
 		bool m_resourcesLoaded = false;
 
 		KindOf m_kindOfs = KindOf();
