@@ -20,11 +20,11 @@ else()
 endif()
 
 if(APPLE)
-   find_library(COREFOUNDATION_LIBRARY CoreFoundation)
-   set(OTHER_LIBS "-framework CoreFoundation")
-setset(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000")
+	find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+	set(OTHER_LIBS "-framework CoreFoundation")
+	set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000")
 else()
-   set(OTHER_LIBS "")
+   	set(OTHER_LIBS "")
 endif(APPLE)
 
 #The directory where source files are located
