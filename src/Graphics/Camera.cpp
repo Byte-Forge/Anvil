@@ -14,7 +14,18 @@
 using namespace anvil;
 
 Camera::Camera() : m_up(0.0, 1.0, 0.0), m_currentPos(-30.0, 30.0, -30.0), m_lookat(0.0, 0.0, 0.0),
-					m_fov(45.0), m_frustum(nullptr)
+					m_frustum(nullptr)
+{
+	const auto& res = Core::GetCore()->GetResolution();
+	m_ratio = res.x / res.y;
+	m_viewport = glm::vec4(0, 0, res.x, res.y);
+	m_proj = glm::perspective(m_fov, m_ratio, m_near, m_far);
+
+	m_frustum = std::make_unique<Frustum>();
+}
+
+Camera::Camera(const glm::vec3& position, const glm::vec3& lookAt) : m_up(0.0, 1.0, 0.0), m_currentPos(position), m_lookat(lookAt),
+					m_frustum(nullptr)
 {
 	const auto& res = Core::GetCore()->GetResolution();
 	m_ratio = res.x / res.y;
@@ -27,6 +38,11 @@ Camera::Camera() : m_up(0.0, 1.0, 0.0), m_currentPos(-30.0, 30.0, -30.0), m_look
 Camera::~Camera()
 {
 
+}
+
+void Camera::Move(const glm::vec2& dir)
+{
+	Move(glm::vec3(dir.x, 0.0, dir.y));
 }
 
 void Camera::Move(const glm::vec3& dir)

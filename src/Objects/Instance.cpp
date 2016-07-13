@@ -80,6 +80,7 @@ bool Instance::Update()
 		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
 	{
 		m_visible = true;
+		//do this only in game mode, not in wb
 		if (IsAnimated())
 			m_modelConditionState->model->GetHierarchy()->ComputeFrame(m_animationState->animations[m_animationIndex].animation, m_animationTime);
 	}
@@ -91,30 +92,33 @@ bool Instance::Update()
 	m_direction.z = m_m[0][2];
 	m_direction = glm::normalize(m_direction);
 
-	if (IsUnit())
+	//do this only in game mode, not in wb
+	if (false)
 	{
-
-		Move();
-		Rotate(glm::vec3(0.0, 10.0, 0.0) * (m_deltaTime / 1000.0f));
-		SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight(m_m[3][0], m_m[3][2]));
-	}
-
-	if (IsAnimated())
-	{
-		m_animationTime += m_deltaTime * m_animationState->animations[m_animationIndex].speed;
-		long long totalAnimationTime = m_animationState->animations[m_animationIndex].animation->GetTotalTime();
-		if (m_animationTime > totalAnimationTime)
+		if (IsUnit())
 		{
-			m_animationTime -= totalAnimationTime;
-			if (m_animationState->animations[m_animationIndex].mode != Entity::ANIMATION_MODE::LOOP)
+			Move();
+			Rotate(glm::vec3(0.0, 10.0, 0.0) * (m_deltaTime / 1000.0f));
+			SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight(m_m[3][0], m_m[3][2]));
+		}
+
+		if (IsAnimated())
+		{
+			m_animationTime += m_deltaTime * m_animationState->animations[m_animationIndex].speed;
+			long long totalAnimationTime = m_animationState->animations[m_animationIndex].animation->GetTotalTime();
+			if (m_animationTime > totalAnimationTime)
 			{
-				SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
-				SetAnimationState(m_entity->GetAnimationState("IDLE"));
+				m_animationTime -= totalAnimationTime;
+				if (m_animationState->animations[m_animationIndex].mode != Entity::ANIMATION_MODE::LOOP)
+				{
+					SetModelConditionState(m_entity->GetModelConditionState("DEFAULT"));
+					SetAnimationState(m_entity->GetAnimationState("IDLE"));
+				}
 			}
 		}
+		if (m_health <= 0)
+			return false;
 	}
-	if (m_health <= 0)
-		return false;
 	return true;
 }
 

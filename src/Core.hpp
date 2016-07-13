@@ -16,7 +16,6 @@ struct GLFWwindow;
 namespace anvil
 {
 	class ResourceHandler;
-	class Map;
 	class Camera;
 	class GUI;
 	class Input;
@@ -24,6 +23,8 @@ namespace anvil
 	class Graphics;
 	class Audio;
 	class Frustum;
+	class Map;
+	class WorldBuilder;
 
 	/**
 	* @class	Core
@@ -77,9 +78,11 @@ namespace anvil
 		inline std::unique_ptr<Script>& GetScript() { return m_script; }
 		inline std::unique_ptr<Graphics>& GetGraphics() { return m_graphics; }
 		inline std::unique_ptr<ResourceHandler>& GetResources() { return m_resources; }
-		inline std::unique_ptr<Map>& GetMap() { return m_map; }
-		inline std::unique_ptr<Camera>& GetCamera() { return m_camera; } 
+		inline std::shared_ptr<Camera>& GetCamera() { return m_camera; } 
+		inline void SetCamera(std::shared_ptr<Camera> camera) { m_camera = camera; }
 		inline std::unique_ptr<Input>& GetInput() { return m_input; }
+		inline std::shared_ptr<Map>& GetMap() { return m_map; }
+		inline void SetMap(std::shared_ptr<Map>& map) { m_map = map; }
 		inline glm::vec2 GetResolution() { return m_resolution; }
 		inline void SetResolution(glm::vec2 res) { m_resolution = res; }
 		inline GLFWwindow* GetWindow() { return m_window; }
@@ -94,13 +97,15 @@ namespace anvil
 		std::unique_ptr<GUI> m_gui;
 		std::unique_ptr<Script> m_script;
 		std::unique_ptr<Audio> m_audio;
-		std::unique_ptr<Map> m_map;
-		std::unique_ptr<Camera> m_camera;
+		std::shared_ptr<Camera> m_camera;
 		std::unique_ptr<Frustum> m_frustum;
 		std::unique_ptr<Input> m_input;
+		std::unique_ptr<WorldBuilder> m_worldBuilder;
+		std::shared_ptr<Map> m_map;
 		Util::Timer m_timer;
 		Util::FPS m_fps;
 		glm::vec2 m_resolution;
+		glm::vec2 m_frameBufferScale;	//used for retina displays etc.
 
 	private:
 		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);

@@ -8,12 +8,14 @@
 #include <map>
 #include <memory>
 #include <glm/glm.hpp>
+#include <GLFW/glfw3.h>
+
+#define JUST_RELEASED -1
+#define RELEASED 0
+#define PRESSED 1
 
 namespace anvil
 {
-	class Camera;
-	class IRenderer;
-
 	/**
 	 * @class	Input
 	 *
@@ -78,15 +80,19 @@ namespace anvil
 		 */
 		void SetMouseWheelDelta(const double x, const double y);
 
-		/**
-		 * @fn	void Input::Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRenderer>& renderer);
-		 *
-		 * @brief	Processes actions dependand on the current user input;
-		 *
-		 * @param	cam			The camera.
-		 * @param	renderer	The renderer.
-		 */
-		void Update(const std::unique_ptr<Camera>& cam, const std::shared_ptr<IRenderer>& renderer);
+		inline int MouseButtonPressed(int button) { if (m_mouseInputs[button] == PRESSED) { return 1; } return 0; }
+		inline int MouseButtonReleased(int button) { if (m_mouseInputs[button] == RELEASED) { return 1; } return 0; }
+		inline int MouseButtonJustReleased(int button) { if (m_mouseInputs[button] == JUST_RELEASED) { m_mouseInputs[button] = RELEASED; return 1; } return 0; }
+		inline glm::vec2 GetMousePosition() { return glm::vec2(m_mouse_x, m_mouse_y); }
+		inline glm::vec2 GetMouseDelta() { glm::vec2 out = glm::vec2(m_mouse_x_delta, m_mouse_y_delta); m_mouse_x_delta = 0; m_mouse_y_delta = 0; return out; }
+		inline double GetMouseWheelDeltaY() { double out = m_mouse_wheel_delta_y; m_mouse_wheel_delta_y = 0.0; return out; }
+
+		inline int KeyPressed(int key) { if (m_keyInputs[key] == PRESSED) { return 1; } return 0; }
+		inline int KeyReleased(int key) { if (m_keyInputs[key] == RELEASED) { return 1; } return 0; }
+		inline int KeyJustReleased(int key) { if (m_keyInputs[key] == JUST_RELEASED) { m_keyInputs[key] = RELEASED; return 1; } return 0; }
+
+	private:
+		int TranslateState(int action);
 
 	private:
 		//mouse variables
@@ -99,8 +105,5 @@ namespace anvil
 
 		std::map<int, int> m_keyInputs;
 		std::map<int, int> m_mouseInputs;
-
-	private:
-		int TranslateState(int action);
 	};
 }

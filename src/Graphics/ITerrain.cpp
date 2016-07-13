@@ -356,7 +356,7 @@ float ITerrain::GetHeight(float x, float y)
 	{
 		basis = glm::vec3(ix + 1, m_heightmap[ix + 1][iy + 1], iy + 1);
 		first = glm::vec3(ix + 1, m_heightmap[ix + 1][iy - 1], iy - 1) - basis;
-		second = glm::vec3(ix - 1, m_heightmap[ix - 1][iy + 1], iy + 1) - basis;
+		second = glm::vec3(ix, m_heightmap[ix][iy + 1], iy + 1) - basis; 
 		return (basis + (xoffset * first) + (yoffset * second)).y;
 	}
 	else

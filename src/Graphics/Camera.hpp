@@ -49,6 +49,16 @@ namespace anvil
         Camera();
 
 		/**
+		* @fn	Camera::Camera(glm::vec3 position, glm::vec3 lookAt);
+		*
+		* @brief	Default constructor.
+		* 			
+		* @param	position	the position of the camera
+		* @param	lookAt		the lookAt of the camera
+		*/
+		Camera(const glm::vec3& position, const glm::vec3& lookAt);
+
+		/**
 		* @fn	Camera::Camera();
 		*
 		* @brief	Destructor.
@@ -61,6 +71,15 @@ namespace anvil
          * @brief	Updates the camera, which will recalculate internal matrices etc.
          */
         void Update();
+
+		/**
+		* @fn	void Camera::Move(glm::vec2 dir);
+		*
+		* @brief	Moves the camera to the given directory
+		*
+		* @param	dir	The directory where we move as a 3-dimensional vector.
+		*/
+		void Move(const glm::vec2& dir);
 
 		/**
 		 * @fn	void Camera::Move(glm::vec3 dir);
@@ -134,21 +153,22 @@ namespace anvil
 		inline const glm::mat4& GetViewProjectionMatrix() { return m_vp; }
 		inline void SetFOV(double fov) { m_fov = fov; }
         inline void SetRatio(double ratio) { m_ratio = ratio; m_proj = glm::perspective(m_fov, m_ratio, m_near, m_far); }
-        inline void SetPosition(glm::vec3 pos) { m_position = pos; }
+        inline void SetPosition(glm::vec3 pos) { m_currentPos = pos; }
+		inline void SetLookAt(glm::vec3 lookat) { m_lookat = lookat; }
 		inline std::unique_ptr<Frustum>& GetFrustum() { return m_frustum; }
 		inline glm::vec3 &GetDirection() { return m_direction; }
 
     private:
 		float m_speed = 50.0f; //Movement per second
 		glm::vec3 m_position;
-        glm::vec3 m_currentPos; 
+        glm::vec3 m_currentPos; //to prevent flickering while rendering
 		glm::vec3 m_direction;
         glm::vec3 m_lookat;
         glm::vec3 m_up;
 
 		double m_near = 0.5;
 		double m_far = 1000.0;
-        double m_fov; 
+		double m_fov = 45.0;
         double m_ratio; 
 		glm::vec4 m_viewport;
 

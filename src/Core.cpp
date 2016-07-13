@@ -23,6 +23,7 @@
 #include "Graphics/Camera.hpp"
 #include "Graphics/Frustum.hpp"
 #include "Input.hpp"
+#include "WorldBuilder.hpp"
 
 
 using namespace anvil;
@@ -102,10 +103,10 @@ Core::Core()
 	}
 	#endif
 	 
-	glfwWindowHint(GLFW_SAMPLES, 1); //what exactly does this do?
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, 0);  //no super sampling, we do this in the renderer
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 	m_window = glfwCreateWindow(Options::GetWidth(), Options::GetHeight(), "anvil engine", 
@@ -113,6 +114,10 @@ Core::Core()
 
 	int width, height;
 	glfwGetWindowSize(m_window, &width, &height);
+	int w, h;
+	glfwGetFramebufferSize(m_window, &w, &h);
+	m_frameBufferScale.x = w / width;
+	m_frameBufferScale.y = h / height;
 	m_resolution.x = width;
 	m_resolution.y = height;
 
@@ -123,12 +128,12 @@ Core::Core()
 	m_graphics = std::make_unique<Graphics>(backend);
 	m_script = std::make_unique<Script>();
 	m_gui = std::make_unique<GUI>(m_window);
-	m_camera = std::make_unique<Camera>();
 	m_input = std::make_unique<Input>();
 	m_script->LoadFile("start.lua");
-	m_map = std::make_unique<Map>();
-	//m_audio->PlaySound("sound/roll_over_01.wav");
+	m_worldBuilder = std::make_unique<WorldBuilder>();
 
+	//m_audio->PlaySound("sound/roll_over_01.wav");
+	
 	glfwSetKeyCallback(m_window, KeyCallback);
 	glfwSetWindowSizeCallback(m_window, ResizeCallback);
 	glfwSetMouseButtonCallback(m_window, MouseCallback);
@@ -152,7 +157,7 @@ void Core::Run()
 		m_gui->Update();
 		m_script->Update();
 		m_camera->Update();
-		m_input->Update(m_camera, m_graphics->GetRenderer());
+		m_worldBuilder->Update();
 
 		m_graphics->Render();
 		m_gui->Render();

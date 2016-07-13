@@ -6,9 +6,14 @@
 */
 
 #pragma once
+#include <glm/glm.hpp>
+#include <memory>
 
 namespace anvil
 {
+	class Map;
+	class Camera;
+
 	/**
 	 * @class	WorldBuilder
 	 *
@@ -31,5 +36,14 @@ namespace anvil
 		 * @brief	Destructor.
 		 */
 		~WorldBuilder();
+
+		void Update();
+
+	private:
+		void UpdateUserInput();
+
+	private:
+		std::shared_ptr<Map> m_map;
+		std::shared_ptr<Camera> m_camera;
 	};
 }
