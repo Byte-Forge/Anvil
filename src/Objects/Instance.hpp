@@ -92,6 +92,7 @@ namespace anvil
 		inline void SetHealth(int health) { m_health = health; }
 		inline void Move() { m_m = glm::translate(m_direction * m_entity->GetSpeed() * (m_deltaTime / 1000.0f)) * m_m; }
 		inline void SetPosition(glm::vec3 position) { m_m[3][0] = position.x; m_m[3][1] = position.y; m_m[3][2] = position.z; }
+		inline glm::vec3 GetPosition() { return glm::vec3(m_m[3][0], m_m[3][1], m_m[3][2]); }
 		inline void SetDirection(glm::vec3 direction) { m_direction = direction; }
 		inline void SetHeight(float height) { m_m[3][1] = height; }
 		inline void Rotate(glm::vec3 euler) { 

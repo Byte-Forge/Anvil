@@ -345,7 +345,7 @@ void ITerrain::UpdateTextures()
 
 float ITerrain::GetHeight(float x, float y)
 {
-	if (x < 0.0 || y < 0.0 || x > m_width || y > m_height)
+	if (x < 0.0 || y < 0.0 || x >= m_width-1 || y >= m_height-1)
 		return 0.0f;
 	int ix = x;
 	int iy = y;
@@ -362,7 +362,7 @@ float ITerrain::GetHeight(float x, float y)
 	else
 	{
 		basis = glm::vec3(ix, m_heightmap[ix][iy], iy);
-		first = glm::vec3(ix + 1, m_heightmap[ix + 1][iy], iy) - basis;
+		first = glm::vec3(ix + 1, m_heightmap[ix + 1][iy], iy) - basis; //crash
 		second = glm::vec3(ix, m_heightmap[ix][iy+1], iy+1) - basis;
 		return (basis + (xoffset * first) + (yoffset * second)).y;
 	}

@@ -27,6 +27,13 @@ namespace anvil
 	{
 	public:
 
+		enum MODE
+		{
+			HEIGHT,
+			TEXTURE,
+			ENTITY
+		};
+
 		/**
 		 * @fn	WorldBuilder::WorldBuilder();
 		 *
@@ -47,12 +54,19 @@ namespace anvil
 		void UpdateUserInput();
 
 	private:
+		MODE m_mode;
 		glm::vec3 m_old_mouse_position;
+
+		int m_brush_height = 2;
+		int m_brush_width = 20;
+		int m_brush_material = 0;
 
 		int m_entity_index = 0;
 		std::vector<std::string> m_entities;
 		std::shared_ptr<Entity> m_entity;
 		std::shared_ptr<Instance> m_instance;
+
+
 		std::shared_ptr<Map> m_map;
 		std::shared_ptr<Camera> m_camera;
 	};

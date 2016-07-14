@@ -36,6 +36,7 @@ Instance::Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position, co
 Instance::~Instance()
 {
 	Unlink();
+	m_health = 0;
 }
 
 void Instance::Init()
@@ -99,7 +100,6 @@ bool Instance::Update()
 		{
 			Move();
 			Rotate(glm::vec3(0.0, 10.0, 0.0) * (m_deltaTime / 1000.0f));
-			SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight(m_m[3][0], m_m[3][2]));
 		}
 
 		if (IsAnimated())
@@ -117,6 +117,7 @@ bool Instance::Update()
 			}
 		}
 	}
+	SetHeight(Core::GetCore()->GetMap()->GetTerrain()->GetHeight(m_m[3][0], m_m[3][2]));
 	if (m_health <= 0)
 		return false;
 	return true;
