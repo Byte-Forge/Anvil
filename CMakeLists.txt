@@ -19,6 +19,14 @@ else()
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
 endif()
 
+if(APPLE)
+	find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+	set(OTHER_LIBS "-framework CoreFoundation")
+	set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000")
+else()
+   	set(OTHER_LIBS "")
+endif(APPLE)
+
 #The directory where source files are located
 set(SRC_DIR "src")
 
@@ -47,10 +55,18 @@ find_package(GLI REQUIRED)
 find_package(Vulkan)
 
 #Add GLFW
-set(GLFW_BUILD_EXAMPLES CACHE BOOL OFF)
-set(GLFW_BUILD_TESTS CACHE BOOL OFF)
-set(GLFW_BUILD_DOCS CACHE BOOL OFF)
-add_subdirectory(glfw)
+option(USE_INTERN_GLFW "Use the glfw submodule provided by this repository" TRUE)
+
+if(USE_INTERN_GLFW)
+    set(GLFW_BUILD_EXAMPLES CACHE BOOL OFF)
+    set(GLFW_BUILD_TESTS CACHE BOOL OFF)
+    set(GLFW_BUILD_DOCS CACHE BOOL OFF)
+    add_subdirectory(glfw)
+    set(GLFW_INCLUDE_DIRS glfw)
+    set(GLFW_LIBRARIES glfw)
+else()
+    find_package(GLFW REQUIRED)
+endif()
 
 #Add spark
 set(SPARK_BUILD_TEST CACHE BOOL OFF)
@@ -67,25 +83,16 @@ if(VULKAN_FOUND)
 endif()
 
 #Include our dependencies
-target_include_directories(${PROJ_NAME} PUBLIC glfw spark ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
+target_include_directories(${PROJ_NAME} PUBLIC spark ${GLFW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
 						${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${RAPIDJSON_INCLUDE_DIR})
 
 #Link our dependencies
-target_link_libraries(${PROJ_NAME} ${LUA_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES}
-						glfw spark ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(${PROJ_NAME} spark ${LUA_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES}
+						${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS} ${OTHER_LIBS})
 
 #Use C++ 14
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD_REQUIRED TRUE)
-
-add_definitions(-DGLM_FORCE_AVX)
-
-#Optimizations
-if(MSVC)
-    target_compile_options(${PROJ_NAME} PRIVATE /arch:AVX)
-else()
-    target_compile_options(${PROJ_NAME} PRIVATE -mavx)
-endif()
 
 #add a target to generate API documentation with Doxygen
 find_package(Doxygen)
