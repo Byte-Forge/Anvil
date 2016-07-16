@@ -68,9 +68,9 @@ int ITerrain::GetMousePositionInWorldSpace(glm::vec2 mousePos, glm::vec3 &pos)
 void ITerrain::SetMaterial(glm::vec3 &pos, float radius, int material)
 {
 	glm::vec2 pos_2 = { pos.x, pos.z };
-	for (unsigned int i = pos_2.x - radius + 1; i < pos_2.x + radius + 1; i++)
+	for (int i = (pos_2.x - radius + 1); i < pos_2.x + radius + 1; i++)
 	{
-		for (unsigned int j = pos_2.y - radius + 1; j < pos_2.y + radius + 1; j++)
+		for (int j = (pos_2.y - radius + 1); j < pos_2.y + radius + 1; j++)
 		{
 			glm::vec2 vertex = { i, j };
 			if (i < 0 || j < 0 || i > m_width || j > m_height)
@@ -88,9 +88,9 @@ void ITerrain::SetMaterial(glm::vec3 &pos, float radius, int material)
 void ITerrain::SetHeight(glm::vec3 &pos, float radius, float height)
 {
 	glm::vec2 pos_2 = { pos.x, pos.z };
-	for (unsigned int i = pos_2.x - radius + 1; i < pos_2.x + radius + 1; i++)
+	for (int i = pos_2.x - radius + 1; i < pos_2.x + radius + 1; i++)
 	{
-		for (unsigned int j = pos_2.y - radius + 1; j < pos_2.y + radius + 1; j++)
+		for (int j = pos_2.y - radius + 1; j < pos_2.y + radius + 1; j++)
 		{
 			glm::vec2 vertex = { i, j };
 			if (i < 0 || j < 0 || i > m_width || j > m_height)
@@ -238,12 +238,11 @@ void ITerrain::UpdateBufferData()
 
 		m_vertices.clear();
 		m_normals.clear();
-		//also clear faces and recreate the quadtree
-		//or update faces?
-
 	}
+
 	if (uvs_changed)
 		m_uvs.clear();
+
 	if (materials_changed)
 		m_materials.clear();
 
@@ -253,10 +252,10 @@ void ITerrain::UpdateBufferData()
 	{
 		for (unsigned int j = 0; j < m_height; j++)
 		{
-			glm::vec3 a = { (float)i, m_heightmap[i][j], (float)j };
-			glm::vec3 b = { (float)(i + 1), m_heightmap[i + 1][j], (float)j };
-			glm::vec3 c = { (float)(i + 1), m_heightmap[i + 1][j + 1], (float)(j + 1) };
-			glm::vec3 d = { (float)i, m_heightmap[i][j + 1], (float)(j + 1) };
+			glm::vec3 a = { i, m_heightmap[i][j], j };
+			glm::vec3 b = { (i + 1), m_heightmap[i + 1][j], j };
+			glm::vec3 c = { (i + 1), m_heightmap[i + 1][j + 1], (j + 1) };
+			glm::vec3 d = { i, m_heightmap[i][j + 1], (j + 1) };
 
 			if (heightmap_changed)
 			{
@@ -277,6 +276,7 @@ void ITerrain::UpdateBufferData()
 				m_normals.push_back(normals[i + 1][j + 1]);
 			}
 
+			//should never change
 			if (uvs_changed)
 			{
 				int val = 16; //over how many quads the texture is stretched

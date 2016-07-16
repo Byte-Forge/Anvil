@@ -9,6 +9,8 @@
 #include "../Core.hpp"
 #include <iostream>
 #include "../Graphics/GL/flextGL.h"
+#include "../Types/Map.hpp"
+#include "../Graphics/ITerrain.hpp"
 #include "../Util.hpp"
 
 using namespace anvil;
@@ -122,8 +124,7 @@ void Camera::Zoom(const Direction dir)
 		m_currentPos -= m_direction * timePassed * 200.0f;
 		break;
 	case ZOOM_IN:
-		if (m_currentPos.y > 3)
-			m_currentPos += m_direction * timePassed * 200.0f;
+		m_currentPos += m_direction * timePassed * 200.0f;
 		break;
 	default:
 		break;
