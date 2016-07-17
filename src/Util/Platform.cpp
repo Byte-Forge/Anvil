@@ -116,7 +116,7 @@ std::vector<std::string> IO::ListFilesRecursively(const std::string & dir, const
 		}
 		else if (dirp->d_type == DT_DIR)
 		{
-			std::string name = fd.cFileName;
+			std::string name = dirp->d_name;
 			if (name == "." || name == "..")
 				continue;
 			auto dirFiles = ListFilesRecursively(dir + name, ext);
