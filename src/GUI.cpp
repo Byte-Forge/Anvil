@@ -25,7 +25,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 {
 	m_core = std::make_unique<spark::Core>(false);
 
-	auto fonts = IO::ListFiles("ui/fonts/");
+	auto fonts = IO::ListFilesRecursively("ui/fonts/");
 	auto defaultFont = fonts.front();
 
 	for (const auto& font : fonts)

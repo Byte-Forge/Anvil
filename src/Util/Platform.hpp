@@ -46,6 +46,8 @@ namespace anvil
 		 * @return	A std::vector&lt;std::string&gt;
 		 */
 		std::vector<std::string> ListFiles(const std::string& dir, const std::string& ext = "");		
+
+		std::vector<std::string> ListFilesRecursively(const std::string& dir, const std::string& ext = "");
 	}
 
 	/**
