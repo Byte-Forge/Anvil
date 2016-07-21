@@ -84,6 +84,7 @@ namespace anvil
 		inline std::shared_ptr<Map>& GetMap() { return m_map; }
 		inline void SetMap(std::shared_ptr<Map>& map) { m_map = map; }
 		inline glm::vec2 GetResolution() { return m_resolution; }
+		inline glm::vec2 GetFrameBufferScale() { return m_frameBufferScale; }
 		inline void SetResolution(glm::vec2 res) { m_resolution = res; }
 		inline GLFWwindow* GetWindow() { return m_window; }
 		static inline Core* GetCore() { return m_instance; }

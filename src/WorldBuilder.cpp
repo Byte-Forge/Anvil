@@ -28,9 +28,9 @@ WorldBuilder::WorldBuilder()
 
 	m_mode = HEIGHT;
 
-	//m_entities = Core::GetCore()->GetResources()->GetEntityList();
-	m_entities.push_back("structures/gondor/castle_wall.json");
-	m_entities.push_back("structures/gondor/barracks.json");
+	//Core::GetCore()->GetResources()->GetEntityList();
+	//m_entities.push_back("structures/gondor/castle_wall.json");
+	//m_entities.push_back("structures/gondor/barracks.json");
 	m_entities.push_back("units/isengard/urukhai_crossbow.json");
 	m_entity = Core::GetCore()->GetResources()->GetEntity("entities/" + m_entities[m_entity_index]);
 	m_instance = m_entity->AddInstance(glm::vec3(0.0, -10.0, 0.0));

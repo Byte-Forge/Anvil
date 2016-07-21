@@ -17,14 +17,12 @@ using namespace anvil;
 
 Entity::Entity(std::string name) : m_name(name)
 {
-	//m_properties = Properties();
+
 }
 
 Entity::Entity(std::string name, std::shared_ptr<Entity> parent) : m_name(name)
 {
 	m_properties = parent->GetProperties();
-	m_modelConditionStates = parent->m_modelConditionStates;
-	m_animationStates = parent->m_animationStates;
 }			
 
 Entity::~Entity()

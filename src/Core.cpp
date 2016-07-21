@@ -37,7 +37,8 @@ void Core::ErrorCallback(int error, const char* description)
 
 void Core::ResizeCallback(GLFWwindow *window, int width, int height)
 {
-	Core::GetCore()->GetGraphics()->Resize(width * 2, height * 2);
+	glm::vec2 scale = Core::GetCore()->GetFrameBufferScale();
+	Core::GetCore()->GetGraphics()->Resize(width * scale.x, height * scale.y);
 	Core::GetCore()->GetGUI()->Resize(width, height);
 	Core::GetCore()->GetCamera()->SetRatio(width / height);
 	Core::GetCore()->SetResolution(glm::vec2(width, height));
@@ -116,12 +117,11 @@ Core::Core()
 
 	int width, height;
 	glfwGetWindowSize(m_window, &width, &height);
-	int w, h;
-	glfwGetFramebufferSize(m_window, &w, &h);
-	m_frameBufferScale.x = w / width;
-	m_frameBufferScale.y = h / height;
-	m_resolution.x = width * m_frameBufferScale.x;
-	m_resolution.y = height * m_frameBufferScale.y;
+	m_resolution.x = width;
+	m_resolution.y = height;
+	glfwGetFramebufferSize(m_window, &width, &height);
+	m_frameBufferScale.x = width / m_resolution.x;
+	m_frameBufferScale.y = height / m_resolution.y;
 
 	glfwMakeContextCurrent(m_window);
 	

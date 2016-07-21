@@ -41,14 +41,14 @@ std::shared_ptr<Entity> ResourceHandler::GetEntity(const std::string &name)
 std::vector<std::string> ResourceHandler::GetEntityList()
 {
 	std::vector<std::string> entities;
-	std::vector<std::string> temp = IO::ListFiles("entities/", "json");
+	std::vector<std::string> temp = IO::ListFilesRecursively("entities/", "json");
 
 	for (unsigned int i = 0; i < m_modDirs.size(); i++)
 	{
-		std::vector<std::string> temp2 = IO::ListFiles(m_modDirs[i] + "entities/", "json");
+		std::vector<std::string> temp2 = IO::ListFilesRecursively(m_modDirs[i] + "/entities/", "json");
 		for (unsigned int i = 0; i < temp2.size(); i++)
 		{
-			std::cout << temp[i] << std::endl;
+			std::cout << temp2[i] << std::endl;
 			if (std::find(temp.begin(), temp.end(), temp2[i]) == temp.end())
 			{
 				temp.push_back(temp2[i]);
