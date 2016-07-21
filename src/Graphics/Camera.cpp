@@ -153,7 +153,7 @@ void Camera::Update()
 //out_origin starts at the near plane NOT the camera position
 void Camera::ScreenPosToWorldRay(glm::vec2 mouse_pos, glm::vec3& out_origin, glm::vec3& out_direction)
 {
-	const glm::vec2& resolution = Core::GetCore()->GetResolution();
+	const glm::vec2& resolution = Core::GetCore()->GetResolution() / 2.0f;
 	glm::vec4 viewport = glm::vec4(0, 0, resolution.x, resolution.y);
 	glm::vec3 screenPosNear = glm::vec3(mouse_pos.x, resolution.y - mouse_pos.y, 0.0f);
 	glm::vec3 screenPosFar = glm::vec3(mouse_pos.x, resolution.y - mouse_pos.y, 1.0f);
