@@ -83,7 +83,6 @@ int GL::ModelGL::Render(IShader& shader, bool minimal)
 						glm::vec2 offset = i->GetTexOffset(m->GetUPerSecond(), m->GetVPerSecond());
 						glUniform2f(shader.GetUniform("texOffset"), offset.x, offset.y);
 					}
-
 					polygons += it.second->Render(shader, minimal);
 				}
 			}

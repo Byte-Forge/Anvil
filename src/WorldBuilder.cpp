@@ -61,7 +61,7 @@ void WorldBuilder::UpdateUserInput()
 
 
 	if (Core::GetCore()->GetInput()->KeyPressed(GLFW_KEY_W))
-		m_camera->Move(Direction::FOREWARD);
+		m_camera->Move(Direction::FOREWARD); 
 	if (Core::GetCore()->GetInput()->KeyPressed(GLFW_KEY_S))
 		m_camera->Move(Direction::BACK);
 	if (Core::GetCore()->GetInput()->KeyPressed(GLFW_KEY_A))
@@ -81,7 +81,7 @@ void WorldBuilder::UpdateUserInput()
 		}
 		else if (m_mode == ENTITY)
 		{
-			m_instance->SetHealth(0);
+			m_instance->SetInvalid();
 			m_entity_index = (m_entity_index + 1) % m_entities.size();
 			m_entity = Core::GetCore()->GetResources()->GetEntity("entities/" + m_entities[m_entity_index]);
 			m_instance = m_entity->AddInstance(glm::vec3(0.0, -10.0, 0.0));
@@ -96,7 +96,7 @@ void WorldBuilder::UpdateUserInput()
 		}
 		else if (m_mode == ENTITY)
 		{
-			m_instance->SetHealth(0);
+			m_instance->SetInvalid();
 			m_entity_index = (m_entity_index - 1);
 			if (m_entity_index == -1)
 				m_entity_index = m_entities.size() - 1;

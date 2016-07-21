@@ -116,33 +116,8 @@ void ITerrain::Generate()
 	auto hand = std::async(std::launch::async, &ITerrain::CreateHeightmap, this);
 	UpdateTextures();
 
-	std::shared_ptr<Entity> oak = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/oak.json");
-	std::shared_ptr<Entity> douglas_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/douglas_fir.json"); 
-	//std::shared_ptr<Entity> hemlock_fir = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/hemlock_fir.json");
-	//std::shared_ptr<Entity> rhododendron = Core::GetCore()->GetResources()->GetEntity("entities/terrain/misc/rhododendron.json");
-
-
-	auto ent1 = glm::vec3(10, 0.5, 10);
-	//oak->AddInstance(ent1, glm::vec3(0.0, -45.0f, 0.0));
-
 	//wait until heightmap creation is done
 	hand.get();
-
-
-	/////////////////////////////////////////////////////// MOD STUFF ////////////////////////////////////////////////////////////////
-
-	std::shared_ptr<Entity> castle = Core::GetCore()->GetResources()->GetEntity("entities/structures/gondor/castle.json");
-
-	std::shared_ptr<Entity> uruk_cross = Core::GetCore()->GetResources()->GetEntity("entities/units/isengard/urukhai_crossbow.json");
-
-	auto ent = glm::vec3(50, 0.5, 50);
-	//castle->AddInstance(ent, glm::vec3(0.0, -45.0f, 0.0));
-
-
-	ent = glm::vec3(20, m_heightmap[50][50], 20);
-	//uruk_cross->AddInstance(ent);
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	auto end = std::chrono::system_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);

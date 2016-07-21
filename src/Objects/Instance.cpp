@@ -35,7 +35,6 @@ Instance::Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position, co
 
 Instance::~Instance()
 {
-	Unlink();
 	m_health = 0;
 }
 
@@ -56,8 +55,8 @@ void Instance::Init()
 
 void Instance::Unlink()
 {
-	if (m_modelConditionState->model != nullptr)
-		m_modelConditionState->model->RemoveInstance(shared_from_this());
+	if (m_modelConditionState->properties.model != nullptr)
+		m_modelConditionState->properties.model->RemoveInstance(shared_from_this());
 }
 
 bool Instance::Update()
@@ -77,13 +76,13 @@ bool Instance::Update()
 	//test if the instance is inside the frustum (visible)
 	if (Collision::SphereInFrustum(
 		Core::GetCore()->GetCamera()->GetFrustum()->GetFrustumArray(),
-		glm::vec3(m_m * m_modelConditionState->model->GetSphereCenter()),
-		m_modelConditionState->model->GetSphereRadius() * m_modelConditionState->scale) > 0)
+		glm::vec3(m_m * m_modelConditionState->properties.model->GetSphereCenter()),
+		m_modelConditionState->properties.model->GetSphereRadius() * m_modelConditionState->properties.scale) > 0)
 	{
 		m_visible = true;
 		//do this only in game mode, not in wb
 		if (IsAnimated())
-			m_modelConditionState->model->GetHierarchy()->ComputeFrame(m_animationState->animations[m_animationIndex].animation, m_animationTime);
+			m_modelConditionState->properties.model->GetHierarchy()->ComputeFrame(m_animationState->animations[m_animationIndex].animation, m_animationTime);
 	}
 	else
 		m_visible = false;
@@ -129,12 +128,12 @@ void Instance::SetModelConditionState(std::shared_ptr<Entity::ModelConditionStat
 		return;
 	if (m_modelConditionState != nullptr)
 	{
-		Scale(1.0f / state->scale);
-		m_modelConditionState->model->RemoveInstance(shared_from_this());
+		Scale(1.0f / state->properties.scale);
+		m_modelConditionState->properties.model->RemoveInstance(shared_from_this());
 	}
 	m_modelConditionState = state;
-	Scale(state->scale);
-	m_modelConditionState->model->AddInstance(shared_from_this());
+	Scale(state->properties.scale);
+	m_modelConditionState->properties.model->AddInstance(shared_from_this());
 }
 
 void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state)
@@ -147,8 +146,8 @@ void Instance::SetAnimationState(std::shared_ptr<Entity::AnimationState> state)
 
 std::shared_ptr<Material> Instance::GetMaterial(const std::string& meshName)
 {
-	const auto& it = m_modelConditionState->materials.find(meshName);
-	if (it == m_modelConditionState->materials.end())
+	const auto& it = m_modelConditionState->properties.materials.find(meshName);
+	if (it == m_modelConditionState->properties.materials.end())
 	{
 		std::cout << "WARNING!: No material defined for mesh: " + meshName << std::endl;
 		return nullptr;

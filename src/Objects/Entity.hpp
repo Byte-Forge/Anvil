@@ -29,6 +29,19 @@ namespace anvil
 	class Entity : public IResource, public std::enable_shared_from_this<Entity>
     {
 	public:
+		struct Properties
+		{
+			float scale = 1.0f;
+			float speed;
+			int health;
+
+			std::string modelName;
+			std::shared_ptr<IModel> model;
+			std::string hierarchyPath;
+
+			//since we want to load the materials only if the entity has instances
+			std::map<std::string, std::tuple<std::string, std::shared_ptr<Material>>> materials;
+		};
 
 		/**
 		* @struct	KindOf
@@ -41,21 +54,6 @@ namespace anvil
 			bool SHRUBBERY = false;
 			bool UNIT = false;
 			bool BUILDING = false;
-			bool IMMOBILE = false;
-		};
-
-		/**
-		* @struct	ModelConditionState
-		*
-		* @brief	a state of an Instance e.g. Default 
-		*/
-		struct ModelConditionState
-		{
-			std::string modelName;
-			float scale = 1.0f;
-			std::shared_ptr<IModel> model;
-			std::string hierarchyPath;
-			std::map<std::string, std::tuple<std::string, std::shared_ptr<Material>>> materials;
 		};
 
 		/**
@@ -91,6 +89,17 @@ namespace anvil
 		struct AnimationState
 		{
 			std::vector<AnimationStruct> animations;
+		};
+
+		/**
+		* @struct	ModelConditionState
+		*
+		* @brief	a state of an Instance e.g. Default
+		*/
+		struct ModelConditionState
+		{
+			Properties properties;
+			std::map<std::string, std::shared_ptr<AnimationState>> m_animationStates;
 		};
 
 		/**
@@ -173,9 +182,14 @@ namespace anvil
 
 		inline void SetKindOfs(KindOf kO) { m_kindOfs = kO; }
 		inline KindOf GetKindOfs() { return m_kindOfs; }
-		inline void SetSpeed(float speed) { m_speed = speed; }
-		inline float GetSpeed() { return m_speed; }
-		inline int GetHealth() { return m_health; }
+		inline void SetScale(float scale) { m_properties.scale = scale; }
+		inline void SetSpeed(float speed) { m_properties.speed = speed; }
+		inline float GetSpeed() { return m_properties.speed; }
+		inline int GetHealth() { return m_properties.health; }
+		inline void SetModel(std::string modelName) { m_properties.modelName = modelName; }
+		inline void SetSklPath(std::string sklPath) { m_properties.hierarchyPath = sklPath; }
+		inline void AddMaterial(std::string meshName, std::string material) { m_properties.materials.insert({ meshName, std::make_tuple(material, nullptr) }); }
+		inline Properties GetProperties() { return m_properties; }
 		inline void AddModelConditionState(const std::string name, std::shared_ptr<ModelConditionState> state) { m_modelConditionStates.insert({ name, state }); }
 		inline void AddAnimationState(const std::string name, std::shared_ptr<AnimationState> state) { m_animationStates.insert({ name, state }); }
 		inline void AddChild(Child child) { m_children.push_back(child); }
@@ -184,12 +198,10 @@ namespace anvil
 		std::string m_name;
 		bool m_resourcesLoaded = false;
 
+		Properties m_properties;
 		KindOf m_kindOfs = KindOf();
-		float m_speed = 2.0f;
-		int m_health = 1000;
 		std::map<std::string, std::shared_ptr<ModelConditionState>> m_modelConditionStates;
 		std::map<std::string, std::shared_ptr<AnimationState>> m_animationStates;
 		std::vector<Child> m_children;
-		std::deque<std::shared_ptr<Instance>> m_instances;
     };
 }

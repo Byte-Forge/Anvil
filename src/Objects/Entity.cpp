@@ -17,14 +17,12 @@ using namespace anvil;
 
 Entity::Entity(std::string name) : m_name(name)
 {
-
+	//m_properties = Properties();
 }
 
 Entity::Entity(std::string name, std::shared_ptr<Entity> parent) : m_name(name)
 {
-	m_health = parent->m_health;
-	m_speed = parent->m_speed;
-	//dont know if it should get these states from parent...
+	m_properties = parent->GetProperties();
 	m_modelConditionStates = parent->m_modelConditionStates;
 	m_animationStates = parent->m_animationStates;
 }			
@@ -48,7 +46,6 @@ std::shared_ptr<Instance> Entity::AddInstance(const glm::vec3 &position, const g
 	}
 	std::shared_ptr<Instance> i = std::make_shared<Instance>(shared_from_this(), position, euler);
 	Core::GetCore()->GetGraphics()->GetRenderer()->RegisterInstance(i);
-	m_instances.push_back(i);
 
 	for (Child c : m_children)
 	{
@@ -89,8 +86,8 @@ void Entity::LoadResources()
 {
 	for (auto& state : m_modelConditionStates)
 	{
-		state.second->model = Core::GetCore()->GetResources()->GetModel(state.second->modelName, state.second->hierarchyPath);
-		for (auto& mat : state.second->materials)
+		state.second->properties.model = Core::GetCore()->GetResources()->GetModel(state.second->properties.modelName, state.second->properties.hierarchyPath);
+		for (auto& mat : state.second->properties.materials)
 		{
 			std::get<1>(mat.second) = Core::GetCore()->GetResources()->GetMaterial(std::get<0>(mat.second));
 		}

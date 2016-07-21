@@ -133,9 +133,32 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			}
 			ent->SetKindOfs(kO);
 
+			if (node.HasMember("scale"))
+			{
+				ent->SetScale(d["entity"]["scale"].GetDouble());
+			}
+
 			if (node.HasMember("speed"))
 			{
 				ent->SetSpeed(d["entity"]["speed"].GetDouble());
+			}
+
+			if (node.HasMember("model"))
+			{
+				ent->SetModel(d["entity"]["model"].GetString());
+			}
+
+			if (node.HasMember("skl_path"))
+			{
+				ent->SetSklPath(d["entity"]["skl_path"].GetString());
+			}
+
+			if (node.HasMember("materials") && node["materials"].IsArray())
+			{
+				for (int j = 0; j < node["materials"].Size(); j++)
+				{
+					ent->AddMaterial(node["materials"][j]["mesh"].GetString(), node["materials"][j]["material"].GetString());
+				}
 			}
 
 			if (node.HasMember("modelConditionStates") && node["modelConditionStates"].IsArray())
@@ -146,20 +169,23 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					std::string stateName = node["modelConditionStates"][i]["name"].GetString();
 					state = std::make_shared<Entity::ModelConditionState>();
 					ent->AddModelConditionState(stateName, state);
+					state->properties = ent->GetProperties();
 					if (node["modelConditionStates"][i].HasMember("scale"))
 					{
-						state->scale = d["entity"]["modelConditionStates"][i]["scale"].GetDouble();
+						state->properties.scale = d["entity"]["modelConditionStates"][i]["scale"].GetDouble();
 					}
-					
-					state->modelName = node["modelConditionStates"][i]["model"].GetString();
+					if (node["modelConditionStates"][i].HasMember("model"))
+					{
+						state->properties.modelName = node["modelConditionStates"][i]["model"].GetString();
+					}
 					if (node["modelConditionStates"][i].HasMember("skl_path"))
-						state->hierarchyPath = node["modelConditionStates"][i]["skl_path"].GetString();
+						state->properties.hierarchyPath = node["modelConditionStates"][i]["skl_path"].GetString();
 
 					if (node["modelConditionStates"][i].HasMember("materials") && node["modelConditionStates"][i]["materials"].IsArray())
 					{
 						for (int j = 0; j < node["modelConditionStates"][i]["materials"].Size(); j++)
 						{
-							state->materials.insert({ node["modelConditionStates"][i]["materials"][j]["mesh"].GetString(), std::make_tuple(node["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr) });
+							state->properties.materials[node["modelConditionStates"][i]["materials"][j]["mesh"].GetString()] = std::make_tuple(node["modelConditionStates"][i]["materials"][j]["material"].GetString(), nullptr);
 						}
 					}
 				}

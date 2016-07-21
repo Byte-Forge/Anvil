@@ -6,22 +6,18 @@
 */
 
 #include "IRenderer.hpp"
+#include <algorithm>
 
 using namespace anvil;
 
 void IRenderer::UpdateInstances()
 {
-	int size = m_instances.size();
-	for (int i = 0; i < size; i++)
+	auto isValid = [&](std::shared_ptr<Instance> instance) -> bool
 	{
-		if (!m_instances[i]->Update())
-		{
-			m_instances[i]->Unlink();
-			m_instances.erase(m_instances.begin() + i);
-			i--;
-			size -= 1;
-		}
-	}
+		return !instance->IsValid();
+	};
+
+	m_instances.erase(std::remove_if(m_instances.begin(), m_instances.end(), isValid), m_instances.end());
 
 	m_promises.clear();
 	auto updateInstances = [](std::vector<std::shared_ptr<Instance>> instances)
@@ -37,8 +33,8 @@ void IRenderer::UpdateInstances()
 		std::size_t rest = 0;
 		if (i + 1 == cores - 1)
 			rest = m_instances.size() % (cores - 1);
-
-		std::vector<std::shared_ptr<Instance>> sub_instances(m_instances.begin() + i*vecsize, m_instances.begin() + (i + 1)*vecsize + rest);
+		 
+		std::vector<std::shared_ptr<Instance>> sub_instances(m_instances.begin() + i * vecsize, m_instances.begin() + (i + 1) * vecsize + rest);
 		m_promises.push_back(std::async(std::launch::async, updateInstances, sub_instances));
 	}
 }

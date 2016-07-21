@@ -111,8 +111,11 @@ namespace anvil
 		inline bool IsUnit() { return m_entity->GetKindOfs().UNIT; }
 		inline bool IsVisible() { return m_visible; }
 		inline glm::vec2 GetTexOffset(float u, float v) { m_texOffset += glm::vec2(m_deltaTime/1000.f * u, m_deltaTime/1000.f * v); return m_texOffset; }
+		inline void SetInvalid() { m_valid = false; Unlink(); }
+		inline bool IsValid() { return m_valid; }
 
 	private:
+		bool m_valid = true;
 		bool m_visible = false;
 		bool m_firstUpdate = true;
 		glm::vec3 m_direction;
