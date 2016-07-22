@@ -44,10 +44,10 @@ std::map<std::string, IRenderer::Vendor> vendorMap =
 void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
                                GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
-	/*
+	
 	if (type == GL_DEBUG_TYPE_OTHER_ARB)
 		return;
-	*/
+	
     std::cout << "--GL DEBUG--" << std::endl;
     std::cout << "Message: "<< message << std::endl;
     std::cout << "Type: ";
@@ -231,6 +231,11 @@ void RendererGL::Clear()
 
 void RendererGL::Render()
 {
+	m_minimal_modelShader->Update();
+	m_minimal_terrainShader->Update();
+	m_terrainShader->Update();
+	m_modelShader->Update();
+
 	if (Options::GetMinimalRendering())
 		m_lowSettings = true;
 	else

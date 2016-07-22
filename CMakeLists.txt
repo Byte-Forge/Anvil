@@ -13,7 +13,6 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 #Use static SFML on windows
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	set(SFML_STATIC_LIBRARIES TRUE)
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018)
 else()
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
@@ -51,6 +50,13 @@ find_package(Freetype REQUIRED)
 #Find GLI
 find_package(GLI REQUIRED)
 
+#Find Boostc
+set(Boost_USE_STATIC_LIBS ON) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
+
+find_package(Boost 1.54.0 COMPONENTS filesystem REQUIRED)
+
 #Find Vulkan
 find_package(Vulkan)
 
@@ -84,11 +90,11 @@ endif()
 
 #Include our dependencies
 target_include_directories(${PROJ_NAME} PUBLIC spark ${GLFW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR} ${OPENAL_INCLUDE_DIR} ${GLI_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS}
-						${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${RAPIDJSON_INCLUDE_DIR})
+						${GLM_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${RAPIDJSON_INCLUDE_DIR})
 
 #Link our dependencies
 target_link_libraries(${PROJ_NAME} spark ${LUA_LIBRARIES} ${OPENAL_LIBRARY} ${FREETYPE_LIBRARIES}
-						${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS} ${OTHER_LIBS})
+						${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS} ${OTHER_LIBS})
 
 #Use C++ 14
 set_property(TARGET ${PROJ_NAME} PROPERTY CXX_STANDARD 14)

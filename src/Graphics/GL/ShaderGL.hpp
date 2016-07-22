@@ -37,52 +37,6 @@ namespace anvil
              */
             ~Shader();
 
-            /**
-             * @fn	void Shader::Load(const std::string& vertShader, const std::string& fragShader);
-             *
-             * @brief	Loads.
-             *
-             * @param	vertShader	The vertical shader.
-             * @param	fragShader	The fragment shader.
-             */
-            void Load(const std::string& vertShader, const std::string& fragShader);
-
-            /**
-             * @fn	void Shader::Load(const std::string& vertShader, const std::string& geoShader, const std::string& fragShader);
-             *
-             * @brief	Loads.
-             *
-             * @param	vertShader	The vertical shader.
-             * @param	geoShader 	The geo shader.
-             * @param	fragShader	The fragment shader.
-             */
-            void Load(const std::string& vertShader, const std::string& geoShader, const std::string& fragShader);
-
-			/**
-			 * @fn	void Shader::Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& fragShader);
-			 *
-			 * @brief	Loads.
-			 *
-			 * @param	vertShader		 	The vertical shader.
-			 * @param	tessControlShader	The tess control shader.
-			 * @param	tessEvalShader   	The tess eval shader.
-			 * @param	fragShader		 	The fragment shader.
-			 */
-			void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& fragShader);
-
-			/**
-			 * @fn	void Shader::Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader);
-			 *
-			 * @brief	Loads.
-			 *
-			 * @param	vertShader		 	The vertical shader.
-			 * @param	tessControlShader	The tess control shader.
-			 * @param	tessEvalShader   	The tess eval shader.
-			 * @param	geoShader		 	The geo shader.
-			 * @param	fragShader		 	The fragment shader.
-			 */
-			void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader);
-
 			/**
 			 * @fn	void Shader::Compile();
 			 *
@@ -96,6 +50,10 @@ namespace anvil
              * @brief	Uses this object.
              */
             void Use();
+
+			virtual void LoadShader(const std::string& file, const ShaderType type);
+
+			virtual void Reload(const std::string& file);
 
 			/**
 			* @fn	int ShaderGL::GetUniform(const std::string& id);
@@ -115,7 +73,7 @@ namespace anvil
 		private:
             GLuint m_program;
             std::map<GLenum,GLuint> m_shaders;
-
+			static std::map<ShaderType, GLenum> s_mapping;
 		private:
 			void LoadShader(const std::string& file, GLenum type);
         };

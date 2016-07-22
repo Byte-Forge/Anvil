@@ -31,7 +31,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 	for (const auto& font : fonts)
 	{
 		std::cout << font << std::endl;
-		if(!m_core->AddFont(font, "ui/fonts/" + font))
+		if(!m_core->AddFont(font, font))
 			std::cout << "Failed to add font!"<< std::endl;
 	}
 	
