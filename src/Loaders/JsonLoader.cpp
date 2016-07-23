@@ -92,10 +92,9 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 			else
 				ent = std::make_shared<Entity>(name);
 
-			Entity::KindOf kO = Entity::KindOf();
-
 			if (node.HasMember("kindOfs"))
 			{
+				Entity::KindOf kO = Entity::KindOf();
 				const Value& arr = node["kindOfs"];
 				for (Value::ConstValueIterator it = arr.Begin(); it != arr.End(); ++it)
 				{
@@ -130,8 +129,8 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 							kO.BUILDING = true;
 					}
 				}
+				ent->SetKindOfs(kO);
 			}
-			ent->SetKindOfs(kO);
 
 			if (node.HasMember("scale"))
 			{
@@ -190,6 +189,7 @@ void JsonLoader::LoadEntity(const std::string &name, const std::string &path)
 					}
 				}
 			}
+
 			if (node.HasMember("animationStates") && node["animationStates"].IsArray())
 			{
 				std::shared_ptr<Entity::AnimationState> state;

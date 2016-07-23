@@ -75,35 +75,25 @@ namespace anvil
 		void Resize(int width, int height);
 
 		/**
-		 * @fn	void GUI::MouseMove(int x, int y,int mods);
+		 * @fn	void GUI::MouseMove(int x, int y);
 		 *
 		 * @brief	Mouse move.
 		 *
 		 * @param	x   	The x coordinate.
 		 * @param	y   	The y coordinate.
-		 * @param	mods	The mods.
 		 */
-		void MouseMove(int x, int y,int mods);
+		void MouseMove(int x, int y);
 
 		/**
-		 * @fn	void GUI::MousePressed(int key, int mods);
+		 * @fn	void GUI::SetMouseState(int key, int action, int mods);
 		 *
-		 * @brief	Mouse pressed.
-		 *
-		 * @param	key 	The key.
-		 * @param	mods	The mods.
-		 */
-		void MousePressed(int key, int mods);
-
-		/**
-		 * @fn	void GUI::MouseReleased(int key, int mods);
-		 *
-		 * @brief	Mouse released.
+		 * @brief	Mouse state.
 		 *
 		 * @param	key 	The key.
+		 * @param	action	The action.
 		 * @param	mods	The mods.
 		 */
-		void MouseReleased(int key, int mods);
+		void SetMouseState(int key, int action, int mods);
 
 		/**
 		 * @fn	void GUI::KeyDown(int key, int mods);
@@ -137,5 +127,15 @@ namespace anvil
 
 		std::shared_ptr<spark::ILabel> m_fps;
 		std::shared_ptr<spark::ILabel> m_renderedTris;
+		std::shared_ptr<spark::IButton> m_decrease_brush_button;
+		std::shared_ptr<spark::IButton> m_increase_brush_button;
+		std::shared_ptr<spark::IButton> m_decrease_brush_height_button;
+		std::shared_ptr<spark::IButton> m_increase_brush_height_button;
+
+		std::shared_ptr<spark::IButton> m_terrain_mode_button;
+		std::shared_ptr<spark::IButton> m_texture_mode_button;
+		std::shared_ptr<spark::IButton> m_entity_mode_button;
+
+		std::shared_ptr<spark::IImage> m_image;
 	};
 }

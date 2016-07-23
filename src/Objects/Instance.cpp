@@ -35,7 +35,7 @@ Instance::Instance(std::shared_ptr<Entity> entity, const glm::vec3 &position, co
 
 Instance::~Instance()
 {
-	m_health = 0;
+	
 }
 
 void Instance::Init()

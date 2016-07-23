@@ -91,8 +91,7 @@ namespace anvil
 		inline int KeyReleased(int key) { if (m_keyInputs[key] == RELEASED) { return 1; } return 0; }
 		inline int KeyJustReleased(int key) { if (m_keyInputs[key] == JUST_RELEASED) { m_keyInputs[key] = RELEASED; return 1; } return 0; }
 
-	private:
-		int TranslateState(int action);
+		inline int TranslateState(int action) { return (action > 0) ? PRESSED : JUST_RELEASED; }
 
 	private:
 		//mouse variables

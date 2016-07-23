@@ -11,6 +11,8 @@
 #include <vector>
 #include <string>
 
+#define MAX_BRUSH_WIDTH 30
+
 namespace anvil
 {
 	class Map;
@@ -49,6 +51,16 @@ namespace anvil
 		~WorldBuilder();
 
 		void Update();
+
+		inline void DecreaseBrushWidth() { if (m_brush_width > 1) m_brush_width--; }
+		inline void IncreaseBrushWidth() { if (m_brush_width < MAX_BRUSH_WIDTH) m_brush_width++; }
+
+		inline void DecreaseBrushHeight() { m_brush_height--; }
+		inline void IncreaseBrushHeight() { m_brush_height++; }
+
+		inline void SetTerrainMode() { m_mode = HEIGHT; }
+		inline void SetTextureMode() { m_mode = TEXTURE; }
+		inline void SetEntityMode() { m_mode = ENTITY; }
 
 	private:
 		void UpdateUserInput();

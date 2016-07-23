@@ -22,6 +22,7 @@ Entity::Entity(std::string name) : m_name(name)
 
 Entity::Entity(std::string name, std::shared_ptr<Entity> parent) : m_name(name)
 {
+	m_kindOfs = parent->m_kindOfs;
 	m_properties = parent->GetProperties();
 }			
 

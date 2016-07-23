@@ -45,12 +45,3 @@ void Input::SetMouseWheelDelta(const double x, const double y)
 	m_mouse_wheel_delta_x = x;
 	m_mouse_wheel_delta_y = y;
 }
-
-int Input::TranslateState(int action)
-{
-	if (action > 0)
-		action = PRESSED;
-	else
-		action = JUST_RELEASED;
-	return action;
-}

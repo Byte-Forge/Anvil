@@ -165,14 +165,13 @@ namespace anvil
 
 		void AddModDir(const std::string& dir);
 
+		bool GetFilePath(const std::string name, std::string& path);
+
     private:
 		std::vector<std::string> m_modDirs;
 
         std::unordered_map<std::string, std::shared_ptr<IResource>> m_resources;
 		std::mutex m_resources_mutex;
-
-	private:
-		bool GetFilePath(const std::string name, std::string& path);
     };
 }
 

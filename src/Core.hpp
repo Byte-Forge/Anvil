@@ -74,7 +74,7 @@ namespace anvil
 			return m_fps;
 		}
 
-		inline std::unique_ptr<GUI>& GetGUI(){ return m_gui; }
+		inline std::unique_ptr<GUI>& GetGUI() { return m_gui; }
 		inline std::unique_ptr<Script>& GetScript() { return m_script; }
 		inline std::unique_ptr<Graphics>& GetGraphics() { return m_graphics; }
 		inline std::unique_ptr<ResourceHandler>& GetResources() { return m_resources; }
@@ -87,6 +87,8 @@ namespace anvil
 		inline glm::vec2 GetFrameBufferScale() { return m_frameBufferScale; }
 		inline void SetResolution(glm::vec2 res) { m_resolution = res; }
 		inline GLFWwindow* GetWindow() { return m_window; }
+		inline std::unique_ptr<WorldBuilder>& GetWorldBuilder() { return m_worldBuilder; }
+
 		static inline Core* GetCore() { return m_instance; }
 
 	private:
