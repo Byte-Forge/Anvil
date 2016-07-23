@@ -6,13 +6,8 @@
 */
 
 #include "Platform.hpp"
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <sys/types.h>
-#include <dirent.h>
-#include <sys/stat.h>
-#endif
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
 #include <iostream>
 #include "../Util.hpp"
 
@@ -21,114 +16,37 @@ using namespace anvil;
 std::vector<std::string> IO::ListFiles(const std::string & dir, const std::string & ext)
 {
 	std::vector<std::string> files;
-	#ifdef _WIN32
-	char search_path[200];
-	sprintf(search_path, "%s/*.*", dir.c_str());
-	WIN32_FIND_DATA fd;
-	HANDLE hFind = ::FindFirstFile(search_path, &fd);
-	if (hFind != INVALID_HANDLE_VALUE) 
-	{
-		do 
-		{
-			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) 
-			{
-				std::string name = fd.cFileName;
-				std::string fileExt = split(name, '.').back();
-				
-				if(fileExt==ext||ext.size()==0)
-					files.push_back(name);
-			}
-		} while (::FindNextFile(hFind, &fd));
-		::FindClose(hFind);
-	}
-	#else
-	DIR *dp;
-	struct dirent *dirp;
-	if ((dp = opendir(dir.c_str())) == NULL)
-	{
-		return files;
-	}
+	fs::path path(dir);
 
-	while ((dirp = readdir(dp)) != NULL)
+	for (auto& dirEntry : fs::directory_iterator(path))
 	{
-		if (dirp->d_type == DT_REG)
+		if ((dirEntry.path().extension() == ext||ext.size()==0)
+			&&fs::is_regular_file(dirEntry.path()))
 		{
-			std::string name = dirp->d_name;
-			std::string fileExt = split(name, '.').back();
-
-			if (fileExt == ext || ext.size() == 0)
-				files.push_back(name);
+			files.push_back(dirEntry.path().string());
 		}
 	}
-	closedir(dp);
-	#endif
 	return files;
 }
 
 std::vector<std::string> IO::ListFilesRecursively(const std::string & dir, const std::string & ext)
 {
 	std::vector<std::string> files;
-#ifdef _WIN32
-	char search_path[200];
-	sprintf(search_path, "%s/*.*", dir.c_str());
-	WIN32_FIND_DATA fd;
-	HANDLE hFind = ::FindFirstFile(search_path, &fd);
-	if (hFind != INVALID_HANDLE_VALUE)
+	fs::path path(dir);
+	for (auto& dirEntry : fs::recursive_directory_iterator(path))
 	{
-		do
+		if ((dirEntry.path().extension() == ext || ext.size() == 0)
+			&& fs::is_regular_file(dirEntry.path()))
 		{
-			if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			{
-				std::string name = fd.cFileName;
-				if (name == "." || name == "..")
-					continue;
-				auto dirFiles = ListFilesRecursively(dir + name, ext);
-				files.insert(files.end(), dirFiles.begin(), dirFiles.end());
-			}
-			else
-			{
-				std::string name = fd.cFileName;
-				std::string fileExt = split(name, '.').back();
-
-				if (fileExt == ext || ext.size() == 0)
-					files.push_back(name);
-			}
-		} while (::FindNextFile(hFind, &fd));
-		::FindClose(hFind);
-	}
-#else
-	DIR *dp;
-	struct dirent *dirp;
-	if ((dp = opendir(dir.c_str())) == NULL)
-	{
-		return files;
-	}
-
-	while ((dirp = readdir(dp)) != NULL)
-	{
-		if (dirp->d_type == DT_REG)
-		{
-			std::string name = dirp->d_name;
-			std::string fileExt = split(name, '.').back();
-
-			if (fileExt == ext || ext.size() == 0)
-				files.push_back(name);
-		}
-		else if (dirp->d_type == DT_DIR)
-		{
-			std::string name = dirp->d_name;
-			if (name == "." || name == "..")
-				continue;
-			auto dirFiles = ListFilesRecursively(dir + name, ext);
-			files.insert(files.end(), dirFiles.begin(), dirFiles.end());
+			files.push_back(dirEntry.path().string());
 		}
 	}
-	closedir(dp);
-#endif
+
 	return files;
 }
 
-
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
 void anvil::ShowError(const std::string & msg)
 {
 	#ifdef _WIN32

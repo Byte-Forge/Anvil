@@ -15,7 +15,15 @@
 
 using namespace anvil;
 
-GL::Shader::Shader()
+std::map<IShader::ShaderType, GLenum> GL::Shader::s_mapping = {
+	{ IShader::ANVIL_VERT_SHADER, GL_VERTEX_SHADER },
+	{ IShader::ANVIL_TESC_SHADER, GL_TESS_CONTROL_SHADER },
+	{ IShader::ANVIL_TESE_SHADER, GL_TESS_EVALUATION_SHADER },
+	{ IShader::ANVIL_GEOM_SHADER, GL_GEOMETRY_SHADER },
+	{ IShader::ANVIL_FRAG_SHADER, GL_FRAGMENT_SHADER },
+};
+
+GL::Shader::Shader() : IShader()
 {
     m_program = glCreateProgram();
 }
@@ -31,42 +39,18 @@ GL::Shader::~Shader()
 }
 
 
-void GL::Shader::Load(const std::string &vertShader, const std::string &fragShader)
+void GL::Shader::LoadShader(const std::string& file, const ShaderType type)
 {
-    LoadShader(vertShader, GL_VERTEX_SHADER);
-    LoadShader(fragShader, GL_FRAGMENT_SHADER);
-}
+	GLint success = 0;
+	GLint logLength = 0;
 
-void GL::Shader::Load(const std::string &vertShader, const std::string& geoShader, const std::string &fragShader)
-{
-    LoadShader(vertShader, GL_VERTEX_SHADER);
-    LoadShader(geoShader, GL_GEOMETRY_SHADER);
-    LoadShader(fragShader, GL_FRAGMENT_SHADER);
-}
-
-void GL::Shader::Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& fragShader)
-{
-	LoadShader(vertShader, GL_VERTEX_SHADER);
-	LoadShader(tessControlShader, GL_TESS_CONTROL_SHADER);
-	LoadShader(tessEvalShader, GL_TESS_EVALUATION_SHADER);
-	LoadShader(fragShader, GL_FRAGMENT_SHADER);
-}
-
-void GL::Shader::Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader)
-{
-	LoadShader(vertShader, GL_VERTEX_SHADER);
-	LoadShader(tessControlShader, GL_TESS_CONTROL_SHADER);
-	LoadShader(tessEvalShader, GL_TESS_EVALUATION_SHADER);
-	LoadShader(geoShader, GL_GEOMETRY_SHADER);
-	LoadShader(fragShader, GL_FRAGMENT_SHADER);
-}
-
-void GL::Shader::LoadShader(const std::string& file, GLenum type)
-{
     std::ifstream fin(file);
     if(fin.fail())
 		throw AnvilException("Failed to load shader " + file, __FILE__, __LINE__);
 	
+	IShader::LoadShader(file, type);
+
+	const GLenum gl_type = s_mapping[type];
 	int size = 0;
 	fin.seekg(0, std::ios::end);	
 	size = (int)fin.tellg();
@@ -75,21 +59,33 @@ void GL::Shader::LoadShader(const std::string& file, GLenum type)
 	std::memset(buffer, 0, size);
     fin.read(buffer, size);
 
-    if(m_shaders[type])
-    {
-        glDeleteShader(m_shaders[type]);
-    }
+	m_shaders[gl_type] = glCreateShader(gl_type);
+	GLuint shader = m_shaders[gl_type];
+	glShaderSource(shader, 1, &buffer, &size);
 
-    m_shaders[type] = glCreateShader(type);
-    const auto& shader = m_shaders[type];
-    glShaderSource(shader,1,&buffer, &size);
+	glCompileShader(shader);
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+	if (success == GL_FALSE)
+	{
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+		std::vector<GLchar> errorLog(logLength);
+		glGetShaderInfoLog(shader, logLength, &logLength, &errorLog[0]);
+		std::cout << &errorLog[0] << std::endl;
+		glDeleteShader(shader);
 
+	}
+	else
+	{
+		glAttachShader(m_program, shader);
+	}
+		
 	if(buffer)
 		delete[] buffer;
 }
 
 void GL::Shader::Use()
 {
+	IShader::Ready();
     glUseProgram(m_program);
 	//bind its ubos
 	for (int index : m_uboIDs)
@@ -128,25 +124,9 @@ int GL::Shader::GetUniformBuffer(const std::string &name)
 
 void GL::Shader::Compile()
 {
+
 	GLint success = 0;
 	GLint logLength = 0;
-
-    for(auto& p : m_shaders)
-    {
-        glCompileShader(p.second);
-		glGetShaderiv(p.second, GL_COMPILE_STATUS, &success);
-		if (success == GL_FALSE)
-		{
-			glGetShaderiv(p.second, GL_INFO_LOG_LENGTH, &logLength);
-			std::vector<GLchar> errorLog(logLength);
-			glGetShaderInfoLog(p.second, logLength, &logLength, &errorLog[0]);
-			std::cout << &errorLog[0] << std::endl;
-			glDeleteShader(p.second);
-
-		}
-		else
-			glAttachShader(m_program,p.second);
-    }
 
     glLinkProgram(m_program);
 	glGetProgramiv(m_program, GL_LINK_STATUS, &success);
@@ -159,10 +139,59 @@ void GL::Shader::Compile()
 		glDeleteProgram(m_program);
 	}
 
-	for (auto& p : m_shaders)
+	GLsizei count;
+	GLuint attached[5];
+	glGetAttachedShaders(m_program, 5, &count, attached);
+
+	for(int i=0;i<count;++i)
 	{
-		glDetachShader(m_program, p.second);
+		glDetachShader(m_program, attached[i]);
+		glDeleteShader(attached[i]);
 	}
+}
+
+void GL::Shader::Reload(const std::string& file)
+{
+	GLint success = 0;
+	GLint logLength = 0;
+	std::ifstream fin(file);
+	if (fin.fail())
+		throw AnvilException("Failed to load shader " + file, __FILE__, __LINE__);
+
+	ShaderType type = m_files[file];
+	const GLenum gl_type = s_mapping[type];
+
+	int size = 0;
+	fin.seekg(0, std::ios::end);
+	size = (int)fin.tellg();
+	fin.seekg(0, std::ios::beg);
+	char* buffer = new char[size];
+	std::memset(buffer, 0, size);
+	fin.read(buffer, size);
+
+	GLuint shader = glCreateShader(gl_type);
+	glShaderSource(shader, 1, &buffer, &size);
+
+	glCompileShader(shader);
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+	if (success == GL_FALSE)
+	{
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+		std::vector<GLchar> errorLog(logLength);
+		glGetShaderInfoLog(shader, logLength, &logLength, &errorLog[0]);
+		std::cout << &errorLog[0] << std::endl;
+		glDeleteShader(shader);
+
+	}
+	else
+	{
+		glAttachShader(m_program, shader);
+		m_shaders[gl_type] = shader;
+	}
+
+
+	if (buffer)
+		delete[] buffer;
 }
 
 void GL::Shader::AttachUBO(const std::string& name, int id)

@@ -20,6 +20,16 @@ namespace anvil
     class IShader
     {
     public:
+		enum ShaderType
+		{
+			ANVIL_VERT_SHADER = 0,
+			ANVIL_TESC_SHADER = 1,
+			ANVIL_TESE_SHADER = 2,
+			ANVIL_GEOM_SHADER = 3,
+			ANVIL_FRAG_SHADER = 4,
+		};
+
+		IShader();
 
         /**
          * @fn	virtual void IShader::Load(const std::string& vertShader, const std::string& fragShader) = 0;
@@ -29,7 +39,7 @@ namespace anvil
          * @param	vertShader	The vertical shader.
          * @param	fragShader	The fragment shader.
          */
-        virtual void Load(const std::string& vertShader, const std::string& fragShader) = 0;
+        void Load(const std::string& vertShader, const std::string& fragShader);
 
         /**
          * @fn	virtual void IShader::Load(const std::string& vertShader, const std::string& geoShader, const std::string& fragShader) = 0;
@@ -40,7 +50,7 @@ namespace anvil
          * @param	geoShader 	The geo shader.
          * @param	fragShader	The fragment shader.
          */
-        virtual void Load(const std::string& vertShader, const std::string& geoShader, const std::string& fragShader) = 0;
+        void Load(const std::string& vertShader, const std::string& geoShader, const std::string& fragShader);
 
 		/**
 		 * @fn	virtual void IShader::Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& fragShader) = 0;
@@ -52,7 +62,7 @@ namespace anvil
 		 * @param	tessEvalShader   	The tess eval shader.
 		 * @param	fragShader		 	The fragment shader.
 		 */
-		virtual void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& fragShader) = 0;
+		void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& fragShader);
 
 		/**
 		 * @fn	virtual void IShader::Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader) = 0;
@@ -65,7 +75,11 @@ namespace anvil
 		 * @param	geoShader		 	The geo shader.
 		 * @param	fragShader		 	The fragment shader.
 		 */
-		virtual void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader) = 0;
+		void Load(const std::string& vertShader, const std::string& tessControlShader, const std::string& tessEvalShader, const std::string& geoShader, const std::string& fragShader);
+
+
+		virtual void LoadShader(const std::string& file, const ShaderType type);
+		virtual void Reload(const std::string& file) = 0;
 
 		/**
 		 * @fn	virtual void IShader::Compile() = 0;
@@ -96,7 +110,14 @@ namespace anvil
 
 		virtual void AttachUBO(const std::string& name, int id) = 0;
 
+		void Update();
 	protected:
+		void Ready();
+
+	protected:
+		bool m_tracked;
+		std::vector<std::string> m_shouldReload;
+		std::map<std::string, ShaderType> m_files;
 		std::map<std::string, int> m_uniforms;
 		std::map<std::string, int> m_ubos;
 		std::vector<int> m_uboIDs;
