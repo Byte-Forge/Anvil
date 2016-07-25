@@ -19,6 +19,8 @@ addons:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-precise-3.7
     packages:
+      - libboost-dev
+      - libboost-filesystem-dev
       - clang-3.7
       - g++-5
       - gcc-5
@@ -42,7 +44,7 @@ before_install:
 
 install:
   - cmake --version
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update ; brew install llvm freetype lua luajit openal-soft;brew outdated gcc || brew upgrade gcc ; brew outdated cmake || brew upgrade cmake ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update ; brew install boost llvm freetype lua luajit openal-soft;brew outdated gcc || brew upgrade gcc ; brew outdated cmake || brew upgrade cmake ; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
   - mkdir deps && cd deps

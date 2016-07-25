@@ -45,8 +45,11 @@ std::vector<std::string> IO::ListFilesRecursively(const std::string & dir, const
 	return files;
 }
 
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#endif
+
 void anvil::ShowError(const std::string & msg)
 {
 	#ifdef _WIN32
