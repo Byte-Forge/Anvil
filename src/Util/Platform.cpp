@@ -7,6 +7,7 @@
 
 #include "Platform.hpp"
 #include <boost/filesystem.hpp>
+#include <boost/range/iterator_range.hpp>
 namespace fs = boost::filesystem;
 #include <iostream>
 #include "../Util.hpp"
@@ -18,7 +19,7 @@ std::vector<std::string> IO::ListFiles(const std::string & dir, const std::strin
 	std::vector<std::string> files;
 	fs::path path(dir);
 
-	for (auto& dirEntry : fs::directory_iterator(path))
+	for (auto& dirEntry : boost::make_iterator_range(fs::directory_iterator(path),{}))
 	{
 		if ((dirEntry.path().extension() == ext||ext.size()==0)
 			&&fs::is_regular_file(dirEntry.path()))
@@ -33,7 +34,7 @@ std::vector<std::string> IO::ListFilesRecursively(const std::string & dir, const
 {
 	std::vector<std::string> files;
 	fs::path path(dir);
-	for (auto& dirEntry : fs::recursive_directory_iterator(path))
+	for (auto& dirEntry : boost::make_iterator_range(fs::recursive_directory_iterator(path),{}))
 	{
 		if ((dirEntry.path().extension() == ext || ext.size() == 0)
 			&& fs::is_regular_file(dirEntry.path()))
