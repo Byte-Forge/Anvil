@@ -38,11 +38,11 @@ namespace anvil
             ~Shader();
 
 			/**
-			 * @fn	void Shader::Compile();
+			 * @fn	void Shader::Link();
 			 *
-			 * @brief	Compiles this object.
+			 * @brief	Links this object.
 			 */
-			void Compile();
+			void Link();
 
             /**
              * @fn	void Shader::Use();
@@ -52,8 +52,6 @@ namespace anvil
             void Use();
 
 			virtual void LoadShader(const std::string& file, const ShaderType type);
-
-			virtual void Reload(const std::string& file);
 
 			/**
 			* @fn	int ShaderGL::GetUniform(const std::string& id);
@@ -72,10 +70,9 @@ namespace anvil
 
 		private:
             GLuint m_program;
-            std::map<GLenum,GLuint> m_shaders;
+            std::map<GLenum, GLuint> m_shaders;
 			static std::map<ShaderType, GLenum> s_mapping;
-		private:
-			void LoadShader(const std::string& file, GLenum type);
+
         };
     }
 }

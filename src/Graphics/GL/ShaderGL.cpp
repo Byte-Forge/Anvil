@@ -34,7 +34,6 @@ GL::Shader::~Shader()
     {
         glDeleteShader(p.second);
     }
-
     glDeleteProgram(m_program);
 }
 
@@ -59,8 +58,7 @@ void GL::Shader::LoadShader(const std::string& file, const ShaderType type)
 	std::memset(buffer, 0, size);
     fin.read(buffer, size);
 
-	m_shaders[gl_type] = glCreateShader(gl_type);
-	GLuint shader = m_shaders[gl_type];
+	GLuint shader = glCreateShader(gl_type);
 	glShaderSource(shader, 1, &buffer, &size);
 
 	glCompileShader(shader);
@@ -72,11 +70,11 @@ void GL::Shader::LoadShader(const std::string& file, const ShaderType type)
 		glGetShaderInfoLog(shader, logLength, &logLength, &errorLog[0]);
 		std::cout << &errorLog[0] << std::endl;
 		glDeleteShader(shader);
-
 	}
 	else
 	{
 		glAttachShader(m_program, shader);
+		m_shaders[gl_type] = shader;
 	}
 		
 	if(buffer)
@@ -88,8 +86,8 @@ void GL::Shader::Use()
 	IShader::Ready();
     glUseProgram(m_program);
 	//bind its ubos
-	for (int index : m_uboIDs)
-		glBindBufferBase(GL_UNIFORM_BUFFER, index, index);
+	for (auto index : m_ubos)
+		glBindBufferBase(GL_UNIFORM_BUFFER, index.second, index.second);
 }
 
 int GL::Shader::GetUniform(const std::string &name)
@@ -102,10 +100,8 @@ int GL::Shader::GetUniform(const std::string &name)
 			throw AnvilException("Uniform: \"" + name + "\" doesn't exist!", __FILE__, __LINE__);
 		*/
 		m_uniforms[name] = loc;
-		return loc;
-	}
-		
-	return it->second;
+	}	
+	return m_uniforms[name];
 }
 
 int GL::Shader::GetUniformBuffer(const std::string &name)
@@ -117,14 +113,12 @@ int GL::Shader::GetUniformBuffer(const std::string &name)
 		/*if (loc == -1)
 			throw AnvilException("Uniform buffer: \"" + name + "\" doesn't exist!", __FILE__, __LINE__);*/
 		m_ubos[name] = loc;
-		return loc;
 	}
-	return it->second;
+	return m_ubos[name];
 }
 
-void GL::Shader::Compile()
+void GL::Shader::Link()
 {
-
 	GLint success = 0;
 	GLint logLength = 0;
 
@@ -143,59 +137,16 @@ void GL::Shader::Compile()
 	GLuint attached[5];
 	glGetAttachedShaders(m_program, 5, &count, attached);
 
-	for(int i=0;i<count;++i)
+	for(int i=0; i<count; ++i)
 	{
 		glDetachShader(m_program, attached[i]);
 		glDeleteShader(attached[i]);
 	}
 }
 
-void GL::Shader::Reload(const std::string& file)
-{
-	GLint success = 0;
-	GLint logLength = 0;
-	std::ifstream fin(file);
-	if (fin.fail())
-		throw AnvilException("Failed to load shader " + file, __FILE__, __LINE__);
-
-	ShaderType type = m_files[file];
-	const GLenum gl_type = s_mapping[type];
-
-	int size = 0;
-	fin.seekg(0, std::ios::end);
-	size = (int)fin.tellg();
-	fin.seekg(0, std::ios::beg);
-	char* buffer = new char[size];
-	std::memset(buffer, 0, size);
-	fin.read(buffer, size);
-
-	GLuint shader = glCreateShader(gl_type);
-	glShaderSource(shader, 1, &buffer, &size);
-
-	glCompileShader(shader);
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	if (success == GL_FALSE)
-	{
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-		std::vector<GLchar> errorLog(logLength);
-		glGetShaderInfoLog(shader, logLength, &logLength, &errorLog[0]);
-		std::cout << &errorLog[0] << std::endl;
-		glDeleteShader(shader);
-
-	}
-	else
-	{
-		glAttachShader(m_program, shader);
-		m_shaders[gl_type] = shader;
-	}
-
-
-	if (buffer)
-		delete[] buffer;
-}
-
 void GL::Shader::AttachUBO(const std::string& name, int id)
 {
 	glUniformBlockBinding(m_program, GetUniformBuffer(name), id);
-	m_uboIDs.push_back(id);
+	m_ubo_indices[name] = id;
+	m_ubos[name] = id; //why do we need this ??? or why does this even work?^^
 }

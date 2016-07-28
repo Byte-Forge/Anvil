@@ -79,14 +79,13 @@ namespace anvil
 
 
 		virtual void LoadShader(const std::string& file, const ShaderType type);
-		virtual void Reload(const std::string& file) = 0;
 
 		/**
-		 * @fn	virtual void IShader::Compile() = 0;
+		 * @fn	virtual void IShader::Link() = 0;
 		 *
-		 * @brief	Compiles this object.
+		 * @brief	Links this object.
 		 */
-		virtual void Compile() = 0;
+		virtual void Link() = 0;
 
         /**
          * @fn	virtual void IShader::Use() = 0;
@@ -116,11 +115,11 @@ namespace anvil
 
 	protected:
 		bool m_tracked;
-		std::vector<std::string> m_shouldReload;
+		bool m_shouldReload = false;
 		std::map<std::string, ShaderType> m_files;
 		std::map<std::string, int> m_uniforms;
 		std::map<std::string, int> m_ubos;
-		std::vector<int> m_uboIDs;
+		std::map<std::string, int> m_ubo_indices;
     };
 }
 

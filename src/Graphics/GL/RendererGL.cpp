@@ -126,13 +126,11 @@ RendererGL::RendererGL()
 
 	m_skyboxShader = std::make_unique<GL::Shader>();
 	m_skyboxShader->Load("shader/gl/skybox.vert", "shader/gl/skybox.frag");
-	m_skyboxShader->Compile();
 	m_skyboxShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
 	m_skyboxShader->AttachUBO("light_block", m_light_ubo.GetID());
 
 	m_modelShader = std::make_unique<GL::Shader>();
 	m_modelShader->Load("shader/gl/model.vert", "shader/gl/model.tesc", "shader/gl/model.tese", "shader/gl/model.geom", "shader/gl/model.frag");
-	m_modelShader->Compile();
 	m_modelShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
 	m_modelShader->AttachUBO("depth_matrix_block", m_depth_matrix_ubo.GetID());
 	m_modelShader->AttachUBO("tessellation_block", m_tessellation_ubo.GetID());
@@ -140,27 +138,22 @@ RendererGL::RendererGL()
 
 	m_minimal_modelShader = std::make_unique<GL::Shader>();
 	m_minimal_modelShader->Load("shader/gl/minimal_model.vert", "shader/gl/minimal_model.frag");
-	m_minimal_modelShader->Compile();
 	m_minimal_modelShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
 
 	m_shadow_modelShader = std::make_unique<GL::Shader>();
 	m_shadow_modelShader->Load("shader/gl/shadow_model.vert", "shader/gl/shadow.frag");
-	m_shadow_modelShader->Compile();
 	m_shadow_modelShader->AttachUBO("depth_matrix_block", m_depth_matrix_ubo.GetID());
 
 	m_minimal_terrainShader = std::make_unique<GL::Shader>();
 	m_minimal_terrainShader->Load("shader/gl/minimal_terrain.vert", "shader/gl/minimal_terrain.frag");
-	m_minimal_terrainShader->Compile();
 	m_minimal_terrainShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
 
 	m_shadow_terrainShader = std::make_unique<GL::Shader>();
 	m_shadow_terrainShader->Load("shader/gl/shadow_terrain.vert", "shader/gl/shadow.frag");
-	m_shadow_terrainShader->Compile();
 	m_shadow_terrainShader->AttachUBO("depth_matrix_block", m_depth_matrix_ubo.GetID());
 
 	m_terrainShader = std::make_unique<GL::Shader>();
 	m_terrainShader->Load("shader/gl/terrain.vert", "shader/gl/terrain.tesc", "shader/gl/terrain.tese", "shader/gl/terrain.geom", "shader/gl/terrain.frag");
-	m_terrainShader->Compile();
 	m_terrainShader->AttachUBO("matrix_block", m_matrix_ubo.GetID());
 	m_terrainShader->AttachUBO("depth_matrix_block", m_depth_matrix_ubo.GetID());
 	m_terrainShader->AttachUBO("tessellation_block", m_tessellation_ubo.GetID());
@@ -168,7 +161,6 @@ RendererGL::RendererGL()
 
 	m_quadShader = std::make_unique<GL::Shader>();
 	m_quadShader->Load("shader/gl/quad.vert", "shader/gl/quad.frag");
-	m_quadShader->Compile();
 
 	m_vendor = OTHER;
 	auto iterator = vendorMap.find(reinterpret_cast<const char*>(glGetString(GL_VENDOR)));

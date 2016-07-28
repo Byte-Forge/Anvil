@@ -156,9 +156,10 @@ void Core::Run()
 		m_script->Update();
 		m_camera->Update();
 		m_worldBuilder->Update();
-
+	
 		m_graphics->Render();
 		m_gui->Render();
+
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
