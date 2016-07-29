@@ -10,6 +10,7 @@
 #include <string>
 #include <chrono>
 #include <functional>
+#include <map>
 #include <spark/spark.hpp>
 
 
@@ -117,7 +118,7 @@ namespace anvil
 		void KeyReleased(int key, int mods);
 
 	private:
-		std::map<std::string, std::function<void()>> m_functions;
+		std::map<std::string, std::function<void(std::shared_ptr<spark::IElement>)>> m_functions;
 
 		int m_mouseX, m_mouseY;
 		int m_frameTick;

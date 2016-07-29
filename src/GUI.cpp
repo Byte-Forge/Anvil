@@ -37,9 +37,16 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 			std::cout << "Failed to add font!"<< std::endl;
 	}
 	
-	m_functions["get_fps"] = []() { std::to_string(Core::GetCore()->GetFPS().GetFPS()); };
-	m_functions["get_rendered_polygons"] = []() { "Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons()); };
-	m_functions["decrease_brush"] = []() { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); };
+	m_functions["get_fps"] = [](std::shared_ptr<spark::IElement> e) 
+	{ 
+		std::to_string(Core::GetCore()->GetFPS().GetFPS()); 
+	};
+	m_functions["get_rendered_polygons"] = [](std::shared_ptr<spark::IElement> e) { "Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons()); };
+	m_functions["decrease_brush"] =[](std::shared_ptr<spark::IElement> e) 
+	{
+		std::cout << e->IsVisible() << std::endl;
+		Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); 
+	};
 
 	m_view = m_core->CreateView(800, 600, "test.json", m_functions);
 
