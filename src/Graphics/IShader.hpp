@@ -110,6 +110,7 @@ namespace anvil
 		virtual void AttachUBO(const std::string& name, int id) = 0;
 
 		void Update();
+
 	protected:
 		void Ready();
 

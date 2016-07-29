@@ -118,6 +118,9 @@ namespace anvil
 		void KeyReleased(int key, int mods);
 
 	private:
+		std::string m_gui_file = "ui/ui.xml";
+		bool m_tracked;
+
 		int m_mouseX, m_mouseY;
 		int m_frameTick;
 		GLFWwindow* m_window;

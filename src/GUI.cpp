@@ -19,18 +19,20 @@
 #include "Graphics/IRenderer.hpp"
 #include "Core/ResourceHandler.hpp"
 #include <GLFW/glfw3.h>
+#include "Util/Watchdog.h"
 
 using namespace anvil;
+namespace fs = boost::filesystem;
 
 const int GUI::UPDATES_PER_SECOND = 30;
 
-GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
+GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1), m_tracked(false)
 {
 	m_core = std::make_shared<spark::Core>(false);
 
+	//make sure the name is always ui/fonts/Delicious-Bold.otf not ui/fonts\Delicious-Bold.otf !!!!!
+	//on all platforms
 	auto fonts = IO::ListFilesRecursively("ui/fonts/");
-	auto defaultFont = fonts.front();
-
 	for (const auto& font : fonts)
 	{
 		if(!m_core->AddFont(font, font))
@@ -41,12 +43,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 	m_core->AddFunction(std::string("get_rendered_tris"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
 	m_core->AddFunction(std::string("decrease_brush"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
 
-	spark::XMLBuilder builder(m_core);
-	std::string ui_file_path;
-	Core::GetCore()->GetResources()->GetFilePath("ui/ui.xml", ui_file_path);
-	int width, height;
-	glfwGetWindowSize(m_window, &width, &height);
-	m_view = builder.LoadView(width, height, ui_file_path);
+	LoadFile(m_gui_file);
 
 	m_updateInterval = (1.0f / UPDATES_PER_SECOND) * 1e6;
 
@@ -82,7 +79,28 @@ void GUI::Render()
 
 void GUI::LoadFile(const std::string& file)
 {
-	
+	spark::XMLBuilder builder(m_core);
+	std::string ui_file_path;
+	Core::GetCore()->GetResources()->GetFilePath(m_gui_file, ui_file_path);
+	int width, height;
+	glfwGetWindowSize(m_window, &width, &height);
+	auto view = builder.LoadView(width, height, ui_file_path);
+	if (view != nullptr)
+		m_view = view;
+
+	auto reload = [this](const fs::path &ui_file_path) {
+		if (m_tracked)
+		{
+			std::cout << ui_file_path << " needs reload" << std::endl;
+			LoadFile(m_gui_file);
+		}
+	};
+
+	if (!m_tracked)
+	{
+		wd::watch(fs::path(ui_file_path), reload);
+	}
+	m_tracked = true;
 }
 
 void GUI::Resize(int width, int height)
