@@ -122,7 +122,6 @@ namespace anvil
 	 *
 	 * @return	str as a std::string.
 	 */
-	
 	inline std::string toUpper(const std::string& str)
 	{
 		std::string upper = str;

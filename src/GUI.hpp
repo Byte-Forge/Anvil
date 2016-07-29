@@ -118,15 +118,13 @@ namespace anvil
 		void KeyReleased(int key, int mods);
 
 	private:
-		std::map<std::string, std::function<void(std::shared_ptr<spark::IElement>)>> m_functions;
-
 		int m_mouseX, m_mouseY;
 		int m_frameTick;
 		GLFWwindow* m_window;
 		double m_accumulatedTime;
 		double m_updateInterval;
 		static const int UPDATES_PER_SECOND;
-		std::unique_ptr<spark::Core> m_core;
+		std::shared_ptr<spark::Core> m_core;
 		std::shared_ptr<spark::View> m_view;
 	};
 }

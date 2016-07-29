@@ -26,7 +26,7 @@ const int GUI::UPDATES_PER_SECOND = 30;
 
 GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 {
-	m_core = std::make_unique<spark::Core>(false);
+	m_core = std::make_shared<spark::Core>(false);
 
 	auto fonts = IO::ListFilesRecursively("ui/fonts/");
 	auto defaultFont = fonts.front();
@@ -36,21 +36,15 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 		if(!m_core->AddFont(font, font))
 			std::cout << "Failed to add font!"<< std::endl;
 	}
-	
-	m_functions["get_fps"] = [](std::shared_ptr<spark::IElement> e) 
-	{ 
-		std::to_string(Core::GetCore()->GetFPS().GetFPS()); 
-	};
-	m_functions["get_rendered_polygons"] = [](std::shared_ptr<spark::IElement> e) { "Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons()); };
-	m_functions["decrease_brush"] =[](std::shared_ptr<spark::IElement> e) 
-	{
-		std::cout << e->IsVisible() << std::endl;
-		Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); 
-	};
 
-	m_view = m_core->CreateView(800, 600, "test.json", m_functions);
+	m_core->AddFunction(std::string("get_fps"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText(std::to_string(Core::GetCore()->GetFPS().GetFPS())); });
+	m_core->AddFunction(std::string("get_rendered_polygons"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
+	m_core->AddFunction(std::string("decrease_brush"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
 
-	m_updateInterval = (1.0f / UPDATES_PER_SECOND)*1e6;
+	spark::XMLBuilder builder(m_core);
+	m_view = builder.LoadView(800, 600, "ui/ui.xml");
+
+	m_updateInterval = (1.0f / UPDATES_PER_SECOND) * 1e6;
 
 	m_accumulatedTime = 0;
 }
