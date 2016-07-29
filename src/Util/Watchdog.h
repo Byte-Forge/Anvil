@@ -145,9 +145,10 @@ protected:
                     // iterate through each watcher and check for modification
                     std::lock_guard<std::mutex> lock( mMutex );
                     auto end = mFileWatchers.end();
-                    for( auto it = mFileWatchers.begin(); it != end; ++it ) {
+                    for(auto &it = mFileWatchers.begin(); it != end; ++it ) {
                         it->second.watch();
                     }
+				
                     // lock will be released before this thread goes to sleep
                 } while( false );
                 

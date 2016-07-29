@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <chrono>
+#include <functional>
 #include <spark/spark.hpp>
 
 
@@ -116,6 +117,8 @@ namespace anvil
 		void KeyReleased(int key, int mods);
 
 	private:
+		std::map<std::string, std::function<void()>> m_functions;
+
 		int m_mouseX, m_mouseY;
 		int m_frameTick;
 		GLFWwindow* m_window;
@@ -124,18 +127,5 @@ namespace anvil
 		static const int UPDATES_PER_SECOND;
 		std::unique_ptr<spark::Core> m_core;
 		std::shared_ptr<spark::View> m_view;
-
-		std::shared_ptr<spark::ILabel> m_fps;
-		std::shared_ptr<spark::ILabel> m_renderedTris;
-		std::shared_ptr<spark::IButton> m_decrease_brush_button;
-		std::shared_ptr<spark::IButton> m_increase_brush_button;
-		std::shared_ptr<spark::IButton> m_decrease_brush_height_button;
-		std::shared_ptr<spark::IButton> m_increase_brush_height_button;
-
-		std::shared_ptr<spark::IButton> m_terrain_mode_button;
-		std::shared_ptr<spark::IButton> m_texture_mode_button;
-		std::shared_ptr<spark::IButton> m_entity_mode_button;
-
-		std::shared_ptr<spark::IImage> m_image;
 	};
 }
