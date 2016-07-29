@@ -37,12 +37,16 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr),m_window(window), m_frameTick(1)
 			std::cout << "Failed to add font!"<< std::endl;
 	}
 
-	m_core->AddFunction(std::string("get_fps"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText(std::to_string(Core::GetCore()->GetFPS().GetFPS())); });
-	m_core->AddFunction(std::string("get_rendered_polygons"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
+	m_core->AddFunction(std::string("get_fps"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText(std::to_string((int)Core::GetCore()->GetFPS().GetFPS())); });
+	m_core->AddFunction(std::string("get_rendered_tris"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
 	m_core->AddFunction(std::string("decrease_brush"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
 
 	spark::XMLBuilder builder(m_core);
-	m_view = builder.LoadView(800, 600, "ui/ui.xml");
+	std::string ui_file_path;
+	Core::GetCore()->GetResources()->GetFilePath("ui/ui.xml", ui_file_path);
+	int width, height;
+	glfwGetWindowSize(m_window, &width, &height);
+	m_view = builder.LoadView(width, height, ui_file_path);
 
 	m_updateInterval = (1.0f / UPDATES_PER_SECOND) * 1e6;
 
