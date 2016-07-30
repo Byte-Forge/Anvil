@@ -42,8 +42,18 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	m_core->AddFunction(std::string("get_fps"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText(std::to_string((int)Core::GetCore()->GetFPS().GetFPS())); });
 	m_core->AddFunction(std::string("get_rendered_tris"), [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
 	m_core->AddFunction(std::string("decrease_brush"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
+	m_core->AddFunction(std::string("increase_brush"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushWidth(); });
+	m_core->AddFunction(std::string("increase_terrain_height"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushHeight(); });
+	m_core->AddFunction(std::string("decrease_terrain_height"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushHeight(); });
+	m_core->AddFunction(std::string("terrain_mode"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTerrainMode(); });
+	m_core->AddFunction(std::string("texture_mode"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTextureMode(); });
+	m_core->AddFunction(std::string("entity_mode"), [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetEntityMode(); });
 
 	LoadFile(m_gui_file);
+
+	//crashes because of watchdog?
+	/*if (m_view == nullptr)
+		throw AnvilException("Failed to load UI file: " + m_gui_file, __FILE__, __LINE__);*/
 
 	m_updateInterval = (1.0f / UPDATES_PER_SECOND) * 1e6;
 
