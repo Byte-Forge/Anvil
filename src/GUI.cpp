@@ -51,9 +51,8 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 
 	LoadFile(m_gui_file);
 
-	//crashes because of watchdog?
-	/*if (m_view == nullptr)
-		throw AnvilException("Failed to load UI file: " + m_gui_file, __FILE__, __LINE__);*/
+	if (m_view == nullptr)
+		throw AnvilException("Failed to load UI file: " + m_gui_file, __FILE__, __LINE__);
 
 	m_updateInterval = (1.0f / UPDATES_PER_SECOND) * 1e6;
 
@@ -78,7 +77,8 @@ void GUI::Render()
 	glfwGetWindowSize(m_window, &winWidth, &winHeight);
 	glfwGetFramebufferSize(m_window, &fbWidth, &fbHeight);
 
-	// Calculate pixel ration for hi-dpi devices.
+	// Calculate pixel ration for hi-dpi devices. 
+	// TODO: combine this with the stuff in core
 	pxRatio = (float)fbWidth / (float)winWidth;
 
 	spark::PaintEvent ev;
