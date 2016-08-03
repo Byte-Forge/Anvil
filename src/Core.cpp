@@ -24,7 +24,7 @@
 #include "Graphics/Frustum.hpp"
 #include "Input.hpp"
 #include "WorldBuilder.hpp"
-
+#include "Util/Watchdog.h"
 
 using namespace anvil;
 
@@ -142,7 +142,8 @@ Core::Core()
 
 Core::~Core()
 {
-	glfwTerminate();
+	wd::unwatchAll();
+	glfwTerminate();	
 }
 
 void Core::Run()
