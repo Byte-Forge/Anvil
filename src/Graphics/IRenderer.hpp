@@ -40,6 +40,13 @@ namespace anvil
 		};
 
 		/**
+		* @fn	virtual void IRenderer::Init() = 0;
+		*
+		* @brief	loads shaders etc
+		*/
+		virtual void Init() = 0;
+
+		/**
 		 * @fn	virtual void IRenderer::Clear() = 0;
 		 *
 		 * @brief	Clears this object to its blank/initial state.

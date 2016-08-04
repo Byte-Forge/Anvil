@@ -41,6 +41,18 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 
 	m_core->AddFunction("get_fps", [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText(std::to_string((int)Core::GetCore()->GetFPS().GetFPS())); });
 	m_core->AddFunction("get_rendered_tris", [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
+	
+	//main menu
+	m_core->AddFunction("singleplayer", [](std::shared_ptr<spark::IElement> e) { std::cout << "singleplayer" << std::endl; });
+	m_core->AddFunction("multiplayer", [](std::shared_ptr<spark::IElement> e) { std::cout << "multiplayer" << std::endl; });
+	m_core->AddFunction("options", [](std::shared_ptr<spark::IElement> e) { std::cout << "options" << std::endl; });
+	m_core->AddFunction("worldbuilder", [this](std::shared_ptr<spark::IElement> e) {m_core->GetNamedElement("mainMenu")->SetVisible(false);
+																					m_core->GetNamedElement("worldbuilder")->SetVisible(true);
+																					Core::GetCore()->StartWorldBuilder();
+																					Core::GetCore()->SetMode(WORLDBUILDER_MODE); });
+	m_core->AddFunction("quit", [](std::shared_ptr<spark::IElement> e) { std::cout << "test" << std::endl; /*Core::GetCore()->Quit();*/ });
+
+	//worldbuilder
 	m_core->AddFunction("decrease_brush", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
 	m_core->AddFunction("increase_brush", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushWidth(); });
 	m_core->AddFunction("increase_terrain_height", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushHeight(); });
@@ -48,11 +60,6 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	m_core->AddFunction("terrain_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTerrainMode(); });
 	m_core->AddFunction("texture_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTextureMode(); });
 	m_core->AddFunction("entity_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetEntityMode(); });
-
-	//does not work
-	m_core->AddFunction("worldbuilder", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("mainMenu")->SetVisible(false); std::cout << "test" << std::endl; });
-
-	m_core->AddFunction("quit", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->Quit(); });
 
 	LoadFile(m_gui_file);
 

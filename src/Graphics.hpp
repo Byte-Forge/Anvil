@@ -7,9 +7,10 @@
 
 #pragma once
 #include <memory>
-#include "Graphics/IRenderer.hpp"
+#include <vector>
 #include <stdint.h>
 #include <glm/glm.hpp>
+#include "Graphics/IRenderer.hpp"
 
 namespace anvil
 {
@@ -58,9 +59,6 @@ namespace anvil
 		 * @fn	void Graphics::Clear();
 		 *
 		 * @brief	Clears this object to its blank/initial state.
-		 *
-		 * @author	Micha
-		 * @date	02.03.2016
 		 */
 		void Clear();
 

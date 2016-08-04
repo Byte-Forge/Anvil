@@ -133,6 +133,11 @@ RendererVK::~RendererVK()
 		vkDestroyInstance(m_instance, NULL);
 }
 
+void RendererVK::Init()
+{
+
+}
+
 void RendererVK::Clear()
 {
 

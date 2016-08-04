@@ -40,8 +40,11 @@ void Core::ResizeCallback(GLFWwindow *window, int width, int height)
 	glm::vec2 scale = Core::GetCore()->GetFrameBufferScale();
 	Core::GetCore()->GetGraphics()->Resize(width * scale.x, height * scale.y);
 	Core::GetCore()->GetGUI()->Resize(width, height);
-	Core::GetCore()->GetCamera()->SetRatio(width / height);
 	Core::GetCore()->SetResolution(glm::vec2(width, height));
+	if (Core::GetCore()->GetCamera() != nullptr)
+	{
+		Core::GetCore()->GetCamera()->SetRatio(width / height);
+	}
 }
 
 void Core::MouseCallback(GLFWwindow* window, int key, int action, int mods)
@@ -128,7 +131,6 @@ Core::Core()
 	m_gui = std::make_unique<GUI>(m_window);
 	m_input = std::make_unique<Input>();
 	m_script->LoadFile("start.lua");
-	m_worldBuilder = std::make_unique<WorldBuilder>();
 
 	//m_audio->PlaySound("sound/roll_over_01.wav");
 	
@@ -138,11 +140,13 @@ Core::Core()
 	glfwSetCursorPosCallback(m_window, MousePosCallback);
 	glfwSetScrollCallback(m_window, ScrollCallback);
 	glfwSwapInterval(0);
+
+	m_mode = MENU_MODE;
 }
 
 Core::~Core()
 {
-	wd::unwatchAll();
+	//wd::unwatchAll();
 	glfwTerminate();	
 }
 
@@ -150,18 +154,32 @@ void Core::Run()
 {
 	while (!glfwWindowShouldClose(m_window))
 	{
-		m_timer.Update();
-		m_fps.Update();
-		m_graphics->Clear();
 		m_gui->Update();
 		m_script->Update();
-		m_camera->Update();
-		m_worldBuilder->Update();
+		m_timer.Update();
+		m_fps.Update();
+
+		if (m_mode == WORLDBUILDER_MODE)
+		{
+			m_worldBuilder->Update();
+		}
+		
+		if (m_mode == WORLDBUILDER_MODE || m_mode == GAME_MODE)
+		{
+			m_graphics->Clear();
+			m_camera->Update();
+			m_graphics->Render();
+		}
 	
-		m_graphics->Render();
 		m_gui->Render();
 
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}
+}
+
+void Core::StartWorldBuilder()
+{
+	m_graphics->GetRenderer()->Init();
+	m_worldBuilder = std::make_unique<WorldBuilder>(); 
 }

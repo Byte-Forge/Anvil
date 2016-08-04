@@ -22,7 +22,7 @@
 
 using namespace anvil;
 
-Graphics::Graphics(Graphics::RenderBackend backend) : m_backend(backend), m_available({OpenGL})
+Graphics::Graphics(RenderBackend backend) : m_backend(backend), m_available({OpenGL})
 {
 	switch (backend)
 	{

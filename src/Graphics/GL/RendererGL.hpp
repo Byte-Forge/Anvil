@@ -84,6 +84,14 @@ namespace anvil
 		~RendererGL();
 
 		/**
+		* @fn	void RendererGL::Init();
+		*
+		* @brief	loads shaders etc
+		*/
+		void Init();
+
+
+		/**
 		 * @fn	void RendererGL::Clear();
 		 *
 		 * @brief	Clears this object to its blank/initial state.

@@ -95,7 +95,17 @@ void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id,
 RendererGL::RendererGL() 
 {
     flextInit();
+}
 
+
+
+RendererGL::~RendererGL()
+{	
+
+}
+
+void RendererGL::Init()
+{
 	if (FLEXT_ARB_debug_output)
 	{
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
@@ -207,11 +217,6 @@ RendererGL::RendererGL()
 	);
 
 	Core::GetCore()->GetResources()->GetParticleSystem("particle/test.json");
-}
-
-RendererGL::~RendererGL()
-{	
-
 }
 
 void RendererGL::Clear()

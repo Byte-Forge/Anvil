@@ -10,6 +10,7 @@
 #include <memory>
 #include "Util/Timer.hpp"
 #include "Util/FPS.hpp"
+#include "WorldBuilder.hpp"
 
 struct GLFWwindow;
 
@@ -20,11 +21,17 @@ namespace anvil
 	class GUI;
 	class Input;
 	class Script;
-	class Graphics;
 	class Audio;
 	class Frustum;
+	class Graphics;
 	class Map;
-	class WorldBuilder;
+
+	enum Mode
+	{
+		MENU_MODE,
+		WORLDBUILDER_MODE,
+		GAME_MODE
+	};
 
 	/**
 	* @class	Core
@@ -63,17 +70,10 @@ namespace anvil
 		*/
 		void Quit();
 
+		void StartWorldBuilder();
 
-		Util::Timer& GetTimer()
-		{
-			return m_timer;
-		}
-
-		Util::FPS& GetFPS()
-		{
-			return m_fps;
-		}
-
+		inline Util::Timer& GetTimer() { return m_timer; }
+		inline Util::FPS& GetFPS() { return m_fps; }
 		inline std::unique_ptr<GUI>& GetGUI() { return m_gui; }
 		inline std::unique_ptr<Script>& GetScript() { return m_script; }
 		inline std::unique_ptr<Graphics>& GetGraphics() { return m_graphics; }
@@ -89,10 +89,14 @@ namespace anvil
 		inline GLFWwindow* GetWindow() { return m_window; }
 		inline std::unique_ptr<WorldBuilder>& GetWorldBuilder() { return m_worldBuilder; }
 
+		inline Mode GetMode() { return m_mode; }
+		inline void SetMode(Mode mode) { m_mode = mode; }
+
 		static inline Core* GetCore() { return m_instance; }
 
 	private:
 		static Core* m_instance;
+		Mode m_mode;
 
 		GLFWwindow* m_window;
 		std::unique_ptr<ResourceHandler> m_resources;

@@ -36,6 +36,13 @@ namespace anvil
 		~RendererVK();
 
 		/**
+		* @fn	void RendererVK::Init();
+		*
+		* @brief	loads shaders and stuff
+		*/
+		void Init();
+
+		/**
 		 * @fn	void RendererVK::Clear();
 		 *
 		 * @brief	Clears this object to its blank/initial state.
