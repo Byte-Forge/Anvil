@@ -39,24 +39,20 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 			std::cout << "Failed to add font!"<< std::endl;
 	}
 
-	std::string func_name = "get_fps";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText(std::to_string((int)Core::GetCore()->GetFPS().GetFPS())); });
-	func_name = "get_rendered_tris";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
-	func_name = "decrease_brush";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
-	func_name = "increase_brush";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushWidth(); });
-	func_name = "increase_terrain_height";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushHeight(); });
-	func_name = "decrease_terrain_height";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushHeight(); });
-	func_name = "terrain_mode";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTerrainMode(); });
-	func_name = "texture_mode";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTextureMode(); });
-	func_name = "entity_mode";
-	m_core->AddFunction(func_name, [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetEntityMode(); });
+	m_core->AddFunction("get_fps", [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText(std::to_string((int)Core::GetCore()->GetFPS().GetFPS())); });
+	m_core->AddFunction("get_rendered_tris", [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::ILabel> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
+	m_core->AddFunction("decrease_brush", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
+	m_core->AddFunction("increase_brush", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushWidth(); });
+	m_core->AddFunction("increase_terrain_height", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushHeight(); });
+	m_core->AddFunction("decrease_terrain_height", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushHeight(); });
+	m_core->AddFunction("terrain_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTerrainMode(); });
+	m_core->AddFunction("texture_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTextureMode(); });
+	m_core->AddFunction("entity_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetEntityMode(); });
+
+	//does not work
+	m_core->AddFunction("worldbuilder", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("mainMenu")->SetVisible(false); std::cout << "test" << std::endl; });
+
+	m_core->AddFunction("quit", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->Quit(); });
 
 	LoadFile(m_gui_file);
 
