@@ -64,6 +64,7 @@ void IShader::LoadShader(const std::string& file, const ShaderType type)
 
 	if (!m_tracked)
 	{
+		std::cout << "watch" << std::endl;
 		wd::watch(fs::path(file), reload);
 		m_files[file] = type;
 	}

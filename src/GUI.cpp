@@ -63,6 +63,18 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 
 	LoadFile(m_gui_file);
 
+	auto reload = [this](const fs::path &ui_file_path)
+	{
+		if (m_tracked)
+		{
+			std::cout << ui_file_path << " needs reload " << std::endl;
+			LoadFile(m_gui_file);
+		}
+	};
+
+	if (!m_tracked)
+		wd::watch(fs::path(m_gui_file), reload);
+
 	if (m_view == nullptr)
 		throw AnvilException("Failed to load UI file: " + m_gui_file, __FILE__, __LINE__);
 
@@ -78,6 +90,8 @@ GUI::~GUI()
 
 void GUI::Update()
 {
+	if (!m_tracked)
+		m_tracked = true;
 	m_view->Update();
 }
 
@@ -109,20 +123,6 @@ void GUI::LoadFile(const std::string& file)
 	auto view = builder.LoadView(width, height, ui_file_path);
 	if (view != nullptr)
 		m_view = view;
-
-	auto reload = [this](const fs::path &ui_file_path) {
-		if (m_tracked)
-		{
-			std::cout << ui_file_path << " needs reload " << std::endl;
-			LoadFile(m_gui_file);
-		}
-	};
-
-	if (!m_tracked)
-	{
-		wd::watch(fs::path(ui_file_path), reload);
-	}
-	m_tracked = true;
 }
 
 void GUI::Resize(int width, int height)
