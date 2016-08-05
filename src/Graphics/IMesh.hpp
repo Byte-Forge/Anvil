@@ -34,7 +34,7 @@ namespace anvil
 		 *
 		 * @param  returns the number of drawn polygons
 		 */
-		virtual int Render(IShader& shader, bool minimal) = 0;
+		virtual size_t Render(IShader& shader, bool minimal) = 0;
 
 
 		/**

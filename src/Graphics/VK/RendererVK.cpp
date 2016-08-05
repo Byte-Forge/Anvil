@@ -48,7 +48,7 @@ void RendererVK::CreateInstance()
 	VkInstanceCreateInfo ici = {};
 	ici.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	ici.pApplicationInfo = &app;
-	ici.enabledExtensionCount = extensions.size();
+	ici.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 	ici.ppEnabledExtensionNames = extensions.data();
 	#ifndef NDEBUG
 	ici.enabledLayerCount = vk::validationLayerCount;

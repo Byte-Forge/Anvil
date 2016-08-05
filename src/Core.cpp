@@ -146,7 +146,7 @@ Core::Core()
 
 Core::~Core()
 {
-	//wd::unwatchAll();
+	wd::unwatchAll();
 	glfwTerminate();	
 }
 

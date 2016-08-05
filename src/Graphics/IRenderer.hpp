@@ -114,10 +114,10 @@ namespace anvil
 
 		inline int GetTessfactor() { return Options::GetTessfactor(); } 
 		inline int GetMaxTesselation() { return m_maxTesselation; }
-		inline int GetRenderedPolygons() { return m_rendered_polygons; }
+		inline size_t GetRenderedPolygons() { return m_rendered_polygons; }
 
 	protected:
-		int m_rendered_polygons = 0;
+		size_t m_rendered_polygons = 0;
 		int m_maxTesselation = 64;
 		bool m_render2buffer = false;
 		bool m_renderShadows = false;

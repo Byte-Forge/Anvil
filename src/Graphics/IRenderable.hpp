@@ -30,7 +30,7 @@ namespace anvil
 		 *
 		 * @return returns the number of drawn polygons
 		 */
-		virtual int Render(IShader& shader, bool minimal = false) = 0;
+		virtual size_t Render(IShader& shader, bool minimal = false) = 0;
 
 		/**
 		 * @fn	virtual void IRenderable::Update() = 0;

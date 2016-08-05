@@ -46,7 +46,7 @@ namespace anvil
 			 * @param [in,out]	shader	The shader.
 			 * @param	minimal	if it should render with minimal settings
 			 */
-			int Render(IShader& shader, bool minimal);
+			size_t Render(IShader& shader, bool minimal);
 
 			/**
 			* @fn	virtual void IMesh::Init() = 0;

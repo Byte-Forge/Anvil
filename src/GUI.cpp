@@ -113,7 +113,7 @@ void GUI::LoadFile(const std::string& file)
 	auto reload = [this](const fs::path &ui_file_path) {
 		if (m_tracked)
 		{
-			std::cout << ui_file_path << " needs reload" << std::endl;
+			std::cout << ui_file_path << " needs reload " << std::endl;
 			LoadFile(m_gui_file);
 		}
 	};

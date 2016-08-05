@@ -60,7 +60,7 @@ GL::Terrain::~Terrain()
 	m_vao = 0;
 }
 
-int GL::Terrain::Render(IShader& shader, bool minimal)
+size_t GL::Terrain::Render(IShader& shader, bool minimal)
 {
 	glBindVertexArray(m_vao);
 	m_fbo->Bind();

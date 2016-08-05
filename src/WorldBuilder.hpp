@@ -73,7 +73,7 @@ namespace anvil
 		int m_brush_width = 20;
 		int m_brush_material = 0;
 
-		int m_entity_index = 0;
+		size_t m_entity_index = 0;
 		std::vector<std::string> m_entities;
 		std::shared_ptr<Entity> m_entity;
 		std::shared_ptr<Instance> m_instance;

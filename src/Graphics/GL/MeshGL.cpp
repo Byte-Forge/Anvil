@@ -49,7 +49,7 @@ GL::MeshGL::~MeshGL()
 	}
 }
 
-int GL::MeshGL::Render(IShader& shader, bool minimal)
+size_t GL::MeshGL::Render(IShader& shader, bool minimal)
 {
 	glUniform1i(shader.GetUniform("meshType"), m_type);
 	glUniform1i(shader.GetUniform("parentPivot"), m_parentPivot);

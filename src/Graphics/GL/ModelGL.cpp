@@ -33,9 +33,9 @@ GL::ModelGL::~ModelGL()
 
 }
 
-int GL::ModelGL::Render(IShader& shader, bool minimal)
+size_t GL::ModelGL::Render(IShader& shader, bool minimal)
 {
-	int polygons = 0;
+	size_t polygons = 0;
 	for (const auto i : m_instances)
 	{
 		if (i->IsVisible())
@@ -47,9 +47,9 @@ int GL::ModelGL::Render(IShader& shader, bool minimal)
 			{
 				useSkeleton = true;
 				if (i->IsAnimated())
-					glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots(i->GetAnimation(), i->GetAnimationTime()).front()));
+					glUniformMatrix4fv(shader.GetUniform("pivots"), static_cast<GLsizei>(m_hierarchy->GetPivots().size()), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots(i->GetAnimation(), i->GetAnimationTime()).front()));
 				else 
-					glUniformMatrix4fv(shader.GetUniform("pivots"), m_hierarchy->GetPivots().size(), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
+					glUniformMatrix4fv(shader.GetUniform("pivots"), static_cast<GLsizei>(m_hierarchy->GetPivots().size()), GL_FALSE, glm::value_ptr(m_hierarchy->GetPivots().front()));
 			}
 			glUniform1i(shader.GetUniform("useSkeleton"), useSkeleton);
 

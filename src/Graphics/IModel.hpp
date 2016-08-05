@@ -78,7 +78,7 @@ namespace anvil
 		 *
 		 * @return  returns the number of drawn polygons
 		 */
-		virtual int Render(IShader& shader, bool minimal) = 0;
+		virtual size_t Render(IShader& shader, bool minimal) = 0;
 
 		inline void SetHierarchy(std::shared_ptr<Hierarchy> hierarchy) { m_hierarchy = hierarchy; }
 		inline std::shared_ptr<Hierarchy> GetHierarchy() { return m_hierarchy; }

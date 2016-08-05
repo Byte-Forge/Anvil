@@ -30,6 +30,7 @@
 #include <atomic>
 #include <mutex>
 #include <functional>
+#include <iostream>
 
 #define BOOST_FILESYSTEM_VERSION 3
 #define BOOST_FILESYSTEM_NO_DEPRECATED
@@ -48,7 +49,8 @@ class WatchedFileSystemExc : public std::exception {
 public:
     WatchedFileSystemExc( const fs::path &path )
     {
-        sprintf( mMessage, "Failed to find file or directory at: %s", path.c_str() );
+		std::cout << mMessage << " Failed to find file or directory at: " << path << std::endl;
+        //sprintf( mMessage, "Failed to find file or directory at: %s", path.c_str() );
     }
     
     virtual const char * what() const throw() { return mMessage; }

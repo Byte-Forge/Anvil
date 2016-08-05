@@ -55,7 +55,7 @@ namespace anvil
 			 *
 			 * @return  returns the number of drawn polygons
              */
-            int Render(IShader& shader, bool minimal);
+            size_t Render(IShader& shader, bool minimal);
 
             /**
              * @fn	void Terrain::Update();

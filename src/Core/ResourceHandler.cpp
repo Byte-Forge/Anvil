@@ -221,8 +221,8 @@ void ResourceHandler::AddResource(const std::string& name, std::shared_ptr<IReso
 bool ResourceHandler::GetFilePath(const std::string name, std::string& path)
 {
 	//test if the file is in one of the mod folders, starting with the last added mod folder
-	unsigned int size = m_modDirs.size();
-	for (unsigned int i = 0; i < size; i++)
+	size_t size = m_modDirs.size();
+	for (size_t i = 0; i < size; i++)
 	{
 		const auto& dir = m_modDirs[size - i - 1];
 		if (fileExists(dir + "/" + name))

@@ -20,7 +20,6 @@ void Frustum::Recalculate(glm::mat4 view, glm::mat4 proj)
 	m_lastProjection = proj;
 	m_lastView = view;
 
-	float t;
 	m_clip = proj * view;
 
 	/* Extract the numbers for the RIGHT plane */
