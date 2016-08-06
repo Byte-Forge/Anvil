@@ -45,3 +45,17 @@ void Input::SetMouseWheelDelta(const double x, const double y)
 	m_mouse_wheel_delta_x = x;
 	m_mouse_wheel_delta_y = y;
 }
+
+void Input::RestoreJustPressed()
+{
+	for (auto key : m_keyInputs)
+	{
+		if (key.second == JUST_RELEASED)
+			key.second = RELEASED;
+	}
+	for (auto button : m_mouseInputs)
+	{
+		if (button.second == JUST_RELEASED)
+			button.second = RELEASED;
+	}
+}

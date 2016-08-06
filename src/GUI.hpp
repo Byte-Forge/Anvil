@@ -41,6 +41,7 @@ namespace anvil
 		 * @param [in,out]	window	If non-null, the window.
 		 */
 		GUI(GLFWwindow* window);
+
 		~GUI();
 
 		/**
@@ -116,6 +117,8 @@ namespace anvil
 		 * @param	mods	The mods.
 		 */
 		void KeyReleased(int key, int mods);
+
+		void RestoreJustPressed() { m_view->RestoreJustPressed(); }
 
 	private:
 		std::string m_gui_file = "ui/ui.xml";

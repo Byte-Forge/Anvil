@@ -173,6 +173,9 @@ void Core::Run()
 	
 		m_gui->Render();
 
+		m_gui->RestoreJustPressed();
+		m_input->RestoreJustPressed();
+
 		glfwSwapBuffers(m_window);
 		glfwPollEvents();
 	}

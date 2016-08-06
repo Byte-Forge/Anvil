@@ -80,6 +80,8 @@ namespace anvil
 		 */
 		void SetMouseWheelDelta(const double x, const double y);
 
+		void RestoreJustPressed();
+
 		inline int MouseButtonPressed(int button) { if (m_mouseInputs[button] == PRESSED) { return 1; } return 0; }
 		inline int MouseButtonReleased(int button) { if (m_mouseInputs[button] == RELEASED) { return 1; } return 0; }
 		inline int MouseButtonJustReleased(int button) { if (m_mouseInputs[button] == JUST_RELEASED) { m_mouseInputs[button] = RELEASED; return 1; } return 0; }
