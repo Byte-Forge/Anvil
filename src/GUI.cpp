@@ -45,20 +45,20 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	//main menu
 	m_core->AddFunction("singleplayer", [](std::shared_ptr<spark::IElement> e) { std::cout << "singleplayer" << std::endl; });
 	m_core->AddFunction("multiplayer", [](std::shared_ptr<spark::IElement> e) { std::cout << "multiplayer" << std::endl; });
-	m_core->AddFunction("options", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("mainMenu")->SetVisible(false); 
-																				m_core->GetNamedElement("options")->SetVisible(true); });
+	m_core->AddFunction("options", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("mainMenu")->Hide(); 
+																				m_core->GetNamedElement("options")->Show(); });
 
-	m_core->AddFunction("worldbuilder", [this](std::shared_ptr<spark::IElement> e) {m_core->GetNamedElement("mainMenu")->SetVisible(false);
-																					m_core->GetNamedElement("worldbuilder")->SetVisible(true);
+	m_core->AddFunction("worldbuilder", [this](std::shared_ptr<spark::IElement> e) {m_core->GetNamedElement("mainMenu")->Hide();
+																					m_core->GetNamedElement("worldbuilder")->Show();
 																					Core::GetCore()->StartWorldBuilder();
 																					Core::GetCore()->SetMode(WORLDBUILDER_MODE); });
-	m_core->AddFunction("quit", [](std::shared_ptr<spark::IElement> e) { std::cout << "test" << std::endl; /*Core::GetCore()->Quit();*/ });
+	m_core->AddFunction("quit", [](std::shared_ptr<spark::IElement> e) { std::cout << "quit" << std::endl; /*Core::GetCore()->Quit();*/ });
 
 	//options
-	m_core->AddFunction("cancel", [this](std::shared_ptr<spark::IElement> e) {	m_core->GetNamedElement("mainMenu")->SetVisible(true); m_core->GetNamedElement("options")->SetVisible(false); });
+	m_core->AddFunction("cancel", [this](std::shared_ptr<spark::IElement> e) {	m_core->GetNamedElement("mainMenu")->Show(); m_core->GetNamedElement("options")->Hide(); });
 	m_core->AddFunction("default", [this](std::shared_ptr<spark::IElement> e) { std::cout << "restore to default" << std::endl; });
-	m_core->AddFunction("apply", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("options")->SetVisible(false); 
-																				m_core->GetNamedElement("mainMenu")->SetVisible(true); });
+	m_core->AddFunction("apply", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("options")->Hide(); 
+																				m_core->GetNamedElement("mainMenu")->Show(); });
 
 	//worldbuilder
 	m_core->AddFunction("decrease_brush", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
@@ -75,8 +75,8 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	{
 		if (m_tracked)
 		{
-			std::cout << ui_file_path << " needs reload " << std::endl;
 			LoadFile(m_gui_file);
+			std::cout << ui_file_path << " was reloaded." << std::endl;
 		}
 	};
 

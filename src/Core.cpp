@@ -114,6 +114,8 @@ Core::Core()
 	m_window = glfwCreateWindow(Options::GetWidth(), Options::GetHeight(), "anvil engine", 
 								Options::GetFullscreen() ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
 	int width, height;
 	glfwGetWindowSize(m_window, &width, &height);
 	m_resolution.x = width;
