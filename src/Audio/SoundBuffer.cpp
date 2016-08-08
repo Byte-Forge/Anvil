@@ -7,6 +7,7 @@
 
 #include "SoundBuffer.hpp"
 #include "../Exception.hpp"
+#include <iostream>
 #include <fstream>
 #include <stdint.h>
 using namespace anvil;

@@ -20,7 +20,7 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
     if(!m_device)
 		throw AnvilException("Failed to open audio device", __FILE__, __LINE__);
 
-    m_context = alcCreateContext(m_device,NULL);
+    m_context = alcCreateContext(m_device, NULL);
     if(!alcMakeContextCurrent(m_context))
 		throw AnvilException("Failed to create OpenAL context", __FILE__, __LINE__);
     
@@ -28,7 +28,7 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
 	if (errorAlc != AL_NO_ERROR)
 		throw AnvilException("Error in OpenAL!", __FILE__, __LINE__);
 
-	ALfloat listenerOri[] = { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f };
+	ALfloat listenerOri[] = { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f };
 
 	alListener3f(AL_POSITION, 0, 0, 1.0f);
 	// check for errors
@@ -39,7 +39,6 @@ Audio::Audio() : m_device(nullptr), m_context(nullptr)
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 		throw AnvilException("Error in OpenAL!", __FILE__, __LINE__);
-
 }
 
 Audio::~Audio()
@@ -76,5 +75,4 @@ void Audio::EnumerateDevices(const ALCchar *devices)
         device += (len + 1);
         next += (len + 2);
     }
-
 }

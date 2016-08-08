@@ -114,7 +114,7 @@ Core::Core()
 	m_window = glfwCreateWindow(Options::GetWidth(), Options::GetHeight(), "anvil engine", 
 								Options::GetFullscreen() ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
-	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	int width, height;
 	glfwGetWindowSize(m_window, &width, &height);
@@ -134,7 +134,7 @@ Core::Core()
 	m_input = std::make_unique<Input>();
 	m_script->LoadFile("start.lua");
 
-	//m_audio->PlaySound("sound/roll_over_01.wav");
+	//m_audio->PlaySound("sound/test.wav");
 	
 	glfwSetKeyCallback(m_window, KeyCallback);
 	glfwSetWindowSizeCallback(m_window, ResizeCallback);

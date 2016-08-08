@@ -33,7 +33,7 @@ const std::string alErrorString(int err)
 
 Sound::Sound(std::shared_ptr<SoundBuffer> buffer) : m_source(0)
 {
-    alGenSources(1,&m_source);
+    alGenSources(1, &m_source);
 	ALuint bid = buffer->GetBufferId();
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
@@ -47,7 +47,7 @@ Sound::Sound(std::shared_ptr<SoundBuffer> buffer) : m_source(0)
 	// check for errors
 	alSource3f(m_source, AL_VELOCITY, 0, 0, 0);
 	// check for errors
-	alSourcei(m_source, AL_LOOPING, AL_FALSE);
+	alSourcei(m_source, AL_LOOPING, AL_TRUE); //should be false
 	alSourcei(m_source, AL_BUFFER, bid);
 
 	error = alGetError();
@@ -57,7 +57,7 @@ Sound::Sound(std::shared_ptr<SoundBuffer> buffer) : m_source(0)
 
 void Sound::Play()
 {
-	alSourcef(m_source, AL_GAIN, 255.0f);
+	//alSourcef(m_source, AL_GAIN, 1);
 	alSourcePlay(m_source);
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
