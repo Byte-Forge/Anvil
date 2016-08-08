@@ -10,8 +10,8 @@
 #include "./Util/Platform.hpp"
 #include <iostream>
 #include <functional>
+#include "Core/Options.hpp"
 #include "Exception.hpp"
-#include <functional>
 #include "Core.hpp"
 #include "WorldBuilder.hpp"
 #include "Util/Platform.hpp"
@@ -60,6 +60,10 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	m_core->AddFunction("apply", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("options")->Hide(); 
 																				m_core->GetNamedElement("mainMenu")->Show(); });
 
+	m_core->AddFunction("toggle_fullscreen", [this](std::shared_ptr<spark::IElement> e) { Options::SetFullscreen(std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("fullscreen"))->Toggle()); });
+	m_core->AddFunction("toggle_shadows", [this](std::shared_ptr<spark::IElement> e) { Options::SetShadows(std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("shadows"))->Toggle()); });
+	m_core->AddFunction("toggle_minRendering", [this](std::shared_ptr<spark::IElement> e) { Options::SetMinimalRendering(std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("minRendering"))->Toggle()); });
+
 	//worldbuilder
 	m_core->AddFunction("decrease_brush", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->DecreaseBrushWidth(); });
 	m_core->AddFunction("increase_brush", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->IncreaseBrushWidth(); });
@@ -68,6 +72,8 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	m_core->AddFunction("terrain_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTerrainMode(); });
 	m_core->AddFunction("texture_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTextureMode(); });
 	m_core->AddFunction("entity_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetEntityMode(); });
+
+
 
 	LoadFile(m_gui_file);
 
@@ -131,6 +137,9 @@ void GUI::LoadFile(const std::string& file)
 	auto view = builder.LoadView(width, height, ui_file_path);
 	if (view != nullptr)
 		m_view = view;
+	std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("fullscreen"))->SetState(Options::GetFullscreen());
+	std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("shadows"))->SetState(Options::GetShadows());
+	std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("minRendering"))->SetState(Options::GetMinimalRendering());
 }
 
 void GUI::Resize(int width, int height)
