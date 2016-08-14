@@ -74,12 +74,7 @@ void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, in
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
 	Core::GetCore()->GetInput()->SetKeyState(key, action);
-	
-	auto& gui = Core::GetCore()->GetGUI();
-	if (action == GLFW_PRESS)
-		gui->KeyDown(key, mods);
-	else if (action == GLFW_RELEASE)
-		gui->KeyReleased(key, mods);
+	Core::GetCore()->GetGUI()->SetKeyState(key, action, mods);
 }
 
 Core::Core()
