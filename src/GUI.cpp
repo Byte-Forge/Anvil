@@ -19,7 +19,7 @@
 #include "Graphics/IRenderer.hpp"
 #include "Core/ResourceHandler.hpp"
 #include <GLFW/glfw3.h>
-#include "Util/Watchdog.h"
+#include "Util/FileWatcher.hpp"
 
 using namespace anvil;
 namespace fs = boost::filesystem;
@@ -87,7 +87,9 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	};
 
 	if (!m_tracked)
-		wd::watch(fs::path(m_gui_file), reload);
+	{
+		FileWatcher::AddPath(fs::path(m_gui_file),reload);
+	}
 
 	if (m_view == nullptr)
 		throw AnvilException("Failed to load UI file: " + m_gui_file, __FILE__, __LINE__);

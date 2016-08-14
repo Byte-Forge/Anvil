@@ -7,7 +7,7 @@
 
 
 #include "IShader.hpp"
-#include "../Util/Watchdog.h"
+#include "../Util/FileWatcher.hpp"
 #include <iostream>
 
 using namespace anvil;
@@ -64,7 +64,7 @@ void IShader::LoadShader(const std::string& file, const ShaderType type)
 
 	if (!m_tracked)
 	{
-		wd::watch(fs::path(file), reload);
+		FileWatcher::AddPath(fs::path(file),reload);
 		m_files[file] = type;
 	}
 }

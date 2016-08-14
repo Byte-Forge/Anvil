@@ -24,7 +24,6 @@
 #include "Graphics/Frustum.hpp"
 #include "Input.hpp"
 #include "WorldBuilder.hpp"
-#include "Util/Watchdog.h"
 
 using namespace anvil;
 
@@ -148,13 +147,12 @@ Core::Core()
 	auto reload = [this](const fs::path &path) {
 			std::cout << path << " needs recompile" << std::endl;
 	};
-	FileWatcher::AddPath("./data/start.lua", reload);
+	FileWatcher::AddPath("start.lua", reload);
 }
 
 Core::~Core()
 {
 	FileWatcher::Shutdown();
-	wd::unwatchAll();
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	glfwTerminate();	
 }
