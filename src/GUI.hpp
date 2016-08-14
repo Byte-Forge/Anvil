@@ -98,25 +98,7 @@ namespace anvil
 		 */
 		void SetMouseState(int key, int action, int mods);
 
-		/**
-		 * @fn	void GUI::KeyDown(int key, int mods);
-		 *
-		 * @brief	Key down.
-		 *
-		 * @param	key 	The key.
-		 * @param	mods	The mods.
-		 */
-		void KeyDown(int key, int mods);
-
-		/**
-		 * @fn	void GUI::KeyReleased(int key, int mods);
-		 *
-		 * @brief	Key released.
-		 *
-		 * @param	key 	The key.
-		 * @param	mods	The mods.
-		 */
-		void KeyReleased(int key, int mods);
+		void SetKeyState(int key, int action, int mods);
 
 		void RestoreJustPressed() { m_view->RestoreJustPressed(); }
 

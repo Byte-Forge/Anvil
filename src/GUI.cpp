@@ -52,7 +52,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 																					m_core->GetNamedElement("worldbuilder")->Show();
 																					Core::GetCore()->StartWorldBuilder();
 																					Core::GetCore()->SetMode(WORLDBUILDER_MODE); });
-	m_core->AddFunction("quit", [](std::shared_ptr<spark::IElement> e) { std::cout << "quit" << std::endl; /*Core::GetCore()->Quit();*/ });
+	m_core->AddFunction("quit", [](std::shared_ptr<spark::IElement> e) { std::cout << "quit" << std::endl; Core::GetCore()->Quit(); });
 
 	//options
 	m_core->AddFunction("cancel", [this](std::shared_ptr<spark::IElement> e) {	m_core->GetNamedElement("mainMenu")->Show(); m_core->GetNamedElement("options")->Hide(); });
@@ -167,13 +167,7 @@ void GUI::SetMouseState(int key, int action, int mods)
 	m_view->SetMouseState(key, action, mods);
 }
 
-void GUI::KeyDown(int key, int mods)
+void GUI::SetKeyState(int key, int action, int mods)
 {
-	
+	m_view->SetKeyState(key, action, mods);
 }
-
-void GUI::KeyReleased(int key, int mods)
-{
-
-}
-
