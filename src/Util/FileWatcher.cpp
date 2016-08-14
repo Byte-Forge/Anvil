@@ -47,7 +47,6 @@ void FileWatcher::AddPath(const fs::path & path, const std::function<void(const 
 		s_callbacks[path] = callback;
 		s_lastModified[path] = fs::last_write_time(path);
 	}
-	
 }
 
 void FileWatcher::Shutdown()
