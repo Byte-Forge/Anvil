@@ -20,6 +20,7 @@
 #include "Core/ResourceHandler.hpp"
 #include <GLFW/glfw3.h>
 #include "Util/FileWatcher.hpp"
+#include "Script/ScriptEngine.hpp"
 
 using namespace anvil;
 namespace fs = boost::filesystem;
@@ -40,6 +41,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 			std::cout << "Failed to add font!"<< std::endl;
 	}
 
+	m_core->AddScriptEngine(std::make_shared<ScriptEngine>());
 	m_core->AddFunction("get_fps", [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::Label> (e)->SetText(std::to_string((int)Core::GetCore()->GetFPS().GetFPS())); });
 	m_core->AddFunction("get_rendered_tris", [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::Label> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
 	
