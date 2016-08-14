@@ -144,11 +144,18 @@ Core::Core()
 	glfwSwapInterval(0);
 
 	m_mode = MENU_MODE;
+	FileWatcher::Initialize();
+	auto reload = [this](const fs::path &path) {
+			std::cout << path << " needs recompile" << std::endl;
+	};
+	FileWatcher::AddPath("./data/start.lua", reload);
 }
 
 Core::~Core()
 {
+	FileWatcher::Shutdown();
 	wd::unwatchAll();
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	glfwTerminate();	
 }
 

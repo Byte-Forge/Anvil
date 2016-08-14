@@ -10,6 +10,7 @@
 #include <memory>
 #include "Util/Timer.hpp"
 #include "Util/FPS.hpp"
+#include "Util/FileWatcher.hpp"
 #include "WorldBuilder.hpp"
 
 struct GLFWwindow;
