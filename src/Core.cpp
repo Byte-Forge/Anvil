@@ -24,7 +24,6 @@
 #include "Graphics/Frustum.hpp"
 #include "Input.hpp"
 #include "WorldBuilder.hpp"
-#include "Util/Watchdog.h"
 
 using namespace anvil;
 
@@ -154,7 +153,6 @@ Core::Core()
 Core::~Core()
 {
 	FileWatcher::Shutdown();
-	wd::unwatchAll();
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	glfwTerminate();	
 }

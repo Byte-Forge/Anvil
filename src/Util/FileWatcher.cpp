@@ -21,10 +21,12 @@ void FileWatcher::Initialize()
 				std::lock_guard<std::mutex> lock(s_mutex);
 				for (auto& file : s_lastModified)
 				{
+					auto lastTime = fs::last_write_time(file.first);
 					//file has been modified -> call callback
-					if (fs::last_write_time(file.first) > file.second)
+					if (lastTime > file.second)
 					{
 						s_callbacks[file.first](file.first);
+						file.second = lastTime;
 					}	
 				}
 
