@@ -73,6 +73,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	m_core->AddFunction("texture_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetTextureMode(); });
 	m_core->AddFunction("entity_mode", [](std::shared_ptr<spark::IElement> e) { Core::GetCore()->GetWorldBuilder()->SetEntityMode(); });
 
+	m_core->AddFunction("quit_wb", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("worldbuilder")->Hide();  m_core->GetNamedElement("mainMenu")->Show(); Core::GetCore()->SetMode(MENU_MODE); });
 
 
 	LoadFile(m_gui_file);
@@ -129,6 +130,7 @@ void GUI::Render()
 
 void GUI::LoadFile(const std::string& file)
 {
+	std::vector<std::string> visibles = m_core->GetVisibleNamedElements();
 	spark::XMLBuilder builder(m_core);
 	std::string ui_file_path;
 	Core::GetCore()->GetResources()->GetFilePath(m_gui_file, ui_file_path);
@@ -136,10 +138,16 @@ void GUI::LoadFile(const std::string& file)
 	glfwGetWindowSize(m_window, &width, &height);
 	auto view = builder.LoadView(width, height, ui_file_path);
 	if (view != nullptr)
+	{
 		m_view = view;
-	std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("fullscreen"))->SetState(Options::GetFullscreen());
-	std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("shadows"))->SetState(Options::GetShadows());
-	std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("minRendering"))->SetState(Options::GetMinimalRendering());
+		//std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("fullscreen"))->SetState(Options::GetFullscreen());
+		//std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("shadows"))->SetState(Options::GetShadows());
+		//std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("minRendering"))->SetState(Options::GetMinimalRendering());
+		/*for (const auto& name : visibles)
+		{
+			m_core->GetNamedElement(name)->Show();
+		}*/
+	}
 }
 
 void GUI::Resize(int width, int height)

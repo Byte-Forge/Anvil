@@ -148,7 +148,7 @@ Core::Core()
 	auto reload = [this](const fs::path &path) {
 			std::cout << path << " needs recompile" << std::endl;
 	};
-	FileWatcher::AddPath("./data/start.lua", reload);
+	FileWatcher::AddPath("start.lua", reload);
 }
 
 Core::~Core()
