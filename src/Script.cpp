@@ -36,3 +36,11 @@ void Script::LoadFile(const std::string& file)
 	}
 }
 	
+void Script::RunString(const std::string& file)
+{
+	if (luaL_dostring(m_state, file.c_str()))
+	{
+		std::cout << lua_tostring(m_state, -1) << std::endl;
+	}
+}
+	

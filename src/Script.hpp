@@ -51,6 +51,9 @@ namespace anvil
 		 */
 		void LoadFile(const std::string& file);
 
+
+		void RunString(const std::string& string);
+		
 		inline lua_State* GetState() { return m_state; }
 
 	private:
