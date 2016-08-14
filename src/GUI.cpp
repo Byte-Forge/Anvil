@@ -33,8 +33,9 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	//make sure the name is always ui/fonts/Delicious-Bold.otf not ui/fonts\Delicious-Bold.otf !!!!!
 	//on all platforms
 	auto fonts = IO::ListFilesRecursively("ui/fonts/");
-	for (const auto& font : fonts)
+	for (auto& font : fonts)
 	{
+		std::replace(font.begin(),font.end(),'\\','/');
 		if(!m_core->AddFont(font, font))
 			std::cout << "Failed to add font!"<< std::endl;
 	}
