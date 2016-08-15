@@ -184,6 +184,12 @@ void GUI::SetKeyState(int key, int action, int mods)
 		m_core->GetNamedElement("console")->Toggle();
 		m_view->SetActiveTb(m_core->GetNamedElement("consoleTextbox"));
 	}
+	else if(key == GLFW_KEY_V && action == GLFW_PRESS && (mods & GLFW_MOD_CONTROL))
+	{
+		auto tb = std::dynamic_pointer_cast<spark::Textbox>(m_core->GetNamedElement("consoleTextbox"));
+		auto label = tb->GetLabel();
+		label->SetText(label->GetText() + std::string(glfwGetClipboardString(m_window)));
+	}
 
 }
 
