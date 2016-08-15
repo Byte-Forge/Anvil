@@ -74,11 +74,12 @@ void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, in
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
 	Core::GetCore()->GetInput()->SetKeyState(key, action);
+	Core::GetCore()->GetGUI()->SetKeyState(key,action,mods);
 }
 
 void Core::UnicodeCallback(GLFWwindow* window, unsigned int unicode)
 {
-	Core::GetCore()->GetGUI()->SetKeyState(unicode,1,0);
+	Core::GetCore()->GetGUI()->SetUnicodeChar(unicode);
 }
 
 Core::Core()

@@ -172,5 +172,18 @@ void GUI::SetMouseState(int key, int action, int mods)
 
 void GUI::SetKeyState(int key, int action, int mods)
 {
-	m_view->SetKeyState(key, action, mods);
+	if(key==GLFW_KEY_ENTER)
+	{
+		std::cout << "Enter pressed " << std::endl;
+		m_view->SetKeyState(key, action, mods);
+	}
+	else if(key==GLFW_KEY_BACKSPACE)
+		m_view->SetKeyState(key, action, mods);
+	else if(key==GLFW_KEY_SPACE)
+		m_view->SetKeyState(key, action, mods);
+}
+
+void GUI::SetUnicodeChar(unsigned int unicode)
+{
+	m_view->SetKeyState(unicode, 1, 0);
 }
