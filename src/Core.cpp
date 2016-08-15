@@ -74,7 +74,11 @@ void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, in
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
 	Core::GetCore()->GetInput()->SetKeyState(key, action);
-	Core::GetCore()->GetGUI()->SetKeyState(key, action, mods);
+}
+
+void Core::UnicodeCallback(GLFWwindow* window, unsigned int unicode)
+{
+	Core::GetCore()->GetGUI()->SetKeyState(unicode,1,0);
 }
 
 Core::Core()
@@ -129,8 +133,8 @@ Core::Core()
 	m_script->LoadFile("start.lua");
 
 	//m_audio->PlaySound("sound/test.wav");
-	
 	glfwSetKeyCallback(m_window, KeyCallback);
+	glfwSetCharCallback(m_window, UnicodeCallback);
 	glfwSetWindowSizeCallback(m_window, ResizeCallback);
 	glfwSetMouseButtonCallback(m_window, MouseCallback);
 	glfwSetCursorPosCallback(m_window, MousePosCallback);

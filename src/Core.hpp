@@ -117,6 +117,7 @@ namespace anvil
 
 	private:
 		static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		static void UnicodeCallback(GLFWwindow* window, unsigned int unicode);
 		static void MouseCallback(GLFWwindow* window, int key, int action, int mods);
 		static void MousePosCallback(GLFWwindow* window, double xpos, double ypos);
 		static void ScrollCallback(GLFWwindow* window, double x, double y);
