@@ -145,10 +145,6 @@ Core::Core()
 
 	m_mode = MENU_MODE;
 	FileWatcher::Initialize();
-	auto reload = [this](const fs::path &path) {
-			std::cout << path << " needs recompile" << std::endl;
-	};
-	FileWatcher::AddPath("start.lua", reload);
 }
 
 Core::~Core()

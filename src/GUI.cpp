@@ -20,6 +20,7 @@
 #include "Core/ResourceHandler.hpp"
 #include <GLFW/glfw3.h>
 #include "Util/FileWatcher.hpp"
+#include "Util/Logger.hpp"
 #include "Script/ScriptEngine.hpp"
 
 using namespace anvil;
@@ -86,7 +87,7 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 		if (m_tracked)
 		{
 			LoadFile(m_gui_file);
-			std::cout << ui_file_path << " was reloaded." << std::endl;
+			Logger::Print(ui_file_path.string() + " was reloaded");
 		}
 	};
 
@@ -173,10 +174,7 @@ void GUI::SetMouseState(int key, int action, int mods)
 void GUI::SetKeyState(int key, int action, int mods)
 {
 	if(key==GLFW_KEY_ENTER)
-	{
-		std::cout << "Enter pressed " << std::endl;
 		m_view->SetKeyState(key, action, mods);
-	}
 	else if(key==GLFW_KEY_BACKSPACE)
 		m_view->SetKeyState(key, action, mods);
 	else if(key==GLFW_KEY_SPACE)
