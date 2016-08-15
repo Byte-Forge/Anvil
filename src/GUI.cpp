@@ -187,3 +187,9 @@ void GUI::SetUnicodeChar(unsigned int unicode)
 {
 	m_view->SetKeyState(unicode, 1, 0);
 }
+
+void GUI::AddTextToConsole(const std::string& line)
+{
+	auto label = std::dynamic_pointer_cast<spark::Label>(m_core->GetNamedElement("consoleLabel"));
+	label->SetText(label->GetText() + line);
+}

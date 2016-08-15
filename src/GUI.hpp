@@ -104,6 +104,8 @@ namespace anvil
 
 		void RestoreJustPressed() { m_view->RestoreJustPressed(); }
 
+		void AddTextToConsole(const std::string& line);
+
 	private:
 		std::string m_gui_file = "ui/ui.xml";
 		bool m_tracked;
