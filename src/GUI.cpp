@@ -31,8 +31,6 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 {
 	m_core = std::make_shared<spark::Core>(false);
 
-	//make sure the name is always ui/fonts/Delicious-Bold.otf not ui/fonts\Delicious-Bold.otf !!!!!
-	//on all platforms
 	auto fonts = IO::ListFilesRecursively("ui/fonts/");
 	for (auto& font : fonts)
 	{
@@ -42,6 +40,8 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 	}
 
 	m_core->AddScriptEngine(std::make_shared<ScriptEngine>());
+
+	//Make sure a line is not longer than 80 characters
 	m_core->AddFunction("get_fps", [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::Label> (e)->SetText(std::to_string((int)Core::GetCore()->GetFPS().GetFPS())); });
 	m_core->AddFunction("get_rendered_tris", [](std::shared_ptr<spark::IElement> e) { std::dynamic_pointer_cast<spark::Label> (e)->SetText("Rendered Tris : " + std::to_string(Core::GetCore()->GetGraphics()->GetRenderer()->GetRenderedPolygons())); });
 	
