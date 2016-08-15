@@ -16,6 +16,7 @@
 #include "../IRenderable.hpp"
 #include "../../Exception.hpp"
 #include "../../Util/stb_image.h"
+#include "../../Util/Logger.hpp"
 #include "../../Graphics.hpp"
 #include <iostream>
 #include <future>
@@ -384,14 +385,15 @@ void RendererGL::Resize(int width, int height)
 
 void RendererGL::PrintInfo()
 {
+
     char* vendor = (char*)glGetString(GL_VENDOR);
-    std::cout << "GPU Vendor: " << vendor << std::endl;
+    Logger::Print("GPU Vendor: "+ std::string(vendor));
 	char* device = (char*)glGetString(GL_RENDERER);
-	std::cout << "GPU Device: " << device << std::endl;
+	Logger::Print("GPU Device: "+ std::string(device));
     char* version = (char*)glGetString(GL_VERSION);
-    std::cout << "OpenGL Version: " << version << std::endl;
+    Logger::Print("OpenGL Version: "+ std::string(version));
     char* glslversion = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
-    std::cout << "GLSL Version: " << glslversion << std::endl;
+    Logger::Print("GLSL Version: "+ std::string(glslversion));
 }
 	
 const std::string RendererGL::GetGPUName()

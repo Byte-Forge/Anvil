@@ -11,6 +11,7 @@
 #endif
 #include <GLFW/glfw3.h>
 #include "Util/FPS.hpp"
+#include "Util/Logger.hpp"
 #include "Exception.hpp"
 #include "Core/Options.hpp"
 #include <iostream>
@@ -31,7 +32,7 @@ Core* Core::m_instance = nullptr;
 
 void Core::ErrorCallback(int error, const char* description)
 {
-	std::cerr << description << std::endl;
+	Logger::Print(description,Logger::LOG_ERROR);
 }
 
 void Core::ResizeCallback(GLFWwindow *window, int width, int height)
@@ -97,7 +98,7 @@ Core::Core()
 	#ifdef ANVIL_USE_VULKAN
 	if (glfwVulkanSupported())
 	{
-		std::cout << "Vulkan Driver available!" << std::endl;
+		Logger::Print("Vulkan Driver available!",Logger::LOG_INFO);
 		//backend = Graphics::Vulkan;
 	}
 	#endif
