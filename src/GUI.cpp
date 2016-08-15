@@ -173,12 +173,18 @@ void GUI::SetMouseState(int key, int action, int mods)
 
 void GUI::SetKeyState(int key, int action, int mods)
 {
-	if(key==GLFW_KEY_ENTER)
+	if (key == GLFW_KEY_ENTER)
 		m_view->SetKeyState(key, action, mods);
-	else if(key==GLFW_KEY_BACKSPACE)
+	else if (key == GLFW_KEY_BACKSPACE)
 		m_view->SetKeyState(key, action, mods);
-	else if(key==GLFW_KEY_SPACE)
+	else if (key == GLFW_KEY_SPACE)
 		m_view->SetKeyState(key, action, mods);
+	else if (key == GLFW_KEY_F8 && action == GLFW_PRESS)
+	{
+		m_core->GetNamedElement("console")->Toggle();
+		m_view->SetActiveTb(m_core->GetNamedElement("consoleTextbox"));
+	}
+
 }
 
 void GUI::SetUnicodeChar(unsigned int unicode)

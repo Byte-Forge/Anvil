@@ -73,7 +73,6 @@ void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, in
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-
 	Core::GetCore()->GetInput()->SetKeyState(key, action);
 	Core::GetCore()->GetGUI()->SetKeyState(key,action,mods);
 }
@@ -180,7 +179,7 @@ void Core::Run()
 			m_camera->Update();
 			m_graphics->Render();
 		}
-	
+		m_graphics->Clear();
 		m_gui->Render();
 
 		m_gui->RestoreJustPressed();
