@@ -98,7 +98,6 @@ Core::Core()
 	#ifdef ANVIL_USE_VULKAN
 	if (glfwVulkanSupported())
 	{
-		Logger::Print("Vulkan Driver available!",Logger::LOG_INFO);
 		//backend = Graphics::Vulkan;
 	}
 	#endif
@@ -142,6 +141,13 @@ Core::Core()
 	glfwSetCursorPosCallback(m_window, MousePosCallback);
 	glfwSetScrollCallback(m_window, ScrollCallback);
 	glfwSwapInterval(0);
+
+	#ifdef ANVIL_USE_VULKAN
+	if (glfwVulkanSupported())
+	{
+		Logger::Print("Vulkan Driver available!", Logger::LOG_INFO);
+	}
+	#endif
 
 	m_mode = MENU_MODE;
 	FileWatcher::Initialize();
