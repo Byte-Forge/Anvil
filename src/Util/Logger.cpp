@@ -12,13 +12,13 @@ void Logger::Print(const std::string& msg,const Logger::Type type)
 	switch(type)
 	{
 		case LOG_INFO:
-			output = "[INFO]: ";
+			output = "\\cy[INFO]: ";
 			break;
 		case LOG_WARNING:
-			output = "[WARNING]: ";
+			output = "\\co[WARNING]: ";
 			break;
 		case LOG_ERROR:
-			output = "[ERROR]: ";
+			output = "\\cr[ERROR]: ";
 			break;
 	}
 	output+=msg;
