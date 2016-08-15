@@ -73,7 +73,6 @@ void Core::KeyCallback(GLFWwindow* window, int key, int scancode, int action, in
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-
 	Core::GetCore()->GetInput()->SetKeyState(key, action);
 	Core::GetCore()->GetGUI()->SetKeyState(key,action,mods);
 }
@@ -98,7 +97,6 @@ Core::Core()
 	#ifdef ANVIL_USE_VULKAN
 	if (glfwVulkanSupported())
 	{
-		Logger::Print("Vulkan Driver available!",Logger::LOG_INFO);
 		//backend = Graphics::Vulkan;
 	}
 	#endif
@@ -143,6 +141,13 @@ Core::Core()
 	glfwSetScrollCallback(m_window, ScrollCallback);
 	glfwSwapInterval(0);
 
+	#ifdef ANVIL_USE_VULKAN
+	if (glfwVulkanSupported())
+	{
+		Logger::Print("Vulkan Driver available!", Logger::LOG_INFO);
+	}
+	#endif
+
 	m_mode = MENU_MODE;
 	FileWatcher::Initialize();
 }
@@ -174,7 +179,7 @@ void Core::Run()
 			m_camera->Update();
 			m_graphics->Render();
 		}
-	
+		m_graphics->Clear();
 		m_gui->Render();
 
 		m_gui->RestoreJustPressed();
