@@ -52,11 +52,14 @@ namespace anvil
 
 		inline ALuint GetBufferId() { return m_buffer; }
 
+
+		double GetDuration();
     private:
         ALuint m_buffer;
 		ALsizei m_size;
 		ALsizei m_frequency;
 		ALenum m_format;
+		double m_length;
     };
 }
 

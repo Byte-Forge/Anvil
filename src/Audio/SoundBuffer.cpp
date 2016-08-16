@@ -133,10 +133,32 @@ bool SoundBuffer::Load(const std::string & path)
 			m_format = AL_FORMAT_STEREO16;
 	}
 
+	m_length = (double)m_size / (double)m_frequency;
+
 	alBufferData(m_buffer, m_format, data, m_size, m_frequency);
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 		throw AnvilException("Error in OpenAL!", __FILE__, __LINE__);
 	fin.close();
+	auto duration = GetDuration();
+
 	return true;
+}
+
+double SoundBuffer::GetDuration()
+{
+	ALint sizeInBytes;
+	ALint channels;
+	ALint bits;
+	ALint lengthInSamples;
+	alGetBufferi(m_buffer, AL_SIZE, &sizeInBytes);
+	alGetBufferi(m_buffer, AL_CHANNELS, &channels);
+	alGetBufferi(m_buffer, AL_BITS, &bits);
+
+	lengthInSamples = sizeInBytes * 8 / (channels * bits);
+
+	ALint frequency;
+
+	alGetBufferi(m_buffer, AL_FREQUENCY, &frequency);
+	return (float)lengthInSamples / (float)frequency;
 }

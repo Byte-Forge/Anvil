@@ -47,7 +47,6 @@ Sound::Sound(std::shared_ptr<SoundBuffer> buffer) : m_source(0)
 	// check for errors
 	alSource3f(m_source, AL_VELOCITY, 0, 0, 0);
 	// check for errors
-	alSourcei(m_source, AL_LOOPING, AL_TRUE); //should be false
 	alSourcei(m_source, AL_BUFFER, bid);
 
 	error = alGetError();
@@ -62,6 +61,13 @@ void Sound::Play()
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 		throw AnvilException("Error in OpenAL!", __FILE__, __LINE__);
+}
+
+bool Sound::IsPlaying()
+{
+	ALenum state;
+	alGetSourcei(m_source, AL_SOURCE_STATE, &state);
+	return (state == AL_PLAYING);
 }
 
 Sound::~Sound()

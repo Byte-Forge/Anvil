@@ -15,7 +15,8 @@
 #endif
 #include <vector>
 #include <string>
-
+#include <thread>
+#include "Audio/Sound.hpp"
 
 namespace anvil
 {
@@ -60,13 +61,14 @@ namespace anvil
 		*/
 		void PlayMusic(const std::string& name);
 
+		
     private:
         ALCdevice* m_device;
         ALCcontext* m_context;
+		std::vector<std::shared_ptr<Sound>> m_sounds;
+		std::thread m_thread;
 		std::vector<std::string> m_deviceList;
-
 	private:
-
 		void EnumerateDevices(const ALCchar *devices);
     };
 }

@@ -8,7 +8,6 @@
 #include "Audio.hpp"
 #include "Core.hpp"
 #include "Core/ResourceHandler.hpp"
-#include "Audio/Sound.hpp"
 #include <iostream>
 #include <cstring>
 #include "Exception.hpp"
@@ -55,8 +54,9 @@ Audio::~Audio()
 void Audio::PlaySound(const std::string & name)
 {
 	auto buffer = Core::GetCore()->GetResources()->GetSound(name);
-	Sound sound(buffer);
-	sound.Play();
+	auto  sound = std::make_shared<Sound>(buffer);
+	sound->Play();
+	m_sounds.push_back(sound);
 }
 
 void Audio::PlayMusic(const std::string & name)

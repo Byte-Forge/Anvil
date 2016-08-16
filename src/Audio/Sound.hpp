@@ -48,6 +48,7 @@ namespace anvil
 		*/
 		void Play();
 
+		bool IsPlaying();
     private:
         ALuint  m_source;
     };

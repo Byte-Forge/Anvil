@@ -132,7 +132,7 @@ Core::Core()
 	m_input = std::make_unique<Input>();
 	m_script->LoadFile("start.lua");
 
-	//m_audio->PlaySound("sound/test.wav");
+	m_audio->PlaySound("sound/roll_over_01.wav");
 	glfwSetKeyCallback(m_window, KeyCallback);
 	glfwSetCharCallback(m_window, UnicodeCallback);
 	glfwSetWindowSizeCallback(m_window, ResizeCallback);
