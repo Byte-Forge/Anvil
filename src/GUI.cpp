@@ -79,8 +79,9 @@ GUI::GUI(GLFWwindow* window) : m_core(nullptr), m_window(window), m_frameTick(1)
 
 	m_core->AddFunction("quit_wb", [this](std::shared_ptr<spark::IElement> e) { m_core->GetNamedElement("worldbuilder")->Hide();  m_core->GetNamedElement("mainMenu")->Show(); Core::GetCore()->SetMode(MENU_MODE); });
 
-
 	LoadFile(m_gui_file);
+
+	m_core->GetNamedElement("mainMenu")->Show();
 
 	auto reload = [this](const fs::path &ui_file_path)
 	{
@@ -146,13 +147,13 @@ void GUI::LoadFile(const std::string& file)
 	if (view != nullptr)
 	{
 		m_view = view;
-		//std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("fullscreen"))->SetState(Options::GetFullscreen());
-		//std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("shadows"))->SetState(Options::GetShadows());
-		//std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("minRendering"))->SetState(Options::GetMinimalRendering());
-		/*for (const auto& name : visibles)
+		std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("fullscreen"))->SetState(Options::GetFullscreen());
+		std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("shadows"))->SetState(Options::GetShadows());
+		std::dynamic_pointer_cast<spark::Checkbox> (m_core->GetNamedElement("minRendering"))->SetState(Options::GetMinimalRendering());
+		for (const auto& name : visibles)
 		{
 			m_core->GetNamedElement(name)->Show();
-		}*/
+		}
 	}
 }
 
