@@ -3,6 +3,11 @@
 #include "../Script.hpp"
 using namespace anvil;
 
+ScriptEngine::ScriptEngine() : IScriptEngine("lua")
+{
+
+}
+
 void ScriptEngine::ExecuteString(const std::string& script)
 {
     Core::GetCore()->GetScript()->RunString(script);
