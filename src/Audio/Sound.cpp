@@ -75,3 +75,9 @@ Sound::~Sound()
     if(m_source)
         alDeleteSources(1,&m_source);
 }
+
+void Sound::SetLooping(bool loop)
+{
+	m_loop = loop;
+	alSourcei(m_source, AL_LOOPING, loop);
+}

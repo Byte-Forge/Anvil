@@ -49,8 +49,11 @@ namespace anvil
 		void Play();
 
 		bool IsPlaying();
+
+		void SetLooping(bool loop);
     private:
         ALuint  m_source;
+		bool	m_loop:
     };
 }
 
