@@ -3,7 +3,7 @@
 #include "../Script.hpp"
 using namespace anvil;
 
-ScriptEngine::ScriptEngine() : IScriptEngine("lua")
+ScriptEngine::ScriptEngine() /*: IScriptEngine("lua")*/
 {
 
 }

@@ -44,6 +44,7 @@ Sound::Sound(std::shared_ptr<SoundBuffer> buffer) : m_source(0)
 	alSourcef(m_source, AL_GAIN, 1);
 	// check for errors
 	alSource3f(m_source, AL_POSITION, 0, 0, 0);
+
 	// check for errors
 	alSource3f(m_source, AL_VELOCITY, 0, 0, 0);
 	// check for errors
