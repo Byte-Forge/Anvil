@@ -167,6 +167,7 @@ void Core::Run()
 		m_script->Update();
 		m_timer.Update();
 		m_fps.Update();
+		m_graphics->Clear();
 
 		if (m_mode == WORLDBUILDER_MODE)
 		{
@@ -175,11 +176,10 @@ void Core::Run()
 		
 		if (m_mode == WORLDBUILDER_MODE || m_mode == GAME_MODE)
 		{
-			m_graphics->Clear();
 			m_camera->Update();
 			m_graphics->Render();
 		}
-		m_graphics->Clear();
+		
 		m_gui->Render();
 
 		m_gui->RestoreJustPressed();
