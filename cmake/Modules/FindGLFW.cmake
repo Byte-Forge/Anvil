@@ -30,7 +30,7 @@
 # GLFW_LIBRARIES
 #
 
-find_path( GLFW_INCLUDE_DIRS 
+find_path( GLFW_INCLUDE_DIR 
     NAMES
         GLFW/glfw3.h
     HINTS
@@ -55,7 +55,7 @@ find_path( GLFW_INCLUDE_DIRS
 #
 # XXX: Do we still need to search for GL/glfw.h?
 #
-find_path( GLFW_INCLUDE_DIRS 
+find_path( GLFW_INCLUDE_DIR 
     NAMES
         GL/glfw.h
     HINTS
