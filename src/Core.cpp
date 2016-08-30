@@ -62,6 +62,7 @@ void Core::MousePosCallback(GLFWwindow* window, double xpos, double ypos)
 void Core::ScrollCallback(GLFWwindow* window, double x, double y)
 {
 	Core::GetCore()->GetInput()->SetMouseWheelDelta(x, y);
+	Core::GetCore()->GetGUI()->SetMouseWheelDelta(x, y);
 }
 
 void Core::Quit()

@@ -98,6 +98,8 @@ namespace anvil
 		 */
 		void SetMouseState(int key, int action, int mods);
 
+		void SetMouseWheelDelta(int x, int y);
+
 		void SetUnicodeChar(unsigned int unicode);
 
 		void SetKeyState(int key, int action, int mods);

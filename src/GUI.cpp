@@ -167,6 +167,11 @@ void GUI::MouseMove(int x, int y)
 	m_view->SetMousePosition(x, y);
 }
 
+void GUI::SetMouseWheelDelta(int x, int y)
+{
+	m_view->SetMouseWheelDelta(x, y);
+}
+
 void GUI::SetMouseState(int key, int action, int mods)
 {
 	m_view->SetMouseState(key, action, mods);
